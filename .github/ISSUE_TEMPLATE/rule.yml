@@ -1,0 +1,49 @@
+name: Propose a hazard rule
+description: A way to get it wrong that the detector does not yet catch
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        `CONTRIBUTING.md` asks for three things, because a rule without them cannot be
+        written or tested. They are the three fields below.
+
+  - type: textarea
+    id: action
+    attributes:
+      label: The specific wrong action a person can take
+      description: >
+        Stated as an action, not as a quality. "Passing the customer id where the account id
+        belongs, because both are strings" is an action. "Poor type safety" is a quality.
+    validations: { required: true }
+
+  - type: textarea
+    id: consequence
+    attributes:
+      label: What it costs when it happens
+      description: Money moved, data lost, access granted. Concrete, and ideally something you have seen.
+    validations: { required: true }
+
+  - type: textarea
+    id: device
+    attributes:
+      label: The device that closes it
+      description: >
+        A concrete change, not advice. A newtype, a database constraint, a required parameter,
+        a lint rule that already exists. "Be careful" is rung zero and does not qualify.
+    validations: { required: true }
+
+  - type: textarea
+    id: nearmiss
+    attributes:
+      label: A near-miss that must NOT match
+      description: >
+        Code that looks similar and is fine. This is what keeps precision high enough that
+        people do not learn to ignore the tool, and every rule needs one.
+    validations: { required: true }
+
+  - type: input
+    id: languages
+    attributes:
+      label: Languages it applies to
+      placeholder: TypeScript, Python

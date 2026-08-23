@@ -1,0 +1,57 @@
+name: Something is wrong
+description: A device did not fire, fired when it should not have, or a skill behaved badly
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The most useful thing you can send is a session transcript. Second most useful is the
+        exact input that produced the wrong behaviour, so it can be turned into a test case.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: What went wrong
+      options:
+        - A skill gave bad advice, or did not trigger
+        - The detector missed a hazard it should catch
+        - The detector reported something that is not a hazard
+        - A hook blocked something it should have allowed
+        - A hook allowed something it should have blocked
+        - Install or setup
+        - Documentation is wrong
+    validations: { required: true }
+
+  - type: input
+    id: runtime
+    attributes:
+      label: Runtime and model
+      description: Claude Code, Codex, Cursor, Antigravity, and which model. Version if you have it.
+      placeholder: Claude Code, Opus 5
+    validations: { required: true }
+
+  - type: textarea
+    id: input
+    attributes:
+      label: What you asked for, verbatim
+      description: The prompt, the file, or the command. Paste it rather than describing it.
+    validations: { required: true }
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected, and what happened instead
+      description: >
+        Both halves matter. "The detector should have flagged the unscoped delete on line 40
+        and reported zero findings" is actionable; "the detector is broken" is not.
+    validations: { required: true }
+
+  - type: checkboxes
+    id: checked
+    attributes:
+      label: Before filing
+      options:
+        - label: I checked that this is not already an open issue
+        - label: >
+            If it is a detector result, I can paste the code that produced it, or a reduced
+            version of it that still does

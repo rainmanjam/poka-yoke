@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/rainmanjam/poka-yoke/security/advisories/new
+    about: Report privately, not as a public issue. See SECURITY.md for the fallback while this repo is private.
