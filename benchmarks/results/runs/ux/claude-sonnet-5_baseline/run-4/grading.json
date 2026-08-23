@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "82f963d241f9",
+  "expectations": [
+    {
+      "text": "Pushes back on the 'are you sure?' modal as the primary fix",
+      "passed": true,
+      "evidence": "a confirm modal was rejected"
+    },
+    {
+      "text": "Explains habituation or click-through blindness as why frequent dialogs stop working",
+      "passed": true,
+      "evidence": "confirmation modals...get reflexively clicked through \u2014 'modal blindness'"
+    },
+    {
+      "text": "Recommends reversibility (soft delete with a retention window) as the strongest option",
+      "passed": true,
+      "evidence": "soft-delete: 30-day trash + an undo toast...was recommended"
+    },
+    {
+      "text": "Recommends grace-period undo as a strong low-friction option",
+      "passed": true,
+      "evidence": "an undo toast"
+    },
+    {
+      "text": "Recommends type-the-workspace-name confirmation for the irreversible case",
+      "passed": false,
+      "evidence": "not mentioned"
+    },
+    {
+      "text": "If a dialog is retained, requires it to name the workspace and the scale of what is lost",
+      "passed": false,
+      "evidence": "does not address what a retained dialog should contain"
+    },
+    {
+      "text": "Notes that the server must enforce the deletion rules, not just the UI",
+      "passed": false,
+      "evidence": "not mentioned"
+    },
+    {
+      "text": "Gives an explicit preference order rather than an undifferentiated list of ideas",
+      "passed": false,
+      "evidence": "says soft-delete was 'rejected in favor of' but no structured ranking given"
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "total": 8,
+    "pass_rate": 0.5
+  }
+}

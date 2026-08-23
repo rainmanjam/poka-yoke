@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "4999b9f80438",
+  "expectations": [
+    {
+      "text": "States that a written agreement or reminder is not enforcement",
+      "passed": true,
+      "evidence": "\"CONTRIBUTING.md is training, and training degrades \u2014 you need a device that makes unformatted/untyped code impossible to merge\""
+    },
+    {
+      "text": "Recommends a pre-commit hook to run the formatter automatically",
+      "passed": true,
+      "evidence": "\"**Pre-commit hook** (via husky/lefthook/pre-commit) that runs the same check locally\""
+    },
+    {
+      "text": "Notes that pre-commit is bypassable with --no-verify and must be backed by a CI check",
+      "passed": false,
+      "evidence": "Does not explicitly mention --no-verify; only implies pre-commit can be skipped via \"this is the one that actually matters, since it can't be skipped\""
+    },
+    {
+      "text": "Recommends a type check as a required CI check",
+      "passed": true,
+      "evidence": "\"CI check that fails the PR if ... the type checker reports errors\""
+    },
+    {
+      "text": "Recommends baselining or ratcheting rather than enforcing across the whole repo at once",
+      "passed": true,
+      "evidence": "\"**A baseline/ratchet** for existing untyped code so the gate only blocks *new* violations, not the whole legacy tree at once\""
+    },
+    {
+      "text": "Notes that branch protection is what makes a CI check actually required",
+      "passed": false,
+      "evidence": "Branch protection not mentioned"
+    },
+    {
+      "text": "Recommends the failure message tell the developer how to fix it",
+      "passed": false,
+      "evidence": "Not mentioned"
+    },
+    {
+      "text": "Does not primarily recommend rewriting CONTRIBUTING.md, more reminders, or more discipline",
+      "passed": true,
+      "evidence": "Recommends devices and actual implementation, not documentation"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "total": 8,
+    "pass_rate": 0.625
+  }
+}

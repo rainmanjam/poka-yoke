@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "\"No, that test doesn't catch what actually happened \u2014 it's the wrong lens for this failure\""
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "\"Kill the silent `coalesce(x, 0)` on the join. That's the actual root cause \u2014 it's what converted 'upstream renamed a column, join now returns null' into 'revenue is plausible but low'\""
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": true,
+      "evidence": "\"Add a reconciliation assertion, not just an existence check: compare the revenue total...against an independent source\""
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": true,
+      "evidence": "\"Run it *between load and publish*, so it can block promotion rather than firing an alert after the dashboard's already been live for three weeks\""
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "\"is there a **data contract** with the upstream team so a column rename fails ingestion loudly instead of silently producing nulls\""
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "\"Null-rate assertion on the join key...Assert the match rate (or null rate on the joined column) directly, e.g. 'unmatched rows must be <2%'\""
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": false,
+      "evidence": "Discusses when checks should run but not the gap itself as a systemic detection failure"
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": false,
+      "evidence": "Shows that shape checks would pass but does not explicitly explain why silent wrong is more dangerous than loud failure"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

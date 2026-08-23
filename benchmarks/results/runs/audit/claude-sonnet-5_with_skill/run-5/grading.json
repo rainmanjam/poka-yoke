@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": true,
+      "evidence": "\"fromAccount/toAccount are adjacent same-type strings (swap compiles and passes review)\""
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "\"stripe.charges.create is called with no idempotency key\" and \"double-charges the customer\""
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": true,
+      "evidence": "\"the catch block returns null with no logging and no rethrow\""
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": false,
+      "evidence": "Set-aside mentions \"money as a bare number\" only in context of applyDiscount function, not the architectural issue"
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "\"the delete itself is built by string-interpolating a date into $executeRawUnsafe\""
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "\"switch with only active/canceled cases and no default\""
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": true,
+      "evidence": "\"JSON.parse(body) is trusted directly\" and recommends parsing through schema (zod)"
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "\"Calling purgeCanceledAccounts() with no thought at all is the most destructive possible call\""
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "Findings ranked: #1-2 money, #3 money/data corruption, #4 irreversible data loss, #5 silent inconsistency"
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": true,
+      "evidence": "\"verify stripe-signature via stripe.webhooks.constructEvent\", \"require an idempotencyKey parameter\", \"wrap both updates in db.$transaction\", \"make the cutoff required\""
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "No file modifications; audit analysis only"
+    }
+  ],
+  "summary": {
+    "passed": 10,
+    "total": 11,
+    "pass_rate": 0.9091
+  }
+}

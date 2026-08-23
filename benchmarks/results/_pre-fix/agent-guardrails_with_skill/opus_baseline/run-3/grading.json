@@ -1,0 +1,49 @@
+{
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "A CLAUDE.md rule is a **warning label**... Warning labels get ~90% compliance from humans and from models."
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "You're using the wrong class of control"
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": false,
+      "evidence": "References PROTECTED_PATHS and path rules but no concrete settings.json syntax shown"
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": true,
+      "evidence": "A `PreToolUse` deny is a **control**: the action is refused at the harness layer"
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": true,
+      "evidence": "A bare refusal makes the agent invent a workaround... needs a reason that names the source of truth."
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": false,
+      "evidence": "No mention of testing or verifying the hook"
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": false,
+      "evidence": "No mention of committing the rules"
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": true,
+      "evidence": "Repetition and capitals don't change the control class"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "total": 8,
+    "pass_rate": 0.625
+  }
+}

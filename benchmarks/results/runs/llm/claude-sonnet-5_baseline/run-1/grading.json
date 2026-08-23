@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "018a96d90c3c",
+  "expectations": [
+    {
+      "text": "States that system prompt instructions are not a reliable control on model behaviour",
+      "passed": true,
+      "evidence": "The two prompt lines you added are rung zero \u2014 they make the model *more likely* to behave, but they don't change what's possible when it doesn't."
+    },
+    {
+      "text": "Recommends structured output against a schema rather than extracting values from prose",
+      "passed": true,
+      "evidence": "Use structured/constrained output (a schema: `amount: float`, `reason: enum[...]`, `order_id: string`)"
+    },
+    {
+      "text": "Recommends validating the refund amount server-side against the actual order",
+      "passed": true,
+      "evidence": "Never trust the extracted amount as authorization. Validate it server-side against the actual order: refund amount must be \u2264 the order's paid amount"
+    },
+    {
+      "text": "Recommends a required idempotency key on the refund call",
+      "passed": true,
+      "evidence": "generate (or require) an idempotency key per refund request \u2014 e.g. `hash(order_id + amount + reason)` or a client-generated request ID"
+    },
+    {
+      "text": "Recommends a database constraint or equivalent so a duplicate refund is rejected rather than merely avoided",
+      "passed": true,
+      "evidence": "enforce a unique constraint in your DB or pass it straight through as the Stripe/payment-provider idempotency key"
+    },
+    {
+      "text": "Recommends human confirmation or an approval gate for the irreversible refund action",
+      "passed": true,
+      "evidence": "amounts above some threshold (or all of them, if volume allows) get a human-in-the-loop confirmation step"
+    },
+    {
+      "text": "Identifies prompt injection risk from the customer-supplied message reaching a privileged action",
+      "passed": false,
+      "evidence": "No mention of prompt injection or customer message injection risk"
+    },
+    {
+      "text": "Recommends bounds or caps on the refund amount",
+      "passed": true,
+      "evidence": "At minimum: amounts above some threshold; a $9,999 refund on a $40 order looks obviously wrong"
+    },
+    {
+      "text": "Does not primarily recommend changes to the prompt wording",
+      "passed": true,
+      "evidence": "Response emphasizes structural controls (idempotency, validation, confirmation) rather than prompt rewording"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 9,
+    "pass_rate": 0.8889
+  }
+}

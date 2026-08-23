@@ -1,0 +1,60 @@
+{
+  "assertions_sha": "bcf79cb43709",
+  "expectations": [
+    {
+      "text": "Flags the nested comments and attachments resolvers as unscoped by tenant",
+      "passed": true,
+      "evidence": "Section 1: '**Nested resolvers expose cross-tenant data** (lines 30-37)' with code showing Document.comments and Document.attachments without tenantId"
+    },
+    {
+      "text": "Flags updateDocument for scoping on id alone without a tenant constraint",
+      "passed": true,
+      "evidence": "Section 2: '**Unscoped write operation** (lines 46-49)' shows `where: { id: documentId }, // \u274c no tenantId in WHERE`"
+    },
+    {
+      "text": "Flags exportWorkspace taking tenantId from the client-controlled request body",
+      "passed": true,
+      "evidence": "Section 3: '**Client-controlled tenant scope** (lines 52-63)' notes 'takes `tenantId` from request body, not session' and 'Any user can export ANY tenant's data'"
+    },
+    {
+      "text": "Flags searchDocuments as returning rows across all tenants",
+      "passed": true,
+      "evidence": "Section 4: '**Unscoped search** (lines 65-73)' states 'Search results leak cross-tenant'"
+    },
+    {
+      "text": "Flags adminListDocuments as checking authentication but not authorization or tenant",
+      "passed": true,
+      "evidence": "Section 5: '**Admin without tenant scope** (lines 75-78)' notes 'returns documents from all tenants' with `// \u274c no WHERE clause at all`"
+    },
+    {
+      "text": "Enumerates all the affected sites rather than fixing only the first one found",
+      "passed": true,
+      "evidence": "Identifies all 5 issues in separate sections (1-5) with full coverage of each affected function"
+    },
+    {
+      "text": "Recommends a structural device (scoped repository, row-level security, or equivalent) rather than only adding where-clauses site by site",
+      "passed": true,
+      "evidence": "Provides 'Recommended Control-level Device' section with scoped repository pattern example and 'Make it impossible to construct a query without tenant scope'"
+    },
+    {
+      "text": "Recommends a cross-tenant test that attempts tenant A operations against tenant B resources",
+      "passed": false,
+      "evidence": "No test code example provided in the response"
+    },
+    {
+      "text": "Identifies the raw interpolation of tenantId into $queryRawUnsafe as an injection hazard distinct in kind from the tenant-scoping bug",
+      "passed": false,
+      "evidence": "Section 3 mentions 'Also has SQL injection via string interpolation' but treats it as an additional aspect of one vulnerability rather than identifying injection as a conceptually distinct hazard class"
+    },
+    {
+      "text": "Does not conclude the main query paths being scoped means the service is safe",
+      "passed": true,
+      "evidence": "'You said \"the main query paths are all scoped\" \u2014 that's true (lines 14-26 are correct), but the **non-primary paths failed**' explicitly rejects the scoped-paths-mean-safe conclusion"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 10,
+    "pass_rate": 0.8
+  }
+}

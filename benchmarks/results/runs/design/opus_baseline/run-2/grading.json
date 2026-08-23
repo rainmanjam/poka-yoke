@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "SubscriptionState with four variants keyed on status literal"
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "trialing, active, past_due, canceled each carry only their relevant fields"
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": true,
+      "evidence": "assertNever function with default case in billingBanner switch"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": true,
+      "evidence": "SubscriptionId, CustomerId, PlanId as branded types; also brands Date types (TrialEndsAt, RenewsAt, GracePeriodEndsAt)"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": false,
+      "evidence": "States 'Nothing above stops canceled \u2192 past_due' and requests user fill in transition table; no function or constraint mechanism provided"
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Enumerates 4 misuses in detail: optional fields, date swapping, boolean + reason independence, silent fallthrough on new status"
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "Primary design is discriminated union with branded date types to prevent confusion"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 7,
+    "pass_rate": 0.8571
+  }
+}

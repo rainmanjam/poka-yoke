@@ -1,0 +1,5 @@
+That's actually already been evaluated earlier in this session — a confirm modal was rejected in favor of soft-delete: 30-day trash + an undo toast. The reasoning: confirmation modals for actions people take repeatedly (even rarely) get reflexively clicked through — "modal blindness" — so they don't actually catch the mistake, they just add friction. A soft-delete gives you a real recovery path *after* the mistake happens, which is what actually stops the support emails.
+
+The recommendation was blocked on three decisions: what happens to billing/seats during the grace period, whether a deleted workspace's slug can be reused before the 30 days are up, and who's allowed to restore (owner only, or any admin).
+
+Want to go with soft-delete+trash instead, or do you still want the modal (e.g., as a stopgap before trash is built)?

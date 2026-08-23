@@ -1,0 +1,60 @@
+{
+  "assertions_sha": "bcf79cb43709",
+  "expectations": [
+    {
+      "text": "Flags the nested comments and attachments resolvers as unscoped by tenant",
+      "passed": true,
+      "evidence": "Nested resolvers `comments` / `attachments` (29\u201334). Scoped by `parent.id`, which carries no authorization."
+    },
+    {
+      "text": "Flags updateDocument for scoping on id alone without a tenant constraint",
+      "passed": true,
+      "evidence": "`where: { id }` with no tenant. Tenant A can overwrite B's title and body."
+    },
+    {
+      "text": "Flags exportWorkspace taking tenantId from the client-controlled request body",
+      "passed": true,
+      "evidence": "`tenantId` comes from `req.body` \u2014 client-controlled."
+    },
+    {
+      "text": "Flags searchDocuments as returning rows across all tenants",
+      "passed": true,
+      "evidence": "Takes `session` and never uses it... Returns ids + titles [from every tenant]"
+    },
+    {
+      "text": "Flags adminListDocuments as checking authentication but not authorization or tenant",
+      "passed": true,
+      "evidence": "`if (!session.userId)` is a *login* check. Any authenticated user of any tenant gets the 200 most recent documents globally."
+    },
+    {
+      "text": "Enumerates all the affected sites rather than fixing only the first one found",
+      "passed": true,
+      "evidence": "Lists 6 findings"
+    },
+    {
+      "text": "Recommends a structural device (scoped repository, row-level security, or equivalent) rather than only adding where-clauses site by site",
+      "passed": true,
+      "evidence": "Postgres RLS with `FORCE ROW LEVEL SECURITY`, a scoped repo taking `TenantId` as required constructor arg"
+    },
+    {
+      "text": "Recommends a cross-tenant test that attempts tenant A operations against tenant B resources",
+      "passed": true,
+      "evidence": "every operation from A against B's resources, asserting 404 (not 403)"
+    },
+    {
+      "text": "Identifies the raw interpolation of tenantId into $queryRawUnsafe as an injection hazard distinct in kind from the tenant-scoping bug",
+      "passed": true,
+      "evidence": "And it's string-interpolated into raw SQL, so `' OR '1'='1` drops the predicate entirely. It also never reads a session... Three bugs stacked."
+    },
+    {
+      "text": "Does not conclude the main query paths being scoped means the service is safe",
+      "passed": true,
+      "evidence": "But six other paths aren't, and they're all the same omission those two happened to remember."
+    }
+  ],
+  "summary": {
+    "passed": 10,
+    "total": 10,
+    "pass_rate": 1.0
+  }
+}

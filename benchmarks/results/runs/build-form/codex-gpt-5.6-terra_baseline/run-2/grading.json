@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "31eb11dca414",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Full component with DocumentFilter type, Selection discriminated union, all handlers, table with pagination, and bulk mutation calls"
+    },
+    {
+      "text": "Produces actual working component code rather than only a list of recommendations",
+      "passed": true,
+      "evidence": "Implemented functions: toggleDocument(), toggleCurrentPage(), selectAllMatching(), runBulkAction(), TableCheckbox component with full state wiring"
+    },
+    {
+      "text": "Makes the destructive action recoverable rather than relying on a confirmation dialog alone",
+      "passed": false,
+      "evidence": "Delete uses native browser confirm: \"if (action === 'delete' && !window.confirm(`Permanently delete...`)) { return; }\" with no trash/recovery mechanism"
+    },
+    {
+      "text": "Shows the count of affected items before the action is taken",
+      "passed": true,
+      "evidence": "\"{selectedCount.toLocaleString()} document{selectedCount === 1 ? '' : 's'} selected\" shown in bulk action bar above action buttons"
+    },
+    {
+      "text": "Distinguishes select-all-on-page from select-all-matching rather than conflating them",
+      "passed": true,
+      "evidence": "Distinct UI states shown: \"Select all {page.total.toLocaleString()} matching documents\" button and \"All matching documents are selected. Unchecking a row excludes it.\" message"
+    },
+    {
+      "text": "Separates the destructive action from the benign one visually or spatially",
+      "passed": true,
+      "evidence": "Archive styled 'bg-indigo-600' (primary blue), Delete styled 'bg-red-600' (red); both clearly distinct in color and appearance"
+    },
+    {
+      "text": "Does not make the destructive action the default focus or primary button",
+      "passed": true,
+      "evidence": "Archive button appears first in button sequence with indigo (primary) styling; Delete follows with red (warning) styling"
+    },
+    {
+      "text": "Notes that the server must enforce the rules, not just the UI",
+      "passed": true,
+      "evidence": "Comment states: \"The server must evaluate matching-filter selections server-side. This avoids sending thousands of document IDs when the user selects every matching result.\""
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": false,
+      "evidence": "Code ends with component closing; no closing prose or documentation naming prevented misuses"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 9,
+    "pass_rate": 0.7778
+  }
+}

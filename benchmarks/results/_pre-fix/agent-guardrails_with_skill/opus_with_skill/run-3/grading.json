@@ -1,0 +1,49 @@
+{
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "\"In Shingo's ladder, a line in CLAUDE.md is **rung zero** \u2014 training, not a device. Caps don't raise the rung. Repeating it twice doesn't raise the rung.\""
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "\"**Repetition is a tell.** The skill's own rule: *'If you have been repeating the same correction to an agent, that is the signal to stop writing instructions and install a device.'*\""
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": true,
+      "evidence": "Shows `.claude/settings.json` \u2192 `\"deny\": [\"Bash(git push --force:*)\", \"Bash(git push -f:*)\"]` and deny rules for generated files"
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": false,
+      "evidence": "Mentions that `guard_dangerous_commands.py` already covers the force-push case, but does not explicitly recommend using a PreToolUse hook or explain when logic is needed"
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": true,
+      "evidence": "\"A bare \\\"denied\\\" makes the agent invent a workaround \u2014 often worse. `guard_dangerous_commands.py` in this repo already covers the force-push case with a reason pointing at `--force-with-lease`\""
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": false,
+      "evidence": "No recommendation to verify or test that the rules actually fire"
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": false,
+      "evidence": "Asks user to point to the repo and offers to show settings, but does not explicitly recommend committing the rules for team-wide application"
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": true,
+      "evidence": "\"It fails when context is compacted, when the relevant CLAUDE.md is out of scope, when a subagent runs that never read the file, and when a plausible local goal outranks a remembered rule\""
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "total": 8,
+    "pass_rate": 0.625
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "5b62450c21d2",
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "Caps and repetition don't fix this; they just make the training stronger, not the device"
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "Then remove those rules from CLAUDE.md\u2014or reframe them as 'why these devices exist' rather than 'do this or else.'"
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": false,
+      "evidence": "Recommends git hooks in .git/hooks/, not settings.json"
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": false,
+      "evidence": "Recommends shell-based git hooks (pre-commit, pre-push), not Claude Code PreToolUse hooks"
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": false,
+      "evidence": "Messages are only refusals: 'ERROR: Do not edit files...' and 'ERROR: Force push is forbidden' with no guidance on alternatives"
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": false,
+      "evidence": "No mention of testing or verifying hooks work"
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": false,
+      "evidence": "Standard .git/hooks placement is local to the machine; no mention of version control or team application"
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": true,
+      "evidence": "Instructions are...compressed out of the active context window as your conversation lengthens...Caps and repetition don't fix this"
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "total": 8,
+    "pass_rate": 0.375
+  }
+}

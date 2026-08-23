@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": true,
+      "evidence": "\"For the minutes your old pods coexist with the new schema, every request hitting those three readers on an old pod errors.\""
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "\"PR A \u2014 code stops reading legacy_email... PR B \u2014 the DROP, next week, after A has been live through a full weekly traffic cycle.\""
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": true,
+      "evidence": "\"The DROP. Nothing restores it cheaply. Recovering those values means a point-in-time restore of the whole database.\""
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": true,
+      "evidence": "\"A change that reverts in two minutes is fine on a Friday. This one's recovery path is a DB restore with your team offline until Monday.\""
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "\"This one's recovery path is a DB restore with your team offline until Monday.\""
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": true,
+      "evidence": "\"Want me to draft the CI check that blocks destructive DDL from landing in the same commit as application code?\""
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "\"Merge it. Don't deploy it as one unit.\""
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "\"only one of them is reversible\" and \"the code change... Fully reversible\" vs the DROP."
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

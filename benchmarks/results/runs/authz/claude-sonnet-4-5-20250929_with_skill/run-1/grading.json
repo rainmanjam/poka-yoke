@@ -1,0 +1,60 @@
+{
+  "assertions_sha": "bcf79cb43709",
+  "expectations": [
+    {
+      "text": "Flags the nested comments and attachments resolvers as unscoped by tenant",
+      "passed": true,
+      "evidence": "Finding 1: 'Nested resolvers leak cross-tenant data' (lines 30-37), explicitly calls out Document.comments, Document.attachments, Document.author as loading by ID without tenant scoping"
+    },
+    {
+      "text": "Flags updateDocument for scoping on id alone without a tenant constraint",
+      "passed": true,
+      "evidence": "Finding 2: 'Unscoped update allows cross-tenant modification' shows code with `where: { id: documentId }, // missing: tenantId: session.tenantId`"
+    },
+    {
+      "text": "Flags exportWorkspace taking tenantId from the client-controlled request body",
+      "passed": true,
+      "evidence": "Finding 3: 'Client-controlled tenant ID in export' notes 'Tenant A sends {tenantId: \"tenant-b-uuid\", format: \"csv\"}' and 'Exports Tenant B's data'"
+    },
+    {
+      "text": "Flags searchDocuments as returning rows across all tenants",
+      "passed": true,
+      "evidence": "Finding 4: 'Unscoped search returns all tenants' results' states 'Receives ranked results from all tenants'"
+    },
+    {
+      "text": "Flags adminListDocuments as checking authentication but not authorization or tenant",
+      "passed": true,
+      "evidence": "Finding 5: '`adminListDocuments` checks authentication but not tenant scope. Returns most recent 200 documents across **all** tenants.'"
+    },
+    {
+      "text": "Enumerates all the affected sites rather than fixing only the first one found",
+      "passed": true,
+      "evidence": "Identifies all 5 vulnerabilities in structured list with summary table showing all 5 findings"
+    },
+    {
+      "text": "Recommends a structural device (scoped repository, row-level security, or equivalent) rather than only adding where-clauses site by site",
+      "passed": true,
+      "evidence": "Concludes: 'you need a Control-rung device that makes unscoped queries unwritable \u2014 scoped repositories, RLS, or both'"
+    },
+    {
+      "text": "Recommends a cross-tenant test that attempts tenant A operations against tenant B resources",
+      "passed": false,
+      "evidence": "No test code provided in the response"
+    },
+    {
+      "text": "Identifies the raw interpolation of tenantId into $queryRawUnsafe as an injection hazard distinct in kind from the tenant-scoping bug",
+      "passed": false,
+      "evidence": "Mentions 'SQL injection via string interpolation' and '$queryRawUnsafe' but treats it as one 'DOUBLE VULNERABILITY' component rather than identifying injection as a conceptually distinct hazard class from authorization bypass"
+    },
+    {
+      "text": "Does not conclude the main query paths being scoped means the service is safe",
+      "passed": true,
+      "evidence": "'The good news: `getDocument` (line 14-18) shows the team knows the pattern \u2014 it's correctly scoped. The bad news: **unsafe is currently easier to write than safe** in this codebase.'"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 10,
+    "pass_rate": 0.8
+  }
+}

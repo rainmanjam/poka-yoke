@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": true,
+      "evidence": "Once the migration runs, old instances still holding `SELECT ... legacy_email` error on every request"
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "Deploy A (Friday): code only... Deploy B (next week): the `DROP`, alone"
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": true,
+      "evidence": "Reverting the PR re-adds an *empty* column \u2014 the values are gone. The only real restore is point-in-time recovery"
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": true,
+      "evidence": "The only real restore is point-in-time recovery: snapshot to a side instance, extract, backfill"
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "not because it's Friday, but because... it wants people awake, which Friday afternoon isn't"
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": true,
+      "evidence": "a CI check that fails any PR whose migration contains `DROP`, `TRUNCATE`, or `ALTER ... DROP` unless the PR carries an explicit approval label"
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "The reversible half is what CI proved"
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "this PR staples a reversible change (three call sites stop reading a column) to an irreversible one (the column ceases to exist)"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

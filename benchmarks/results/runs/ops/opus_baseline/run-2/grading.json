@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": true,
+      "evidence": "\"Between the migration running and your last old pod draining, old code is selecting a column that no longer exists \u2014 those three call sites throw for real users.\""
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "\"Today \u2014 ship only the code change... Next week \u2014 after the old version is out of rotation... ship the DROP alone.\""
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": true,
+      "evidence": "\"Nothing restores it in place. Your only recovery is a point-in-time restore of the whole database to before the migration.\""
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": true,
+      "evidence": "\"Step one reverts in minutes... Step two has no rollback at all, so it wants a Tuesday morning and someone watching.\""
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "\"Step two has no rollback at all, so it wants a Tuesday morning and someone watching.\""
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": true,
+      "evidence": "\"a CI check that blocks DROP/destructive ALTER from landing in the same diff as application code.\""
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "\"Short answer: merge the code change, hold the DROP.\""
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "\"Expand \u2192 backfill \u2192 dual-write \u2192 switch reads are all reversible; only contract isn't.\""
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

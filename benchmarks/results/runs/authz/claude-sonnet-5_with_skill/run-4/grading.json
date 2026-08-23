@@ -1,0 +1,60 @@
+{
+  "assertions_sha": "bcf79cb43709",
+  "expectations": [
+    {
+      "text": "Flags the nested comments and attachments resolvers as unscoped by tenant",
+      "passed": true,
+      "evidence": "Document.comments / Document.attachments nested resolvers don't inherit the parent's scoping, they inherit nothing"
+    },
+    {
+      "text": "Flags updateDocument for scoping on id alone without a tenant constraint",
+      "passed": true,
+      "evidence": "updateDocument \u2014 critical write path, where: { id: documentId } \u2014 no tenant filter"
+    },
+    {
+      "text": "Flags exportWorkspace taking tenantId from the client-controlled request body",
+      "passed": true,
+      "evidence": "tenantId comes from req.body, so it's client-controlled"
+    },
+    {
+      "text": "Flags searchDocuments as returning rows across all tenants",
+      "passed": true,
+      "evidence": "Raw SQL full-text search with no tenant_id predicate anywhere"
+    },
+    {
+      "text": "Flags adminListDocuments as checking authentication but not authorization or tenant",
+      "passed": true,
+      "evidence": "Checks session.userId is truthy and nothing else. Returns the 200 most recent documents across every tenant"
+    },
+    {
+      "text": "Enumerates all the affected sites rather than fixing only the first one found",
+      "passed": true,
+      "evidence": "Lists 6 findings covering all affected paths"
+    },
+    {
+      "text": "Recommends a structural device (scoped repository, row-level security, or equivalent) rather than only adding where-clauses site by site",
+      "passed": false,
+      "evidence": "Recommends individual where-clause fixes and a two-tenant test without proposing architectural restructuring"
+    },
+    {
+      "text": "Recommends a cross-tenant test that attempts tenant A operations against tenant B resources",
+      "passed": true,
+      "evidence": "write that test first...run every one of these 8 paths from tenant A against tenant B's document, assert 404"
+    },
+    {
+      "text": "Identifies the raw interpolation of tenantId into $queryRawUnsafe as an injection hazard distinct in kind from the tenant-scoping bug",
+      "passed": false,
+      "evidence": "mentions 'SQL injection on top of the missing scoping' but doesn't clearly separate injection as a distinct vulnerability class"
+    },
+    {
+      "text": "Does not conclude the main query paths being scoped means the service is safe",
+      "passed": true,
+      "evidence": "But nested GraphQL resolvers don't inherit the parent's scoping"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 10,
+    "pass_rate": 0.8
+  }
+}

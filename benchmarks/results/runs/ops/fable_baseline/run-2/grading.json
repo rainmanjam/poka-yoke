@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": true,
+      "evidence": "During a rolling deploy there's a window where... old pods/instances are still serving traffic and still `SELECT legacy_email` \u2192 hard 500s"
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "The safe shape (expand/contract): PR 1 (today): the code changes only... PR 2 (next week): `DROP COLUMN`"
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": true,
+      "evidence": "the rollback is a restore-from-backup, not `git revert`"
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": true,
+      "evidence": "the rollback is a restore-from-backup, not `git revert`"
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": false,
+      "evidence": "Does not address Friday timing; says code is fine to ship Friday but offers no justification in terms of availability"
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": false,
+      "evidence": "No CI gate mentioned"
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "Short answer: don't merge-and-deploy as one step this afternoon"
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "Table showing code revert as \"minutes\" vs drop rollback as restore-from-backup with data loss implications"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

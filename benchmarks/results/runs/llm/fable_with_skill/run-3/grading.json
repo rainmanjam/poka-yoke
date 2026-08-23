@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "018a96d90c3c",
+  "expectations": [
+    {
+      "text": "States that system prompt instructions are not a reliable control on model behaviour",
+      "passed": true,
+      "evidence": "\"the two lines you added are rung zero \u2014 they're requests to a component with a non-zero error rate on every call, and they'll stop working on exactly the inputs that already fooled it\""
+    },
+    {
+      "text": "Recommends structured output against a schema rather than extracting values from prose",
+      "passed": true,
+      "evidence": "\"For partial, schema-bound the number: amount: Decimal, gt=0, le=order.total, extra=forbid\""
+    },
+    {
+      "text": "Recommends validating the refund amount server-side against the actual order",
+      "passed": true,
+      "evidence": "\"Validate against the order in code \u2014 amount <= order.refundable_balance, currency matches\""
+    },
+    {
+      "text": "Recommends a required idempotency key on the refund call",
+      "passed": true,
+      "evidence": "\"required idempotency key on the refund API, backed by UNIQUE (order_id, idempotency_key)\""
+    },
+    {
+      "text": "Recommends a database constraint or equivalent so a duplicate refund is rejected rather than merely avoided",
+      "passed": true,
+      "evidence": "\"backed by UNIQUE (order_id, idempotency_key) \u2014 or simpler for refunds, a UNIQUE on order_id in the refunds table plus a state check in the same transaction as the write\""
+    },
+    {
+      "text": "Recommends human confirmation or an approval gate for the irreversible refund action",
+      "passed": true,
+      "evidence": "\"split tools by reversibility... issue_refund above some threshold (or always, to start) requires a human confirmation that names the order, amount and reason\""
+    },
+    {
+      "text": "Identifies prompt injection risk from the customer-supplied message reaching a privileged action",
+      "passed": true,
+      "evidence": "\"Untrusted text reaches a privileged action \u2014 injection. The customer's message is untrusted input feeding a money-moving tool.\""
+    },
+    {
+      "text": "Recommends bounds or caps on the refund amount",
+      "passed": true,
+      "evidence": "\"schema-bound the number: amount: Decimal, gt=0, le=order.total\" and \"Validate against the order in code \u2014 amount <= order.refundable_balance\""
+    },
+    {
+      "text": "Does not primarily recommend changes to the prompt wording",
+      "passed": true,
+      "evidence": "Focuses entirely on code-level devices; dismisses prompt as rung zero without recommending rewording"
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "018a96d90c3c",
+  "expectations": [
+    {
+      "text": "States that system prompt instructions are not a reliable control on model behaviour",
+      "passed": true,
+      "evidence": "\"rung 0: the model can still be wrong\""
+    },
+    {
+      "text": "Recommends structured output against a schema rather than extracting values from prose",
+      "passed": true,
+      "evidence": "\"emit only structured fields\u2014`order_id`, reason enum, requested amount/currency, confidence\u2014not prose\""
+    },
+    {
+      "text": "Recommends validating the refund amount server-side against the actual order",
+      "passed": true,
+      "evidence": "\"derive allowed amounts from the order's captured amount, prior refunds, currency, and line items; reject anything outside the remaining refundable balance\""
+    },
+    {
+      "text": "Recommends a required idempotency key on the refund call",
+      "passed": true,
+      "evidence": "\"Require an idempotency key for every refund request and enforce a database unique constraint on `(order_id, idempotency_key)`\""
+    },
+    {
+      "text": "Recommends a database constraint or equivalent so a duplicate refund is rejected rather than merely avoided",
+      "passed": true,
+      "evidence": "\"enforce a database unique constraint on `(order_id, idempotency_key)`. Bind the key to a hash...and replay the original result on retry\""
+    },
+    {
+      "text": "Recommends human confirmation or an approval gate for the irreversible refund action",
+      "passed": true,
+      "evidence": "\"require a human confirmation showing customer, order, exact amount/currency, and reason before execution\""
+    },
+    {
+      "text": "Identifies prompt injection risk from the customer-supplied message reaching a privileged action",
+      "passed": true,
+      "evidence": "\"never let its text...be a privileged instruction\""
+    },
+    {
+      "text": "Recommends bounds or caps on the refund amount",
+      "passed": true,
+      "evidence": "\"reject anything outside the remaining refundable balance\""
+    },
+    {
+      "text": "Does not primarily recommend changes to the prompt wording",
+      "passed": true,
+      "evidence": "Primary focus is structured output, server-side validation, idempotency, uniqueness constraint, human confirmation, and business rules\u2014not prompt wording"
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "018a96d90c3c",
+  "expectations": [
+    {
+      "text": "States that system prompt instructions are not a reliable control on model behaviour",
+      "passed": true,
+      "evidence": "prompt instructions are rung zero \u2014 they have no teeth. The moment an LLM has even a 0.1% error rate, you cannot rely on instructions."
+    },
+    {
+      "text": "Recommends structured output against a schema rather than extracting values from prose",
+      "passed": true,
+      "evidence": "Constrain the model to output a schema (amount as a bounded number, not free text)"
+    },
+    {
+      "text": "Recommends validating the refund amount server-side against the actual order",
+      "passed": true,
+      "evidence": "**Server-side check before the API call:** Look up the actual order. Reject any amount that doesn't match a valid refund target"
+    },
+    {
+      "text": "Recommends a required idempotency key on the refund call",
+      "passed": true,
+      "evidence": "Every `refund(order_id, amount)` call gets an idempotency key"
+    },
+    {
+      "text": "Recommends a database constraint or equivalent so a duplicate refund is rejected rather than merely avoided",
+      "passed": true,
+      "evidence": "Add a **unique constraint** on `(order_id, idempotency_key)` in your refunds table. When the same key arrives twice, the DB constraint fires"
+    },
+    {
+      "text": "Recommends human confirmation or an approval gate for the irreversible refund action",
+      "passed": false,
+      "evidence": "No mention of human confirmation or approval gate; focuses only on technical controls"
+    },
+    {
+      "text": "Identifies prompt injection risk from the customer-supplied message reaching a privileged action",
+      "passed": false,
+      "evidence": "Mentions prompt injection in passing ('This survives network timeouts, bot restarts, prompt injection') but does not identify it as a specific risk from customer input"
+    },
+    {
+      "text": "Recommends bounds or caps on the refund amount",
+      "passed": true,
+      "evidence": "amount_cents: int = Field(ge=1, le=500000)  # max $5000"
+    },
+    {
+      "text": "Does not primarily recommend changes to the prompt wording",
+      "passed": true,
+      "evidence": "Response focuses on structured schema, server-side validation, and idempotency controls, not prompt revision"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 9,
+    "pass_rate": 0.7778
+  }
+}

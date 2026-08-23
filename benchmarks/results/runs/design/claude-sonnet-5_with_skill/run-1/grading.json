@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "| { id: SubscriptionId; status: \"trialing\"; trialEndDate: Date } | { id: SubscriptionId; status: \"active\"; renewalDate: Date } | ... \u2014 status is the discriminant"
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "trialing variant only has trialEndDate, active only renewalDate, past_due only retryCount and gracePeriodEndDate, canceled only cancellation info"
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": true,
+      "evidence": "assertNever function provided; used in renewalCopy switch with default: return assertNever(sub)"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": true,
+      "evidence": "SubscriptionId branded using Brand<string, \"SubscriptionId\"> pattern with unique symbol"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": false,
+      "evidence": "transition function is provided only as a stub throwing 'not implemented'; no actual constraint on state changes"
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Misuse check section lists: reading .trialEndDate off active sub, missing new status in switch, mixing reason/voluntary contradiction"
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "Primary recommendation is discriminated union; explicitly contrasts with optional-fields design in Insight section"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 7,
+    "pass_rate": 0.8571
+  }
+}

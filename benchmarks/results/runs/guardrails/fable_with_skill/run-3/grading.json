@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "4999b9f80438",
+  "expectations": [
+    {
+      "text": "States that a written agreement or reminder is not enforcement",
+      "passed": true,
+      "evidence": "\"CONTRIBUTING.md, the Slack pin, and two standup mentions are all the same device: training... A 50% compliance rate after three reminders isn't a discipline problem; it's the expected decay curve\""
+    },
+    {
+      "text": "Recommends a pre-commit hook to run the formatter automatically",
+      "passed": true,
+      "evidence": "\"add a pre-commit hook that *runs the formatter and fixes the files* rather than rejecting the commit\""
+    },
+    {
+      "text": "Notes that pre-commit is bypassable with --no-verify and must be backed by a CI check",
+      "passed": true,
+      "evidence": "\"Pre-commit hooks are bypassable (`--no-verify` exists, and people under deadline use it), so back both rules with CI jobs\""
+    },
+    {
+      "text": "Recommends a type check as a required CI check",
+      "passed": true,
+      "evidence": "\"the type checker (`tsc --noEmit`, `mypy`, whatever fits your stack)\" followed by branch protection recommendation"
+    },
+    {
+      "text": "Recommends baselining or ratcheting rather than enforcing across the whole repo at once",
+      "passed": true,
+      "evidence": "\"Enforce on **changed files only** (or generate a baseline and fail only new violations). The count can only go down\""
+    },
+    {
+      "text": "Notes that branch protection is what makes a CI check actually required",
+      "passed": true,
+      "evidence": "\"Branch protection, marking those checks Required. This is the piece that turns everything above from advisory into enforcement. Without it, a red CI check is just another reminder\""
+    },
+    {
+      "text": "Recommends the failure message tell the developer how to fix it",
+      "passed": true,
+      "evidence": "\"a gate that says 'run `npx prettier --write .`' gets complied with; one that says 'check failed' gets worked around\""
+    },
+    {
+      "text": "Does not primarily recommend rewriting CONTRIBUTING.md, more reminders, or more discipline",
+      "passed": true,
+      "evidence": "\"Stop adding reminders\" and no recommendation to rewrite CONTRIBUTING.md or add discipline"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

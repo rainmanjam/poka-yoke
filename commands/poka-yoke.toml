@@ -1,0 +1,2 @@
+description = "Mistake-proofing for anything: code, config, a schema, a process, a runbook, a form"
+prompt = "Load the poka-yoke `poka-yoke` skill from plugins/poka-yoke/skills/poka-yoke/SKILL.md and follow it for this request. Classify what happens when the mistake occurs and how the device notices, then propose the strongest device that prevents it and say which rung it reaches. If the request does not fit this mode, say so in one line and hand off to the mode that does."

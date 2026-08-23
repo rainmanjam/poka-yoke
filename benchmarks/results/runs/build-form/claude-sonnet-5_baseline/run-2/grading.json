@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "31eb11dca414",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Provides types, API functions, useSelection hook, and DocumentsTable component with BulkActionsBar and ConfirmDialog"
+    },
+    {
+      "text": "Produces actual working component code rather than only a list of recommendations",
+      "passed": true,
+      "evidence": "All code is full implementation (components, hooks, API functions)"
+    },
+    {
+      "text": "Makes the destructive action recoverable rather than relying on a confirmation dialog alone",
+      "passed": false,
+      "evidence": "Response explicitly states 'there's no undo after delete' and 'relies ONLY on a confirmation dialog'; no recovery/undo mechanism implemented"
+    },
+    {
+      "text": "Shows the count of affected items before the action is taken",
+      "passed": true,
+      "evidence": "Count displayed in BulkActionsBar (`{selectedCount.toLocaleString()} selected`) and in ConfirmDialog title before action"
+    },
+    {
+      "text": "Distinguishes select-all-on-page from select-all-matching rather than conflating them",
+      "passed": true,
+      "evidence": "Uses `isAllMatchingSelected` boolean flag, separate `toggleAllOnPage` and `selectAllMatching` functions, and explicit UI prompt to upgrade selection"
+    },
+    {
+      "text": "Separates the destructive action from the benign one visually or spatially",
+      "passed": true,
+      "evidence": "Archive: outlined blue (border border-blue-300 bg-white); Delete: filled red (bg-red-600); visually distinct"
+    },
+    {
+      "text": "Does not make the destructive action the default focus or primary button",
+      "passed": false,
+      "evidence": "Delete button uses `bg-red-600` (filled primary styling) while Archive uses outlined secondary styling"
+    },
+    {
+      "text": "Notes that the server must enforce the rules, not just the UI",
+      "passed": false,
+      "evidence": "No explicit note about server-side enforcement, validation, or access control; only mentions assumptions about soft-delete behavior"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": false,
+      "evidence": "Closing only names assumptions ('no confirmation for archive', 'no undo for delete'), not which misuses the design prevents"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "total": 9,
+    "pass_rate": 0.5556
+  }
+}

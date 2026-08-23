@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "type Subscription = | { status: \"trialing\"; ... } | { status: \"active\"; ... } | { status: \"past_due\"; ... } | { status: \"canceled\"; ... }"
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "Each variant lists exactly its own fields; canceled has only `cancellation`, trialing only `trial_end_date`"
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": true,
+      "evidence": "function assertNever(x: never): never { ... } ... default: return assertNever(sub);"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": false,
+      "evidence": "Branding is applied only to dates (TrialEndDate, RenewalDate, GracePeriodEnd); no ID field or branded ID type appears anywhere in the design"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": false,
+      "evidence": "No transition function is given; only offered at the end \u2014 \"Would you like me to ... add state transition functions\""
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "\"Misuse enumeration\" list plus table: \"Trialing subscription with retry_count | Property doesn't exist on that variant\""
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "\"The hazard here is C8: bag-of-optionals\"; primary recommendation is the discriminated union"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "total": 7,
+    "pass_rate": 0.7143
+  }
+}

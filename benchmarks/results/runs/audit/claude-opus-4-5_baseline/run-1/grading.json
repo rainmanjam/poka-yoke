@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": false,
+      "evidence": "The transfer finding covers only atomicity \u2014 'Two separate `UPDATE` calls without a transaction.' Nothing about the two account parameters being interchangeable plain strings or argument-order swap risk (no branded/nominal ID suggestion)."
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": false,
+      "evidence": "Double-charging is flagged only via webhook semantics \u2014 'invoice.paid means Stripe already collected payment. Calling chargeCustomer() here charges them again.' No mention of an idempotency key, retry, or redelivery path on chargeCustomer itself."
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": true,
+      "evidence": "'Silent charge failures (lines 55-60) \u2014 Catches all errors and returns `null`. Failed charges disappear silently \u2014 no logging, no alerting, no audit trail.'"
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": true,
+      "evidence": "'Floating-point money (line 64) \u2014 `price * (percentOff / 100)` introduces rounding errors that accumulate. Use integer cents throughout.'"
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "'SQL injection pattern (line 87) \u2014 `$executeRawUnsafe` with string interpolation.'"
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "'The switch only handles \"active\" and \"canceled\" \u2014 other states like \"past_due\" or \"paused\" fall through silently.'"
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": true,
+      "evidence": "'No webhook signature verification (line 94) \u2014 Anyone can POST a crafted JSON body and trigger charges... without it, this is an open fraud vector.'"
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "Framed as actions/conditions: 'calling `purgeCanceledAccounts()` with no argument deletes all canceled accounts. One missing parameter = mass data loss.' No characterization of the developer's competence."
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "'ranked by blast radius' with 'Critical \u2014 will lose money or data' (non-atomic transfer, double-charging) above 'High' and 'Medium \u2014 correctness issues'."
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": false,
+      "evidence": "Several findings stop at the problem: #8 'No discount bounds... No validation.'; #5 purge default, #6 raw SQL, #7 unbounded status, #10 fire-and-forget all lack a proposed device. Concrete fixes appear only for three criticals in the closing offer ('needs a transaction wrapper', '`stripe.webhooks.constructEvent()`') plus 'Use integer cents'."
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "Response is analysis-only text; it ends by asking 'Want me to sketch fixes for the critical ones?' \u2014 no edits made or claimed."
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 11,
+    "pass_rate": 0.7273
+  }
+}

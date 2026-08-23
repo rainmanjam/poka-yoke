@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "9b2ce0ce8a1c",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Provides complete schema file, migration, refund-reason.ts, schema.ts, service.ts, and route.ts with full handler implementation"
+    },
+    {
+      "text": "Requires an idempotency key as a parameter rather than making it optional",
+      "passed": true,
+      "evidence": "Route handler: `if (!idempotencyKey) { return res.status(400).json({ error: 'Idempotency-Key header is required' }) }`"
+    },
+    {
+      "text": "Backs idempotency with a database unique constraint, not application logic alone",
+      "passed": true,
+      "evidence": "Schema has `idempotencyKey String @unique`, migration creates `CREATE UNIQUE INDEX`, service catches race with `P2002` and queries winning row"
+    },
+    {
+      "text": "Uses distinct types for the identifiers rather than bare strings for both order and refund ids",
+      "passed": false,
+      "evidence": "Schema uses plain `String @id` for both; Zod schema has `orderId: z.string().uuid()` with no branded types; both remain bare strings throughout"
+    },
+    {
+      "text": "Handles money as integer minor units rather than a float",
+      "passed": true,
+      "evidence": "Schema uses `Int` for totalCents and amountCents; Zod schema uses `z.number().int().positive()`"
+    },
+    {
+      "text": "Validates the refund amount server-side against the order rather than trusting the caller",
+      "passed": true,
+      "evidence": "Service aggregates refunds and checks `if (input.amountCents > remaining)`, plus migration enforces with trigger: `enforce_refund_within_order_total()`"
+    },
+    {
+      "text": "Scopes the write so one tenant or user cannot refund another's order",
+      "passed": true,
+      "evidence": "Service queries: `const order = await prisma.order.findFirst({ where: { id: input.orderId, tenantId: session.tenantId } })`"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Opens with explicit '## Misuse enumeration' section listing 6 categories: Swappable params, Must-remember, Nonsense states, Second call, Worst input, New case next year, with explanations for each"
+    },
+    {
+      "text": "Names at least one thing it deliberately left possible and why",
+      "passed": true,
+      "evidence": "Explicitly states: 'Left possible, deliberately: if the process crashes after Stripe confirms but before the DB insert, the row won't exist until the client retries... That's a reasonable MVP tradeoff'"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 9,
+    "pass_rate": 0.8889
+  }
+}

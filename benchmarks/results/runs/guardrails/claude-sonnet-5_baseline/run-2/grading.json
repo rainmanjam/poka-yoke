@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "4999b9f80438",
+  "expectations": [
+    {
+      "text": "States that a written agreement or reminder is not enforcement",
+      "passed": true,
+      "evidence": "\"Text and reminders can't fix this \u2014 they're the same category of 'training' your own CLAUDE.md warns against\""
+    },
+    {
+      "text": "Recommends a pre-commit hook to run the formatter automatically",
+      "passed": true,
+      "evidence": "\"Add a pre-commit hook (husky+lint-staged, pre-commit framework, or a native git hook) that runs the formatter on staged files\""
+    },
+    {
+      "text": "Notes that pre-commit is bypassable with --no-verify and must be backed by a CI check",
+      "passed": true,
+      "evidence": "\"workarounds (`--no-verify`)\" and \"Make format-check and type-check required status checks so the PR literally cannot merge until they pass\""
+    },
+    {
+      "text": "Recommends a type check as a required CI check",
+      "passed": true,
+      "evidence": "\"Make format-check and type-check required status checks\""
+    },
+    {
+      "text": "Recommends baselining or ratcheting rather than enforcing across the whole repo at once",
+      "passed": true,
+      "evidence": "\"gate only *changed lines/files*\" and \"baseline/ignore file that's frozen at today's state and only shrinks\""
+    },
+    {
+      "text": "Notes that branch protection is what makes a CI check actually required",
+      "passed": false,
+      "evidence": "Branch protection not mentioned"
+    },
+    {
+      "text": "Recommends the failure message tell the developer how to fix it",
+      "passed": false,
+      "evidence": "Not mentioned"
+    },
+    {
+      "text": "Does not primarily recommend rewriting CONTRIBUTING.md, more reminders, or more discipline",
+      "passed": true,
+      "evidence": "Recommends devices and automation, not documentation"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

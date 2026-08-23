@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "1af6b213502f",
+  "expectations": [
+    {
+      "text": "States plainly that the recent-charge lookup is not sufficient",
+      "passed": true,
+      "evidence": "\"Short answer: **no.**\""
+    },
+    {
+      "text": "Identifies the lookup as a check-then-act race rather than a device",
+      "passed": true,
+      "evidence": "\"'Look for a recent charge with the same amount, then charge' is a `SELECT` followed by a side effect\" and \"It races. Two workers pull the redelivered message and the original concurrently\""
+    },
+    {
+      "text": "Recommends a required idempotency key on the charge path",
+      "passed": true,
+      "evidence": "\"`charge()` takes a **required** idempotency key (not optional) derived from the *order/intent ID*\""
+    },
+    {
+      "text": "Recommends a database unique constraint backing the idempotency key",
+      "passed": true,
+      "evidence": "\"A `payment_attempts` table with `UNIQUE (order_id)` (or `(account_id, idempotency_key)`), where the row is **inserted in the same transaction**\""
+    },
+    {
+      "text": "Separates the defect from the mistake from the underlying system hazard",
+      "passed": true,
+      "evidence": "Defect/Mistake/Hazard section explicitly separates all three"
+    },
+    {
+      "text": "Locates the hazard as a system property rather than as a worker bug or human error",
+      "passed": true,
+      "evidence": "\"a charge can be created without an idempotency key, and nothing at the Stripe or database layer refuses the second one\""
+    },
+    {
+      "text": "Sweeps for other non-idempotent side effects reachable from a retry",
+      "passed": true,
+      "evidence": "\"every external mutation reachable from a queue consumer, cron, or retry: emails, webhooks, refunds... inventory decrements, ledger writes\""
+    },
+    {
+      "text": "Treats 'second time this happened' as evidence for pushing to a Control-rung device",
+      "passed": true,
+      "evidence": "\"'Second time this has happened' is the tell: the first fix addressed the mistake, not the hazard\" \u2014 uses repetition as evidence that hazard-level/Control fix is required"
+    },
+    {
+      "text": "Attributes cause to the system, not to any person",
+      "passed": true,
+      "evidence": "\"The system *permitted* a retry to become a second charge\""
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

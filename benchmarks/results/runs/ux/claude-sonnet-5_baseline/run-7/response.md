@@ -1,0 +1,5 @@
+Not quite — a confirm modal on a frequent action (delete workspace) is exactly the case that erodes into reflexive click-through. It's a rung-0/1-in-name-only device: present, visible, and eventually inert once users have seen it 50 times.
+
+The stronger fix is what we landed on earlier this session too: **soft-delete with a 30-day trash + "Deleted. Undo" toast**, no gate at all on the happy path, full recovery on the mistake. That's what actually stops the support emails, because the workspace isn't gone — it's recoverable without anyone's intervention. Reserve a hard confirm (or type-the-name-to-confirm) only for the *permanent* purge action, if you have one.
+
+Three decisions still block implementation: what happens to billing/seats during the grace period, whether the workspace slug can be reclaimed by a new workspace while the original is in trash, and who's allowed to restore (owner only, or any admin). Want to work through those, or start with just the soft-delete + undo toast and defer the purge/restore permissions question?

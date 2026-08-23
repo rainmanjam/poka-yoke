@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "018a96d90c3c",
+  "expectations": [
+    {
+      "text": "States that system prompt instructions are not a reliable control on model behaviour",
+      "passed": true,
+      "evidence": "\"rung-zero instructions to a probabilistic component. Don't let the model's extracted values directly authorize a refund\""
+    },
+    {
+      "text": "Recommends structured output against a schema rather than extracting values from prose",
+      "passed": true,
+      "evidence": "\"strict schema: `order_id`, integer minor-unit amount, currency, and a closed-set reason code. Reject unknown fields and invalid values\""
+    },
+    {
+      "text": "Recommends validating the refund amount server-side against the actual order",
+      "passed": true,
+      "evidence": "\"verify customer/case ownership, currency, refund eligibility, and `amount <= remaining_refundable`\""
+    },
+    {
+      "text": "Recommends a required idempotency key on the refund call",
+      "passed": true,
+      "evidence": "\"use a stable idempotency key with the payment provider\""
+    },
+    {
+      "text": "Recommends a database constraint or equivalent so a duplicate refund is rejected rather than merely avoided",
+      "passed": true,
+      "evidence": "\"enforce a database uniqueness rule for the business operation (for example, one full-refund operation per payment, or a unique refund-request ID)\""
+    },
+    {
+      "text": "Recommends human confirmation or an approval gate for the irreversible refund action",
+      "passed": true,
+      "evidence": "\"Put a human confirmation gate before issuing the refund, showing the exact order, amount, currency, and reason\""
+    },
+    {
+      "text": "Identifies prompt injection risk from the customer-supplied message reaching a privileged action",
+      "passed": true,
+      "evidence": "\"Add regression evals...plus adversarial messages with...prompt-injection text\""
+    },
+    {
+      "text": "Recommends bounds or caps on the refund amount",
+      "passed": true,
+      "evidence": "`amount <= remaining_refundable` constraint acts as a cap"
+    },
+    {
+      "text": "Does not primarily recommend changes to the prompt wording",
+      "passed": true,
+      "evidence": "Primary recommendations are schema, server-side validation, human gate, idempotency, database uniqueness, and testing\u2014not prompt changes"
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": false,
+      "evidence": "Lists 'transfer an account to itself' and 'mix currencies' but omits the specific issue that two plain string parameters can be silently reversed; device says 'reject identical source/destination' but does not propose branded types to prevent swapping"
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "Retrying after a timeout where Stripe may already have created the first charge... The recursive retry can bill twice"
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": true,
+      "evidence": "the catch-all `return null` makes the outcome look like an ordinary failure"
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": true,
+      "evidence": "`number` also permits fractional/unsafe monetary values... JavaScript `number` is binary floating point"
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "uses interpolated `executeRawUnsafe`... Replace `$executeRawUnsafe` with parameterized ORM/SQL"
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "Invalid statuses persist silently... Parse to a closed status union... make transitions go through one state-machine function with exhaustive handling"
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": true,
+      "evidence": "The JSON is also neither signature-verified nor schema-validated"
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "Mistakes framed as actions: 'Retrying after a timeout', 'Pass a negative amount', 'Call `purgeCanceledAccounts()` without considering the cutoff'"
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "Top 4 findings: 'invoice.paid issues another charge', 'retries charge without idempotency', 'transfers non-atomic', 'account purge'; all critical categories"
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": true,
+      "evidence": "Each device specifies exact controls: 'verify Stripe signature', 'persist (customer, key, request hash, result) behind unique constraint', 'one DB transaction', 'parameterize the query'"
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "Audit review output only; no code modifications"
+    }
+  ],
+  "summary": {
+    "passed": 10,
+    "total": 11,
+    "pass_rate": 0.9091
+  }
+}

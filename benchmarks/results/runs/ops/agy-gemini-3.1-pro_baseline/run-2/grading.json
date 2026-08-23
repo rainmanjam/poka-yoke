@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": true,
+      "evidence": "During the rollout window, older instances of the application will still be running and will crash when they try to query the `legacy_email` column that has already been dropped"
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "We must use the **expand/contract** pattern. Instead of a single PR, this change must be split into two separate deployments"
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": false,
+      "evidence": "No mention of irreversibility or backup/restore anywhere in the response"
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": false,
+      "evidence": "Specifies sequencing but does not describe rollback procedures or recovery steps"
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": false,
+      "evidence": "Friday timing is not mentioned at all"
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": true,
+      "evidence": "we should add a CI check that blocks destructive DDL (like `DROP COLUMN`) from co-deploying with application code changes"
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "We cannot merge and deploy this PR as written"
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": false,
+      "evidence": "Splits into phases but does not explicitly label which parts are reversible vs irreversible"
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "total": 8,
+    "pass_rate": 0.5
+  }
+}

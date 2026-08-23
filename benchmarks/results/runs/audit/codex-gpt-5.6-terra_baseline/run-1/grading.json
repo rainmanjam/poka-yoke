@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": true,
+      "evidence": "[MAJ-1] `fromAccount` and `toAccount` can be silently swapped... Both are `string`, so TypeScript accepts it and money moves in the wrong direction."
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "[CRT-3] Retry can double-charge... If Stripe completes the charge but the response times out, the catch/retry at line 57 submits a second charge. Device: require an idempotency key on every charge request"
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": true,
+      "evidence": "[MAJ-3] Charge failures are hidden... Returning `null` erases the Stripe failure"
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": true,
+      "evidence": "[MAJ-2] Money is represented as JavaScript `number`... Balances and discounts are vulnerable to floating-point rounding"
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "[MAJ-4] Unsafe interpolated SQL in account purge... `$executeRawUnsafe` makes SQL construction a future injection footgun"
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "[MAJ-5] Subscription states are open-ended... `status: string` permits arbitrary values... model subscription states as a discriminated union with an exhaustive `never` switch"
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": true,
+      "evidence": "[CRT-4] Webhook payloads are neither authenticated nor validated... Any caller able to reach this function can supply JSON shaped like `invoice.paid`"
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "call `transfer(destinationId, sourceId, amount)`; If Stripe completes the charge but the response times out, the catch/retry at line 57 submits a second charge; Returning `null` erases the Stripe failure"
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "Critical section covers transfers (atomic), transfers (mint money), retries (double-charge), webhooks (charges); Major section covers transfers (swappable), money (float), failures (null); final items are cosmetic"
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": true,
+      "evidence": "CRT-1: 'one database transaction with a conditional atomic debit'; CRT-3: 'require an idempotency key'; MAJ-1: 'use named arguments plus distinct branded types'; MAJ-2: 'store and operate on integer minor units'; MAJ-4: 'use parameterized delete / ORM'"
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "No files were modified."
+    }
+  ],
+  "summary": {
+    "passed": 11,
+    "total": 11,
+    "pass_rate": 1.0
+  }
+}

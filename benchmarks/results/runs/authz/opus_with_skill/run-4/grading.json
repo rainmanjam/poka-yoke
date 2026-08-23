@@ -1,0 +1,60 @@
+{
+  "assertions_sha": "bcf79cb43709",
+  "expectations": [
+    {
+      "text": "Flags the nested comments and attachments resolvers as unscoped by tenant",
+      "passed": true,
+      "evidence": "#6. `Document.comments`/`attachments:29-34` \u2014 latent, not live"
+    },
+    {
+      "text": "Flags updateDocument for scoping on id alone without a tenant constraint",
+      "passed": true,
+      "evidence": "#3. `updateDocument:41` \u2014 cross-tenant *write*. `where: { id: documentId }` is the whole predicate, no tenant"
+    },
+    {
+      "text": "Flags exportWorkspace taking tenantId from the client-controlled request body",
+      "passed": true,
+      "evidence": "#2. `exportWorkspace:52` \u2014 two independent defects. `tenantId` comes from `req.body` (client-controlled)"
+    },
+    {
+      "text": "Flags searchDocuments as returning rows across all tenants",
+      "passed": true,
+      "evidence": "#4. `searchDocuments:65` \u2014 accepts `session`, never uses it. Full-text search across every tenant"
+    },
+    {
+      "text": "Flags adminListDocuments as checking authentication but not authorization or tenant",
+      "passed": true,
+      "evidence": "#1. `adminListDocuments:75` \u2014 no tenant filter at all. `if (!session.userId)` is an *authentication* test in an authorization costume"
+    },
+    {
+      "text": "Enumerates all the affected sites rather than fixing only the first one found",
+      "passed": true,
+      "evidence": "Live cross-tenant paths (1-4) plus Lower findings (5-6) systematically enumerated"
+    },
+    {
+      "text": "Recommends a structural device (scoped repository, row-level security, or equivalent) rather than only adding where-clauses site by site",
+      "passed": true,
+      "evidence": "RLS, Scoped repo, Branded `TenantId`, Two-tenant test listed under structural fixes"
+    },
+    {
+      "text": "Recommends a cross-tenant test that attempts tenant A operations against tenant B resources",
+      "passed": true,
+      "evidence": "Two tenants, every operation from A against B's resources, assert **404 not 403**"
+    },
+    {
+      "text": "Identifies the raw interpolation of tenantId into $queryRawUnsafe as an injection hazard distinct in kind from the tenant-scoping bug",
+      "passed": true,
+      "evidence": "Two independent defects stack. Fixing the first does not fix the second"
+    },
+    {
+      "text": "Does not conclude the main query paths being scoped means the service is safe",
+      "passed": true,
+      "evidence": "That's exactly what makes the file dangerous"
+    }
+  ],
+  "summary": {
+    "passed": 10,
+    "total": 10,
+    "pass_rate": 1.0
+  }
+}

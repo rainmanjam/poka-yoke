@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "3ef52a8f1e5d",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Full working code with types (EmailInput, RoutingResult), SupportEmailRouter classifier, and main() calling code with test examples"
+    },
+    {
+      "text": "Uses structured output against a schema rather than parsing the model's prose",
+      "passed": false,
+      "evidence": "Uses json.loads(response_text) to parse JSON from prose; prompt requests 'Respond with JSON' not structured_output schema"
+    },
+    {
+      "text": "Constrains the classification to a closed set the code enforces, not just the prompt",
+      "passed": true,
+      "evidence": "SupportTeam(str, Enum) with three values; assignment SupportTeam(parsed['team']) will raise ValueError if value not in enum"
+    },
+    {
+      "text": "Handles the case where the model returns something outside the allowed set",
+      "passed": false,
+      "evidence": "No try-except around SupportTeam() constructor; ValueError will be raised but not caught"
+    },
+    {
+      "text": "Has a deterministic fallback or explicit failure path rather than a silent default",
+      "passed": false,
+      "evidence": "ValueError is thrown but not caught or explicitly handled; no fallback shown"
+    },
+    {
+      "text": "Treats the customer email as untrusted text that could carry instructions",
+      "passed": false,
+      "evidence": "Uses f-string injection directly: f'Subject: {email.subject}...Body:\\n{email.body}' with no escaping"
+    },
+    {
+      "text": "Bounds cost or retries in code rather than requesting it in the prompt",
+      "passed": true,
+      "evidence": "Sets max_tokens=150 as hard limit"
+    },
+    {
+      "text": "Closes by naming which failures the design makes impossible",
+      "passed": false,
+      "evidence": "Closes with ticketing system integration example, not a statement of what failures are prevented"
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "total": 8,
+    "pass_rate": 0.375
+  }
+}

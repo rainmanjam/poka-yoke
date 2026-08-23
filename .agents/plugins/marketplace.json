@@ -1,0 +1,20 @@
+{
+  "name": "poka-yoke",
+  "interface": {
+    "displayName": "Poka-Yoke"
+  },
+  "plugins": [
+    {
+      "name": "poka-yoke",
+      "source": {
+        "source": "url",
+        "url": "./"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "NONE"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}

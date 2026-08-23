@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": true,
+      "evidence": "\"**Swappable account IDs** \u2014 `transfer(to, from, amt)` compiles and silently sends money backward\""
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "\"**Double-charging on retry** \u2014 timeout retry has no idempotency key\""
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": false,
+      "evidence": "No mention of a catch block returning null or swallowing an error; the only silence-related item is \"Fire-and-forget receipts \u2014 email failures vanish silently,\" which is about an unawaited send, not the null-returning catch"
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": true,
+      "evidence": "\"**Money as float** \u2014 `0.1 + 0.2 \u2260 0.3`, compounds over time\""
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "\"**SQL injection** \u2014 raw string interpolation in DELETE query\" plus \"**Unbounded purge** \u2014 `purgeCanceledAccounts()`\""
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "\"**Stringly-typed status** \u2014 typos and new statuses silently fall through switch\""
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": true,
+      "evidence": "\"**Webhook signature not verified** \u2014 attacker can POST fake charges\" \u2014 flags the webhook body as untrusted, accepted-as-is external input"
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "Findings are framed as call-site actions, e.g. \"`chargeCustomer(id, 5000, \"usd\", false, true)` is unreadable at call site\" and \"`transfer(to, from, amt)` compiles\"; no comment on developer skill"
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "\"Critical (fix immediately)\" holds transfer race, swapped IDs, double-charge, SQL injection, unbounded purge; readability items sit under \"High\"; \"The worst one is **#1** (transfer race)\""
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": false,
+      "evidence": "No per-finding fix is given in the response; it only says \"I've written a full audit with proposed devices for each (transactions, branded types, idempotency keys, parameterized queries, etc.)\" and then asks \"want me to write it?\" \u2014 the report does not exist yet"
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "No file writes claimed; ends by asking permission \u2014 \"**docs/poka-yoke/audit-2026-08-20-payments-fixture.md** \u2014 want me to write it?\""
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 11,
+    "pass_rate": 0.8182
+  }
+}

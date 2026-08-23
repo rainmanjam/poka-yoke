@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "9b2ce0ce8a1c",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": false,
+      "evidence": "HttpError thrown from validation blocks and transaction callbacks without handler-level try-catch; relies on external error middleware not shown"
+    },
+    {
+      "text": "Requires an idempotency key as a parameter rather than making it optional",
+      "passed": true,
+      "evidence": "idempotencyKeySchema.safeParse() with 400 response if not present"
+    },
+    {
+      "text": "Backs idempotency with a database unique constraint, not application logic alone",
+      "passed": true,
+      "evidence": "@@unique([orderId, idempotencyKey]) in schema; CREATE UNIQUE INDEX in migration"
+    },
+    {
+      "text": "Uses distinct types for the identifiers rather than bare strings for both order and refund ids",
+      "passed": false,
+      "evidence": "Uses z.string().uuid() validation but no branded types or type aliases"
+    },
+    {
+      "text": "Handles money as integer minor units rather than a float",
+      "passed": true,
+      "evidence": "z.number().int().positive().max(100_000_000); INT in schema"
+    },
+    {
+      "text": "Validates the refund amount server-side against the order rather than trusting the caller",
+      "passed": true,
+      "evidence": "Aggregates PENDING/requires_action/SUCCEEDED refunds, computes remainingCents, throws 422 if exceeded"
+    },
+    {
+      "text": "Scopes the write so one tenant or user cannot refund another's order",
+      "passed": true,
+      "evidence": "RLS policy uses EXISTS check to verify orderId belongs to Order with correct tenantId; transaction sets app.tenant_id"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "tenant RLS prevents cross-tenant refunds, locked order row and reserved-refund aggregate prevent over-refunds, idempotency key prevents duplicates"
+    },
+    {
+      "text": "Names at least one thing it deliberately left possible and why",
+      "passed": true,
+      "evidence": "Stripe webhook should update status for async failures/cancellations; keeping pending refunds reserved is the safe default until reconciliation"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 9,
+    "pass_rate": 0.7778
+  }
+}

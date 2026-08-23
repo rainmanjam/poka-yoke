@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "82f963d241f9",
+  "expectations": [
+    {
+      "text": "Pushes back on the 'are you sure?' modal as the primary fix",
+      "passed": true,
+      "evidence": "Short answer: **no \u2014 I'd push back on the modal.**"
+    },
+    {
+      "text": "Explains habituation or click-through blindness as why frequent dialogs stop working",
+      "passed": true,
+      "evidence": "Users develop click-through blindness: a dialog seen fifty times stops being a decision and becomes a reflex"
+    },
+    {
+      "text": "Recommends reversibility (soft delete with a retention window) as the strongest option",
+      "passed": true,
+      "evidence": "1. **Soft-delete with a retention window** \u2014 mark deleted, hide from UI, purge after N days"
+    },
+    {
+      "text": "Recommends grace-period undo as a strong low-friction option",
+      "passed": true,
+      "evidence": "2. **Grace-period undo** \u2014 \"Workspace deleted. Undo\" toast for ~10s. Zero friction on the happy path"
+    },
+    {
+      "text": "Recommends type-the-workspace-name confirmation for the irreversible case",
+      "passed": true,
+      "evidence": "3. **Type-the-workspace-name to confirm** \u2014 only if it stays truly irreversible. Can't be done reflexively"
+    },
+    {
+      "text": "If a dialog is retained, requires it to name the workspace and the scale of what is lost",
+      "passed": true,
+      "evidence": "Delete **Acme Prod** \u2014 14 projects, 3,201 files, 8 members? That names the object and the blast radius"
+    },
+    {
+      "text": "Notes that the server must enforce the deletion rules, not just the UI",
+      "passed": false,
+      "evidence": "Discusses backend implementation and asks about delete handler but does not explicitly state the enforcement principle"
+    },
+    {
+      "text": "Gives an explicit preference order rather than an undifferentiated list of ideas",
+      "passed": true,
+      "evidence": "1. Soft-delete, 2. Grace-period undo, 3. Type-the-workspace-name"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": true,
+      "evidence": "During the rollout, your old code will run against the new database schema and crash when it tries to read the now-missing `legacy_email` column."
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "The code changes that remove the column reads should be shipped first. The column drop (the irreversible part) must be shipped separately, only after the code is fully updated. / Please review the **Deployment Plan** artifact I generated for the safe \"Expand and Contract\" steps to split this into two separate PRs."
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": true,
+      "evidence": "Dropping the `legacy_email` column is irreversible (the data is deleted). It can only be restored via a database backup."
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": true,
+      "evidence": "If the deploy goes wrong, a fast code rollback will not restore the dropped column, and a slow database restore would be required right as weekend staffing begins."
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "It is Friday afternoon. If the deploy goes wrong, a fast code rollback will not restore the dropped column, and a slow database restore would be required right as weekend staffing begins."
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": false,
+      "evidence": "No CI gate recommendation present in response"
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "No, you should not merge and deploy this PR as-is this afternoon."
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "The code changes that remove the column reads should be shipped first. The column drop (the irreversible part) must be shipped separately"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

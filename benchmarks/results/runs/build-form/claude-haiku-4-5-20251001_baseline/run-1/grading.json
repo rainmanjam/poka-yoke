@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "31eb11dca414",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Full component with useBulkSelection hook, BulkActionsBar, DocumentRow, table, pagination, and mutation functions included"
+    },
+    {
+      "text": "Produces actual working component code rather than only a list of recommendations",
+      "passed": true,
+      "evidence": "Complete JSX implementation with state management, event handlers, and styled UI"
+    },
+    {
+      "text": "Makes the destructive action recoverable rather than relying on a confirmation dialog alone",
+      "passed": false,
+      "evidence": "Only implements a confirmation modal (`setDeleteConfirm` state) with Cancel/Delete buttons; no soft-delete, trash bin, undo, or grace period \u2014 confirmation dialog alone without recovery mechanism"
+    },
+    {
+      "text": "Shows the count of affected items before the action is taken",
+      "passed": true,
+      "evidence": "Displays '{selectedCount} document(s) selected' in the bulk actions bar"
+    },
+    {
+      "text": "Distinguishes select-all-on-page from select-all-matching rather than conflating them",
+      "passed": false,
+      "evidence": "BulkActionsBar receives only selectedCount but not totalCount; does not display total document count in the bar, so cannot distinguish between page-level and all-matching selections"
+    },
+    {
+      "text": "Separates the destructive action from the benign one visually or spatially",
+      "passed": true,
+      "evidence": "Archive button is white/gray; Delete button is red (bg-red-600); clearly differentiated"
+    },
+    {
+      "text": "Does not make the destructive action the default focus or primary button",
+      "passed": true,
+      "evidence": "Archive button appears first; Delete button is second; Delete confirmation requires additional click"
+    },
+    {
+      "text": "Notes that the server must enforce the rules, not just the UI",
+      "passed": false,
+      "evidence": "Closes with 'Adapt the API endpoints to your backend' \u2014 no mention that server-side authorization or validation is required"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": false,
+      "evidence": "Final paragraph discusses API endpoints and parent props, not which misuses are prevented"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "total": 9,
+    "pass_rate": 0.5556
+  }
+}

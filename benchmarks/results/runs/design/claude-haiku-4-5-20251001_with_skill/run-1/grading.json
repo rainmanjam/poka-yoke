@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "type Subscription = | { status: \"trialing\"; trialEndDate: Date } | { status: \"active\"; renewalDate: Date } | ..."
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "Explicitly states '**`subscription.trialEndDate` is a compile error** unless the type system has narrowed to `status: \"trialing\"`'"
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": true,
+      "evidence": "Shows assertNever function with default case, and states 'Enforce `@typescript-eslint/switch-exhaustiveness-check` in CI'"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": false,
+      "evidence": "Shows branded types only for RetryCount (a value), not for subscription/customer IDs: 'This prevents passing arbitrary numbers where only valid counts belong' \u2014 optional section, wrong category"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": false,
+      "evidence": "No transition function or state machine shown; only shows exhaustive handling of existing states"
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "'Now:' section explicitly names prevented misuses: '**`subscription.trialEndDate` is a compile error**', '**Adding a state breaks the build**', '**The database schema can enforce it**'"
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "Primary recommendation is discriminated unions; bag-of-optionals only mentioned as what to avoid"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "total": 7,
+    "pass_rate": 0.7143
+  }
+}

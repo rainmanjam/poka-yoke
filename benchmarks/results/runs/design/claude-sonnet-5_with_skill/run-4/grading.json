@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "export type Subscription = | (SubscriptionBase & { status: \"trialing\"; trialEndsAt: Date; }) | ... \u2014 status is the discriminant across all variants"
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "canceled variant only has status and cancelReason; trialing only has status and trialEndsAt \u2014 no field overlap"
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": true,
+      "evidence": "function assertNever(x: never): never with default: return assertNever(sub) in switch"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": true,
+      "evidence": "Brand<T, B> pattern defining SubscriptionId and CustomerId as distinct types"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": false,
+      "evidence": "Explicitly states 'What I deliberately left open: the union doesn't stop you from constructing a Subscription with status: \"active\" for something that was canceled yesterday \u2014 i.e. it says nothing about legal transitions'"
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Under 'What this makes impossible (rung 1, Control):' lists three specific impossibilities: canceled cannot carry renewsAt/retryCount, ID swaps are compile errors, adding a status breaks every switch"
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "Misuse check item 1 explicitly identifies and rejects the bag-of-optionals hazard"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 7,
+    "pass_rate": 0.8571
+  }
+}

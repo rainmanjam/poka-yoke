@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "1af6b213502f",
+  "expectations": [
+    {
+      "text": "States plainly that the recent-charge lookup is not sufficient",
+      "passed": true,
+      "evidence": "\"The check passes precisely when the money has already moved\""
+    },
+    {
+      "text": "Identifies the lookup as a check-then-act race rather than a device",
+      "passed": true,
+      "evidence": "\"both attempts can query before either writes\""
+    },
+    {
+      "text": "Recommends a required idempotency key on the charge path",
+      "passed": true,
+      "evidence": "\"Stripe idempotency keys \u2014 with one detail that is the whole thing: Derive the key from the work item\""
+    },
+    {
+      "text": "Recommends a database unique constraint backing the idempotency key",
+      "passed": true,
+      "evidence": "\"Back it with a `UNIQUE (account_id, idempotency_key)` constraint\""
+    },
+    {
+      "text": "Separates the defect from the mistake from the underlying system hazard",
+      "passed": true,
+      "evidence": "Explicitly labeled: Defect (charged twice), Mistake (retry called Stripe again), Hazard (timeout recorded as 'did not happen')"
+    },
+    {
+      "text": "Locates the hazard as a system property rather than as a worker bug or human error",
+      "passed": true,
+      "evidence": "\"a timeout is recorded as 'did not happen,' and `charge()` accepts a second identical call\""
+    },
+    {
+      "text": "Sweeps for other non-idempotent side effects reachable from a retry",
+      "passed": false,
+      "evidence": "Only offers future action: \"Point me at the payments repo and I'll sweep every other call site\" \u2014 does not enumerate the class in this response"
+    },
+    {
+      "text": "Treats 'second time this happened' as evidence for pushing to a Control-rung device",
+      "passed": true,
+      "evidence": "\"The first fix was almost certainly also rung 3 \u2014 a check, at one call site. Point-fixes at the detection rung don't remove hazards\""
+    },
+    {
+      "text": "Attributes cause to the system, not to any person",
+      "passed": true,
+      "evidence": "Analysis frames issue as type-system and design-pattern problem, no personal blame"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 9,
+    "pass_rate": 0.8889
+  }
+}

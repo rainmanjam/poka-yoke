@@ -1,0 +1,60 @@
+{
+  "assertions_sha": "bcf79cb43709",
+  "expectations": [
+    {
+      "text": "Flags the nested comments and attachments resolvers as unscoped by tenant",
+      "passed": true,
+      "evidence": "\"Unscoped Nested Resolvers: The GraphQL resolvers for nested entities (like comments and attachments) do not enforce tenant constraints.\""
+    },
+    {
+      "text": "Flags updateDocument for scoping on id alone without a tenant constraint",
+      "passed": true,
+      "evidence": "\"Unscoped Update Path: updateDocument updates by documentId without verifying it belongs to the authenticated user's tenantId.\""
+    },
+    {
+      "text": "Flags exportWorkspace taking tenantId from the client-controlled request body",
+      "passed": true,
+      "evidence": "\"exportWorkspace reads tenantId directly from req.body rather than the authenticated session\""
+    },
+    {
+      "text": "Flags searchDocuments as returning rows across all tenants",
+      "passed": true,
+      "evidence": "\"searchDocuments lacks a tenantId filter in its raw SQL query, meaning searches span the entire database.\""
+    },
+    {
+      "text": "Flags adminListDocuments as checking authentication but not authorization or tenant",
+      "passed": false,
+      "evidence": "\"adminListDocuments checks if a user is logged in, but not if they are actually an admin\" \u2014 mentions missing authorization but omits missing tenant scoping"
+    },
+    {
+      "text": "Enumerates all the affected sites rather than fixing only the first one found",
+      "passed": true,
+      "evidence": "Lists updateDocument, exportWorkspace, searchDocuments, adminListDocuments, and nested resolvers \u2014 five distinct sites"
+    },
+    {
+      "text": "Recommends a structural device (scoped repository, row-level security, or equivalent) rather than only adding where-clauses site by site",
+      "passed": false,
+      "evidence": "Mentions creating an \"Implementation Plan artifact\" but no structural devices are visible in the response text"
+    },
+    {
+      "text": "Recommends a cross-tenant test that attempts tenant A operations against tenant B resources",
+      "passed": false,
+      "evidence": "No cross-tenant testing approach mentioned"
+    },
+    {
+      "text": "Identifies the raw interpolation of tenantId into $queryRawUnsafe as an injection hazard distinct in kind from the tenant-scoping bug",
+      "passed": false,
+      "evidence": "Groups both issues under one heading \"Client-Provided Tenant ID & SQL Injection\" without separating them as distinct hazards; does not name $queryRawUnsafe specifically"
+    },
+    {
+      "text": "Does not conclude the main query paths being scoped means the service is safe",
+      "passed": true,
+      "evidence": "\"Unfortunately, there are several significant paths where one customer could access or modify another customer's data\" \u2014 rejects the safety premise"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 10,
+    "pass_rate": 0.6
+  }
+}

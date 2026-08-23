@@ -1,0 +1,235 @@
+[
+  {
+    "id": "audit",
+    "name": "audit-payments-module",
+    "mode": "audit",
+    "prompt": "hey can you take a look at benchmarks/fixtures/payments.ts before we ship it? it's our billing module, been through review already but something about it makes me nervous. what could bite us here",
+    "files": [
+      "benchmarks/fixtures/payments.ts"
+    ],
+    "assertions": [
+      "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "Flags the catch block that returns null as swallowing the error",
+      "Flags money being held as a JS number (float) rather than integer minor units",
+      "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "Flags the non-exhaustive switch over subscription status",
+      "Flags JSON.parse of the webhook body as unvalidated external input",
+      "Names the mistake as an action a person can take, not a quality of the developer",
+      "Ranks money-movement or irreversible findings above cosmetic ones",
+      "Proposes a concrete device per finding, not just 'add validation'",
+      "Did not modify any file outside its outputs directory"
+    ]
+  },
+  {
+    "id": "design",
+    "name": "design-subscription-states",
+    "mode": "design",
+    "prompt": "im building the subscription model for our saas in typescript. a sub can be trialing, active, past_due, or canceled. trialing ones have a trial end date, past_due ones have a retry count and a grace period end, canceled ones have a cancel reason and whether it was voluntary. active ones just have the renewal date. what should the types look like?",
+    "files": [],
+    "assertions": [
+      "Uses a discriminated union keyed on the status field",
+      "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "Introduces distinct or branded types rather than bare strings for IDs",
+      "Provides a single transition function or otherwise constrains how state changes",
+      "Explicitly names which misuses the design makes impossible",
+      "Avoids a bag-of-optional-fields interface as the primary recommendation"
+    ]
+  },
+  {
+    "id": "retro",
+    "name": "retro-double-charge",
+    "mode": "retro",
+    "prompt": "we double charged 340 customers last night. what happened is the payment worker timed out waiting on stripe, our queue redelivered the message, and the second attempt charged again. we've refunded everyone and added a check in the worker that looks for a recent charge with the same amount before charging. is that enough? this is the second time something like this has happened.",
+    "files": [],
+    "assertions": [
+      "States plainly that the recent-charge lookup is not sufficient",
+      "Identifies the lookup as a check-then-act race rather than a device",
+      "Recommends a required idempotency key on the charge path",
+      "Recommends a database unique constraint backing the idempotency key",
+      "Separates the defect from the mistake from the underlying system hazard",
+      "Locates the hazard as a system property rather than as a worker bug or human error",
+      "Sweeps for other non-idempotent side effects reachable from a retry",
+      "Treats 'second time this happened' as evidence for pushing to a Control-rung device",
+      "Attributes cause to the system, not to any person"
+    ]
+  },
+  {
+    "id": "ux",
+    "name": "ux-delete-workspace",
+    "mode": "ux",
+    "prompt": "users keep accidentally deleting their workspaces and then emailing support in a panic. im going to add an 'are you sure?' modal before the delete. sound good?",
+    "files": [],
+    "assertions": [
+      "Pushes back on the 'are you sure?' modal as the primary fix",
+      "Explains habituation or click-through blindness as why frequent dialogs stop working",
+      "Recommends reversibility (soft delete with a retention window) as the strongest option",
+      "Recommends grace-period undo as a strong low-friction option",
+      "Recommends type-the-workspace-name confirmation for the irreversible case",
+      "If a dialog is retained, requires it to name the workspace and the scale of what is lost",
+      "Notes that the server must enforce the deletion rules, not just the UI",
+      "Gives an explicit preference order rather than an undifferentiated list of ideas"
+    ]
+  },
+  {
+    "id": "authz",
+    "name": "authz-tenant-isolation",
+    "mode": "authz",
+    "prompt": "we've got a SOC2 audit next month. can you go through benchmarks/fixtures/documents.ts and tell me if there's anything in there that would let one customer see another customer's data? the main query paths are all scoped by tenant so i think we're ok but i want a second pair of eyes",
+    "files": [
+      "benchmarks/fixtures/documents.ts"
+    ],
+    "assertions": [
+      "Flags the nested comments and attachments resolvers as unscoped by tenant",
+      "Flags updateDocument for scoping on id alone without a tenant constraint",
+      "Flags exportWorkspace taking tenantId from the client-controlled request body",
+      "Flags searchDocuments as returning rows across all tenants",
+      "Flags adminListDocuments as checking authentication but not authorization or tenant",
+      "Enumerates all the affected sites rather than fixing only the first one found",
+      "Recommends a structural device (scoped repository, row-level security, or equivalent) rather than only adding where-clauses site by site",
+      "Recommends a cross-tenant test that attempts tenant A operations against tenant B resources",
+      "Identifies the raw interpolation of tenantId into $queryRawUnsafe as an injection hazard distinct in kind from the tenant-scoping bug \u2014 anywhere in the response, including inside another finding",
+      "Does not conclude the main query paths being scoped means the service is safe"
+    ]
+  },
+  {
+    "id": "data",
+    "name": "data-silent-wrong-revenue",
+    "mode": "data",
+    "prompt": "our revenue dashboard was wrong for three weeks and nobody noticed until finance flagged it during close. an upstream team renamed a column, our join started returning nulls, and we were coalescing those to 0 so everything looked plausible just low. i've added a test that checks the revenue table isn't empty. is that enough?",
+    "files": [],
+    "assertions": [
+      "States plainly that the not-empty check is insufficient",
+      "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "Recommends reconciliation against a source of truth, not only shape checks",
+      "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "Explains why a silently wrong number is more dangerous than a failed pipeline"
+    ]
+  },
+  {
+    "id": "ops",
+    "name": "ops-friday-migration",
+    "mode": "ops",
+    "prompt": "PR is ready: it drops the legacy_email column and updates the three places in the code that still read it. CI is green, tests pass. can i merge and deploy this afternoon? it's friday but it's a small change",
+    "files": [],
+    "assertions": [
+      "Identifies that during the rollout window old code runs against the new schema",
+      "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "States that dropping the column is irreversible without a backup or restore",
+      "Addresses what rollback looks like if the deploy goes wrong",
+      "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "Does not approve the merge as-is on the strength of green CI",
+      "Distinguishes the reversible parts of the change from the irreversible part"
+    ]
+  },
+  {
+    "id": "agent-guardrails",
+    "name": "agent-guardrails-ignored-rules",
+    "mode": "agent-guardrails",
+    "prompt": "i put 'never edit files in src/generated/' and 'never force push' in our CLAUDE.md, in caps, twice. claude still does both maybe one time in ten. what am i doing wrong with the instructions?",
+    "files": [],
+    "assertions": [
+      "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "Redirects away from rewording CLAUDE.md as the primary fix",
+      "Recommends permission deny rules in settings.json with concrete syntax",
+      "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "Explains that the deny message should say what to do instead, not merely refuse",
+      "Recommends verifying the device actually fires rather than assuming it works",
+      "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "Explains why repetition and capitals do not make an instruction reliable"
+    ]
+  },
+  {
+    "id": "guardrails",
+    "name": "guardrails-ignored-team-agreement",
+    "mode": "guardrails",
+    "prompt": "in our last retro the team agreed everyone would run the formatter before committing and add type annotations to any new code. i wrote it up in CONTRIBUTING.md, pinned it in slack, and mentioned it in standup twice. two weeks later about half the PRs still come in unformatted or untyped. what else can i do to get people to follow it?",
+    "files": [],
+    "assertions": [
+      "States that a written agreement or reminder is not enforcement",
+      "Recommends a pre-commit hook to run the formatter automatically",
+      "Notes that pre-commit is bypassable with --no-verify and must be backed by a CI check",
+      "Recommends a type check as a required CI check",
+      "Recommends baselining or ratcheting rather than enforcing across the whole repo at once",
+      "Notes that branch protection is what makes a CI check actually required",
+      "Recommends the failure message tell the developer how to fix it",
+      "Does not primarily recommend rewriting CONTRIBUTING.md, more reminders, or more discipline"
+    ]
+  },
+  {
+    "id": "llm",
+    "name": "llm-refund-bot",
+    "mode": "llm",
+    "prompt": "our support bot reads the customer's chat message, pulls out a refund amount and reason, and calls our refund API with them. works great in testing but in production it occasionally refunds a weird amount, and a couple of times it refunded the same order twice. i've added 'be careful to extract the exact amount' and 'never refund the same order twice' to the system prompt. anything else i should do?",
+    "files": [],
+    "assertions": [
+      "States that system prompt instructions are not a reliable control on model behaviour",
+      "Recommends structured output against a schema rather than extracting values from prose",
+      "Recommends validating the refund amount server-side against the actual order",
+      "Recommends a required idempotency key on the refund call",
+      "Recommends a database constraint or equivalent so a duplicate refund is rejected rather than merely avoided",
+      "Recommends human confirmation or an approval gate for the irreversible refund action",
+      "Identifies prompt injection risk from the customer-supplied message reaching a privileged action",
+      "Recommends bounds or caps on the refund amount",
+      "Does not primarily recommend changes to the prompt wording"
+    ]
+  },
+  {
+    "id": "build-endpoint",
+    "name": "build-refund-endpoint",
+    "mode": "design",
+    "files": [],
+    "prompt": "Make reasonable assumptions for anything unspecified and write the code \u2014 do not ask clarifying questions first. Show the complete code inline (write no files). This is greenfield and not in the current directory.\n\nAdd a refund endpoint to our payments service. TypeScript, Prisma, Postgres, Stripe.\nPOST /refunds takes { orderId, amountCents, reason } from an authenticated request that carries { userId, tenantId } on the session. It should call Stripe, persist a Refund row, and return the refund. Existing tables are Order(id, tenantId, totalCents, currency) and Refund(id, orderId, amountCents, reason, createdAt). Write the handler, the Prisma schema additions, and the migration.",
+    "assertions": [
+      "Produces complete, self-contained working code for the described task",
+      "Requires an idempotency key as a parameter rather than making it optional",
+      "Backs idempotency with a database unique constraint, not application logic alone",
+      "Uses distinct types for the identifiers rather than bare strings for both order and refund ids",
+      "Handles money as integer minor units rather than a float",
+      "Validates the refund amount server-side against the order rather than trusting the caller",
+      "Scopes the write so one tenant or user cannot refund another's order",
+      "Closes by naming which misuses the design makes impossible",
+      "Names at least one thing it deliberately left possible and why"
+    ]
+  },
+  {
+    "id": "build-form",
+    "name": "build-bulk-delete-ui",
+    "mode": "ux",
+    "files": [],
+    "prompt": "Make reasonable assumptions for anything unspecified and write the code \u2014 do not ask clarifying questions first. Show the complete code inline (write no files). This is greenfield and not in the current directory.\n\nBuild the bulk-actions bar for a documents table in React + Tailwind.\nThe table renders 50 rows per page from a paginated list of Document { id, title, updatedAt, ownerName }, with a checkbox per row. When rows are selected, a bar appears offering Archive and Delete. Total matching documents can be in the thousands. Write the component, its state handling, and the mutation calls.",
+    "assertions": [
+      "Produces complete, self-contained working code for the described task",
+      "Produces actual working component code rather than only a list of recommendations",
+      "Makes the destructive action recoverable rather than relying on a confirmation dialog alone",
+      "Shows the count of affected items before the action is taken",
+      "Distinguishes select-all-on-page from select-all-matching rather than conflating them",
+      "Separates the destructive action from the benign one visually or spatially",
+      "Does not make the destructive action the default focus or primary button",
+      "Notes that the server must enforce the rules, not just the UI",
+      "Closes by naming which misuses the design makes impossible"
+    ]
+  },
+  {
+    "id": "build-agent-feature",
+    "name": "build-llm-classifier",
+    "mode": "llm",
+    "files": [],
+    "prompt": "Make reasonable assumptions for anything unspecified and write the code \u2014 do not ask clarifying questions first. Show the complete code inline (write no files). This is greenfield and not in the current directory.\n\nBuild a support-email router in Python using the Anthropic SDK.\nIt receives { subject, body, fromAddress } from a customer email and must route it to exactly one of: billing, technical, account. The result goes into a ticketing system as team plus a one-line rationale. Volume is a few thousand emails a day. Write the classifier, the types, and the calling code.",
+    "assertions": [
+      "Produces complete, self-contained working code for the described task",
+      "Uses structured output against a schema rather than parsing the model's prose",
+      "Constrains the classification to a closed set the code enforces, not just the prompt",
+      "Handles the case where the model returns something outside the allowed set",
+      "Has a deterministic fallback or explicit failure path rather than a silent default",
+      "Treats the customer email as untrusted text that could carry instructions",
+      "Bounds cost or retries in code rather than requesting it in the prompt",
+      "Closes by naming which failures the design makes impossible"
+    ]
+  }
+]

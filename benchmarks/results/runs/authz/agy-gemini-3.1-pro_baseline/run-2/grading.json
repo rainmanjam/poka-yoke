@@ -1,0 +1,60 @@
+{
+  "assertions_sha": "bcf79cb43709",
+  "expectations": [
+    {
+      "text": "Flags the nested comments and attachments resolvers as unscoped by tenant",
+      "passed": true,
+      "evidence": "\"Nested queries can leak data if the parent Document object is retrieved via an unscoped path (like the vulnerable search or update)\" in Proposed Changes section"
+    },
+    {
+      "text": "Flags updateDocument for scoping on id alone without a tenant constraint",
+      "passed": true,
+      "evidence": "\"Currently vulnerable to IDOR. Users can modify (and likely read via response) any document by its ID.\""
+    },
+    {
+      "text": "Flags exportWorkspace taking tenantId from the client-controlled request body",
+      "passed": true,
+      "evidence": "\"Currently takes tenantId from req.body and passes it unsafely to SQL\""
+    },
+    {
+      "text": "Flags searchDocuments as returning rows across all tenants",
+      "passed": true,
+      "evidence": "\"Currently searches all documents globally\""
+    },
+    {
+      "text": "Flags adminListDocuments as checking authentication but not authorization or tenant",
+      "passed": true,
+      "evidence": "\"It currently lacks both an admin role check and a tenant scope constraint\" in Open Questions section"
+    },
+    {
+      "text": "Enumerates all the affected sites rather than fixing only the first one found",
+      "passed": true,
+      "evidence": "Addresses updateDocument, exportWorkspace, searchDocuments, nested resolvers, and adminListDocuments"
+    },
+    {
+      "text": "Recommends a structural device (scoped repository, row-level security, or equivalent) rather than only adding where-clauses site by site",
+      "passed": false,
+      "evidence": "Proposes only specific function-level fixes and parameterized queries; no architectural pattern recommended"
+    },
+    {
+      "text": "Recommends a cross-tenant test that attempts tenant A operations against tenant B resources",
+      "passed": true,
+      "evidence": "\"Call updateDocument using a session for Tenant A and a documentId for Tenant B. Ensure it fails\""
+    },
+    {
+      "text": "Identifies the raw interpolation of tenantId into $queryRawUnsafe as an injection hazard distinct in kind from the tenant-scoping bug",
+      "passed": true,
+      "evidence": "\"SQL Injection: In exportWorkspace, the tenantId is directly interpolated into db.$queryRawUnsafe. This is a severe SQL injection vulnerability on top of the broken access control\" \u2014 identifies as distinct and additional"
+    },
+    {
+      "text": "Does not conclude the main query paths being scoped means the service is safe",
+      "passed": true,
+      "evidence": "\"While the main getDocument query is scoped properly, several other paths bypass tenant isolation\""
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 10,
+    "pass_rate": 0.9
+  }
+}

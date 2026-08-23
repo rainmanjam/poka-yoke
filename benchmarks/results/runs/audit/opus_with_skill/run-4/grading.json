@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": true,
+      "evidence": "Item #7: '`transfer(from: string, to: string)` adjacent same-type params; `transfer(to, from, amt)` compiles and moves money backwards.'"
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "Item #5: '`chargeCustomer` retries with no idempotency key, then swallows the error \u2014 money / silent'"
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": true,
+      "evidence": "Item #5: 'Then `return null` makes a payment failure indistinguishable from a decline, a network death, and a bug.'"
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": false,
+      "evidence": "Mentioned in 'Set aside' as 'balance: number (C6, folded into 3 and 10)' but not flagged as a primary finding."
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "Item #3: 'hand-duplicated predicates (`canceledAt` vs `canceled_at`), so the returned count is what the SELECT saw, not what the DELETE removed'"
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "Item #6: 'switch matches nothing, no default. Subscription reads canceled, customer keeps every paid feature.'"
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": false,
+      "evidence": "Discusses unsigned webhook but does not explicitly call out JSON.parse as the mechanism of the vulnerability."
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "Item #3: 'call it the natural way \u2014 no arguments'; Item #2: 'pass a negative amount (unvalidated API field, or a subtraction that went below zero upstream)'"
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "Items 1-5 cover monetary/irreversible issues; items 6-10 are lower priority; 'Set aside' is minimal."
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": true,
+      "evidence": "Item #2: '`Money` constructor that rejects non-positive values'; Item #3: 'one `$transaction`, `findUniqueOrThrow`, atomic `{ decrement }` / `{ increment }`'"
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "All findings presented in conversation; file write denied and acknowledged."
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 11,
+    "pass_rate": 0.8182
+  }
+}

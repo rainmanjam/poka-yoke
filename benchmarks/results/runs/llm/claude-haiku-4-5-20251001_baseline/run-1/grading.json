@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "018a96d90c3c",
+  "expectations": [
+    {
+      "text": "States that system prompt instructions are not a reliable control on model behaviour",
+      "passed": true,
+      "evidence": "System prompt instructions won't solve either problem \u2014 they degrade at runtime"
+    },
+    {
+      "text": "Recommends structured output against a schema rather than extracting values from prose",
+      "passed": true,
+      "evidence": "Extract via a schema (Zod, Pydantic) that enforces type/format"
+    },
+    {
+      "text": "Recommends validating the refund amount server-side against the actual order",
+      "passed": true,
+      "evidence": "Validate against the order: confirm extracted amount \u2264 order total, matches expected currency"
+    },
+    {
+      "text": "Recommends a required idempotency key on the refund call",
+      "passed": true,
+      "evidence": "Give every refund request a unique idempotency key (order ID + timestamp, or a request ID)"
+    },
+    {
+      "text": "Recommends a database constraint or equivalent so a duplicate refund is rejected rather than merely avoided",
+      "passed": false,
+      "evidence": "Suggests checking via 'database query before calling the API' (avoidance) or API-level idempotency, but does not recommend a database constraint"
+    },
+    {
+      "text": "Recommends human confirmation or an approval gate for the irreversible refund action",
+      "passed": false,
+      "evidence": "No mention of human approval or confirmation gates"
+    },
+    {
+      "text": "Identifies prompt injection risk from the customer-supplied message reaching a privileged action",
+      "passed": false,
+      "evidence": "No mention of prompt injection vulnerability"
+    },
+    {
+      "text": "Recommends bounds or caps on the refund amount",
+      "passed": true,
+      "evidence": "confirm extracted amount \u2264 order total"
+    },
+    {
+      "text": "Does not primarily recommend changes to the prompt wording",
+      "passed": true,
+      "evidence": "The pattern: move safety from prompts into code"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 9,
+    "pass_rate": 0.6667
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "A line in CLAUDE.md is **training** \u2014 rung 0 on the poka-yoke ladder. It relies on the agent remembering, and memory degrades... A ~10% miss rate on a memorized rule isn't a wording failure; it's the expected decay rate of rung 0."
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "Keep one short sentence each as a *fact*... delete the caps and the duplicates. Prose should explain where things live and why; enforcement belongs in the harness."
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": true,
+      "evidence": "{ \"permissions\": { \"deny\": [ \"Bash(git push --force:*)\", \"Bash(git push -f:*)\", ... ] } }"
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": true,
+      "evidence": "A `PreToolUse` hook like `plugins/poka-yoke/assets/devices/claude-hooks/guard_dangerous_commands.py` returns a reason naming the safe alternative, which is what actually changes behavior."
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": true,
+      "evidence": "a bare block leads to a workaround attempt... A `PreToolUse` hook... returns a reason naming the safe alternative, which is what actually changes behavior."
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": true,
+      "evidence": "test each device by attempting the blocked action once."
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": true,
+      "evidence": "`.claude/settings.json` (committed, so it applies on every machine)"
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": true,
+      "evidence": "memory degrades in exactly the situations you're seeing ~10% of the time: Context compaction... Subagents... Pressure"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

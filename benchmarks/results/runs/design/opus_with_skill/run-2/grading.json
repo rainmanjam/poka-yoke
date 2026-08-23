@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "`Subscription = Base & (| { readonly status: \"trialing\"; ...} | { readonly status: \"active\"; ...} | ...)`"
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "trialing has trialEndsAt; active has renewsAt; past_due has retryCount/gracePeriodEndsAt/failedAt; canceled has canceledAt/cancellation"
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": false,
+      "evidence": "Recommends it in prose ('Pair every switch with an `assertNever(x: never)` default arm') but does not show working code that includes/uses it"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": true,
+      "evidence": "`SubscriptionId = Brand<string, \"SubscriptionId\">`, `CustomerId = Brand<string, \"CustomerId\">` shown"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": true,
+      "evidence": "Uses `readonly` on all fields to enforce single-path mutation and explicitly recommends `transition()` function as 'the only writer'"
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": false,
+      "evidence": "Discusses two things the union 'does not give you' and one thing it stops ('describing a nonsense subscription'), but does not systematically enumerate misuses prevented"
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "Implicitly addresses via discriminated union pattern without the optional-field alternative"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "total": 7,
+    "pass_rate": 0.7143
+  }
+}

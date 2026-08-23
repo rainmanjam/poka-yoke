@@ -1,0 +1,60 @@
+{
+  "assertions_sha": "bcf79cb43709",
+  "expectations": [
+    {
+      "text": "Flags the nested comments and attachments resolvers as unscoped by tenant",
+      "passed": true,
+      "evidence": "Nested resolvers inherit nothing... Document.comments/attachments/author trust parent.id"
+    },
+    {
+      "text": "Flags updateDocument for scoping on id alone without a tenant constraint",
+      "passed": true,
+      "evidence": "updateDocument \u2014 no tenant in the where (46-49). update({ where: { id } })"
+    },
+    {
+      "text": "Flags exportWorkspace taking tenantId from the client-controlled request body",
+      "passed": true,
+      "evidence": "tenantId comes from req.body, not the session. Any authenticated user posts {\"tenantId\": \"<victim>\"}"
+    },
+    {
+      "text": "Flags searchDocuments as returning rows across all tenants",
+      "passed": true,
+      "evidence": "The session is passed in but never used. Full-text search returns matches across every tenant"
+    },
+    {
+      "text": "Flags adminListDocuments as checking authentication but not authorization or tenant",
+      "passed": true,
+      "evidence": "The only check is \"has a userId\". Returns the 200 newest documents across all tenants to any logged-in user"
+    },
+    {
+      "text": "Enumerates all the affected sites rather than fixing only the first one found",
+      "passed": true,
+      "evidence": "Lists 5 findings: exportWorkspace, updateDocument, searchDocuments, adminListDocuments, nested resolvers. Then notes getDocument/Query.documents as fine"
+    },
+    {
+      "text": "Recommends a structural device (scoped repository, row-level security, or equivalent) rather than only adding where-clauses site by site",
+      "passed": true,
+      "evidence": "Row-level security on documents/comments/attachments with FORCE ROW LEVEL SECURITY... A TenantDb constructed only from a session, with the raw db lint-banned"
+    },
+    {
+      "text": "Recommends a cross-tenant test that attempts tenant A operations against tenant B resources",
+      "passed": true,
+      "evidence": "Two-tenant isolation test: table-driven over your route list, tenant A hits every endpoint with tenant B's IDs, asserts 404"
+    },
+    {
+      "text": "Identifies the raw interpolation of tenantId into $queryRawUnsafe as an injection hazard distinct in kind from the tenant-scoping bug",
+      "passed": true,
+      "evidence": "Worse, it's interpolated into $queryRawUnsafe, so tenantId: \"' OR 1=1 --\" dumps all tenants in one request. This is the full-blast-radius one"
+    },
+    {
+      "text": "Does not conclude the main query paths being scoped means the service is safe",
+      "passed": true,
+      "evidence": "What's fine: getDocument and Query.documents. [Then] Patching these five sites fixes five sites... For your real service, before the audit: Row-level security"
+    }
+  ],
+  "summary": {
+    "passed": 10,
+    "total": 10,
+    "pass_rate": 1.0
+  }
+}

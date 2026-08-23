@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "\"// Discriminated union \u2014 exactly 4 states, no more\\ntype Subscription =\\n  | { status: \"trialing\"; trialEndDate: Date; } ...\""
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "Each arm lists only its own fields \u2014 trialing has only trialEndDate, canceled has cancelReason/wasVoluntary/canceledAt; no shared optionals."
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": true,
+      "evidence": "\"function assertNever(x: never): never\" used as \"default: return assertNever(sub);  // Compile error if a case is missing\""
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": false,
+      "evidence": "A `Brand<T, B>` helper is declared (\"declare const brand: unique symbol; type Brand<T, B> = ...\") but never used, and the model contains no ID fields at all \u2014 no SubscriptionId/CustomerId branded types appear."
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": true,
+      "evidence": "\"function transition(from: Subscription, to: Subscription[\"status\"], ...): TransitionResult\" plus \"if you make this the only way to update the status field\""
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Hazard table: \"'Active subscription with a cancel reason' | Discriminated union \u2014 the combination has no representation\"; \"retryCount: 9999 | Literal union 0 | 1 | 2 | 3\""
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "\"This is a textbook case of C8: Bag-of-optionals\" \u2014 explicitly rejected; primary recommendation is the union with no optional fields."
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 7,
+    "pass_rate": 0.8571
+  }
+}

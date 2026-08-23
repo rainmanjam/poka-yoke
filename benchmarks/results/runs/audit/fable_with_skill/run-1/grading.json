@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": true,
+      "evidence": "\"2. `transfer(to, from, amount)` compiles \u2014 money moves the wrong way / silent... two adjacent `string`s.\""
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "\"if Stripe times out *after* creating the charge, the retry charges again. No idempotency key.\""
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": true,
+      "evidence": "\"Then the catch returns `null`, so callers can't distinguish charged / not charged / charged twice.\""
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": false,
+      "evidence": "Mentioned only in Set aside section as \"balance: number\" root cause, not elevated to a primary finding"
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "\"Raw interpolated SQL, no transaction, no cap.\""
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "\"write happens *before* the switch, so `\"cancelled\"` is persisted and matches nothing\""
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": true,
+      "evidence": "\"no signature check, `JSON.parse` \u2192 `any`\""
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "\"call `transfer(to, from, amt)`\", \"Purge with no argument deletes *every* canceled account\""
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "Purge (irreversible), transfer (money), chargeCustomer (money) ranked first; applyDiscount and sendReceiptEmail ranked last"
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": true,
+      "evidence": "\"Device: branded `AccountId` + `transfer({ from, to, amount })`\", \"Device: required `IdempotencyKey` passed to Stripe\""
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "\"Per the skill, I've proposed and not edited.\""
+    }
+  ],
+  "summary": {
+    "passed": 10,
+    "total": 11,
+    "pass_rate": 0.9091
+  }
+}

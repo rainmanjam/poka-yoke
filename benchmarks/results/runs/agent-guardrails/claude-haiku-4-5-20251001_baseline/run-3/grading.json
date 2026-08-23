@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "5b62450c21d2",
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "Instructions are guidance; devices are prevention"
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "Recommends hooks exclusively; doesn't suggest CLAUDE.md changes"
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": false,
+      "evidence": "Mentions .claude/settings.json exists but provides no concrete syntax or JSON structure"
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": false,
+      "evidence": "Vaguely mentions 'before_edit and before_bash hooks' without specifying PreToolUse or showing logic-based implementation"
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": false,
+      "evidence": "No deny message examples or explanation provided"
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": false,
+      "evidence": "No mention of testing or verification"
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": false,
+      "evidence": "Doesn't explicitly recommend committing; no mention of version control"
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": false,
+      "evidence": "Absent entirely"
+    }
+  ],
+  "summary": {
+    "passed": 2,
+    "total": 8,
+    "pass_rate": 0.25
+  }
+}

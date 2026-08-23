@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": true,
+      "evidence": "Finding 2: \"a caller swaps them (`transfer(payeeId, payerId, amt)`) and money silently flows backward with no type error\""
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "Finding 3: \"Stripe may have already created the charge... Stripe treats it as a brand-new charge \u2014 two charges for one purchase\""
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": true,
+      "evidence": "Finding 3: \"If the retry also fails, the function `return null`s, discarding the actual error entirely\""
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": false,
+      "evidence": "No mention of values as floats vs integers; only validation that amountCents isn't 0 or negative"
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "Finding 4: \"`$executeRawUnsafe` interpolates `cutoff.toISOString()` directly into SQL \u2014 if `cutoff` is ever derived from anything less trusted... it's a SQL injection vector\""
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "Finding 5: \"`status` is a raw `string`... the `switch` only wires up `'active'` and `'canceled'` \u2014 any other value... silently skips both`"
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": true,
+      "evidence": "Finding 1: \"Anyone who can reach this endpoint POSTs... no Stripe signature check exists\""
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "\"Anyone who can reach this endpoint POSTs\", \"a caller swaps them\", \"Calling `purgeCanceledAccounts()` with no argument\" \u2014 action-focused"
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "Rankings: (1) webhook auth bypass, (2) transfer swap/race, (3) retry idempotency, (4) raw SQL, (5) exhaustive switch, (6) applyDiscount bounds"
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": true,
+      "evidence": "Specific implementations: `constructEvent` with processed_webhook_events table, branded types with transaction, idempotency key, delete by exact ID set, union type with assertNever"
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "\"Haven't touched the file yet\" and asks at end whether to write or apply"
+    }
+  ],
+  "summary": {
+    "passed": 10,
+    "total": 11,
+    "pass_rate": 0.9091
+  }
+}

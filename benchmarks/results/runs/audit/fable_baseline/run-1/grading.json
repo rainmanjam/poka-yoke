@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": true,
+      "evidence": "\"**`transfer(to, from, amt)` compiles and succeeds** (:17). Two adjacent strings. Device: branded `AccountId` + object param\""
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "\"**`chargeCustomer` swallows errors and retries without idempotency** (:44-60). Returns `null` on failure (callers proceed as paid); `retry=true` after a timeout can charge twice. Device: throw; Stripe `idempotencyKey`\""
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": true,
+      "evidence": "\"Returns `null` on failure (callers proceed as paid)\" and \"swallows errors and retries without idempotency\""
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": true,
+      "evidence": "\"**Amount units and signs are unchecked** (:17, :39, :63). `amountCents = 19.99`. Device: `Cents` branded integer, positive-int assertion\""
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "\"Also raw SQL via string interpolation. Device: required `olderThan`, reject future dates, use `deleteMany`\""
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "\"**Stringly status + non-exhaustive switch** (:14, :67-78). `\"cancelled\"` updates the row and silently does nothing else. Device: union type, `assertNever` default\""
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": true,
+      "evidence": "\"**Webhook is unverified** (:93-99). `JSON.parse` of raw body, no signature check\""
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "\"Call `purgeCanceledAccounts()` with no arg\", \"Pass `retry=true` after a timeout\", \"Call `transfer(to, from, amt)`\" \u2014 all phrased as actions"
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "\"#1 and #2 are the ones that lose money or data irreversibly\" in recap; purgeCanceledAccounts and transfer listed first, positional params lower"
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": true,
+      "evidence": "Each finding has concrete device: \"use `deleteMany`\", \"branded `AccountId` + object param\", \"Stripe `idempotencyKey`\", \"`Cents` branded integer, positive-int assertion\""
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "\"I haven't changed any code \u2014 if you want the report file or the fixes applied, say which and I'll do it\""
+    }
+  ],
+  "summary": {
+    "passed": 11,
+    "total": 11,
+    "pass_rate": 1.0
+  }
+}

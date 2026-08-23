@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": true,
+      "evidence": "#5 Swappable from/to accounts \u2014 `transfer(destinationId, sourceId, 500)` \u2014 reversed arguments compile and run.' with branded `AccountId` device"
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "#2 Double-charge on retry \u2014 'Network timeout after Stripe succeeds \u2192 `catch` \u2192 `retry=true` \u2192 charges again'; device: required idempotency key + unique index"
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": true,
+      "evidence": "#6 Charge errors swallowed as `null` \u2014 'Stripe throws ... \u2192 `catch` \u2192 `return null`'"
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": true,
+      "evidence": "Set aside: 'C5: `balance: number` vs `amountCents` \u2014 unit confusion possible, but less critical than the above'"
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "'Plus `$executeRawUnsafe` with string interpolation \u2192 SQL injection'; device includes parameterized deleteMany"
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "#7 Non-exhaustive status switch \u2014 'Add status \"paused\" or \"past_due\" \u2192 switch falls through silently'; device `assertNever`"
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": true,
+      "evidence": "#8 Unvalidated webhook \u2014 'Malformed JSON or missing fields \u2192 throws deep inside handler'; device Zod schema `WebhookEvent.parse(JSON.parse(body))`"
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "Mistake lines are actions: 'Call `purgeCanceledAccounts()` with no argument', 'transfer(destinationId, sourceId, 500)'; no developer-quality language"
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "Findings ordered by blast radius (non-atomic transfer, double-charge, purge first); cosmetic items moved to 'Set aside (lower priority)'"
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": true,
+      "evidence": "Each finding has a Device with code, e.g. 'const updated = await tx.accounts.updateMany({ where: { id: fromAccount, balance: { gte: amount } } ...'"
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "No edits shown; response ends 'Want me to apply any of these devices?' \u2014 all fixes presented as proposed snippets"
+    }
+  ],
+  "summary": {
+    "passed": 11,
+    "total": 11,
+    "pass_rate": 1.0
+  }
+}

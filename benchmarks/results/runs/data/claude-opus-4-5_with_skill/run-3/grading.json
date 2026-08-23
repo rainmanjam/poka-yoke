@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "\"**No.** Your 'table isn't empty' test is **Rung 3 (Detection)**, and it only catches the extreme case...Your actual incident produced a table that was *full of zeros*\""
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "\"Hazard: `COALESCE(revenue, 0)` converted join failures into plausible-looking zeros\"; \"`COALESCE(..., 0)` is the data equivalent of `except: pass`\""
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": true,
+      "evidence": "\"**Reconciliation to source** (your revenue sum matches Stripe/source)\"; recommendation: \"Reconcile against the source: If you have an authoritative revenue number (Stripe, your transactional DB), assert your warehouse total matches\""
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": false,
+      "evidence": "Does not explicitly recommend assertions run before/gate dashboard publication; recommendation to remove COALESCE suggests allowing nulls to propagate to dashboards"
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "\"**Schema contract with upstream** (column rename = breaking change, not silent null)\"; recommendation: \"Require the upstream team to declare their schema. Column renames become breaking changes\""
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "\"**Row count floor** (e.g., \u226580% of same-weekday last week)\"; recommendation: \"Add volume comparison: Assert that today's revenue row count and sum are within a reasonable band\""
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": false,
+      "evidence": "Mentions \"Three weeks of wrong numbers\" but does not treat the detection delay as its own problem requiring instrumentation"
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": false,
+      "evidence": "Contrasts them (\"A dashboard showing $0 is a lie that looks like data\") but does not compare to broken pipeline or explain why wrong-but-silent is more dangerous"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "total": 8,
+    "pass_rate": 0.625
+  }
+}

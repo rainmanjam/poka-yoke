@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "1af6b213502f",
+  "expectations": [
+    {
+      "text": "States plainly that the recent-charge lookup is not sufficient",
+      "passed": true,
+      "evidence": "\"No \u2014 and the specific reason matters\" and \"This fix would not have prevented last night\""
+    },
+    {
+      "text": "Identifies the lookup as a check-then-act race rather than a device",
+      "passed": true,
+      "evidence": "\"**2. Check-then-act race (M5)** Both attempts can run the `SELECT` before either runs the `INSERT`\""
+    },
+    {
+      "text": "Recommends a required idempotency key on the charge path",
+      "passed": true,
+      "evidence": "\"**2. Required, distinctly-typed parameter**: `charge(customer, amount, key: IdempotencyKey)` Not `key: str | None = None`\""
+    },
+    {
+      "text": "Recommends a database unique constraint backing the idempotency key",
+      "passed": true,
+      "evidence": "\"**3. `UNIQUE (customer_id, idempotency_key)`, reserved *before* the effect**\""
+    },
+    {
+      "text": "Separates the defect from the mistake from the underlying system hazard",
+      "passed": true,
+      "evidence": "\"**Defect**: 340 customers charged twice. **Mistake**: the queue redelivered; the second invocation called `charge()` again. **Hazard**: *a charge has no identity*\""
+    },
+    {
+      "text": "Locates the hazard as a system property rather than as a worker bug or human error",
+      "passed": true,
+      "evidence": "\"Nothing in the signature or the schema can distinguish 'retry of charge X' from 'a second, legitimate charge'\""
+    },
+    {
+      "text": "Sweeps for other non-idempotent side effects reachable from a retry",
+      "passed": true,
+      "evidence": "\"Every consumer performing an effect outside its own transaction: refunds, payouts, ledger writes, outbound webhooks, emails, inventory decrements, subscription provisioning\""
+    },
+    {
+      "text": "Treats 'second time this happened' as evidence for pushing to a Control-rung device",
+      "passed": true,
+      "evidence": "\"**Why it's the second time**: The first fix was path-level. The one you just shipped is path-level. There will be a third\" recommends structural Control"
+    },
+    {
+      "text": "Attributes cause to the system, not to any person",
+      "passed": true,
+      "evidence": "\"Redelivery is a property of **the queue**, not the payment worker\""
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

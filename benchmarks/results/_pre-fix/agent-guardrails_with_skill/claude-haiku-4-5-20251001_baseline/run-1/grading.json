@@ -1,0 +1,49 @@
+{
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "\"Shouting the rule (caps, twice) doesn't solve this because it's still text\u2014still compressible, still losable in a subagent context.\""
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "\"The fix is **technical controls** (rung-2/3), which actually *prevent* the action\""
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": true,
+      "evidence": "{\"edit_paths\": [\"!src/generated/**\"]}"
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": false,
+      "evidence": "No mention of PreToolUse hooks"
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": false,
+      "evidence": "No mention of deny messages or guidance text"
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": false,
+      "evidence": "No mention of verification or testing the rules"
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": false,
+      "evidence": "No mention of committing rules or team-wide application"
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": true,
+      "evidence": "\"Shouting the rule (caps, twice) doesn't solve this because it's still text\u2014still compressible\""
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "total": 8,
+    "pass_rate": 0.5
+  }
+}

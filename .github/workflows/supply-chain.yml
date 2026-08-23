@@ -1,0 +1,54 @@
+# poka-yoke: blocks a dependency drifting under us unnoticed [detection]
+#
+# Every action this repository runs is pinned to a commit SHA, because `@v5` is a mutable
+# label: the owner, or anyone who takes the owner's account, can move it to different code
+# and every workflow here would run it without a diff appearing anywhere.
+#
+# Pinning trades one risk for another: the pins go stale, and a security fix published
+# upstream never reaches us. So this runs weekly and says so out loud rather than leaving
+# the pins to rot quietly. It is Detection, not Control, and the file says which.
+
+name: supply chain
+
+on:
+  schedule:
+    - cron: "17 6 * * 1"      # Monday morning, off the hour to dodge the scheduling crowd
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pins:
+    name: pinned actions are current and immutable
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.12"
+
+      - name: Every action is pinned to a SHA, and each pin still resolves
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/check_action_pins.py
+
+  advisories:
+    name: known advisories against what we run
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      # The detector and its tests are standard library only, so there is no dependency tree
+      # to audit, which is the point of having none. What remains auditable is the actions.
+      - name: Report advisories for the actions we depend on
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          for repo in actions/checkout actions/setup-node actions/setup-python \
+                      astral-sh/setup-uv dtolnay/rust-toolchain reviewdog/action-actionlint; do
+            n=$(gh api "repos/$repo/security-advisories" --jq 'length' 2>/dev/null || echo 0)
+            echo "  $repo: $n published advisory(ies)"
+            [ "$n" = "0" ] || echo "::warning::$repo has $n published advisory(ies), review the pin"
+          done

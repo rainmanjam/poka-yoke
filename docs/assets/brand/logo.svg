@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128"
+     role="img" aria-labelledby="t d">
+  <title id="t">poka-yoke</title>
+  <desc id="d">An andon signal tower: three lit lamps on a housing, green above amber above
+  red: the Control, Warning and Detection rungs, strongest at the top.</desc>
+  <!--
+    An andon is a principal element of jidoka, pioneered at Toyota as part of the same
+    production system poka-yoke came out of, and a stack light is its most common form.
+    Jidoka's completing clause, correct the defect, then change the process so the mistake
+    cannot be made again, IS poka-yoke. Siblings, not neighbours.
+
+    GREEN IS ON TOP, and real towers put red there. A deliberate departure: on a line the
+    tower is a status indicator and the most urgent lamp belongs highest. Here it is a
+    LADDER, and Control: the mistake made impossible, is the rung to climb to. Below the
+    housing there is no lamp, because rung zero does not get one.
+
+    The dimensionality is doing a specific job, not decoration. Each lamp carries a
+    horizontal falloff so it reads as a CYLINDER rather than a stripe, a soft top-light so it
+    reads as LIT rather than painted, and a specular runs down the left where a glossy lens
+    would catch the room. The lamps butt directly against one another with no collar between
+    them: the three severity colours are far enough apart that the boundary is unmistakable
+    without drawing a line on it, and a dark bar at every join reads as clutter once the
+    shading is doing the work.
+
+    Colours are the repository's severity tokens. Use logo-small.svg below 32px: all of this
+    resolves to mud at favicon size, where flat is the correct answer.
+  -->
+  <defs>
+    <!-- cylinder: darker at both edges, brightest just left of centre -->
+    <linearGradient id="cyl" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0"    stop-color="#000" stop-opacity=".38"/>
+      <stop offset=".16"  stop-color="#000" stop-opacity=".10"/>
+      <stop offset=".38"  stop-color="#fff" stop-opacity=".26"/>
+      <stop offset=".62"  stop-color="#000" stop-opacity="0"/>
+      <stop offset="1"    stop-color="#000" stop-opacity=".34"/>
+    </linearGradient>
+    <!-- a lit lens is brighter at the top of its own segment -->
+    <linearGradient id="lit" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0"   stop-color="#fff" stop-opacity=".20"/>
+      <stop offset=".40" stop-color="#fff" stop-opacity=".02"/>
+      <stop offset="1"   stop-color="#000" stop-opacity=".20"/>
+    </linearGradient>
+    <linearGradient id="steel" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0"   stop-color="#5c6672"/>
+      <stop offset=".34" stop-color="#aeb7c2"/>
+      <stop offset=".62" stop-color="#7d8794"/>
+      <stop offset="1"   stop-color="#4b535e"/>
+    </linearGradient>
+    <radialGradient id="halo" cx=".5" cy=".5" r=".5">
+      <stop offset="0"   stop-color="#34d399" stop-opacity=".16"/>
+      <stop offset=".55" stop-color="#34d399" stop-opacity=".05"/>
+      <stop offset="1"   stop-color="#34d399" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Domed at the top, square at the foot. The bottom lamp is SEATED on the housing;
+         rounding it there would leave the tower floating above its own base, which is
+         what a four-corner rounded rect quietly did. -->
+    <clipPath id="tube">
+      <path d="M 49 34 A 15 15 0 0 1 79 34 L 79 87 L 49 87 Z"/>
+    </clipPath>
+  </defs>
+
+  <rect width="128" height="128" rx="28" fill="#141922"/>
+  <!-- the top lamp throws a little light into the badge -->
+  <circle cx="64" cy="30" r="26" fill="url(#halo)"/>
+
+  <g clip-path="url(#tube)">
+    <rect x="49" y="19" width="30" height="23" fill="#34d399"/>
+    <rect x="49" y="42" width="30" height="23" fill="#fbbf24"/>
+    <rect x="49" y="65" width="30" height="22" fill="#ff4d4d"/>
+    <!-- per-segment top light, then the cylinder falloff across the whole tube -->
+    <rect x="49" y="19" width="30" height="23" fill="url(#lit)"/>
+    <rect x="49" y="42" width="30" height="23" fill="url(#lit)"/>
+    <rect x="49" y="65" width="30" height="22" fill="url(#lit)"/>
+    <rect x="49" y="19" width="30" height="68" fill="url(#cyl)"/>
+    <!-- specular: a soft vertical catch on the glossy lens -->
+    <rect x="55.5" y="22" width="2.6" height="62" rx="1.3" fill="#fff" opacity=".20"/>
+  </g>
+
+
+  <!-- housing and mounting foot -->
+  <rect x="49" y="87" width="30" height="17" rx="3" fill="url(#steel)"/>
+  <rect x="49" y="87" width="30" height="1.2" fill="#fff" opacity=".22"/>
+  <rect x="42" y="103" width="44" height="9" rx="4" fill="url(#steel)"/>
+  <rect x="42" y="103" width="44" height="1.2" rx=".6" fill="#fff" opacity=".18"/>
+</svg>

@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "018a96d90c3c",
+  "expectations": [
+    {
+      "text": "States that system prompt instructions are not a reliable control on model behaviour",
+      "passed": true,
+      "evidence": "\"Both prompt lines... are rung 0 \u2014 a request to a component with a non-zero error rate on every call. They're worth keeping; neither is a device.\""
+    },
+    {
+      "text": "Recommends structured output against a schema rather than extracting values from prose",
+      "passed": true,
+      "evidence": "\"Have it return an order_id from the list... and a refund_kind of full | line_items | shipping\""
+    },
+    {
+      "text": "Recommends validating the refund amount server-side against the actual order",
+      "passed": true,
+      "evidence": "\"your server derives the money from the order record\""
+    },
+    {
+      "text": "Recommends a required idempotency key on the refund call",
+      "passed": true,
+      "evidence": "\"**Required** idempotency key + unique constraint on (order_id, key)\""
+    },
+    {
+      "text": "Recommends a database constraint or equivalent so a duplicate refund is rejected rather than merely avoided",
+      "passed": true,
+      "evidence": "\"unique constraint on (order_id, key)\""
+    },
+    {
+      "text": "Recommends human confirmation or an approval gate for the irreversible refund action",
+      "passed": true,
+      "evidence": "\"Confirmation gate above a threshold\" listed as device 6"
+    },
+    {
+      "text": "Identifies prompt injection risk from the customer-supplied message reaching a privileged action",
+      "passed": true,
+      "evidence": "\"Scope the tool to the chat participant. The bot reads customer-authored text, so the injection surface is the product itself.\""
+    },
+    {
+      "text": "Recommends bounds or caps on the refund amount",
+      "passed": true,
+      "evidence": "Final section: \"Options: a flat ceiling (auto under $25), a share-of-order rule...\""
+    },
+    {
+      "text": "Does not primarily recommend changes to the prompt wording",
+      "passed": true,
+      "evidence": "All recommendations are structural: schemas, constraints, gates"
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

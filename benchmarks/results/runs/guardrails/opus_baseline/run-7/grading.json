@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "4999b9f80438",
+  "expectations": [
+    {
+      "text": "States that a written agreement or reminder is not enforcement",
+      "passed": true,
+      "evidence": "\"they're all the same device: **training**. Training degrades. Half compliance after two weeks... A fourth reminder gets you the same number\""
+    },
+    {
+      "text": "Recommends a pre-commit hook to run the formatter automatically",
+      "passed": true,
+      "evidence": "\"A pre-commit hook that formats **changed files only**\""
+    },
+    {
+      "text": "Notes that pre-commit is bypassable with --no-verify and must be backed by a CI check",
+      "passed": true,
+      "evidence": "\"keep it under ~5 seconds or people will `--no-verify` it\" and \"The same command as a **required CI check**. This is the one that actually holds\""
+    },
+    {
+      "text": "Recommends a type check as a required CI check",
+      "passed": true,
+      "evidence": "\"branch protection with these as required checks\" (referring to both formatter and type enforcement from context)"
+    },
+    {
+      "text": "Recommends baselining or ratcheting rather than enforcing across the whole repo at once",
+      "passed": true,
+      "evidence": "\"Either check changed files only, or generate a baseline of existing violations and fail only on new ones\""
+    },
+    {
+      "text": "Notes that branch protection is what makes a CI check actually required",
+      "passed": true,
+      "evidence": "\"**The piece that makes all of it real:** branch protection with these as required checks. Without it you've built a suggestion with extra steps\""
+    },
+    {
+      "text": "Recommends the failure message tell the developer how to fix it",
+      "passed": true,
+      "evidence": "\"`error: 3 files unformatted \u2014 run 'make fmt'` teaches; `rule violated` produces a workaround\""
+    },
+    {
+      "text": "Does not primarily recommend rewriting CONTRIBUTING.md, more reminders, or more discipline",
+      "passed": true,
+      "evidence": "\"**One thing to delete:** the CONTRIBUTING.md paragraph. Replace it with the command that fixes a failure\""
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

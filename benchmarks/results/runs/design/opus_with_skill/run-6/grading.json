@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "`SubscriptionState` is inline discriminated union with four variants keyed on status: `| { readonly status: \"trialing\"; readonly trialEndsAt: Date } | { readonly status: \"active\"; readonly renewsAt: Date } ...`"
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "Canceled variant has {status, canceledAt, cancellation}; Trialing has {status, trialEndsAt}; no variant contains optional fields from other variants"
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": true,
+      "evidence": "`function assertNever(x: never)` used in `apply()` switch; also uses `Record<Status, readonly SubscriptionEvent[\"type\"][]>` which breaks build when new status added"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": true,
+      "evidence": "SubscriptionId, CustomerId, PlanId as `Brand<string, ...>`; RetryCount as `Brand<number, ...>` with bounds validation"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": true,
+      "evidence": "Single `apply(sub: Subscription, event: SubscriptionEvent): TransitionResult` function; `LEGAL: Readonly<Record<Status, readonly SubscriptionEvent[\"type\"][]>>` constrains allowed transitions; 'The ONLY way to reach a new state'"
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Lists misuses with hazard codes (C8, C2, M3, F1, C1, M2); shows table mapping 'Hazard | Device | Rung': 'Nonsense field combinations | discriminated union | Control', '`voluntary` + wrong reason | nested Cancellation union | Control'"
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "Primary recommendation is discriminated union with apply() function; C8 bag-of-optionals listed as prevented misuse"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 7,
+    "pass_rate": 1.0
+  }
+}

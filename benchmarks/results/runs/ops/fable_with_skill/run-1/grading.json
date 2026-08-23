@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": true,
+      "evidence": "If the migration runs before every old pod/instance is replaced, the old code still executes `SELECT ... legacy_email` against a table that no longer has it \u2192 500s"
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "Expand/contract says the contract step (the drop) is its own deploy... Split it: [PR A: three code changes] [PR B: next week DROP COLUMN]"
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": true,
+      "evidence": "The `DROP COLUMN` is the irreversible step... What restores it: a backup that has actually been *restored* recently, or point-in-time recovery"
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": true,
+      "evidence": "PR A rolls back in minutes with whoever's on-call. PR B done Friday afternoon rolls back only via restore, with a partial weekend crew"
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "Friday isn't superstition; it's that question 4 has a bad answer for the drop and a fine one for the code"
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": false,
+      "evidence": "Recommends gate that fails 'unless the PR carries an explicit `destructive-migration` label' but does not specify rejecting the label if application code is present\u2014does not mechanically block the combination"
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "Green CI is not evidence here... CI proves the new code works against the new schema. The failure mode is old code against the new schema, which no test exercises"
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "The three code changes are reversible in one `git revert` \u2014 the column drop is not"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

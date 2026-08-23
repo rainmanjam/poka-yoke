@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "31eb11dca414",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Provides types.ts, useDocumentSelection.ts, api/documents.ts, useBulkDocumentActions.ts, ConfirmBulkDeleteDialog.tsx, BulkActionsBar.tsx, and DocumentsTable.tsx with full implementations covering selection, mutations, paging, and bulk operations."
+    },
+    {
+      "text": "Produces actual working component code rather than only a list of recommendations",
+      "passed": true,
+      "evidence": "All components written with full JSX, event handlers, styling, and state management; not prescriptive guidance."
+    },
+    {
+      "text": "Makes the destructive action recoverable rather than relying on a confirmation dialog alone",
+      "passed": true,
+      "evidence": "Soft-deletes to Trash, provides undoToken, offers 10-second undo toast with action button via useBulkDocumentActions.ts: 'if (result.undoToken) { toast.success(label, { duration: 10_000, action: { label: 'Undo', onClick: () => undo.mutate(token) } })'"
+    },
+    {
+      "text": "Shows the count of affected items before the action is taken",
+      "passed": true,
+      "evidence": "BulkActionsBar displays count in live region before any buttons are clicked: '{countKnown ? `${nf.format(count)} selected` : 'Counting matching documents\u2026'}'"
+    },
+    {
+      "text": "Distinguishes select-all-on-page from select-all-matching rather than conflating them",
+      "passed": true,
+      "evidence": "Selection has two modes (include/exclude); dialog accepts isFilterScoped parameter; bar shows '(all matching your filters)' only in exclude mode; canEscalate logic distinguishes page-only selection from total-match selection."
+    },
+    {
+      "text": "Separates the destructive action from the benign one visually or spatially",
+      "passed": true,
+      "evidence": "Archive button with slate-100 styling, followed by '<div className=\"w-6 shrink-0\" aria-hidden=\"true\" />', then Delete button with red border/text (red-700/red-200)."
+    },
+    {
+      "text": "Does not make the destructive action the default focus or primary button",
+      "passed": true,
+      "evidence": "Delete button uses light red styling (bg-red-50, text-red-700), not solid red; Archive button appears first; dialog focuses inputRef, not delete button."
+    },
+    {
+      "text": "Notes that the server must enforce the rules, not just the UI",
+      "passed": true,
+      "evidence": "Closing section states: 'Two things this component assumes and does not enforce...the server re-authorizes every document the filter resolves to. A filter-scoped delete is the single easiest place to leak a permission check.'"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Ends with 'What this makes impossible' section: listing Rung 1 impossibilities (unknown blast radius, stale selection, no hard-delete), Rung 1 reflexive impossibilities (typing requirement), and 'Left possible on purpose' section."
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

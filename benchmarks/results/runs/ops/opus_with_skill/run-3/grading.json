@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": true,
+      "evidence": "For the minutes between the migration running and the last old pod draining, old code is still `SELECT`ing `legacy_email` against a schema that no longer has it \u2014 every request on those paths 500s."
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "Deploy A (today, Friday, fine): the code-only removal of the three reads. Deploy B (Monday/Tuesday morning): the `DROP`, alone."
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": true,
+      "evidence": "The `DROP COLUMN`. Nothing restores it. Not a revert, not a redeploy \u2014 the data is gone the instant the migration runs."
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": true,
+      "evidence": "Worse: your rollback is now the broken artifact. Reverting the deploy reintroduces code that reads a dropped column."
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "Friday isn't superstition \u2014 it's staffing... it shouldn't land when the people who'd do a restore are heading out."
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": true,
+      "evidence": "A CI check that fails any PR containing `DROP COLUMN`/`DROP TABLE`/`TRUNCATE` in a migration *alongside* application code changes."
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "Deploy A reverts in minutes, so ship it. Deploy B has no rollback at any speed, which is exactly why it shouldn't land."
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "This PR is one reversible change and one irreversible change stapled together... Deploy A... Deploy B."
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

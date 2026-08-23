@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "4999b9f80438",
+  "expectations": [
+    {
+      "text": "States that a written agreement or reminder is not enforcement",
+      "passed": true,
+      "evidence": "\"CONTRIBUTING.md, a Slack pin, and two standup mentions are the same device three times: **training**. On the regulatory ladder that's rung zero \u2014 it relies on someone remembering. ~50% compliance after two weeks is exactly what rung zero produces.\""
+    },
+    {
+      "text": "Recommends a pre-commit hook to run the formatter automatically",
+      "passed": true,
+      "evidence": "\"A pre-commit hook that runs the formatter and rewrites the file means unformatted code cannot be committed\" with `.pre-commit-config.yaml` example"
+    },
+    {
+      "text": "Notes that pre-commit is bypassable with --no-verify and must be backed by a CI check",
+      "passed": true,
+      "evidence": "\"\\`--no-verify\\` exists and people under deadline use it.\" and \"The pre-commit hook buys speed; **branch protection with required checks** buys authority.\""
+    },
+    {
+      "text": "Recommends a type check as a required CI check",
+      "passed": true,
+      "evidence": "\"the device is a CI check that refuses the merge \u2014 `mypy` / `tsc --noEmit` as a **required** status check\""
+    },
+    {
+      "text": "Recommends baselining or ratcheting rather than enforcing across the whole repo at once",
+      "passed": true,
+      "evidence": "\"Enforce on changed files only (`git diff --name-only origin/main...HEAD`), so the untyped-file count can only go down\""
+    },
+    {
+      "text": "Notes that branch protection is what makes a CI check actually required",
+      "passed": true,
+      "evidence": "\"The piece that actually does the work... branch protection with required checks buys authority. Without required checks, a red CI job is a suggestion\""
+    },
+    {
+      "text": "Recommends the failure message tell the developer how to fix it",
+      "passed": true,
+      "evidence": "\"write the failure message to teach: name the file, say why, give the exact fix command\""
+    },
+    {
+      "text": "Does not primarily recommend rewriting CONTRIBUTING.md, more reminders, or more discipline",
+      "passed": true,
+      "evidence": "No mention of these; asks for stack and ratchet policy to write configs"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

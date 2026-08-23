@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "4999b9f80438",
+  "expectations": [
+    {
+      "text": "States that a written agreement or reminder is not enforcement",
+      "passed": true,
+      "evidence": "CONTRIBUTING.md, Slack pins, and standup mentions are all **training**, and training degrades"
+    },
+    {
+      "text": "Recommends a pre-commit hook to run the formatter automatically",
+      "passed": true,
+      "evidence": "Add a pre-commit hook (husky+lint-staged, or `pre-commit` framework) that runs the formatter automatically"
+    },
+    {
+      "text": "Notes that pre-commit is bypassable with --no-verify and must be backed by a CI check",
+      "passed": true,
+      "evidence": "If someone bypasses with `--no-verify`, that's rare and visible... the thing that can't be skipped is a required CI check"
+    },
+    {
+      "text": "Recommends a type check as a required CI check",
+      "passed": true,
+      "evidence": "`mypy --strict` (Python) or `noImplicitAny`... failing CI"
+    },
+    {
+      "text": "Recommends baselining or ratcheting rather than enforcing across the whole repo at once",
+      "passed": true,
+      "evidence": "gate it on a ratchet \u2014 track the count of `Any`/untyped defs and fail if it goes up"
+    },
+    {
+      "text": "Notes that branch protection is what makes a CI check actually required",
+      "passed": true,
+      "evidence": "Make it a required status check in branch protection so the PR literally cannot merge red"
+    },
+    {
+      "text": "Recommends the failure message tell the developer how to fix it",
+      "passed": false,
+      "evidence": "Not mentioned"
+    },
+    {
+      "text": "Does not primarily recommend rewriting CONTRIBUTING.md, more reminders, or more discipline",
+      "passed": true,
+      "evidence": "Recommends deleting CONTRIBUTING.md, not adding reminders or discipline"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

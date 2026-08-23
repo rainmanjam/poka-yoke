@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "82f963d241f9",
+  "expectations": [
+    {
+      "text": "Pushes back on the 'are you sure?' modal as the primary fix",
+      "passed": true,
+      "evidence": "a confirm modal was the wrong device here"
+    },
+    {
+      "text": "Explains habituation or click-through blindness as why frequent dialogs stop working",
+      "passed": true,
+      "evidence": "the dialog becomes muscle memory. It stops nobody and adds friction"
+    },
+    {
+      "text": "Recommends reversibility (soft delete with a retention window) as the strongest option",
+      "passed": true,
+      "evidence": "which is strictly better than a modal for the actual support-ticket problem"
+    },
+    {
+      "text": "Recommends grace-period undo as a strong low-friction option",
+      "passed": true,
+      "evidence": "'Deleted. Undo' toast right after the action \u2014 Gmail's undo-send pattern"
+    },
+    {
+      "text": "Recommends type-the-workspace-name confirmation for the irreversible case",
+      "passed": false,
+      "evidence": "not mentioned"
+    },
+    {
+      "text": "If a dialog is retained, requires it to name the workspace and the scale of what is lost",
+      "passed": false,
+      "evidence": "asks about modal 'anyway' but does not specify requirements"
+    },
+    {
+      "text": "Notes that the server must enforce the deletion rules, not just the UI",
+      "passed": false,
+      "evidence": "not mentioned"
+    },
+    {
+      "text": "Gives an explicit preference order rather than an undifferentiated list of ideas",
+      "passed": true,
+      "evidence": "What actually fixes...is making the action reversible, not harder to trigger [clear prioritization over modal]"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "total": 8,
+    "pass_rate": 0.625
+  }
+}

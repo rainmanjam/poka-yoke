@@ -1,0 +1,5 @@
+CLAUDE.md instructions are prompt text — advisory, not enforced. No amount of CAPS or repetition changes that; they're competing with everything else in context and can lose out under task pressure or as the conversation grows long, especially past a compaction. "Maybe one in ten" is actually what you'd expect from a probabilistic instruction, not a bug you can prompt-engineer away.
+
+The fix is what your own poka-yoke CLAUDE.md already argues: turn it into a device, not training. A `PreToolUse` hook in `settings.json` that mechanically blocks `Edit`/`Write` under `src/generated/**` and blocks any `Bash` call matching `git push --force`/`--force-with-lease` — with a nonzero exit — makes the action impossible rather than merely discouraged. The tradeoff is it's a bit more setup than editing a markdown file, and force-push blocking needs to special-case any legitimate use (e.g. an interactive rebase workflow) so it doesn't become friction people route around.
+
+Want me to invoke the `update-config` skill and set those two hooks up?

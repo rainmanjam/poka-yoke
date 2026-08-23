@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "Your not-empty test would have been green the entire time. It's not a weak device, it's a zero device \u2014 it has never had a chance to go red"
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "The COALESCE(x, 0) is doing double duty here... It converted 'this join found nothing' into 'this customer earned nothing' \u2014 two facts that are indistinguishable downstream. That's the data equivalent of except: pass"
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": true,
+      "evidence": "Reconciliation to source. Warehouse revenue total vs. the billing system's total for the same window, asserted to a tolerance. If you install one thing, this."
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": true,
+      "evidence": "Assert between load and publish. Build to staging \u2192 test staging \u2192 promote on pass. If your tests run after publication, bad numbers still reach the dashboard"
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "A schema contract on the upstream table. A rename is a drop plus an add, and a drop should fail your ingest, not silently produce nulls."
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "Null-rate assertion on the join key, *before* the coalesce... assert null_rate < baseline on the pre-coalesce column. Volume/magnitude bounds on the metric itself"
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": false,
+      "evidence": "Does not explicitly identify the three-week detection lag as a finding requiring its own solution. Recommends detection mechanisms but does not frame the lag itself as a problem to fix."
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": false,
+      "evidence": "No comparison made between silent wrongness and failed pipeline. Does not explain why masking a loud failure into a plausible number is more dangerous than letting it fail."
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

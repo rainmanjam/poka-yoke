@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": true,
+      "evidence": "For the minutes it takes to cycle instances, old code runs against the new schema and every query touching `legacy_email` fails with \"column does not exist.\""
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "Your PR is expand/contract steps 4 and 5 fused. Step 4 (stop reading it) is fully reversible; step 5 (drop) is not. Split them."
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": true,
+      "evidence": "`DROP COLUMN legacy_email`. Nothing in your deploy restores it. Recovery is a PITR/backup restore."
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": true,
+      "evidence": "But *once the migration has run, the revert is broken*: reverting reintroduces code that reads a column that no longer exists."
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "\"Friday\" is a proxy people use for \"recovery needs humans who aren't here.\" Ask the real question and the rule dissolves: fast-revert changes are fine Friday, restore-path changes aren't fine Tuesday either."
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": true,
+      "evidence": "blocks `DROP`/`TRUNCATE`/`ALTER \u2026 DROP` in a migration unless the PR carries an explicit label"
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "Short answer: ship half of it this afternoon, not the whole thing."
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "Step 4 (stop reading it) is fully reversible; step 5 (drop) is not."
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

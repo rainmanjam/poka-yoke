@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "No. The test you added would have passed all three weeks."
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "COALESCE(x, 0) turns those nulls into a legal-looking value. The pipeline had no way to fail."
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": true,
+      "evidence": "Daily reconciliation: warehouse revenue total vs. billing source, per day. Only 'does it agree?' catches a wrong join."
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": true,
+      "evidence": "build to staging \u2192 assert \u2192 promote. If assertions run after publish, bad data reaches the dashboard, which was the whole failure."
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "Ingest contract on the upstream table \u2014 validate schema, quarantine to a dead-letter table"
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "Assert join-key match rate on staging (orphan rows = 0), promote only on pass"
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": false,
+      "evidence": "Why nothing caught it: you had no reconciliation\u2014identifies the gap in detection mechanism but does not specifically mention or address the 'three weeks' timeframe"
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": false,
+      "evidence": "convert a loud failure into a quiet wrong answer... undetectable downstream\u2014describes that it's silent and undetectable, but does not explain why that is worse than a pipeline failure or what consequences follow from silence"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

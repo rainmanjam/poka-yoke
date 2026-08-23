@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "018a96d90c3c",
+  "expectations": [
+    {
+      "text": "States that system prompt instructions are not a reliable control on model behaviour",
+      "passed": true,
+      "evidence": "\"prompt instructions are not the fix. They're rung-zero training for a component that will occasionally be wrong\""
+    },
+    {
+      "text": "Recommends structured output against a schema rather than extracting values from prose",
+      "passed": true,
+      "evidence": "\"Use structured output with `extra=forbid`; refund reasons should be an enum or selected policy code, not unconstrained text\""
+    },
+    {
+      "text": "Recommends validating the refund amount server-side against the actual order",
+      "passed": true,
+      "evidence": "\"enforce `0 < amount \u2264 remaining_refundable_amount` inside the refund transaction\""
+    },
+    {
+      "text": "Recommends a required idempotency key on the refund call",
+      "passed": true,
+      "evidence": "\"Require an idempotency key for every refund, persist it, and enforce a database uniqueness constraint\""
+    },
+    {
+      "text": "Recommends a database constraint or equivalent so a duplicate refund is rejected rather than merely avoided",
+      "passed": true,
+      "evidence": "\"enforce a database uniqueness constraint plus an atomic transaction/lock on the refund operation\""
+    },
+    {
+      "text": "Recommends human confirmation or an approval gate for the irreversible refund action",
+      "passed": true,
+      "evidence": "\"require customer or staff confirmation before the write\""
+    },
+    {
+      "text": "Identifies prompt injection risk from the customer-supplied message reaching a privileged action",
+      "passed": true,
+      "evidence": "Lists \"prompt-injection text\" as adversarial test case; recommends limiting authorization scope"
+    },
+    {
+      "text": "Recommends bounds or caps on the refund amount",
+      "passed": true,
+      "evidence": "`0 < amount \u2264 remaining_refundable_amount` constraint on execution"
+    },
+    {
+      "text": "Does not primarily recommend changes to the prompt wording",
+      "passed": true,
+      "evidence": "Primary recommendations are pause autonomous refunds, server-side validation, approval gate, idempotency, database constraints, structured output, authorization scope, and testing"
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

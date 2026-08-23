@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "3ef52a8f1e5d",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Defines EmailMessage, RoutingDecision types; Classifier class with classify() method; TicketingSystem dispatcher; process_queue_message() entry point with end-to-end flow"
+    },
+    {
+      "text": "Uses structured output against a schema rather than parsing the model's prose",
+      "passed": true,
+      "evidence": "Uses tools=[{\"input_schema\": RoutingDecision.model_json_schema()}] with tool_choice forcing the tool; parses tool_use.input via Pydantic, not prose"
+    },
+    {
+      "text": "Constrains the classification to a closed set the code enforces, not just the prompt",
+      "passed": true,
+      "evidence": "Team = Literal[\"billing\", \"technical\", \"account\"]; RoutingDecision.team typed as Team; Pydantic validates against Literal"
+    },
+    {
+      "text": "Handles the case where the model returns something outside the allowed set",
+      "passed": true,
+      "evidence": "RoutingDecision.model_validate(tool_use.input) raises ValidationError if LLM returns invalid team; exception propagates (fail-fast)"
+    },
+    {
+      "text": "Has a deterministic fallback or explicit failure path rather than a silent default",
+      "passed": true,
+      "evidence": "match/assert_never on routing.team ensures exhaustiveness; no silent fallback to a default team"
+    },
+    {
+      "text": "Treats the customer email as untrusted text that could carry instructions",
+      "passed": false,
+      "evidence": "Email body is interpolated directly into prompt (f\"Body:\\n{email.body}\") without sanitization; no mitigation for prompt injection despite email being potentially untrusted user input"
+    },
+    {
+      "text": "Bounds cost or retries in code rather than requesting it in the prompt",
+      "passed": true,
+      "evidence": "max_tokens=1024 set in API call"
+    },
+    {
+      "text": "Closes by naming which failures the design makes impossible",
+      "passed": true,
+      "evidence": "Section 3 explicitly lists C1, C4/C7, F1, M2 as closed; Section 4 lists what is consciously left possible"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

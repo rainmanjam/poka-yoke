@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "4999b9f80438",
+  "expectations": [
+    {
+      "text": "States that a written agreement or reminder is not enforcement",
+      "passed": true,
+      "evidence": "\"The contributing guide, Slack pin, and standup mentions are training. A merge gate and automatic formatter are the device.\""
+    },
+    {
+      "text": "Recommends a pre-commit hook to run the formatter automatically",
+      "passed": true,
+      "evidence": "\"Add a pre-commit hook or commit-time check that auto-formats changed files, so the easy path is compliant by default.\""
+    },
+    {
+      "text": "Notes that pre-commit is bypassable with --no-verify and must be backed by a CI check",
+      "passed": false,
+      "evidence": "Response mentions CI checks but does not note that pre-commit is bypassable with --no-verify or explain why CI backing is necessary"
+    },
+    {
+      "text": "Recommends a type check as a required CI check",
+      "passed": true,
+      "evidence": "\"Run the formatter and type checker in CI; block merges when either fails.\""
+    },
+    {
+      "text": "Recommends baselining or ratcheting rather than enforcing across the whole repo at once",
+      "passed": true,
+      "evidence": "\"Make type checking fail on newly introduced untyped public code (or enforce a ratcheting baseline), rather than demanding an immediate whole-codebase cleanup.\""
+    },
+    {
+      "text": "Notes that branch protection is what makes a CI check actually required",
+      "passed": false,
+      "evidence": "Response assumes CI checks will \"block merges\" but does not mention branch protection rules or explain the mechanism"
+    },
+    {
+      "text": "Recommends the failure message tell the developer how to fix it",
+      "passed": false,
+      "evidence": "No mention of failure messages or guidance for developers on how to resolve failures"
+    },
+    {
+      "text": "Does not primarily recommend rewriting CONTRIBUTING.md, more reminders, or more discipline",
+      "passed": true,
+      "evidence": "Response explicitly rejects reminders (\"Stop adding reminders\") and focuses on technical enforcement instead"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "total": 8,
+    "pass_rate": 0.625
+  }
+}

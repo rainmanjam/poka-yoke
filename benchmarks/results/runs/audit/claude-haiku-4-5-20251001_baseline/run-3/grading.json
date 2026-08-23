@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": false,
+      "evidence": "Mentions race conditions and overdraft but not the type vulnerability"
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": false,
+      "evidence": "Addresses 'Silent error swallowing in chargeCustomer()' and retry recursion, but does not explicitly flag 'no idempotency key' as the root cause"
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": true,
+      "evidence": "'Catches all exceptions and returns `null` \u2014 loses the actual error'"
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": true,
+      "evidence": "'Float arithmetic for money (line 63-64) \u2014 `price * (percentOff / 100)` loses precision at cent scale'"
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "Shows exact code and says 'Raw string interpolation in `$executeRawUnsafe()` \u2014 classic injection vector'"
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "'No exhaustiveness check on the switch; unknown statuses silently pass'"
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": true,
+      "evidence": "'`JSON.parse()` can throw; no try-catch'"
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "Uses action names: 'SQL injection', 'Non-idempotent, non-atomic transfer', 'Unsigned webhook handling'"
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "Lists SQL injection, non-idempotent transfer, unsigned webhook, silent errors, and float first; null-checks and fire-and-forget secondary"
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": false,
+      "evidence": "Proposes some devices (unique constraint, optimistic locking, exhaustiveness check, schema validation) but others lack devices: 'Should verify both accounts were found' and 'no retry, no log, no visibility' are gaps, not devices"
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "Response is text analysis only"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 11,
+    "pass_rate": 0.7273
+  }
+}

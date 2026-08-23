@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "018a96d90c3c",
+  "expectations": [
+    {
+      "text": "States that system prompt instructions are not a reliable control on model behaviour",
+      "passed": true,
+      "evidence": "'instructions degrade and devices do not.' Prompt engineering is just training for the model, and it will eventually fail"
+    },
+    {
+      "text": "Recommends structured output against a schema rather than extracting values from prose",
+      "passed": false,
+      "evidence": "Recommends 'Type Constraints: Ensure the tool schema strongly types the amount as a float' but does not recommend structured output schema or JSON Schema for the bot's output"
+    },
+    {
+      "text": "Recommends validating the refund amount server-side against the actual order",
+      "passed": true,
+      "evidence": "Hard Bounds: The Refund API (or the tool wrapper) must strictly validate that `amount <= order.refundable_amount`"
+    },
+    {
+      "text": "Recommends a required idempotency key on the refund call",
+      "passed": false,
+      "evidence": "Mentions 'Add an idempotency key to the Refund API or enforce a state check' as optional alternatives, not as a required control"
+    },
+    {
+      "text": "Recommends a database constraint or equivalent so a duplicate refund is rejected rather than merely avoided",
+      "passed": true,
+      "evidence": "If an order is already fully refunded, the API should return a `409 Conflict`; or middleware approach: short-circuit and return an error"
+    },
+    {
+      "text": "Recommends human confirmation or an approval gate for the irreversible refund action",
+      "passed": true,
+      "evidence": "Approval Workflow (Warning Device): For refunds above a certain threshold (e.g., $100), the bot cannot execute the API directly. Instead, it transitions to a 'draft' state that a human support agent must click 'Approve' on"
+    },
+    {
+      "text": "Identifies prompt injection risk from the customer-supplied message reaching a privileged action",
+      "passed": false,
+      "evidence": "No mention of prompt injection risk"
+    },
+    {
+      "text": "Recommends bounds or caps on the refund amount",
+      "passed": true,
+      "evidence": "Hard Bounds: `amount <= order.refundable_amount`; also `if amount <= 0: return ERROR`"
+    },
+    {
+      "text": "Does not primarily recommend changes to the prompt wording",
+      "passed": true,
+      "evidence": "Focuses entirely on devices and constraints, not prompt changes"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 9,
+    "pass_rate": 0.6667
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "\"the test you added targets none of them\" and \"A non-empty check would have been green all three weeks\""
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "\"a join on a renamed column produced nulls, and COALESCE(x, 0) turned those nulls into plausible zeros\" and \"COALESCE(NULL, 0) is except: pass for data\""
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": true,
+      "evidence": "Table includes \"Reconciliation \u2014 SUM(revenue) in the warehouse vs. the billing system / ledger, tolerance-bounded, daily\""
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": true,
+      "evidence": "\"they block publication: build to staging, assert, promote only on pass. A check that emails after the dashboard updates is the problem restated.\""
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "\"Data contract on ingest \u2014 explicit column list / schema assertion on the upstream source, pipeline halts on mismatch\""
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "\"Drop the coalesce; assert null rate on the join key\" and \"Volume with a floor and same-weekday baseline\""
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": true,
+      "evidence": "Entire framing around \"a check that cannot fail\" and \"Class sweep \u2014 the step that usually gets skipped\" treats detection as a systemic gap"
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": false,
+      "evidence": "Shows why silent failure is bad (looks plausible, can't distinguish wrong from right) but does not explicitly explain why it is more dangerous than a failed pipeline"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

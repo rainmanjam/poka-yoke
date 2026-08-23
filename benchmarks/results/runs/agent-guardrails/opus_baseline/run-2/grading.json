@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "5b62450c21d2",
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "\"caps and repetition are still *training*, and training has a failure **rate** where an irreversible action needs a failure **mode**.\""
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "\"Then delete `src/generated/` from CLAUDE.md. Leaving it there teaches you the rule is enforced by prose.\""
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": true,
+      "evidence": "Provides jsonc with Edit, Write, MultiEdit patterns for src/generated/**"
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": true,
+      "evidence": "\"Conditional matching needs a `PreToolUse` hook that inspects the command.\" Provides full Python hook code and matcher config"
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": true,
+      "evidence": "\"The message matters as much as the deny\" with example: names what blocked, why, and alternative (make codegen, edit schema)"
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": true,
+      "evidence": "\"Prove it fires \u2014 this is the step people skip\" with test cases; \"Untested hooks fail open more often than people expect.\""
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": true,
+      "evidence": "\"Commit both files. `.claude/settings.local.json` protects one laptop, which is the same failure as documenting it.\""
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": true,
+      "evidence": "\"caps and repetition are still *training*, and training has a failure **rate**\" with specific modes: compaction, subagents"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

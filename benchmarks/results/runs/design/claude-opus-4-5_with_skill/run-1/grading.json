@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "type Subscription = TrialingSub | ActiveSub | PastDueSub | CanceledSub; with status: \"trialing\" etc. as literal discriminants"
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "CanceledSub has only cancelReason/voluntary; TrialingSub only trialEndDate \u2014 \"Accessing `trialEndDate` on canceled | Narrowing \u2014 field doesn't exist on that variant\""
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": true,
+      "evidence": "function assertNever(x: never): never { ... } used as `default: return assertNever(sub);`"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": false,
+      "evidence": "SubscriptionBase uses `id: string; customerId: string; planId: string;` \u2014 no branded/nominal types; cancelReason is also bare string"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": false,
+      "evidence": "No transition function; response says \"Business logic errors ... aren't prevented by this shape \u2014 those need domain methods or state machine transitions\" but does not provide one"
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "\"## What this makes impossible (Control rung)\" table mapping each misuse to its device"
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "\"Bag of optionals permits nonsense\" listed as the hazard; primary recommendation is the union"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "total": 7,
+    "pass_rate": 0.7143
+  }
+}

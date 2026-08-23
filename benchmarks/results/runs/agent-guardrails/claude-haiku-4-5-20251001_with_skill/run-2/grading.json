@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "5b62450c21d2",
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "text is training, and training degrades. Caps and repetition slow the degradation but don't stop it."
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "What you need isn't a better instruction\u2014it's a *device*."
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": false,
+      "evidence": "Recommends git hooks and husky, no mention of settings.json"
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": false,
+      "evidence": "Recommends git hooks and husky only, no mention of PreToolUse or Claude Code hooks"
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": false,
+      "evidence": "Messages say only 'Error: src/generated/ is read-only' and 'Error: force push is blocked' without guidance on alternatives; no principle explanation"
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": false,
+      "evidence": "States 'the 10% failure vanishes' as assertion, does not recommend testing by deliberately breaking the rule"
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": true,
+      "evidence": "If you want this in version control (so new clones get the hooks), use husky"
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": true,
+      "evidence": "Caps and repetition slow the degradation but don't stop it."
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "total": 8,
+    "pass_rate": 0.5
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "4999b9f80438",
+  "expectations": [
+    {
+      "text": "States that a written agreement or reminder is not enforcement",
+      "passed": true,
+      "evidence": "\"it's the expected decay curve of an instruction. Every channel you've used so far relies on someone remembering at the moment they type `git commit`.\""
+    },
+    {
+      "text": "Recommends a pre-commit hook to run the formatter automatically",
+      "passed": true,
+      "evidence": "\"A pre-commit hook (via `pre-commit`, `husky`, `lefthook`, whatever fits your stack) that *runs the formatter*, not just checks it.\""
+    },
+    {
+      "text": "Notes that pre-commit is bypassable with --no-verify and must be backed by a CI check",
+      "passed": false,
+      "evidence": "States 'Make CI the gate' implying need for CI backing, but does not explicitly mention --no-verify bypass."
+    },
+    {
+      "text": "Recommends a type check as a required CI check",
+      "passed": true,
+      "evidence": "\"Add a CI job that runs `<formatter> --check` and the type checker, then mark it a *required status check* in branch protection.\""
+    },
+    {
+      "text": "Recommends baselining or ratcheting rather than enforcing across the whole repo at once",
+      "passed": true,
+      "evidence": "\"run the type checker in strict mode with a baseline file of existing errors...fail CI if the count *rises*\""
+    },
+    {
+      "text": "Notes that branch protection is what makes a CI check actually required",
+      "passed": true,
+      "evidence": "\"then mark it a *required status check* in branch protection. Now an unformatted PR physically cannot merge.\""
+    },
+    {
+      "text": "Recommends the failure message tell the developer how to fix it",
+      "passed": false,
+      "evidence": "Mentions auto-fixing and reducing friction but not what the failure message should explicitly tell developers."
+    },
+    {
+      "text": "Does not primarily recommend rewriting CONTRIBUTING.md, more reminders, or more discipline",
+      "passed": true,
+      "evidence": "Primary recommendations are technical devices. CONTRIBUTING.md shrinking is secondary: 'Then delete the instruction. Once the device exists...'"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

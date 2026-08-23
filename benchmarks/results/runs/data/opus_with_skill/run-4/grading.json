@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "\"No. Your test cannot fail.\" and \"A check that would have stayed green throughout the entire incident isn't a device \u2014 it's a rumour.\""
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "\"the pipeline can lose its join key and still publish a plausible number, because `COALESCE(x, 0)` converts 'this row didn't match' into 'this customer earned nothing.'\""
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": true,
+      "evidence": "\"Reconcile warehouse revenue total against the source/billing system, within tolerance\""
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": true,
+      "evidence": "\"Build to staging \u2192 assert \u2192 promote\" and \"makes all the above able to *stop* publication rather than email about it\""
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "\"Schema contract at ingest: assert the expected column set; a rename hard-fails the load\""
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "\"Volume/total assertion vs. same weekday historically (floor and ceiling)\" and \"Assert unmatched-row count = 0 after the join\""
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": true,
+      "evidence": "\"Why nothing caught it for three weeks: the only reconciliation in your system is the finance close. Your detection latency is exactly one month by construction.\""
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": false,
+      "evidence": "No explicit comparison between silent wrong and failed pipeline. Discusses the hazard and detection gap but not the danger differential."
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

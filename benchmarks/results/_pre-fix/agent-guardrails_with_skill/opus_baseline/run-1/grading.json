@@ -1,0 +1,49 @@
+{
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "A CLAUDE.md instruction is an influence on sampling, not a gate on execution."
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "What actually holds: [lists hooks and deny rules as the solution]"
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": true,
+      "evidence": "`deny` rules in `settings.json` \u2014 `Edit(src/generated/**)`, `Write(src/generated/**)`"
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": true,
+      "evidence": "**`PreToolUse` hook** on `Edit|Write`... **Force push needs a hook, not a deny string.**"
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": true,
+      "evidence": "src/generated/ is codegen output. To change it, edit schema/*.graphql and run npm run codegen."
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": true,
+      "evidence": "it logs every attempt so you learn the real rate instead of estimating it"
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": false,
+      "evidence": "Asks which repo rules belong to but doesn't explicitly recommend committing for team use"
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": true,
+      "evidence": "Saying it twice in caps mostly costs you salience elsewhere: when several lines are shouting, none of them are."
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

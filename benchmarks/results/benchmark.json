@@ -1,0 +1,1233 @@
+{
+  "scenarios": {
+    "audit": {
+      "fable_baseline": {
+        "n": 3,
+        "pass_rate": 1.0,
+        "stdev": 0.0,
+        "seconds": 81.4,
+        "words": 715
+      },
+      "fable_with_skill": {
+        "n": 3,
+        "pass_rate": 0.9394,
+        "stdev": 0.0525,
+        "seconds": 101.8,
+        "words": 614
+      },
+      "opus_baseline": {
+        "n": 7,
+        "pass_rate": 0.7792,
+        "stdev": 0.1471,
+        "seconds": 161.4,
+        "words": 884
+      },
+      "opus_with_skill": {
+        "n": 7,
+        "pass_rate": 0.9351,
+        "stdev": 0.0865,
+        "seconds": 195.5,
+        "words": 1162
+      },
+      "claude-sonnet-5_baseline": {
+        "n": 7,
+        "pass_rate": 0.8572,
+        "stdev": 0.0715,
+        "seconds": 112.0,
+        "words": 983
+      },
+      "claude-sonnet-5_with_skill": {
+        "n": 7,
+        "pass_rate": 0.8701,
+        "stdev": 0.1157,
+        "seconds": 127.3,
+        "words": 913
+      },
+      "claude-haiku-4-5-20251001_baseline": {
+        "n": 3,
+        "pass_rate": 0.697,
+        "stdev": 0.0525,
+        "seconds": 85.3,
+        "words": 326
+      },
+      "claude-haiku-4-5-20251001_with_skill": {
+        "n": 3,
+        "pass_rate": 0.9091,
+        "stdev": 0.0909,
+        "seconds": 79.6,
+        "words": 1224
+      },
+      "codex-gpt-5.6-terra_baseline": {
+        "n": 3,
+        "pass_rate": 0.9697,
+        "stdev": 0.0525,
+        "seconds": 99.1,
+        "words": 626
+      },
+      "codex-gpt-5.6-terra_with_skill": {
+        "n": 3,
+        "pass_rate": 0.9697,
+        "stdev": 0.0525,
+        "seconds": 146.3,
+        "words": 720
+      }
+    },
+    "design": {
+      "fable_baseline": {
+        "n": 3,
+        "pass_rate": 0.8095,
+        "stdev": 0.0824,
+        "seconds": 42.1,
+        "words": 514
+      },
+      "fable_with_skill": {
+        "n": 3,
+        "pass_rate": 1.0,
+        "stdev": 0.0,
+        "seconds": 61.4,
+        "words": 646
+      },
+      "opus_baseline": {
+        "n": 7,
+        "pass_rate": 0.9183,
+        "stdev": 0.0764,
+        "seconds": 130.0,
+        "words": 800
+      },
+      "opus_with_skill": {
+        "n": 7,
+        "pass_rate": 0.9592,
+        "stdev": 0.108,
+        "seconds": 138.3,
+        "words": 1097
+      },
+      "claude-sonnet-5_baseline": {
+        "n": 7,
+        "pass_rate": 0.8571,
+        "stdev": 0.0825,
+        "seconds": 83.8,
+        "words": 577
+      },
+      "claude-sonnet-5_with_skill": {
+        "n": 7,
+        "pass_rate": 0.8571,
+        "stdev": 0.0,
+        "seconds": 82.2,
+        "words": 646
+      },
+      "claude-haiku-4-5-20251001_baseline": {
+        "n": 3,
+        "pass_rate": 0.619,
+        "stdev": 0.0825,
+        "seconds": 25.6,
+        "words": 225
+      },
+      "claude-haiku-4-5-20251001_with_skill": {
+        "n": 3,
+        "pass_rate": 0.619,
+        "stdev": 0.0825,
+        "seconds": 63.2,
+        "words": 446
+      },
+      "codex-gpt-5.6-terra_baseline": {
+        "n": 3,
+        "pass_rate": 0.4762,
+        "stdev": 0.0824,
+        "seconds": 9.8,
+        "words": 140
+      },
+      "codex-gpt-5.6-terra_with_skill": {
+        "n": 3,
+        "pass_rate": 0.7143,
+        "stdev": 0.0,
+        "seconds": 44.4,
+        "words": 240
+      },
+      "agy-gemini-3.1-pro_baseline": {
+        "n": 3,
+        "pass_rate": 0.5714,
+        "stdev": 0.0,
+        "seconds": 30.1,
+        "words": 367
+      },
+      "agy-gemini-3.1-pro_with_skill": {
+        "n": 3,
+        "pass_rate": 0.4762,
+        "stdev": 0.2974,
+        "seconds": 45.3,
+        "words": 408
+      }
+    },
+    "retro": {
+      "fable_baseline": {
+        "n": 3,
+        "pass_rate": 1.0,
+        "stdev": 0.0,
+        "seconds": 52.8,
+        "words": 641
+      },
+      "fable_with_skill": {
+        "n": 3,
+        "pass_rate": 0.963,
+        "stdev": 0.0641,
+        "seconds": 68.1,
+        "words": 691
+      },
+      "opus_baseline": {
+        "n": 7,
+        "pass_rate": 0.9841,
+        "stdev": 0.042,
+        "seconds": 85.2,
+        "words": 590
+      },
+      "opus_with_skill": {
+        "n": 7,
+        "pass_rate": 0.9683,
+        "stdev": 0.084,
+        "seconds": 125.5,
+        "words": 688
+      },
+      "claude-sonnet-5_baseline": {
+        "n": 7,
+        "pass_rate": 0.9683,
+        "stdev": 0.0542,
+        "seconds": 79.5,
+        "words": 554
+      },
+      "claude-sonnet-5_with_skill": {
+        "n": 7,
+        "pass_rate": 0.9365,
+        "stdev": 0.0594,
+        "seconds": 80.1,
+        "words": 560
+      },
+      "claude-haiku-4-5-20251001_baseline": {
+        "n": 3,
+        "pass_rate": 0.8889,
+        "stdev": 0.1111,
+        "seconds": 32.9,
+        "words": 262
+      },
+      "claude-haiku-4-5-20251001_with_skill": {
+        "n": 3,
+        "pass_rate": 1.0,
+        "stdev": 0.0,
+        "seconds": 53.5,
+        "words": 469
+      },
+      "codex-gpt-5.6-terra_baseline": {
+        "n": 1,
+        "pass_rate": 0.8889,
+        "stdev": 0.0,
+        "seconds": 171.7,
+        "words": 305
+      },
+      "codex-gpt-5.6-terra_with_skill": {
+        "n": 3,
+        "pass_rate": 0.8889,
+        "stdev": 0.1111,
+        "seconds": 51.3,
+        "words": 404
+      },
+      "agy-gemini-3.1-pro_baseline": {
+        "n": 3,
+        "pass_rate": 0.5185,
+        "stdev": 0.0642,
+        "seconds": 62.1,
+        "words": 547
+      },
+      "agy-gemini-3.1-pro_with_skill": {
+        "n": 3,
+        "pass_rate": 0.7037,
+        "stdev": 0.1697,
+        "seconds": 58.4,
+        "words": 500
+      }
+    },
+    "ux": {
+      "fable_baseline": {
+        "n": 3,
+        "pass_rate": 0.875,
+        "stdev": 0.0,
+        "seconds": 35.5,
+        "words": 365
+      },
+      "fable_with_skill": {
+        "n": 3,
+        "pass_rate": 0.9583,
+        "stdev": 0.0722,
+        "seconds": 55.5,
+        "words": 541
+      },
+      "opus_baseline": {
+        "n": 7,
+        "pass_rate": 0.8393,
+        "stdev": 0.061,
+        "seconds": 67.4,
+        "words": 511
+      },
+      "opus_with_skill": {
+        "n": 7,
+        "pass_rate": 0.8393,
+        "stdev": 0.1391,
+        "seconds": 64.4,
+        "words": 494
+      },
+      "claude-sonnet-5_baseline": {
+        "n": 7,
+        "pass_rate": 0.6786,
+        "stdev": 0.0983,
+        "seconds": 40.9,
+        "words": 245
+      },
+      "claude-sonnet-5_with_skill": {
+        "n": 7,
+        "pass_rate": 0.7679,
+        "stdev": 0.0863,
+        "seconds": 37.4,
+        "words": 268
+      },
+      "claude-haiku-4-5-20251001_baseline": {
+        "n": 3,
+        "pass_rate": 0.625,
+        "stdev": 0.0,
+        "seconds": 26.7,
+        "words": 108
+      },
+      "claude-haiku-4-5-20251001_with_skill": {
+        "n": 3,
+        "pass_rate": 0.75,
+        "stdev": 0.125,
+        "seconds": 48.9,
+        "words": 258
+      },
+      "codex-gpt-5.6-terra_baseline": {
+        "n": 3,
+        "pass_rate": 0.6667,
+        "stdev": 0.0722,
+        "seconds": 8.7,
+        "words": 64
+      },
+      "codex-gpt-5.6-terra_with_skill": {
+        "n": 3,
+        "pass_rate": 0.9167,
+        "stdev": 0.0722,
+        "seconds": 24.1,
+        "words": 89
+      },
+      "agy-gemini-3.1-pro_baseline": {
+        "n": 3,
+        "pass_rate": 0.875,
+        "stdev": 0.125,
+        "seconds": 73.0,
+        "words": 451
+      },
+      "agy-gemini-3.1-pro_with_skill": {
+        "n": 3,
+        "pass_rate": 0.7917,
+        "stdev": 0.0722,
+        "seconds": 50.5,
+        "words": 391
+      }
+    },
+    "authz": {
+      "fable_baseline": {
+        "n": 3,
+        "pass_rate": 1.0,
+        "stdev": 0.0,
+        "seconds": 50.2,
+        "words": 463
+      },
+      "fable_with_skill": {
+        "n": 3,
+        "pass_rate": 1.0,
+        "stdev": 0.0,
+        "seconds": 73.5,
+        "words": 790
+      },
+      "opus_baseline": {
+        "n": 7,
+        "pass_rate": 1.0,
+        "stdev": 0.0,
+        "seconds": 97.5,
+        "words": 559
+      },
+      "opus_with_skill": {
+        "n": 7,
+        "pass_rate": 1.0,
+        "stdev": 0.0,
+        "seconds": 199.8,
+        "words": 807
+      },
+      "claude-sonnet-5_baseline": {
+        "n": 7,
+        "pass_rate": 0.9429,
+        "stdev": 0.0787,
+        "seconds": 93.2,
+        "words": 609
+      },
+      "claude-sonnet-5_with_skill": {
+        "n": 7,
+        "pass_rate": 0.8857,
+        "stdev": 0.069,
+        "seconds": 97.3,
+        "words": 751
+      },
+      "claude-haiku-4-5-20251001_baseline": {
+        "n": 3,
+        "pass_rate": 0.7333,
+        "stdev": 0.3786,
+        "seconds": 60.3,
+        "words": 447
+      },
+      "claude-haiku-4-5-20251001_with_skill": {
+        "n": 3,
+        "pass_rate": 0.9,
+        "stdev": 0.1,
+        "seconds": 62.0,
+        "words": 550
+      },
+      "codex-gpt-5.6-terra_baseline": {
+        "n": 2,
+        "pass_rate": 1.0,
+        "stdev": 0.0,
+        "seconds": 70.7,
+        "words": 410
+      },
+      "codex-gpt-5.6-terra_with_skill": {
+        "n": 3,
+        "pass_rate": 1.0,
+        "stdev": 0.0,
+        "seconds": 64.2,
+        "words": 350
+      },
+      "agy-gemini-3.1-pro_baseline": {
+        "n": 3,
+        "pass_rate": 0.6667,
+        "stdev": 0.2082,
+        "seconds": 65.9,
+        "words": 450
+      },
+      "agy-gemini-3.1-pro_with_skill": {
+        "n": 3,
+        "pass_rate": 0.6667,
+        "stdev": 0.0577,
+        "seconds": 80.8,
+        "words": 431
+      }
+    },
+    "data": {
+      "fable_baseline": {
+        "n": 3,
+        "pass_rate": 0.9167,
+        "stdev": 0.0722,
+        "seconds": 39.2,
+        "words": 481
+      },
+      "fable_with_skill": {
+        "n": 3,
+        "pass_rate": 0.875,
+        "stdev": 0.0,
+        "seconds": 59.3,
+        "words": 602
+      },
+      "opus_baseline": {
+        "n": 7,
+        "pass_rate": 0.8571,
+        "stdev": 0.0863,
+        "seconds": 53.3,
+        "words": 509
+      },
+      "opus_with_skill": {
+        "n": 7,
+        "pass_rate": 0.8571,
+        "stdev": 0.0863,
+        "seconds": 93.3,
+        "words": 666
+      },
+      "claude-sonnet-5_baseline": {
+        "n": 7,
+        "pass_rate": 0.6964,
+        "stdev": 0.122,
+        "seconds": 36.9,
+        "words": 388
+      },
+      "claude-sonnet-5_with_skill": {
+        "n": 7,
+        "pass_rate": 0.8214,
+        "stdev": 0.0983,
+        "seconds": 65.5,
+        "words": 471
+      },
+      "claude-haiku-4-5-20251001_baseline": {
+        "n": 3,
+        "pass_rate": 0.4583,
+        "stdev": 0.0722,
+        "seconds": 34.1,
+        "words": 298
+      },
+      "claude-haiku-4-5-20251001_with_skill": {
+        "n": 3,
+        "pass_rate": 0.7083,
+        "stdev": 0.0722,
+        "seconds": 56.5,
+        "words": 460
+      },
+      "codex-gpt-5.6-terra_baseline": {
+        "n": 3,
+        "pass_rate": 0.7083,
+        "stdev": 0.1443,
+        "seconds": 13.1,
+        "words": 191
+      },
+      "codex-gpt-5.6-terra_with_skill": {
+        "n": 3,
+        "pass_rate": 0.7917,
+        "stdev": 0.0722,
+        "seconds": 29.8,
+        "words": 243
+      },
+      "agy-gemini-3.1-pro_baseline": {
+        "n": 3,
+        "pass_rate": 0.75,
+        "stdev": 0.25,
+        "seconds": 83.7,
+        "words": 549
+      },
+      "agy-gemini-3.1-pro_with_skill": {
+        "n": 3,
+        "pass_rate": 0.7917,
+        "stdev": 0.0722,
+        "seconds": 59.0,
+        "words": 626
+      }
+    },
+    "ops": {
+      "fable_baseline": {
+        "n": 3,
+        "pass_rate": 0.8333,
+        "stdev": 0.0722,
+        "seconds": 35.4,
+        "words": 435
+      },
+      "fable_with_skill": {
+        "n": 3,
+        "pass_rate": 0.9167,
+        "stdev": 0.0722,
+        "seconds": 52.1,
+        "words": 577
+      },
+      "opus_baseline": {
+        "n": 7,
+        "pass_rate": 1.0,
+        "stdev": 0.0,
+        "seconds": 66.8,
+        "words": 494
+      },
+      "opus_with_skill": {
+        "n": 7,
+        "pass_rate": 1.0,
+        "stdev": 0.0,
+        "seconds": 72.6,
+        "words": 497
+      },
+      "claude-sonnet-5_baseline": {
+        "n": 7,
+        "pass_rate": 0.7857,
+        "stdev": 0.187,
+        "seconds": 55.2,
+        "words": 251
+      },
+      "claude-sonnet-5_with_skill": {
+        "n": 7,
+        "pass_rate": 0.875,
+        "stdev": 0.0,
+        "seconds": 54.9,
+        "words": 390
+      },
+      "claude-haiku-4-5-20251001_baseline": {
+        "n": 3,
+        "pass_rate": 0.2917,
+        "stdev": 0.0722,
+        "seconds": 25.8,
+        "words": 209
+      },
+      "claude-haiku-4-5-20251001_with_skill": {
+        "n": 3,
+        "pass_rate": 0.9167,
+        "stdev": 0.0722,
+        "seconds": 42.7,
+        "words": 325
+      },
+      "codex-gpt-5.6-terra_baseline": {
+        "n": 3,
+        "pass_rate": 0.75,
+        "stdev": 0.125,
+        "seconds": 74.9,
+        "words": 166
+      },
+      "codex-gpt-5.6-terra_with_skill": {
+        "n": 3,
+        "pass_rate": 0.9167,
+        "stdev": 0.0722,
+        "seconds": 29.7,
+        "words": 148
+      },
+      "agy-gemini-3.1-pro_baseline": {
+        "n": 3,
+        "pass_rate": 0.7917,
+        "stdev": 0.2602,
+        "seconds": 65.7,
+        "words": 362
+      },
+      "agy-gemini-3.1-pro_with_skill": {
+        "n": 3,
+        "pass_rate": 0.875,
+        "stdev": 0.0,
+        "seconds": 52.3,
+        "words": 383
+      }
+    },
+    "agent-guardrails": {
+      "fable_baseline": {
+        "n": 3,
+        "pass_rate": 0.8333,
+        "stdev": 0.1443,
+        "seconds": 50.2,
+        "words": 452
+      },
+      "fable_with_skill": {
+        "n": 3,
+        "pass_rate": 1.0,
+        "stdev": 0.0,
+        "seconds": 65.7,
+        "words": 591
+      },
+      "opus_baseline": {
+        "n": 7,
+        "pass_rate": 1.0,
+        "stdev": 0.0,
+        "seconds": 89.1,
+        "words": 541
+      },
+      "opus_with_skill": {
+        "n": 7,
+        "pass_rate": 1.0,
+        "stdev": 0.0,
+        "seconds": 101.4,
+        "words": 560
+      },
+      "claude-sonnet-5_baseline": {
+        "n": 7,
+        "pass_rate": 0.5893,
+        "stdev": 0.187,
+        "seconds": 49.9,
+        "words": 264
+      },
+      "claude-sonnet-5_with_skill": {
+        "n": 7,
+        "pass_rate": 0.9107,
+        "stdev": 0.061,
+        "seconds": 70.2,
+        "words": 446
+      },
+      "claude-haiku-4-5-20251001_baseline": {
+        "n": 3,
+        "pass_rate": 0.3333,
+        "stdev": 0.0722,
+        "seconds": 38.7,
+        "words": 177
+      },
+      "claude-haiku-4-5-20251001_with_skill": {
+        "n": 3,
+        "pass_rate": 0.3333,
+        "stdev": 0.2887,
+        "seconds": 30.0,
+        "words": 304
+      },
+      "codex-gpt-5.6-terra_baseline": {
+        "n": 3,
+        "pass_rate": 0.4583,
+        "stdev": 0.1443,
+        "seconds": 21.0,
+        "words": 195
+      },
+      "codex-gpt-5.6-terra_with_skill": {
+        "n": 3,
+        "pass_rate": 1.0,
+        "stdev": 0.0,
+        "seconds": 49.5,
+        "words": 243
+      },
+      "agy-gemini-3.1-pro_baseline": {
+        "n": 3,
+        "pass_rate": 0.7083,
+        "stdev": 0.2602,
+        "seconds": 99.5,
+        "words": 520
+      },
+      "agy-gemini-3.1-pro_with_skill": {
+        "n": 3,
+        "pass_rate": 1.0,
+        "stdev": 0.0,
+        "seconds": 78.2,
+        "words": 395
+      }
+    },
+    "guardrails": {
+      "fable_baseline": {
+        "n": 3,
+        "pass_rate": 0.75,
+        "stdev": 0.0,
+        "seconds": 45.3,
+        "words": 454
+      },
+      "fable_with_skill": {
+        "n": 3,
+        "pass_rate": 1.0,
+        "stdev": 0.0,
+        "seconds": 78.3,
+        "words": 502
+      },
+      "opus_baseline": {
+        "n": 7,
+        "pass_rate": 0.8929,
+        "stdev": 0.0863,
+        "seconds": 69.9,
+        "words": 490
+      },
+      "opus_with_skill": {
+        "n": 7,
+        "pass_rate": 0.9821,
+        "stdev": 0.0472,
+        "seconds": 93.9,
+        "words": 586
+      },
+      "claude-sonnet-5_baseline": {
+        "n": 7,
+        "pass_rate": 0.6607,
+        "stdev": 0.1189,
+        "seconds": 45.5,
+        "words": 254
+      },
+      "claude-sonnet-5_with_skill": {
+        "n": 7,
+        "pass_rate": 0.9643,
+        "stdev": 0.0945,
+        "seconds": 57.7,
+        "words": 362
+      },
+      "claude-haiku-4-5-20251001_baseline": {
+        "n": 3,
+        "pass_rate": 0.5417,
+        "stdev": 0.1909,
+        "seconds": 42.4,
+        "words": 259
+      },
+      "claude-haiku-4-5-20251001_with_skill": {
+        "n": 3,
+        "pass_rate": 0.8333,
+        "stdev": 0.0722,
+        "seconds": 57.8,
+        "words": 307
+      },
+      "codex-gpt-5.6-terra_baseline": {
+        "n": 3,
+        "pass_rate": 0.625,
+        "stdev": 0.125,
+        "seconds": 10.8,
+        "words": 135
+      },
+      "codex-gpt-5.6-terra_with_skill": {
+        "n": 3,
+        "pass_rate": 1.0,
+        "stdev": 0.0,
+        "seconds": 22.8,
+        "words": 178
+      },
+      "agy-gemini-3.1-pro_baseline": {
+        "n": 3,
+        "pass_rate": 0.5,
+        "stdev": 0.125,
+        "seconds": 74.3,
+        "words": 431
+      },
+      "agy-gemini-3.1-pro_with_skill": {
+        "n": 3,
+        "pass_rate": 0.75,
+        "stdev": 0.125,
+        "seconds": 82.5,
+        "words": 368
+      }
+    },
+    "llm": {
+      "fable_baseline": {
+        "n": 3,
+        "pass_rate": 0.963,
+        "stdev": 0.0641,
+        "seconds": 47.8,
+        "words": 554
+      },
+      "fable_with_skill": {
+        "n": 3,
+        "pass_rate": 0.963,
+        "stdev": 0.0641,
+        "seconds": 62.7,
+        "words": 653
+      },
+      "opus_baseline": {
+        "n": 7,
+        "pass_rate": 0.9524,
+        "stdev": 0.0874,
+        "seconds": 61.5,
+        "words": 504
+      },
+      "opus_with_skill": {
+        "n": 7,
+        "pass_rate": 0.9841,
+        "stdev": 0.042,
+        "seconds": 91.5,
+        "words": 707
+      },
+      "claude-sonnet-5_baseline": {
+        "n": 7,
+        "pass_rate": 0.9048,
+        "stdev": 0.042,
+        "seconds": 54.2,
+        "words": 446
+      },
+      "claude-sonnet-5_with_skill": {
+        "n": 7,
+        "pass_rate": 0.8889,
+        "stdev": 0.0,
+        "seconds": 58.4,
+        "words": 515
+      },
+      "claude-haiku-4-5-20251001_baseline": {
+        "n": 3,
+        "pass_rate": 0.7037,
+        "stdev": 0.0641,
+        "seconds": 37.9,
+        "words": 345
+      },
+      "claude-haiku-4-5-20251001_with_skill": {
+        "n": 3,
+        "pass_rate": 0.8519,
+        "stdev": 0.1283,
+        "seconds": 53.0,
+        "words": 437
+      },
+      "codex-gpt-5.6-terra_baseline": {
+        "n": 3,
+        "pass_rate": 0.8519,
+        "stdev": 0.0641,
+        "seconds": 33.0,
+        "words": 227
+      },
+      "codex-gpt-5.6-terra_with_skill": {
+        "n": 3,
+        "pass_rate": 1.0,
+        "stdev": 0.0,
+        "seconds": 33.2,
+        "words": 324
+      },
+      "agy-gemini-3.1-pro_baseline": {
+        "n": 3,
+        "pass_rate": 0.7037,
+        "stdev": 0.0641,
+        "seconds": 50.6,
+        "words": 545
+      },
+      "agy-gemini-3.1-pro_with_skill": {
+        "n": 3,
+        "pass_rate": 0.8519,
+        "stdev": 0.1697,
+        "seconds": 61.8,
+        "words": 579
+      }
+    },
+    "build-endpoint": {
+      "fable_baseline": {
+        "n": 2,
+        "pass_rate": 0.6111,
+        "stdev": 0.0786,
+        "seconds": 70.0,
+        "words": 1210
+      },
+      "fable_with_skill": {
+        "n": 2,
+        "pass_rate": 1.0,
+        "stdev": 0.0,
+        "seconds": 116.2,
+        "words": 1934
+      },
+      "opus_baseline": {
+        "n": 2,
+        "pass_rate": 0.8334,
+        "stdev": 0.2357,
+        "seconds": 368.7,
+        "words": 3552
+      },
+      "opus_with_skill": {
+        "n": 2,
+        "pass_rate": 1.0,
+        "stdev": 0.0,
+        "seconds": 458.7,
+        "words": 3904
+      },
+      "claude-sonnet-5_baseline": {
+        "n": 2,
+        "pass_rate": 0.8334,
+        "stdev": 0.0786,
+        "seconds": 175.8,
+        "words": 1555
+      },
+      "claude-sonnet-5_with_skill": {
+        "n": 2,
+        "pass_rate": 0.8889,
+        "stdev": 0.0,
+        "seconds": 272.9,
+        "words": 1984
+      },
+      "claude-haiku-4-5-20251001_baseline": {
+        "n": 2,
+        "pass_rate": 0.4444,
+        "stdev": 0.0,
+        "seconds": 31.0,
+        "words": 546
+      },
+      "claude-haiku-4-5-20251001_with_skill": {
+        "n": 2,
+        "pass_rate": 0.3333,
+        "stdev": 0.1571,
+        "seconds": 80.2,
+        "words": 562
+      },
+      "codex-gpt-5.6-terra_baseline": {
+        "n": 3,
+        "pass_rate": 0.5926,
+        "stdev": 0.1283,
+        "seconds": 103.8,
+        "words": 881
+      },
+      "codex-gpt-5.6-terra_with_skill": {
+        "n": 3,
+        "pass_rate": 0.8148,
+        "stdev": 0.0641,
+        "seconds": 185.9,
+        "words": 1189
+      },
+      "agy-gemini-3.1-pro_baseline": {
+        "n": 3,
+        "pass_rate": 0.3703,
+        "stdev": 0.0641,
+        "seconds": 42.0,
+        "words": 521
+      },
+      "agy-gemini-3.1-pro_with_skill": {
+        "n": 3,
+        "pass_rate": 0.8519,
+        "stdev": 0.1283,
+        "seconds": 102.3,
+        "words": 1347
+      }
+    },
+    "build-form": {
+      "fable_baseline": {
+        "n": 2,
+        "pass_rate": 0.9445,
+        "stdev": 0.0786,
+        "seconds": 97.7,
+        "words": 1862
+      },
+      "fable_with_skill": {
+        "n": 2,
+        "pass_rate": 1.0,
+        "stdev": 0.0,
+        "seconds": 114.5,
+        "words": 2034
+      },
+      "opus_baseline": {
+        "n": 2,
+        "pass_rate": 1.0,
+        "stdev": 0.0,
+        "seconds": 203.2,
+        "words": 3284
+      },
+      "opus_with_skill": {
+        "n": 2,
+        "pass_rate": 1.0,
+        "stdev": 0.0,
+        "seconds": 275.2,
+        "words": 3824
+      },
+      "claude-sonnet-5_baseline": {
+        "n": 2,
+        "pass_rate": 0.6667,
+        "stdev": 0.1571,
+        "seconds": 143.2,
+        "words": 1634
+      },
+      "claude-sonnet-5_with_skill": {
+        "n": 2,
+        "pass_rate": 0.8334,
+        "stdev": 0.0786,
+        "seconds": 183.9,
+        "words": 1978
+      },
+      "claude-haiku-4-5-20251001_baseline": {
+        "n": 2,
+        "pass_rate": 0.6111,
+        "stdev": 0.0786,
+        "seconds": 51.9,
+        "words": 1010
+      },
+      "claude-haiku-4-5-20251001_with_skill": {
+        "n": 2,
+        "pass_rate": 0.7778,
+        "stdev": 0.1571,
+        "seconds": 56.8,
+        "words": 1284
+      },
+      "codex-gpt-5.6-terra_baseline": {
+        "n": 3,
+        "pass_rate": 0.7408,
+        "stdev": 0.0641,
+        "seconds": 97.1,
+        "words": 1260
+      },
+      "codex-gpt-5.6-terra_with_skill": {
+        "n": 3,
+        "pass_rate": 0.8148,
+        "stdev": 0.0641,
+        "seconds": 138.6,
+        "words": 1523
+      },
+      "agy-gemini-3.1-pro_baseline": {
+        "n": 3,
+        "pass_rate": 0.6297,
+        "stdev": 0.0641,
+        "seconds": 74.5,
+        "words": 1633
+      },
+      "agy-gemini-3.1-pro_with_skill": {
+        "n": 3,
+        "pass_rate": 0.7408,
+        "stdev": 0.0641,
+        "seconds": 104.1,
+        "words": 1578
+      }
+    },
+    "build-agent-feature": {
+      "fable_baseline": {
+        "n": 1,
+        "pass_rate": 1.0,
+        "stdev": 0.0,
+        "seconds": 185.1,
+        "words": 847
+      },
+      "fable_with_skill": {
+        "n": 2,
+        "pass_rate": 1.0,
+        "stdev": 0.0,
+        "seconds": 281.5,
+        "words": 1046
+      },
+      "opus_baseline": {
+        "n": 1,
+        "pass_rate": 1.0,
+        "stdev": 0.0,
+        "seconds": 230.1,
+        "words": 3044
+      },
+      "opus_with_skill": {
+        "n": 1,
+        "pass_rate": 1.0,
+        "stdev": 0.0,
+        "seconds": 325.7,
+        "words": 3548
+      },
+      "claude-sonnet-5_baseline": {
+        "n": 2,
+        "pass_rate": 0.9375,
+        "stdev": 0.0884,
+        "seconds": 171.1,
+        "words": 979
+      },
+      "claude-sonnet-5_with_skill": {
+        "n": 2,
+        "pass_rate": 1.0,
+        "stdev": 0.0,
+        "seconds": 491.7,
+        "words": 1382
+      },
+      "claude-haiku-4-5-20251001_baseline": {
+        "n": 2,
+        "pass_rate": 0.625,
+        "stdev": 0.0,
+        "seconds": 33.5,
+        "words": 528
+      },
+      "claude-haiku-4-5-20251001_with_skill": {
+        "n": 2,
+        "pass_rate": 0.3125,
+        "stdev": 0.0884,
+        "seconds": 89.8,
+        "words": 585
+      },
+      "codex-gpt-5.6-terra_baseline": {
+        "n": 3,
+        "pass_rate": 0.9167,
+        "stdev": 0.0722,
+        "seconds": 205.9,
+        "words": 715
+      },
+      "codex-gpt-5.6-terra_with_skill": {
+        "n": 2,
+        "pass_rate": 1.0,
+        "stdev": 0.0,
+        "seconds": 436.4,
+        "words": 950
+      },
+      "agy-gemini-3.1-pro_baseline": {
+        "n": 3,
+        "pass_rate": 0.6667,
+        "stdev": 0.0722,
+        "seconds": 45.5,
+        "words": 660
+      },
+      "agy-gemini-3.1-pro_with_skill": {
+        "n": 3,
+        "pass_rate": 0.875,
+        "stdev": 0.0,
+        "seconds": 81.8,
+        "words": 977
+      }
+    }
+  },
+  "by_model": {
+    "fable": {
+      "label": "Fable 5",
+      "paired_scenarios": 13,
+      "baseline": {
+        "pass_rate": 0.8874,
+        "stdev": 0.1183,
+        "seconds": 64.1,
+        "words": 692,
+        "scenarios": 13
+      },
+      "with_skill": {
+        "pass_rate": 0.9704,
+        "stdev": 0.0401,
+        "seconds": 91.6,
+        "words": 863,
+        "scenarios": 13
+      },
+      "delta_pp": 8.3
+    },
+    "opus": {
+      "label": "Opus 5",
+      "paired_scenarios": 13,
+      "baseline": {
+        "pass_rate": 0.9274,
+        "stdev": 0.079,
+        "seconds": 129.5,
+        "words": 1212,
+        "scenarios": 13
+      },
+      "with_skill": {
+        "pass_rate": 0.9635,
+        "stdev": 0.055,
+        "seconds": 172.0,
+        "words": 1426,
+        "scenarios": 13
+      },
+      "delta_pp": 3.6
+    },
+    "claude-sonnet-5": {
+      "label": "Sonnet 5",
+      "paired_scenarios": 13,
+      "baseline": {
+        "pass_rate": 0.7984,
+        "stdev": 0.127,
+        "seconds": 87.8,
+        "words": 672,
+        "scenarios": 13
+      },
+      "with_skill": {
+        "pass_rate": 0.8846,
+        "stdev": 0.0608,
+        "seconds": 129.2,
+        "words": 820,
+        "scenarios": 13
+      },
+      "delta_pp": 8.6
+    },
+    "claude-haiku-4-5-20251001": {
+      "label": "Haiku 4.5",
+      "paired_scenarios": 13,
+      "baseline": {
+        "pass_rate": 0.5825,
+        "stdev": 0.1666,
+        "seconds": 40.5,
+        "words": 365,
+        "scenarios": 13
+      },
+      "with_skill": {
+        "pass_rate": 0.7112,
+        "stdev": 0.2405,
+        "seconds": 59.5,
+        "words": 555,
+        "scenarios": 13
+      },
+      "delta_pp": 12.9
+    },
+    "codex-gpt-5.6-terra": {
+      "label": "Codex",
+      "paired_scenarios": 13,
+      "baseline": {
+        "pass_rate": 0.7419,
+        "stdev": 0.1772,
+        "seconds": 70.7,
+        "words": 409,
+        "scenarios": 13
+      },
+      "with_skill": {
+        "pass_rate": 0.9098,
+        "stdev": 0.0979,
+        "seconds": 96.6,
+        "words": 508,
+        "scenarios": 13
+      },
+      "delta_pp": 16.8
+    },
+    "agy-gemini-3.1-pro": {
+      "label": "agy",
+      "not_runnable": [
+        "audit"
+      ],
+      "paired_scenarios": 12,
+      "baseline": {
+        "pass_rate": 0.646,
+        "stdev": 0.1388,
+        "seconds": 63.9,
+        "words": 586,
+        "scenarios": 12
+      },
+      "with_skill": {
+        "pass_rate": 0.7812,
+        "stdev": 0.1316,
+        "seconds": 71.4,
+        "words": 665,
+        "scenarios": 12
+      },
+      "delta_pp": 13.5
+    }
+  },
+  "provenance": {
+    "runs": 591,
+    "prompt_verified": 591,
+    "no_prompt_sha": 0,
+    "prompt_changed": 0
+  }
+}

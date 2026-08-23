@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "1af6b213502f",
+  "expectations": [
+    {
+      "text": "States plainly that the recent-charge lookup is not sufficient",
+      "passed": true,
+      "evidence": "No, that check isn't enough \u2014 and worse, it's likely to fail on the exact scenario that caused this incident."
+    },
+    {
+      "text": "Identifies the lookup as a check-then-act race rather than a device",
+      "passed": true,
+      "evidence": "It's check-then-act, not atomic. Two deliveries of the same message (or a retry racing the original) can both run the lookup before either charge is recorded."
+    },
+    {
+      "text": "Recommends a required idempotency key on the charge path",
+      "passed": true,
+      "evidence": "A stable idempotency key on the Stripe call, derived from something that doesn't change across redeliveries \u2014 the order/invoice ID or the queue message's dedup ID"
+    },
+    {
+      "text": "Recommends a database unique constraint backing the idempotency key",
+      "passed": true,
+      "evidence": "A DB-level unique constraint on something like (order_id) or (order_id, status='succeeded') for your charge records"
+    },
+    {
+      "text": "Separates the defect from the mistake from the underlying system hazard",
+      "passed": true,
+      "evidence": "Defect: 340 customers double-charged. Mistake: the redelivered message triggered a second charge() call. Hazard: charging Stripe has no idempotency guarantee"
+    },
+    {
+      "text": "Locates the hazard as a system property rather than as a worker bug or human error",
+      "passed": true,
+      "evidence": "charging Stripe has no idempotency guarantee \u2014 nothing about the call ties it to 'this logical charge, at most once'"
+    },
+    {
+      "text": "Sweeps for other non-idempotent side effects reachable from a retry",
+      "passed": true,
+      "evidence": "Do you have other queue consumers that call non-idempotent external APIs (other payment paths, email sends, inventory adjustments, webhook fan-out) without a stable idempotency key?"
+    },
+    {
+      "text": "Treats 'second time this happened' as evidence for pushing to a Control-rung device",
+      "passed": false,
+      "evidence": "Control-rung recommendation made before mentioning 'second time'; the second mention is treated as evidence to sweep for other instances, not as evidence to escalate to Control-rung"
+    },
+    {
+      "text": "Attributes cause to the system, not to any person",
+      "passed": true,
+      "evidence": "Attributes to system design (no idempotency mechanism), not to any person or worker error"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 9,
+    "pass_rate": 0.8889
+  }
+}

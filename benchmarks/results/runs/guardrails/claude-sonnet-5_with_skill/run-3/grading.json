@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "4999b9f80438",
+  "expectations": [
+    {
+      "text": "States that a written agreement or reminder is not enforcement",
+      "passed": true,
+      "evidence": "All three rely on someone remembering. That's rung 0 on the poka-yoke scale (training), and training decays"
+    },
+    {
+      "text": "Recommends a pre-commit hook to run the formatter automatically",
+      "passed": true,
+      "evidence": "Pre-commit hook running the formatter and a fast type check on changed files"
+    },
+    {
+      "text": "Notes that pre-commit is bypassable with --no-verify and must be backed by a CI check",
+      "passed": true,
+      "evidence": "Pre-commit hook... yes (`--no-verify`)... CI required check... **no**, if branch protection is on"
+    },
+    {
+      "text": "Recommends a type check as a required CI check",
+      "passed": true,
+      "evidence": "CI required check running the same formatter (`--check` mode, not 'fix and pass') and full type check"
+    },
+    {
+      "text": "Recommends baselining or ratcheting rather than enforcing across the whole repo at once",
+      "passed": true,
+      "evidence": "Baseline first, then ratchet... enforce formatting/types on changed files only, or snapshot current violations as a baseline and fail CI only on *new* ones"
+    },
+    {
+      "text": "Notes that branch protection is what makes a CI check actually required",
+      "passed": true,
+      "evidence": "this is the one that actually can't be bypassed, but only if it's wired into branch protection as a required status check. A CI job that merely runs and reports isn't enforcement; a red X that blocks merge is."
+    },
+    {
+      "text": "Recommends the failure message tell the developer how to fix it",
+      "passed": true,
+      "evidence": "Make the CI failure teach, not just fail \u2014 the message should say exactly what command to run (`npm run format`, `mypy path/to/file.py`)"
+    },
+    {
+      "text": "Does not primarily recommend rewriting CONTRIBUTING.md, more reminders, or more discipline",
+      "passed": true,
+      "evidence": "Two of the three prose-based things you did (CONTRIBUTING.md, standup mentions) can stay as *context* for why the rule exists \u2014 that's fine, it's just not the enforcement mechanism"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

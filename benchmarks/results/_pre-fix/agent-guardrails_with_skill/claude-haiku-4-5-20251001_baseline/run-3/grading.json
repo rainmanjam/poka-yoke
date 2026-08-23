@@ -1,0 +1,49 @@
+{
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "\"CLAUDE.md is a training-level guidance, not a technical control\""
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "\"layer in technical controls that the *harness* enforces, not the model's judgment\""
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": false,
+      "evidence": "Mentions settings.json conceptually but provides no actual JSON syntax, only refers to update-config skill"
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": false,
+      "evidence": "No mention of PreToolUse hooks"
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": false,
+      "evidence": "No mention of deny messages"
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": false,
+      "evidence": "No mention of verification or testing"
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": false,
+      "evidence": "No mention of committing or team-wide application"
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": false,
+      "evidence": "Does not address capitals or repetition"
+    }
+  ],
+  "summary": {
+    "passed": 2,
+    "total": 8,
+    "pass_rate": 0.25
+  }
+}

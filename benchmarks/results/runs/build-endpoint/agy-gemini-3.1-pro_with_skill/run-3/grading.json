@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "9b2ce0ce8a1c",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Handler function, Prisma schema, and SQL migration all provided inline"
+    },
+    {
+      "text": "Requires an idempotency key as a parameter rather than making it optional",
+      "passed": true,
+      "evidence": "RefundRequestSchema includes idempotencyKey: z.string().min(1) as required field in body"
+    },
+    {
+      "text": "Backs idempotency with a database unique constraint, not application logic alone",
+      "passed": true,
+      "evidence": "@@unique([tenantId, idempotencyKey]) in schema and CREATE UNIQUE INDEX in migration"
+    },
+    {
+      "text": "Uses distinct types for the identifiers rather than bare strings for both order and refund ids",
+      "passed": true,
+      "evidence": "Declares Brand<T,B> pattern with OrderId, TenantId, UserId, IdempotencyKey types"
+    },
+    {
+      "text": "Handles money as integer minor units rather than a float",
+      "passed": true,
+      "evidence": "amountCents: z.number().int().positive()"
+    },
+    {
+      "text": "Validates the refund amount server-side against the order rather than trusting the caller",
+      "passed": false,
+      "evidence": "No validation of amountCents against order.totalCents; handler deliberately leaves this to Stripe (acknowledged in design section as intentional omission)"
+    },
+    {
+      "text": "Scopes the write so one tenant or user cannot refund another's order",
+      "passed": true,
+      "evidence": "Composite foreign key (orderId, tenantId) enforces tenant isolation at database level"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": false,
+      "evidence": "Lists 'Hazards Designed Out' at the beginning of the response, not in a closing section; code sections end without summarizing impossible misuses"
+    },
+    {
+      "text": "Names at least one thing it deliberately left possible and why",
+      "passed": true,
+      "evidence": "Explicitly names two: over-refunding (requires complex transactions) and stuck PENDING records (better to reconcile via cron than lose tracking)"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 9,
+    "pass_rate": 0.7778
+  }
+}

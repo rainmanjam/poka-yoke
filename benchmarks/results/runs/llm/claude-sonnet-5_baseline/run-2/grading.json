@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "018a96d90c3c",
+  "expectations": [
+    {
+      "text": "States that system prompt instructions are not a reliable control on model behaviour",
+      "passed": true,
+      "evidence": "Two prompt lines won't fix this \u2014 both bugs are exactly what happens when an unreliable component's output is trusted directly"
+    },
+    {
+      "text": "Recommends structured output against a schema rather than extracting values from prose",
+      "passed": true,
+      "evidence": "Use structured/tool-calling output with a schema (amount as a bounded number, order_id required, reason as an enum, not free text)"
+    },
+    {
+      "text": "Recommends validating the refund amount server-side against the actual order",
+      "passed": true,
+      "evidence": "validate server-side against the actual order \u2014 the refund amount must be \u2264 what was actually paid on that order_id, checked in your backend"
+    },
+    {
+      "text": "Recommends a required idempotency key on the refund call",
+      "passed": true,
+      "evidence": "Generate an idempotency key per refund attempt (order_id + amount, or a key from the triggering message)"
+    },
+    {
+      "text": "Recommends a database constraint or equivalent so a duplicate refund is rejected rather than merely avoided",
+      "passed": true,
+      "evidence": "enforce it with a **unique constraint at the database/API layer**, not just an in-conversation check"
+    },
+    {
+      "text": "Recommends human confirmation or an approval gate for the irreversible refund action",
+      "passed": true,
+      "evidence": "A cap on refund amount the bot can issue autonomously (anything above, say, $50 or above the original charge, requires human approval)"
+    },
+    {
+      "text": "Identifies prompt injection risk from the customer-supplied message reaching a privileged action",
+      "passed": false,
+      "evidence": "No mention of prompt injection or customer message injection risk"
+    },
+    {
+      "text": "Recommends bounds or caps on the refund amount",
+      "passed": true,
+      "evidence": "A cap on refund amount the bot can issue autonomously (anything above, say, $50 or above the original charge, requires human approval)"
+    },
+    {
+      "text": "Does not primarily recommend changes to the prompt wording",
+      "passed": true,
+      "evidence": "Response leads with 'won't fix this' and focuses on structural changes, not prompt revision"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 9,
+    "pass_rate": 0.8889
+  }
+}

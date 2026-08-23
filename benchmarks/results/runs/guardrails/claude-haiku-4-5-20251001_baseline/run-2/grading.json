@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "4999b9f80438",
+  "expectations": [
+    {
+      "text": "States that a written agreement or reminder is not enforcement",
+      "passed": true,
+      "evidence": "\"Training degrades. You've done the training... No one has to remember to run the formatter. No one has to read CONTRIBUTING.md. No one has to hear standup.\""
+    },
+    {
+      "text": "Recommends a pre-commit hook to run the formatter automatically",
+      "passed": true,
+      "evidence": "\"Pre-commit hook (catches it locally, friction-free)... Runs the formatter and type-checker on staged files\""
+    },
+    {
+      "text": "Notes that pre-commit is bypassable with --no-verify and must be backed by a CI check",
+      "passed": false,
+      "evidence": "Mentions CI catches what slips past but does not explain the --no-verify bypass mechanism"
+    },
+    {
+      "text": "Recommends a type check as a required CI check",
+      "passed": true,
+      "evidence": "\"Blocks merge if code is unformatted or untyped\""
+    },
+    {
+      "text": "Recommends baselining or ratcheting rather than enforcing across the whole repo at once",
+      "passed": false,
+      "evidence": "Not mentioned"
+    },
+    {
+      "text": "Notes that branch protection is what makes a CI check actually required",
+      "passed": false,
+      "evidence": "Not mentioned"
+    },
+    {
+      "text": "Recommends the failure message tell the developer how to fix it",
+      "passed": false,
+      "evidence": "Not mentioned"
+    },
+    {
+      "text": "Does not primarily recommend rewriting CONTRIBUTING.md, more reminders, or more discipline",
+      "passed": true,
+      "evidence": "\"Skip the 'add this to your mental checklist' framing entirely\""
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "total": 8,
+    "pass_rate": 0.5
+  }
+}

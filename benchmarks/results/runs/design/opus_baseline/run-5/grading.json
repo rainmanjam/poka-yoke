@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "export type Subscription = | (SubscriptionCore & { readonly status: \"trialing\"; ... }) | ... | discriminated by status field"
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "Each union branch carries only its fields: trialing has trialEndsAt, canceled has canceledAt/cancellation, no overlap"
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": true,
+      "evidence": "export function assertNever(x: never): never... with default: return assertNever(sub) in hasAccess switch"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": true,
+      "evidence": "type Brand<T, B extends string>; SubscriptionId, CustomerId, PlanId, RetryCount all branded"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": true,
+      "evidence": "Provides function signatures (recoverPayment, exhaustRetries) with detailed business-logic questions; discriminated union constrains variants"
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": false,
+      "evidence": "Section titled 'What this leaves possible' lists what is NOT prevented (illegal transitions, stale dates, runtime boundary); does not explicitly enumerate which misuses ARE prevented by the design"
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "Insight section: 'count the optional fields. {status, trialEndsAt?, retryCount?, ...} claims 2^6 = 64 legal states. Exactly 4 exist.' Recommends discriminated union"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 7,
+    "pass_rate": 0.8571
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "9b2ce0ce8a1c",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Provides handler.ts (with inline types and service logic), schema.prisma, and migration.sql; includes makeRefundHandler factory and createRefund export for testing"
+    },
+    {
+      "text": "Requires an idempotency key as a parameter rather than making it optional",
+      "passed": true,
+      "evidence": "Handler checks `const key = IdempotencyKey.safeParse(req.get('Idempotency-Key')); if (!key.success) throw new HttpError(400, 'Idempotency-Key header is required')` and passes to createRefund function"
+    },
+    {
+      "text": "Backs idempotency with a database unique constraint, not application logic alone",
+      "passed": true,
+      "evidence": "Schema has `@@unique([tenantId, idempotencyKey])` and migration creates `CREATE UNIQUE INDEX 'Refund_tenantId_idempotencyKey_key' ON 'Refund'('tenantId','idempotencyKey')`"
+    },
+    {
+      "text": "Uses distinct types for the identifiers rather than bare strings for both order and refund ids",
+      "passed": true,
+      "evidence": "Branded types: `const TenantId = z.string().uuid().brand<'TenantId'>()` and `const OrderId = z.string().uuid().brand<'OrderId'>()`"
+    },
+    {
+      "text": "Handles money as integer minor units rather than a float",
+      "passed": true,
+      "evidence": "Schema: `amountCents Int`; validation: `z.number().int().positive().max(10_000_000_00)`"
+    },
+    {
+      "text": "Validates the refund amount server-side against the order rather than trusting the caller",
+      "passed": true,
+      "evidence": "Atomic UPDATE with WHERE clause: `UPDATE 'Order' SET 'refundedCents' = 'refundedCents' + ${body.amountCents} WHERE ... AND 'refundedCents' + ${body.amountCents} <= 'totalCents'` plus CHECK constraint"
+    },
+    {
+      "text": "Scopes the write so one tenant or user cannot refund another's order",
+      "passed": true,
+      "evidence": "tenantTx wrapper sets RLS: `await tx.$executeRaw`SELECT set_config('app.tenant_id', ${tenantId}, true)`; composite FK added: `FOREIGN KEY ('orderId','tenantId') REFERENCES 'Order'('id','tenantId')`"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Closes with table: '| Refunding another tenant's order | Tenant comes from session only; scoped findFirst; composite FK (orderId, tenantId); RLS with FORCE | Control |' followed by 5 more rows"
+    },
+    {
+      "text": "Names at least one thing it deliberately left possible and why",
+      "passed": true,
+      "evidence": "'Left possible, on purpose: a process crash after Stripe succeeds but before step 3 leaves a pending row with money moved \u2014 the same client key re-drives and converges, but an abandoned key needs a reconciliation job'"
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

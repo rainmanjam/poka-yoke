@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "1af6b213502f",
+  "expectations": [
+    {
+      "text": "States plainly that the recent-charge lookup is not sufficient",
+      "passed": true,
+      "evidence": "The 'recent charge with the same amount' check is a warning-rung heuristic that still leaves the hazard open"
+    },
+    {
+      "text": "Identifies the lookup as a check-then-act race rather than a device",
+      "passed": true,
+      "evidence": "It's a race. Attempt 1 hasn't written its charge record yet (it's waiting on Stripe), attempt 2 looks, finds nothing, charges."
+    },
+    {
+      "text": "Recommends a required idempotency key on the charge path",
+      "passed": true,
+      "evidence": "Make it impossible to omit. Wrap the Stripe client so charge() has no signature without a key \u2014 a required parameter or a wrapper type that can only be constructed with one."
+    },
+    {
+      "text": "Recommends a database unique constraint backing the idempotency key",
+      "passed": true,
+      "evidence": "Back it with a DB unique constraint on (customer_id, idempotency_key) written before the Stripe call, in the same transaction"
+    },
+    {
+      "text": "Separates the defect from the mistake from the underlying system hazard",
+      "passed": true,
+      "evidence": "Defect: 340 customers charged twice. Mistake: the retry path called Stripe's charge endpoint a second time for the same intent. Hazard: a charge can be sent to Stripe without an idempotency key, and nothing refuses it."
+    },
+    {
+      "text": "Locates the hazard as a system property rather than as a worker bug or human error",
+      "passed": true,
+      "evidence": "The hazard was 'optional'; the fix is 'required by the compiler/linter', not 'remembered by the next engineer.' That property is still true after your fix."
+    },
+    {
+      "text": "Sweeps for other non-idempotent side effects reachable from a retry",
+      "passed": true,
+      "evidence": "grep for every call into the Stripe client (and any other payment/side-effect call made from a queue consumer \u2014 emails, webhooks, ledger writes)"
+    },
+    {
+      "text": "Treats 'second time this happened' as evidence for pushing to a Control-rung device",
+      "passed": true,
+      "evidence": "Why did nothing catch it \u2014 twice? Recommends only Control-rung devices, explicitly stating don't let Detection fixes be the only thing added this time."
+    },
+    {
+      "text": "Attributes cause to the system, not to any person",
+      "passed": true,
+      "evidence": "Frames as system design issue; does not blame engineer. The hazard was optional design, not human error."
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

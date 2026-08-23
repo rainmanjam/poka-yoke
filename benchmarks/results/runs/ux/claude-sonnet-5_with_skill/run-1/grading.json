@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "82f963d241f9",
+  "expectations": [
+    {
+      "text": "Pushes back on the 'are you sure?' modal as the primary fix",
+      "passed": true,
+      "evidence": "modal is the weakest device on the ladder for this problem; Generic 'Are you sure?' modal \u2014 bottom of the list"
+    },
+    {
+      "text": "Explains habituation or click-through blindness as why frequent dialogs stop working",
+      "passed": true,
+      "evidence": "users will click through 'Are you sure?' on reflex \u2014 same muscle memory as dismissing a cookie banner"
+    },
+    {
+      "text": "Recommends reversibility (soft delete with a retention window) as the strongest option",
+      "passed": true,
+      "evidence": "Make it reversible \u2014 soft-delete with a retention window (e.g. 30 days), listed as #1 in preference order"
+    },
+    {
+      "text": "Recommends grace-period undo as a strong low-friction option",
+      "passed": true,
+      "evidence": "Grace-period undo \u2014 delete immediately, show 'Workspace deleted. Undo' for ~10s, listed as #2"
+    },
+    {
+      "text": "Recommends type-the-workspace-name confirmation for the irreversible case",
+      "passed": true,
+      "evidence": "Type-to-confirm \u2014 typing the workspace name, for genuinely high-blast-radius/irreversible cases"
+    },
+    {
+      "text": "If a dialog is retained, requires it to name the workspace and the scale of what is lost",
+      "passed": true,
+      "evidence": "it needs to name the specific thing ('Delete workspace 'Acme Corp' and its 14 members?')"
+    },
+    {
+      "text": "Notes that the server must enforce the deletion rules, not just the UI",
+      "passed": false,
+      "evidence": "No mention of server-side enforcement principle; discusses backend as implementation detail but not as enforcement authority"
+    },
+    {
+      "text": "Gives an explicit preference order rather than an undifferentiated list of ideas",
+      "passed": true,
+      "evidence": "Preference order for destructive actions (strongest first): 1. Make it reversible 2. Grace-period undo 3. Type-to-confirm 4. Generic modal"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

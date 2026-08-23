@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "1af6b213502f",
+  "expectations": [
+    {
+      "text": "States plainly that the recent-charge lookup is not sufficient",
+      "passed": true,
+      "evidence": "No \u2014 the amount-match check is a patch on the symptom, not the hazard, and it will let this recur"
+    },
+    {
+      "text": "Identifies the lookup as a check-then-act race rather than a device",
+      "passed": true,
+      "evidence": "'Look for a recent charge with the same amount before charging' is a check-then-act, not a constraint"
+    },
+    {
+      "text": "Recommends a required idempotency key on the charge path",
+      "passed": true,
+      "evidence": "Pass that key as Stripe's `idempotency_key`; later: Make the idempotency key a **required** argument"
+    },
+    {
+      "text": "Recommends a database unique constraint backing the idempotency key",
+      "passed": true,
+      "evidence": "a unique constraint on `(account_id, idempotency_key)` on the charges table"
+    },
+    {
+      "text": "Separates the defect from the mistake from the underlying system hazard",
+      "passed": true,
+      "evidence": "**Defect:** 340 customers double-charged. **Mistake:** the queue redelivered... **Hazard:** the charge operation has no durable, atomic identity"
+    },
+    {
+      "text": "Locates the hazard as a system property rather than as a worker bug or human error",
+      "passed": true,
+      "evidence": "the charge operation has no durable, atomic identity \u2014 nothing in the system (your code or Stripe) is told"
+    },
+    {
+      "text": "Sweeps for other non-idempotent side effects reachable from a retry",
+      "passed": true,
+      "evidence": "is the payment worker the only consumer on this queue, or do other consumers (emails, webhooks, ledger writes) also assume at-most-once"
+    },
+    {
+      "text": "Treats 'second time this happened' as evidence for pushing to a Control-rung device",
+      "passed": false,
+      "evidence": "Asks 'Why did this happen twice' and reflects on pattern, but does not cite second occurrence as justification for Control-rung choice"
+    },
+    {
+      "text": "Attributes cause to the system, not to any person",
+      "passed": true,
+      "evidence": "**Defect:** 340 customers double-charged. **Mistake:** the queue redelivered... (no attribution to person)"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 9,
+    "pass_rate": 0.8889
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "4999b9f80438",
+  "expectations": [
+    {
+      "text": "States that a written agreement or reminder is not enforcement",
+      "passed": true,
+      "evidence": "they rely on people remembering. Two weeks of decay is the expected outcome"
+    },
+    {
+      "text": "Recommends a pre-commit hook to run the formatter automatically",
+      "passed": true,
+      "evidence": "Pre-commit hook that runs the formatter, not documents it. `pre-commit` / `husky` + `lint-staged` auto-formats staged files"
+    },
+    {
+      "text": "Notes that pre-commit is bypassable with --no-verify and must be backed by a CI check",
+      "passed": false,
+      "evidence": "Does not mention --no-verify"
+    },
+    {
+      "text": "Recommends a type check as a required CI check",
+      "passed": true,
+      "evidence": "compile with `strict`/`noImplicitAny` so untyped new code fails the build"
+    },
+    {
+      "text": "Recommends baselining or ratcheting rather than enforcing across the whole repo at once",
+      "passed": true,
+      "evidence": "Scope type-checking to new/changed lines only if the existing codebase isn't fully typed yet"
+    },
+    {
+      "text": "Notes that branch protection is what makes a CI check actually required",
+      "passed": false,
+      "evidence": "Not mentioned"
+    },
+    {
+      "text": "Recommends the failure message tell the developer how to fix it",
+      "passed": false,
+      "evidence": "Not mentioned"
+    },
+    {
+      "text": "Does not primarily recommend rewriting CONTRIBUTING.md, more reminders, or more discipline",
+      "passed": true,
+      "evidence": "No such recommendations made"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "total": 8,
+    "pass_rate": 0.625
+  }
+}

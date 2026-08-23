@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "82f963d241f9",
+  "expectations": [
+    {
+      "text": "Pushes back on the 'are you sure?' modal as the primary fix",
+      "passed": true,
+      "evidence": "Hold on \u2014 you actually evaluated this already... The recommendation was soft-delete + 30-day trash + undo toast instead"
+    },
+    {
+      "text": "Explains habituation or click-through blindness as why frequent dialogs stop working",
+      "passed": true,
+      "evidence": "users ignore frequent modals"
+    },
+    {
+      "text": "Recommends reversibility (soft delete with a retention window) as the strongest option",
+      "passed": true,
+      "evidence": "soft-delete + 30-day trash + undo toast instead, which fixes the problem"
+    },
+    {
+      "text": "Recommends grace-period undo as a strong low-friction option",
+      "passed": true,
+      "evidence": "undo toast"
+    },
+    {
+      "text": "Recommends type-the-workspace-name confirmation for the irreversible case",
+      "passed": false,
+      "evidence": "Not mentioned"
+    },
+    {
+      "text": "If a dialog is retained, requires it to name the workspace and the scale of what is lost",
+      "passed": false,
+      "evidence": "No dialog retained; condition not met"
+    },
+    {
+      "text": "Notes that the server must enforce the deletion rules, not just the UI",
+      "passed": false,
+      "evidence": "Not mentioned"
+    },
+    {
+      "text": "Gives an explicit preference order rather than an undifferentiated list of ideas",
+      "passed": true,
+      "evidence": "soft-delete approach... let's unblock those instead of stepping back to the modal"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "total": 8,
+    "pass_rate": 0.625
+  }
+}

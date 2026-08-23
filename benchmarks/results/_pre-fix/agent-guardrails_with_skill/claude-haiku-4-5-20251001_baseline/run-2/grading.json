@@ -1,0 +1,49 @@
+{
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "\"CLAUDE.md is advisory, not enforceable\""
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "\"Since files alone don't work, use **settings.json deny rules**\""
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": true,
+      "evidence": "JSON block with \"deny\": [\"git push --force\", \"git push -f\"] and \"deny\": [\"src/generated/**\"]"
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": false,
+      "evidence": "No mention of PreToolUse hooks"
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": false,
+      "evidence": "No mention of deny message content or guidance"
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": false,
+      "evidence": "No mention of verification or testing"
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": false,
+      "evidence": "No mention of committing or team-wide application"
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": false,
+      "evidence": "Discusses degradation but not specifically why caps/repetition fail"
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "total": 8,
+    "pass_rate": 0.375
+  }
+}

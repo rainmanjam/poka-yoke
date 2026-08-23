@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "9b2ce0ce8a1c",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Handler function, Prisma schema, and SQL migration provided inline"
+    },
+    {
+      "text": "Requires an idempotency key as a parameter rather than making it optional",
+      "passed": true,
+      "evidence": "const idempotencyKey = req.header('Idempotency-Key'); if (!idempotencyKey) return 400 (header is required)"
+    },
+    {
+      "text": "Backs idempotency with a database unique constraint, not application logic alone",
+      "passed": true,
+      "evidence": "idempotencyKey String @unique in schema and CREATE UNIQUE INDEX in migration"
+    },
+    {
+      "text": "Uses distinct types for the identifiers rather than bare strings for both order and refund ids",
+      "passed": false,
+      "evidence": "orderId: z.string().min(1) is plain string, no branded types defined or used anywhere"
+    },
+    {
+      "text": "Handles money as integer minor units rather than a float",
+      "passed": true,
+      "evidence": "amountCents: z.number().int().positive()"
+    },
+    {
+      "text": "Validates the refund amount server-side against the order rather than trusting the caller",
+      "passed": true,
+      "evidence": "if (amountCents > order.totalCents) { return res.status(400)... }"
+    },
+    {
+      "text": "Scopes the write so one tenant or user cannot refund another's order",
+      "passed": true,
+      "evidence": "findFirst with where: { id: orderId, tenantId } scopes query to current tenant"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": false,
+      "evidence": "Mistake-Proofing section exists but uses scattered language like 'makes impossible' without a closing list; no concluding summary of impossible misuses"
+    },
+    {
+      "text": "Names at least one thing it deliberately left possible and why",
+      "passed": true,
+      "evidence": "Explicitly states concurrent partial refunds left possible 'to keep endpoint logic straightforward; we rely on Stripe as ultimate source of truth'"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 9,
+    "pass_rate": 0.7778
+  }
+}

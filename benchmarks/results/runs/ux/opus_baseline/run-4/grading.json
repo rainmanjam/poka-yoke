@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "82f963d241f9",
+  "expectations": [
+    {
+      "text": "Pushes back on the 'are you sure?' modal as the primary fix",
+      "passed": true,
+      "evidence": "\"Honest answer: no, I'd push back on that one. It's the weakest device available for this problem\""
+    },
+    {
+      "text": "Explains habituation or click-through blindness as why frequent dialogs stop working",
+      "passed": true,
+      "evidence": "\"But a generic confirm is dismissed reflexively within about two weeks of shipping\""
+    },
+    {
+      "text": "Recommends reversibility (soft delete with a retention window) as the strongest option",
+      "passed": true,
+      "evidence": "\"soft-delete with a ~30-day trash, plus an 'Undo' toast right after the click\""
+    },
+    {
+      "text": "Recommends grace-period undo as a strong low-friction option",
+      "passed": true,
+      "evidence": "\"plus an 'Undo' toast right after the click\""
+    },
+    {
+      "text": "Recommends type-the-workspace-name confirmation for the irreversible case",
+      "passed": true,
+      "evidence": "\"use type-to-confirm (GitHub's repo-deletion pattern) rather than a yes/no\""
+    },
+    {
+      "text": "If a dialog is retained, requires it to name the workspace and the scale of what is lost",
+      "passed": false,
+      "evidence": "Mentions what would be better in a dialog as a critique of the approach, not as a requirement if one is retained: 'A dialog reading...would at least be doing real inspection' but does not frame this as a requirement conditional on keeping a dialog"
+    },
+    {
+      "text": "Notes that the server must enforce the deletion rules, not just the UI",
+      "passed": false,
+      "evidence": "No explicit mention of server-side enforcement requirement"
+    },
+    {
+      "text": "Gives an explicit preference order rather than an undifferentiated list of ideas",
+      "passed": true,
+      "evidence": "\"There's a preference order for destructive actions, strongest first: make it reversible \u2192 grace-period undo \u2192 proportional action (type the name) \u2192 specific-consequence dialog\""
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

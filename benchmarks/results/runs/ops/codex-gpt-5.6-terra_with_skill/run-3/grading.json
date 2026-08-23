@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": true,
+      "evidence": "During rollout, old pods, workers, or a rollback version may still read that column and fail once it disappears"
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "Split it: deploy the read-removal code first while retaining the column, then drop the column in a later, explicitly approved migration"
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": true,
+      "evidence": "The irreversible step is dropping `legacy_email`; recovery requires a tested snapshot/PITR restore, which you haven't established"
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": true,
+      "evidence": "A code rollback cannot restore a dropped column"
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "Friday is fine only if the code rollout has a fast rollback owner available"
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": false,
+      "evidence": "Recommends 'deployment gate' and 'verified restore path' but does not explicitly mention a CI gate, only implicit conditional on 'if it contains no `DROP`'"
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "Green CI and passing tests are useful detection, but they do not make the mixed-version rollout safe"
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "merge/deploy the code-only phase [reversible] vs hold the column drop for its own release [irreversible]"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

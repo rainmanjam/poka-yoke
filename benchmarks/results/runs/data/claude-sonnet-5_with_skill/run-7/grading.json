@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "No \u2014 that test would have stayed green for the entire three weeks."
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "`COALESCE(..., 0)` erases that distinction at the exact point where it mattered most."
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": true,
+      "evidence": "Reconciliation check: warehouse revenue sum vs. source-system total, blocking promotion to the published table"
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": true,
+      "evidence": "blocking promotion to the published table"
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "Data contract with the upstream team on that column (schema + rename = breaking change, versioned)"
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "Null-rate assertion on the joined column *before* the coalesce \u2014 fail if nulls exceed a threshold"
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": false,
+      "evidence": "Response discusses failure modes and devices but does not explicitly connect three weeks of non-detection to a detection gap requiring separate fix."
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": true,
+      "evidence": "An empty-table check and a wrong-total check are different failure modes; you built a device for a failure mode that didn't happen."
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

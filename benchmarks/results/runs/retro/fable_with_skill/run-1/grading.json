@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "1af6b213502f",
+  "expectations": [
+    {
+      "text": "States plainly that the recent-charge lookup is not sufficient",
+      "passed": true,
+      "evidence": "\"Short answer: no.\" Opens with explicit statement"
+    },
+    {
+      "text": "Identifies the lookup as a check-then-act race rather than a device",
+      "passed": true,
+      "evidence": "\"Check-then-act race (catalog M5). Timeout \u2192 redelivery \u2192 the original attempt is still in flight at Stripe...\""
+    },
+    {
+      "text": "Recommends a required idempotency key on the charge path",
+      "passed": true,
+      "evidence": "\"Required idempotency key on `charge()` \u2014 no default; derive from the message/order ID\""
+    },
+    {
+      "text": "Recommends a database unique constraint backing the idempotency key",
+      "passed": true,
+      "evidence": "\"`payment_attempts(order_id, key) UNIQUE`, key reserved in the same transaction as the charge record\""
+    },
+    {
+      "text": "Separates the defect from the mistake from the underlying system hazard",
+      "passed": true,
+      "evidence": "Defect/Mistake/Hazard section explicitly lists all three with clear distinctions"
+    },
+    {
+      "text": "Locates the hazard as a system property rather than as a worker bug or human error",
+      "passed": true,
+      "evidence": "\"Hazard: `charge()` can be called without an idempotency key, and nothing \u2014 not the type, not Stripe, not your database \u2014 refuses it.\""
+    },
+    {
+      "text": "Sweeps for other non-idempotent side effects reachable from a retry",
+      "passed": true,
+      "evidence": "\"Class sweep: Grep for every external mutation reachable from a retry, queue consumer, or cron: refunds, emails, webhooks, payouts, invoice creation\""
+    },
+    {
+      "text": "Treats 'second time this happened' as evidence for pushing to a Control-rung device",
+      "passed": true,
+      "evidence": "\"'Second time this has happened' is the evidence: the first fix also patched a path, not the property\""
+    },
+    {
+      "text": "Attributes cause to the system, not to any person",
+      "passed": true,
+      "evidence": "\"The system *permitted* a retry to become a second charge\" \u2014 attributes to system property, not human error"
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

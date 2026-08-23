@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": true,
+      "evidence": "Swappable arguments everywhere. transfer(to, from, amt) moves money the wrong way and every type checks."
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "Finding 3: retry double-charges... A timeout is indistinguishable from a decline, and the charge may already have succeeded \u2014 so the retry charges again... No idempotency key."
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": true,
+      "evidence": "Finding 3: catch { return null } collapses 'declined' and 'timed out after the card was charged' into one falsy value"
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": true,
+      "evidence": "Finding 2: Plus: currency is never compared (USD into EUR just adds), and `balance: number` is a float."
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": false,
+      "evidence": "Finding 4 describes the default-argument issue and count mismatch but does not explicitly mention the SQL interpolation risk in $executeRawUnsafe."
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "Finding 5: updateSubscription (line 67) \u2014 typo \"cancelled\" with two Ls... Writes to the DB fine, switch has no `default`, falls through silently."
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": true,
+      "evidence": "Finding 1: handleWebhook (line 93) \u2014 unsigned, unvalidated, moves money... JSON.parse into `any`, and event.data.customer/event.data.amount go straight into a charge."
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": false,
+      "evidence": "Uses outcome-focused phrasing like 'moves money backwards', 'destroys money' rather than consistently framing as actionable mistakes. Some findings (Finding 1: Anyone who can reach) are action-framed but others are not."
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "Ranking prioritizes: 1. handleWebhook (security/money), 2. transfer (money), 3. chargeCustomer (money), 4. purgeCanceledAccounts (irreversible), 5. updateSubscription (data), 6. swappable arguments (cosmetic), 7. floating promise."
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": false,
+      "evidence": "Response provides brief summaries but lacks detailed concrete devices for all findings. It asks questions about idempotency scope and suggests general fixes but doesn't fully flesh out device implementations like other responses."
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "File write wasn't permitted, so here's the audit inline."
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 11,
+    "pass_rate": 0.7273
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "1af6b213502f",
+  "expectations": [
+    {
+      "text": "States plainly that the recent-charge lookup is not sufficient",
+      "passed": true,
+      "evidence": "No \u2014 the amount-match check is a patch on the symptom, not a fix for the hazard"
+    },
+    {
+      "text": "Identifies the lookup as a check-then-act race rather than a device",
+      "passed": true,
+      "evidence": "TOCTOU race. 'Look for a recent charge with the same amount, then charge' is two steps with a gap between them."
+    },
+    {
+      "text": "Recommends a required idempotency key on the charge path",
+      "passed": true,
+      "evidence": "make a charge require an idempotency key, derived deterministically from the source event (order/invoice ID, not random), passed straight to Stripe's own idempotencyKey param"
+    },
+    {
+      "text": "Recommends a database unique constraint backing the idempotency key",
+      "passed": true,
+      "evidence": "Back it with a DB-level unique constraint (customer_id + idempotency_key or order_id on your own charges table)"
+    },
+    {
+      "text": "Separates the defect from the mistake from the underlying system hazard",
+      "passed": true,
+      "evidence": "Defect: 340 customers double-charged. Mistake: the redelivered message called the charge function a second time. Hazard: the charge call has no idempotency key"
+    },
+    {
+      "text": "Locates the hazard as a system property rather than as a worker bug or human error",
+      "passed": true,
+      "evidence": "Frames missing idempotency key as a system design issue, references fixture to show it's structural, not human error"
+    },
+    {
+      "text": "Sweeps for other non-idempotent side effects reachable from a retry",
+      "passed": true,
+      "evidence": "The same hazard (non-idempotent handler behind a redelivering queue) is available anywhere a consumer has side effects and no dedupe key: Every other queue consumer with side effects (emails, webhooks, ledger writes)"
+    },
+    {
+      "text": "Treats 'second time this happened' as evidence for pushing to a Control-rung device",
+      "passed": true,
+      "evidence": "On 'second time': worth checking directly \u2014 did the first incident also get a detection-rung fix... If so, that's the actual pattern repeating, not just double-charging specifically."
+    },
+    {
+      "text": "Attributes cause to the system, not to any person",
+      "passed": true,
+      "evidence": "Attributes to system design (missing idempotency key, no database constraint)"
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

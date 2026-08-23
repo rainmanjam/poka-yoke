@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "No. The test you added would have passed every day of those three weeks. Your test is green on the exact failure it was written for."
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "`COALESCE(..., 0)` turned every null into a plausible number. `COALESCE(x, 0)` on a money column is `except: pass` for data."
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": true,
+      "evidence": "Assert the **total agrees with source**: `SUM(revenue)` in the warehouse within a tolerance of the same total pulled directly from the upstream system"
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": true,
+      "evidence": "Build to staging \u2192 run checks \u2192 promote only on pass. That ordering is the structural change"
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "**3. The upstream rename arrived as a surprise.** validate the upstream schema on ingest against the column list you depend on, and fail before the join runs."
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "Assert the **join-miss rate**: count rows where the right side is null, divide by total, fail above a small threshold"
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": true,
+      "evidence": "**4. The check must be able to stop the dashboard.** If these run after publication and email someone, bad numbers still reach finance."
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": false,
+      "evidence": "That's the most dangerous kind of check: one that cannot fail \u2014 this explains why a test never failing is bad, but does not compare silent-wrong to failed-pipeline as mechanisms."
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

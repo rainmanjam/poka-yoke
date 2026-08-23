@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "31eb11dca414",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Full DocumentsTable component with all required state, API calls, and subcomponents"
+    },
+    {
+      "text": "Produces actual working component code rather than only a list of recommendations",
+      "passed": true,
+      "evidence": "Complete runnable React component with full hook logic and event handling"
+    },
+    {
+      "text": "Makes the destructive action recoverable rather than relying on a confirmation dialog alone",
+      "passed": false,
+      "evidence": "Archive has undo via undoExpiresAt. Delete has only typing confirmation: 'if (action === \"archive\" && result.undoExpiresAt)' indicates no undo for delete, only confirmation dialog protection"
+    },
+    {
+      "text": "Shows the count of affected items before the action is taken",
+      "passed": true,
+      "evidence": "DeleteDialog prompts 'Delete {count.toLocaleString()} document...' and requires typing 'DELETE ${count}'"
+    },
+    {
+      "text": "Distinguishes select-all-on-page from select-all-matching rather than conflating them",
+      "passed": true,
+      "evidence": "SelectionState discriminated: mode 'ids' vs 'allMatching'. Explicit selectAllMatching() function and separate UI messages for each state"
+    },
+    {
+      "text": "Separates the destructive action from the benign one visually or spatially",
+      "passed": true,
+      "evidence": "Archive: bg-slate-900 (filled). Delete: text-red-700 hover:bg-red-50 (outlined). Visually distinct"
+    },
+    {
+      "text": "Does not make the destructive action the default focus or primary button",
+      "passed": true,
+      "evidence": "Cancel button has autoFocus in DeleteDialog, not delete button. Archive is primary action in bar, delete is secondary"
+    },
+    {
+      "text": "Notes that the server must enforce the rules, not just the UI",
+      "passed": true,
+      "evidence": "'the API should enforce authorization, query scoping, and `expectedTotal` atomically'"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": false,
+      "evidence": "Closes with enforcement note about idempotency and query scoping but does not enumerate specific prevented misuse scenarios"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 9,
+    "pass_rate": 0.7778
+  }
+}

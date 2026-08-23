@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": true,
+      "evidence": "\"Call `transfer(to, from, amt)` \u2014 two adjacent `string`s, compiles fine. Device: Branded `AccountId`, a single object parameter\" with code example"
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "\"Stripe succeeded, the response was lost, the retry charges again. No idempotency key. Device: Require an idempotency key, never catch-and-null\""
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": true,
+      "evidence": "\"failure returns `null`\" in title and \"And on failure the function returns `null`, so the caller gets a falsy 'charge' and no error \u2014 `handleWebhook` ignores the return entirely\""
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": true,
+      "evidence": "\"Also `amountCents: number` accepts `19.99` (dollars) with no complaint. Device: Options object, `Cents` branded integer type validated at the boundary\""
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "\"Also string-interpolated SQL (`$executeRawUnsafe`). Device: use the parameterised client; delete by the IDs you just fetched, not a second predicate\" with code example"
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "\"The DB row gets the string anyway; the switch matches nothing; features stay whatever they were. Device: `status: \"active\" | \"canceled\" | ...` union, exhaustive switch with `never` default\""
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": true,
+      "evidence": "\"No signature check, `JSON.parse` of untrusted input, `event.data.amount` typed `any`. Device: `stripe.webhooks.constructEvent(body, sig, secret)` before anything else\""
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "\"Call `purgeCanceledAccounts()`\", \"Call `transfer(to, from, amt)`\", \"Pass `retry = true`\", \"Accept a POST body from anyone\" \u2014 all named as actions"
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "\"the top three (unbounded raw-SQL purge, non-atomic swappable transfer, idempotency-free retry) are the money-losers\"; items 1-4 money-related, items 5-7 less critical"
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": true,
+      "evidence": "Each finding includes Device section with concrete proposals and multiple code block examples showing exact implementation approach"
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "\"Per the audit skill I haven't edited anything; if you do want a real module hardened along these lines, point me at it and I'll apply the devices\""
+    }
+  ],
+  "summary": {
+    "passed": 11,
+    "total": 11,
+    "pass_rate": 1.0
+  }
+}

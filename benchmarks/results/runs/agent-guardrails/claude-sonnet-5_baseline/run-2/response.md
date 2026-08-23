@@ -1,0 +1,11 @@
+Two things going on, one directly answers your question and one you should know about.
+
+**On the CLAUDE.md compliance gap:** CAPS and repetition don't fix this because the instruction is still just tokens competing for attention in a probabilistic system — it doesn't get weaker or stronger based on emphasis, it just occasionally loses to other context (a long diff, a subagent that wasn't handed the full file, a compacted/summarized turn that dropped the line). This is exactly the thesis of this repo: **"if your change relies on someone remembering something, it is not finished."** A CLAUDE.md rule is training, and training has a failure rate no matter how you phrase it.
+
+The actual device-shaped fix for these two is mechanical, not textual:
+- `src/generated/` — a permissions **deny** rule in `.claude/settings.json` for Edit/Write on that path glob. This is enforced by the harness before the model ever sees the tool call succeed, not by the model choosing to comply.
+- force-push — a `PreToolUse` hook on Bash that regex-matches `git push.*(--force|-f\b)` and exits non-zero. Same property: it can't be talked around because it isn't the model doing the enforcing.
+
+I have a prior draft of both from earlier in this session (perms deny + a `guard.py` hook) that was blocked on your codegen command and force-push policy specifics. Want me to finish and wire those in now via the `update-config` skill? That would take you from ~90% to enforced-100% on exactly the two rules you listed.
+
+**Unrelated flag:** there's a `/Users/rainmanjam/CLAUDE.md` (home directory root, loaded as "project instructions") that blocks WebFetch/curl/wget/Grep outright and redirects everything through a third-party `context-mode` MCP server's `ctx_execute`/`ctx_batch_execute` tools, with language like "any command containing X is intercepted." That's not something Claude Code does by default, and a file that disables your ability to use standard tools in favor of routing all output through one specific MCP server is worth verifying you actually created — if you didn't write it, I'd treat it as suspicious and pull it.

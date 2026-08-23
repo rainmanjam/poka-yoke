@@ -1,0 +1,252 @@
+# The repo's own poka-yoke: a broken manifest or a regressed detector rule cannot reach main.
+#
+# Mark all three jobs as required in branch protection. Without that, this workflow is
+# advisory and the device is inert.
+
+name: validate
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  # Callable, so the release workflow re-runs exactly these checks rather than a second
+  # copy of them that can drift into passing when this one would not.
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  manifests:
+    name: plugin manifests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: "22"
+      - run: npm install -g @anthropic-ai/claude-code
+      - name: Validate marketplace catalog
+        run: claude plugin validate . --strict
+      - name: Validate plugin
+        run: claude plugin validate plugins/poka-yoke --strict
+
+      # poka-yoke: blocks nine platform manifests drifting apart [control]
+      #
+      # Each manifest stays individually valid while disagreeing with the others: the same
+      # shape as the marketplace rename that broke the documented install command. The
+      # Claude manifest is the source of truth; everything else is generated from it.
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.12"
+      - name: Platform manifests match the source of truth
+        run: python3 scripts/sync_platform_manifests.py --check
+
+  detector:
+    name: hazard detector
+    runs-on: ubuntu-latest
+    # The README claims Python 3.9+. That was asserted, never run: every job pinned 3.12,
+    # so the floor was a hope. Testing the oldest and newest supported versions makes the
+    # claim a fact and catches syntax that quietly requires something newer.
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.12"]
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "${{ matrix.python-version }}"
+      - name: Detector, guard-hook and suggest-hook tests
+        run: python3 tests/test_detector.py
+      - name: Detector runs clean on this repo
+        run: python3 plugins/poka-yoke/scripts/detect_hazards.py --paths plugins/ --severity high
+
+      # poka-yoke: blocks a device registry that has drifted from the code [control]
+      # The registry is generated from marker comments. Without this it could silently go
+      # stale: the exact failure the registry replaced a hand-maintained file to avoid.
+      - name: Device registry matches the code
+        run: python3 plugins/poka-yoke/scripts/device_registry.py --check --write docs/poka-yoke/registry.md
+
+  skills:
+    name: skill hygiene
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.12"
+      # poka-yoke: blocks a skill with no name/description or over the size budget [control]
+      - name: Every skill has name and description, and stays under the size budget
+        run: |
+          fail=0
+          for f in plugins/poka-yoke/skills/*/SKILL.md; do
+            grep -q '^name:' "$f"        || { echo "::error file=$f::missing 'name:' in frontmatter"; fail=1; }
+            grep -q '^description:' "$f" || { echo "::error file=$f::missing 'description:'";        fail=1; }
+            lines=$(wc -l < "$f")
+            if [ "$lines" -gt 500 ]; then
+              echo "::error file=$f::$lines lines, split into references/ (budget is 500)"
+              fail=1
+            fi
+          done
+          exit $fail
+      - name: Skill directory name matches its frontmatter name
+        run: |
+          fail=0
+          for f in plugins/poka-yoke/skills/*/SKILL.md; do
+            dir=$(basename "$(dirname "$f")")
+            name=$(grep -m1 '^name:' "$f" | sed 's/^name:[[:space:]]*//')
+            [ "$dir" = "$name" ] || { echo "::error file=$f::dir '$dir' != name '$name'"; fail=1; }
+          done
+          exit $fail
+      # poka-yoke: blocks an action pinned to a mutable label [control]
+      #
+      # `@v5` runs whatever that label points at today. Whoever controls the label controls
+      # what executes here, and no diff in this repository would show it. Offline, so it
+      # gates every PR without depending on the network.
+      - name: Every GitHub Action is pinned to a commit SHA
+        run: python3 scripts/check_action_pins.py --offline
+
+      # poka-yoke: blocks a skill description that stops carrying its own vocabulary [control]
+      #
+      # The README is honest that these skills do not reliably auto-trigger, and for a long
+      # time that was an observation nobody could act on, description edits were made on
+      # instinct and their effect was invisible. This scores every skill against the prompts
+      # a user would actually send. It found `guardrails` and `authz` losing to other skills
+      # on their own canonical requests; both were missing the words the request uses.
+      #
+      # The floor is a ratchet set to what the repository currently achieves. Lowering it is
+      # a deliberate act, not a thing that happens quietly while descriptions drift.
+      - name: Skill descriptions still route to the right skill
+        run: python3 scripts/trigger_eval.py --min-rank1 100
+
+      # poka-yoke: blocks a description too long to survive listing truncation [control]
+      # poka-yoke: blocks a skill that no README row documents [control]
+      - name: Descriptions fit the listing budget, and the README documents every skill
+        run: python3 tests/test_skill_listing.py
+
+      # poka-yoke: blocks a skill that only works on one runtime [control]
+      #
+      # Replaces an earlier check that only verified ${CLAUDE_PLUGIN_ROOT} references
+      # resolved. That check was correct but too narrow: it could not see a path variable
+      # that was WRONG to use at all, a script path that does not resolve, or a broken
+      # cross-document link. Those break silently on the runtimes we cannot test from
+      # here, and look fine on the one we can.
+      - name: Skills stay portable across every supported runtime
+        run: python3 tests/test_portability.py
+
+  templates:
+    # poka-yoke: blocks shipping a device template that does not work [control]
+    #
+    # These are files people copy into their own repositories and rely on. Nothing exercised
+    # them until now, and both shipped broken: the migration guard split filenames on spaces
+    # (so a spaced path produced an empty diff, which the gate read as "nothing destructive")
+    # and the pre-commit hook named a detector path no installer would have.
+    name: device templates are valid
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.12"
+
+      - name: The shipped GitHub Actions gate lints clean
+        uses: reviewdog/action-actionlint@dbe5299849118fd6f099ba563d263d770955a64a # v1
+        with:
+          actionlint_flags: plugins/poka-yoke/assets/devices/github-actions/poka-yoke-gates.yml
+          fail_level: any
+          reporter: local
+
+      - name: The shipped pre-commit config is valid
+        run: |
+          python3 -m pip install --quiet pre-commit
+          pre-commit validate-config \
+            plugins/poka-yoke/assets/devices/pre-commit/.pre-commit-config.yaml
+
+      - name: Guard hook templates behave
+        run: python3 tests/test_detector.py
+
+  cited-rules:
+    # poka-yoke: blocks a skill recommending a linter rule that does not exist [control]
+    #
+    # Rule names are the most perishable thing in this repository, linters rename and
+    # deprecate them, and a skill that confidently recommends a dead rule is giving bad
+    # advice with full confidence. Nothing here could notice, so ask the linters instead
+    # of remembering. --require makes a missing tool a failure rather than a quiet skip,
+    # which is the difference between a Control and a Warning.
+    name: cited linter rules still exist
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: "22"
+      - uses: dtolnay/rust-toolchain@4360b52568e2003a75bf9bc1d59f33a8e3fc893c # stable
+        with:
+          components: clippy
+
+      - name: Install the linters that own the cited rules
+        run: |
+          set -euo pipefail
+          python3 -m pip install --quiet ruff
+          npm install --no-save --silent eslint @typescript-eslint/eslint-plugin eslint-plugin-jest
+          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh \
+            | sh -s -- -b "$(go env GOPATH)/bin" 2>/dev/null || echo "golangci-lint install skipped"
+          echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
+
+      - name: Every cited rule exists in the linter that owns it
+        run: |
+          python3 scripts/check_cited_rules.py \
+            --require ruff,clippy,eslint,typescript-eslint,eslint-plugin-jest,golangci-lint
+
+  install:
+    # poka-yoke: blocks a release whose documented install command does not work [control]
+    #
+    # This exists because the marketplace was renamed and the README, the manifest and the
+    # published repo drifted apart: `/plugin marketplace add` registered under the OLD name,
+    # so the documented `install poka-yoke@poka-yoke` failed with "marketplace not found".
+    # Schema validation passed the whole time: every file was individually valid, they just
+    # disagreed with each other and with the docs. Only actually installing catches that.
+    name: documented install actually works
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: "22"
+      - run: npm install -g @anthropic-ai/claude-code
+
+      - name: Names in the manifests, the README and the plugin agree
+        run: |
+          MKT=$(jq -r .name .claude-plugin/marketplace.json)
+          PLG=$(jq -r .name plugins/poka-yoke/.claude-plugin/plugin.json)
+          # the install line the README tells people to run
+          DOC=$(grep -oE '/plugin install [a-z0-9-]+@[a-z0-9-]+' README.md | head -1 | awk '{print $3}')
+          DOC_PLG=${DOC%@*}; DOC_MKT=${DOC#*@}
+          echo "manifest: $PLG@$MKT   README: $DOC_PLG@$DOC_MKT"
+          [ "$MKT" = "$DOC_MKT" ] || { echo "::error::marketplace name '$MKT' != README '$DOC_MKT'"; exit 1; }
+          [ "$PLG" = "$DOC_PLG" ] || { echo "::error::plugin name '$PLG' != README '$DOC_PLG'"; exit 1; }
+
+      - name: Install it the way the README says, and check what lands
+        run: |
+          set -e
+          MKT=$(jq -r .name .claude-plugin/marketplace.json)
+          PLG=$(jq -r .name plugins/poka-yoke/.claude-plugin/plugin.json)
+          claude plugin marketplace add ./
+          claude plugin install "$PLG@$MKT"
+          claude plugin details "$PLG" > /tmp/details.txt
+          cat /tmp/details.txt
+
+          # every skill directory must actually be installed, by name
+          fail=0
+          for d in plugins/poka-yoke/skills/*/; do
+            s=$(basename "$d")
+            grep -q "\b$s\b" /tmp/details.txt || { echo "::error::skill '$s' not installed"; fail=1; }
+          done
+          dirs=(plugins/poka-yoke/skills/*/)
+          n_disk=${#dirs[@]}
+          n_inst=$(grep -oE 'Skills \(([0-9]+)\)' /tmp/details.txt | grep -oE '[0-9]+')
+          [ "$n_disk" = "$n_inst" ] || { echo "::error::$n_disk skill dirs but $n_inst installed"; fail=1; }
+          exit $fail

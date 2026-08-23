@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": true,
+      "evidence": "For however long your rollout takes, old pods still reading `legacy_email` are hitting a schema where it no longer exists."
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "Today: deploy the code that stops reading `legacy_email`. Next week, after it's baked: deploy the `DROP` alone, with zero code changes in it."
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": true,
+      "evidence": "`DROP COLUMN legacy_email` is irreversible. Nothing in your deploy pipeline restores it."
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": true,
+      "evidence": "Right now: rollback is broken. Revert the code and the reverted version reads a column that no longer exists \u2014 so your escape hatch is also an outage."
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "A change that reverts in two minutes is genuinely fine on a Friday afternoon. This one currently has no revert, and that's what makes the timing question real."
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": true,
+      "evidence": "the `migration-safety` job: blocks +DROP TABLE|COLUMN, TRUNCATE, ALTER ... DROP in changed migrations"
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "Friday isn't the problem. The co-deploy is. Ship the code today, drop the column next week."
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "You're doing expand/contract with the contract fused to the read-switch [and separates] the code that stops reading (reversible) from the DROP (irreversible)."
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

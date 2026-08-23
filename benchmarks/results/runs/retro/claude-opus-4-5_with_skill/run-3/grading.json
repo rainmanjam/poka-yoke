@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "1af6b213502f",
+  "expectations": [
+    {
+      "text": "States plainly that the recent-charge lookup is not sufficient",
+      "passed": true,
+      "evidence": "\"Your fix is not enough \u2014 it's a heuristic that can fail in both directions.\" and a dedicated \"Why your fix is insufficient\" section."
+    },
+    {
+      "text": "Identifies the lookup as a check-then-act race rather than a device",
+      "passed": true,
+      "evidence": "\"**Race condition** | Two workers check simultaneously before either writes \u2192 both charge\" \u2014 the check-then-act window is named explicitly, and it is classed as a heuristic/warning rather than a device."
+    },
+    {
+      "text": "Recommends a required idempotency key on the charge path",
+      "passed": true,
+      "evidence": "\"// AFTER \u2014 control: required key\\nfunction charge(customerId: CustomerId, amount: Money, idempotencyKey: IdempotencyKey)\" plus \"Make the parameter required\"."
+    },
+    {
+      "text": "Recommends a database unique constraint backing the idempotency key",
+      "passed": true,
+      "evidence": "\"ALTER TABLE charges ADD CONSTRAINT uq_charge_idempotency UNIQUE (customer_id, idempotency_key);\""
+    },
+    {
+      "text": "Separates the defect from the mistake from the underlying system hazard",
+      "passed": true,
+      "evidence": "\"**Defect**: 340 customers charged twice / **Mistake**: The retry path called charge again... / **Hazard**: The charge operation has no idempotency enforcement\""
+    },
+    {
+      "text": "Locates the hazard as a system property rather than as a worker bug or human error",
+      "passed": true,
+      "evidence": "\"**Root hazard**: The system permits charging without an idempotency key, and nothing at the database or Stripe level rejects the duplicate.\" Queue redelivery is framed as \"at-least-once, as designed\"."
+    },
+    {
+      "text": "Sweeps for other non-idempotent side effects reachable from a retry",
+      "passed": true,
+      "evidence": "\"**Audit every queue consumer** \u2014 anywhere a retry can reach a charge, email, webhook, or external mutation needs an idempotency key\" and an offer to \"sweep your codebase for other non-idempotent retry paths\" \u2014 the recommendation names concrete other side-effect classes, though the sweep itself is proposed rather than performed."
+    },
+    {
+      "text": "Treats 'second time this happened' as evidence for pushing to a Control-rung device",
+      "passed": true,
+      "evidence": "\"**This is the second time** \u2014 that's the clearest signal you have a rung-0 fix masquerading as a control... The fact that it happened again means the previous fix also left the hazard open.\" \u2014 used to justify moving to the Control rung."
+    },
+    {
+      "text": "Attributes cause to the system, not to any person",
+      "passed": true,
+      "evidence": "No person or team is blamed anywhere; causes are stated as \"no idempotency key passed to Stripe\", \"no database constraint prevents duplicate charges\", \"Caller cannot forget\" framed as a design property."
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

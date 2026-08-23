@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "5b62450c21d2",
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "Caps and repetition can't fix a rung-zero device, because instructions degrade under long context, compaction, and subagents that never read the file at all"
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "Both rules are enforceable at the tool boundary, so stop writing them down and install them...Then **delete both rules from CLAUDE.md**"
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": true,
+      "evidence": "Provides JSON with Edit/Write deny patterns for src/generated/"
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": true,
+      "evidence": "Wire it as a `PreToolUse` hook on `Bash` with reference to guard_dangerous_commands.py:31"
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": true,
+      "evidence": "A bare refusal produces a workaround, usually worse...message should complete: Files under `src/generated/` are overwritten by codegen \u2014 Instead: ___"
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": true,
+      "evidence": "Prove it fires with test cases for --force, --force-with-lease, and file editing; Untested hooks fail open more often than people expect"
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": true,
+      "evidence": "Commit it. `.claude/settings.json`, in git \u2014 not `settings.local.json`. A rule that lives on one machine has the same failure mode as a rule that lives in prose"
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": true,
+      "evidence": "Caps and repetition can't fix a rung-zero device, because instructions degrade under long context, compaction, and subagents that never read the file at all"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

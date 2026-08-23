@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": true,
+      "evidence": "Deploys aren't atomic \u2014 during a rolling deploy, old pods running the previous code will still try to read legacy_email from a table where it no longer exists. That's a hard crash on read."
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "The standard device here is expand/contract: ship the code change first, confirm in production that nothing reads the column anymore, then drop the column in its own deploy."
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": true,
+      "evidence": "DROP COLUMN legacy_email is the irreversible step. Once it runs, the data is gone unless you can restore from a backup/PITR snapshot."
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": true,
+      "evidence": "For the code-only change, rollback is a redeploy \u2014 safe any time. For the DROP, 'rollback' isn't a redeploy, it's a database restore, which is not a Friday-afternoon-with-skeleton-crew operation."
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "Friday-afternoon-with-skeleton-crew operation \u2014 directly references reduced staffing availability."
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": false,
+      "evidence": "Offers to sketch a CI guard conditionally ('If you want, I can also sketch...') but does not recommend adding one."
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "Straight answer: no, not as one PR, and not on a Friday afternoon."
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "Removing the three read sites \u2192 fully reversible. DROP COLUMN \u2192 irreversible, and rollback means restoring from backup, not git revert."
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "assertions_sha": "bcf79cb43709",
+  "expectations": [
+    {
+      "text": "Flags the nested comments and attachments resolvers as unscoped by tenant",
+      "passed": true,
+      "evidence": "\"The GraphQL nested resolvers (`comments`, `attachments`, `author`) don't explicitly check `tenantId`\""
+    },
+    {
+      "text": "Flags updateDocument for scoping on id alone without a tenant constraint",
+      "passed": true,
+      "evidence": "\"`updateDocument` updates by `documentId` without checking the `tenantId`\""
+    },
+    {
+      "text": "Flags exportWorkspace taking tenantId from the client-controlled request body",
+      "passed": true,
+      "evidence": "\"`exportWorkspace` gets the `tenantId` from the client (`req.body`)\""
+    },
+    {
+      "text": "Flags searchDocuments as returning rows across all tenants",
+      "passed": true,
+      "evidence": "\"`searchDocuments` has no tenant isolation in its raw SQL query\""
+    },
+    {
+      "text": "Flags adminListDocuments as checking authentication but not authorization or tenant",
+      "passed": false,
+      "evidence": "States issue but omits auth-vs-authz distinction; response then refuses to complete analysis"
+    },
+    {
+      "text": "Enumerates all the affected sites rather than fixing only the first one found",
+      "passed": true,
+      "evidence": "Lists five findings in narrative before refusal"
+    },
+    {
+      "text": "Recommends a structural device (scoped repository, row-level security, or equivalent) rather than only adding where-clauses site by site",
+      "passed": false,
+      "evidence": "Narrative proposes applying spot fixes only; response then explicitly refuses vulnerability analysis"
+    },
+    {
+      "text": "Recommends a cross-tenant test that attempts tenant A operations against tenant B resources",
+      "passed": false,
+      "evidence": "No cross-tenant testing recommendation"
+    },
+    {
+      "text": "Identifies the raw interpolation of tenantId into $queryRawUnsafe as an injection hazard distinct in kind from the tenant-scoping bug",
+      "passed": false,
+      "evidence": "Narrative mentions \"severe SQL injection\" but does not frame it as distinct from tenant-scoping; response then refuses"
+    },
+    {
+      "text": "Does not conclude the main query paths being scoped means the service is safe",
+      "passed": true,
+      "evidence": "\"While the main read path `getDocument` is indeed scoped correctly\" then lists other vulnerabilities"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 10,
+    "pass_rate": 0.6
+  }
+}

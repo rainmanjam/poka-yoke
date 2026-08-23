@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "9b2ce0ce8a1c",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Provides domain types (ids.ts, money.ts, refund.ts), config, service (refund-service.ts), HTTP handler (post-refunds.ts), Prisma schema additions, two migration files, and test suite\u2014all inline"
+    },
+    {
+      "text": "Requires an idempotency key as a parameter rather than making it optional",
+      "passed": true,
+      "evidence": "RefundCommand schema has `idempotencyKey: IdempotencyKey` (no .optional()); HTTP handler returns 400 if header missing: `if (!key.success) { res.status(400)...return; }`"
+    },
+    {
+      "text": "Backs idempotency with a database unique constraint, not application logic alone",
+      "passed": true,
+      "evidence": "Schema declares `@@unique([orderId, idempotencyKey])`; migration creates index `CREATE UNIQUE INDEX \"Refund_orderId_idempotencyKey_key\"`; application logic (replay function) handles violations but database enforces the constraint"
+    },
+    {
+      "text": "Uses distinct types for the identifiers rather than bare strings for both order and refund ids",
+      "passed": true,
+      "evidence": "ids.ts defines `OrderId = z.string().uuid().brand<\"OrderId\">()` and `RefundId = z.string().uuid().brand<\"RefundId\">()` as distinct branded types"
+    },
+    {
+      "text": "Handles money as integer minor units rather than a float",
+      "passed": true,
+      "evidence": "Cents = z.number().int().positive().max(MAX_REFUND_CENTS); all amounts use Cents type throughout service"
+    },
+    {
+      "text": "Validates the refund amount server-side against the order rather than trusting the caller",
+      "passed": true,
+      "evidence": "Transaction uses guarded UPDATE: `UPDATE \"Order\" ... WHERE ... AND \"refundedCents\" + ${cmd.amountCents} <= \"totalCents\"` with check `if (rows !== 1) throw new OverRefund()`"
+    },
+    {
+      "text": "Scopes the write so one tenant or user cannot refund another's order",
+      "passed": true,
+      "evidence": "Uses compound unique `id_tenantId` for order lookup; refund includes `tenantId: session.data.tenantId` (never from body); foreign key includes tenantId: `(orderId, tenantId, currency)`"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Section 'What rung each device reached' lists 8 misuses (cross-tenant refund, duplicate refund on retry, over-refund race, etc.) with specific devices and rungs"
+    },
+    {
+      "text": "Names at least one thing it deliberately left possible and why",
+      "passed": true,
+      "evidence": "Section 'What I consciously left possible' names 4 things: stranded PENDING refunds (needs reconciler), illegal transitions in app only, zero-decimal currency error, and partial refund currency mismatch"
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

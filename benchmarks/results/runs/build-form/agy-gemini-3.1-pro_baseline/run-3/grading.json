@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "31eb11dca414",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Provides useDocuments and useDocumentMutations hooks with full mock implementations inline"
+    },
+    {
+      "text": "Produces actual working component code rather than only a list of recommendations",
+      "passed": true,
+      "evidence": "Complete export default function DocumentTable with all logic"
+    },
+    {
+      "text": "Makes the destructive action recoverable rather than relying on a confirmation dialog alone",
+      "passed": false,
+      "evidence": "No confirmation or recovery mechanism; calls mutation directly: 'await deleteDocuments(selection)' with no safety"
+    },
+    {
+      "text": "Shows the count of affected items before the action is taken",
+      "passed": true,
+      "evidence": "Displays {totalSelectedCount.toLocaleString()} Document(s) selected"
+    },
+    {
+      "text": "Distinguishes select-all-on-page from select-all-matching rather than conflating them",
+      "passed": true,
+      "evidence": "SelectionState type explicitly models 'explicit' vs 'implicitAll' modes with separate logic"
+    },
+    {
+      "text": "Separates the destructive action from the benign one visually or spatially",
+      "passed": true,
+      "evidence": "Archive button neutral, Delete button text-red-400 hover:text-red-300"
+    },
+    {
+      "text": "Does not make the destructive action the default focus or primary button",
+      "passed": true,
+      "evidence": "Both buttons in flex container with similar styling; Delete distinguished only by red text"
+    },
+    {
+      "text": "Notes that the server must enforce the rules, not just the UI",
+      "passed": false,
+      "evidence": "Explains backend query pattern handling but does not explicitly note that 'server must enforce the rules'"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": false,
+      "evidence": "Ends with code without analysis of prevented misuses"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 9,
+    "pass_rate": 0.6667
+  }
+}

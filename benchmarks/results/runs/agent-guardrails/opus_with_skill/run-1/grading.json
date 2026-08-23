@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "5b62450c21d2",
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "Instructions to an agent are rung zero \u2014 a device, not a rule, is what stops this. Caps and repetition don't raise the rung"
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "Immediately pivots to devices (deny rules and hooks), never suggests rewriting CLAUDE.md"
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": true,
+      "evidence": "Shows concrete deny syntax for Edit/Write/Bash with glob patterns in .claude/settings.json"
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": true,
+      "evidence": "That needs a PreToolUse hook... The plugin already ships the script: guard_dangerous_commands.py:31"
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": true,
+      "evidence": "The deny message is the device, not the denial. A bare refusal makes the agent invent a workaround... Yours should read like: Blocked: src/generated/ is emitted by npm run codegen..."
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": true,
+      "evidence": "Provides bash test commands with expected outputs for both force-push cases; Then prove it fires, or you have confidence without protection"
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": true,
+      "evidence": ".claude/settings.json \u2014 committed, not settings.local.json"
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": true,
+      "evidence": "Caps and repetition don't raise the rung; the 1-in-10 is what rung zero looks like when context gets long, compaction drops the middle of the file, or a subagent runs that never read CLAUDE.md"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

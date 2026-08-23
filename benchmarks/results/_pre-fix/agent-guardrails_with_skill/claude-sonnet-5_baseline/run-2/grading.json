@@ -1,0 +1,49 @@
+{
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "\"CLAUDE.md text is a *prompt*, not a *rule*... No matter how many times you write it or how loud you shout it in caps\""
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "\"To make these two *actually* unbreakable, move them from 'instruction the model reads' to 'rule the harness enforces'\""
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": true,
+      "evidence": "Provides JSON: `{\"permissions\": {\"deny\": [\"Bash(git push --force*)\", \"Bash(git push -f*)\"]}}`"
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": true,
+      "evidence": "\"Edit/Write don't have a path-based deny syntax as clean as Bash's glob, so the more reliable route is a `PreToolUse` hook\""
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": false,
+      "evidence": "No mention of error message content or alternatives"
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": false,
+      "evidence": "No mention of testing or verification"
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": false,
+      "evidence": "No mention of git commits or team-wide distribution"
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": true,
+      "evidence": "\"over a long session it can get diluted, summarized away, or simply outweighed\""
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "total": 8,
+    "pass_rate": 0.625
+  }
+}

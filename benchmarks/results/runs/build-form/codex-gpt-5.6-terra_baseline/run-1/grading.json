@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "31eb11dca414",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Full component with Document type, selection state management (ExplicitSelection / AllMatchingSelection), mutation logic, pagination, and table rendering"
+    },
+    {
+      "text": "Produces actual working component code rather than only a list of recommendations",
+      "passed": true,
+      "evidence": "Contains implemented functions: toggleDocument(), selectAllMatching(), executeBulkAction(), PageSelectionCheckbox component, all state hooks wired together"
+    },
+    {
+      "text": "Makes the destructive action recoverable rather than relying on a confirmation dialog alone",
+      "passed": false,
+      "evidence": "Delete action only has two-step confirmation UI (click 'Delete', then 'Confirm delete'); no trash/soft-delete or actual recovery mechanism shown"
+    },
+    {
+      "text": "Shows the count of affected items before the action is taken",
+      "passed": true,
+      "evidence": "\"{count.toLocaleString()} document{count === 1 ? '' : 's'} selected\" displayed in bulk action bar before buttons"
+    },
+    {
+      "text": "Distinguishes select-all-on-page from select-all-matching rather than conflating them",
+      "passed": true,
+      "evidence": "Separate UI block: \"All {documents.length} documents on this page are selected... Select all {totalMatching.toLocaleString()} matching documents\" with explicit conditional rendering for different selection modes"
+    },
+    {
+      "text": "Separates the destructive action from the benign one visually or spatially",
+      "passed": true,
+      "evidence": "Archive button uses 'bg-white...text-slate-800' (neutral), Delete button uses 'bg-red-600...text-white' (red) or appears in conditional confirmDelete block"
+    },
+    {
+      "text": "Does not make the destructive action the default focus or primary button",
+      "passed": true,
+      "evidence": "Archive button appears first in DOM order and has neutral white styling; Delete is secondary, only becomes prominent during confirmation flow"
+    },
+    {
+      "text": "Notes that the server must enforce the rules, not just the UI",
+      "passed": true,
+      "evidence": "Explicit comment: \"For all-matching selections, the server should resolve the query within the current user's authorized tenant and ideally queue a background job\""
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": false,
+      "evidence": "Code ends with closing brace of component; no prose or documentation describing what attacks/misuses the design prevents"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 9,
+    "pass_rate": 0.7778
+  }
+}

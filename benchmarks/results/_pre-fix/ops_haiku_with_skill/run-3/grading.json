@@ -1,0 +1,49 @@
+{
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": false,
+      "evidence": "References 'earlier this session' analysis but does not explicitly state this mechanism in the response itself"
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "\"Merge and deploy the code changes only today\" and \"Hold the DROP COLUMN for Monday\""
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": false,
+      "evidence": "Uses 'irreversible schema change' once but no elaboration on backup/restore"
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": true,
+      "evidence": "\"If issues surface Friday, you roll back code and the column still exists for any emergency fallback\""
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": false,
+      "evidence": "No mention of Friday staffing, on-call coverage, or operational availability"
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": false,
+      "evidence": "No mention of CI gates or automation"
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "\"I'd advise against deploying the DROP COLUMN today\""
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "Action plan separates code-only (roll back cleanly) from schema change (irreversible); \"the column still exists for any emergency fallback\""
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "total": 8,
+    "pass_rate": 0.5
+  }
+}

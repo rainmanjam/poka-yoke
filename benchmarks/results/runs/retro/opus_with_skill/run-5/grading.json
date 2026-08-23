@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "1af6b213502f",
+  "expectations": [
+    {
+      "text": "States plainly that the recent-charge lookup is not sufficient",
+      "passed": true,
+      "evidence": "\"No, and specifically it would not have prevented last night.\""
+    },
+    {
+      "text": "Identifies the lookup as a check-then-act race rather than a device",
+      "passed": true,
+      "evidence": "\"It's a check-then-act race (M5), and the race window is exactly your incident\""
+    },
+    {
+      "text": "Recommends a required idempotency key on the charge path",
+      "passed": true,
+      "evidence": "\"**Derive the key from the business event, never per attempt**... The key must be a *required* argument\""
+    },
+    {
+      "text": "Recommends a database unique constraint backing the idempotency key",
+      "passed": true,
+      "evidence": "\"`UNIQUE (entity, idempotency_key)` in the schema\""
+    },
+    {
+      "text": "Separates the defect from the mistake from the underlying system hazard",
+      "passed": true,
+      "evidence": "\"**Defect** \u2014 340 customers charged twice... **Mistake** \u2014 the redelivered message ran the charge path... **Hazard** \u2014 *a charge is an effect with no identity*\""
+    },
+    {
+      "text": "Locates the hazard as a system property rather than as a worker bug or human error",
+      "passed": true,
+      "evidence": "\"*a charge is an effect with no identity* Nothing in the system ties 'this charge attempt' to 'this business event'\""
+    },
+    {
+      "text": "Sweeps for other non-idempotent side effects reachable from a retry",
+      "passed": true,
+      "evidence": "\"**Every consumer on that queue** outbound emails and webhooks, ledger/balance read-modify-writes, subscription and provisioning handlers\""
+    },
+    {
+      "text": "Treats 'second time this happened' as evidence for pushing to a Control-rung device",
+      "passed": true,
+      "evidence": "\"You need **Control**\" and recommends platform-level Control as structural fix"
+    },
+    {
+      "text": "Attributes cause to the system, not to any person",
+      "passed": true,
+      "evidence": "\"Your queue is at-least-once, and **nothing in the consumer contract says handlers must be idempotent**\""
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "1af6b213502f",
+  "expectations": [
+    {
+      "text": "States plainly that the recent-charge lookup is not sufficient",
+      "passed": true,
+      "evidence": "\"**No, that's not enough.** Amount-matching is a *detection-level* control...\""
+    },
+    {
+      "text": "Identifies the lookup as a check-then-act race rather than a device",
+      "passed": true,
+      "evidence": "\"**Race condition**: Two workers can both check, both see no recent charge, both proceed\" \u2014 plus framing it as \"Detection (weakest)\" rather than a device"
+    },
+    {
+      "text": "Recommends a required idempotency key on the charge path",
+      "passed": true,
+      "evidence": "\"Stripe idempotency keys \u2014 physically impossible to charge twice with same key\" with concrete `idempotencyKey: `charge_${userId}_...`` code and \"Add Stripe idempotency keys immediately\""
+    },
+    {
+      "text": "Recommends a database unique constraint backing the idempotency key",
+      "passed": false,
+      "evidence": "No unique constraint/index is recommended. The DB-level suggestions are a conditional UPDATE state guard (`WHERE id = ? AND status = 'pending'`) and an outbox INSERT \u2014 neither is a unique constraint on an idempotency key."
+    },
+    {
+      "text": "Separates the defect from the mistake from the underlying system hazard",
+      "passed": false,
+      "evidence": "It names a root cause (\"missing idempotency guarantees\") but does not distinguish the defect (340 duplicate charges) from the mistake (the second charge attempt) from the hazard as separate layers; no such decomposition appears."
+    },
+    {
+      "text": "Locates the hazard as a system property rather than as a worker bug or human error",
+      "passed": true,
+      "evidence": "\"The root issue is **missing idempotency guarantees** in a distributed system with at-least-once delivery.\""
+    },
+    {
+      "text": "Sweeps for other non-idempotent side effects reachable from a retry",
+      "passed": true,
+      "evidence": "\"Audit payment code for other at-least-once assumptions (refunds, subscriptions, webhooks)\""
+    },
+    {
+      "text": "Treats 'second time this happened' as evidence for pushing to a Control-rung device",
+      "passed": true,
+      "evidence": "\"**This is recurring because you're treating symptoms, not causes.**\" followed by the ladder pushing to Elimination-level idempotency keys"
+    },
+    {
+      "text": "Attributes cause to the system, not to any person",
+      "passed": true,
+      "evidence": "Cause is placed on \"at-least-once delivery\" and \"missing idempotency guarantees\"; no person or human error is blamed anywhere"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 9,
+    "pass_rate": 0.7778
+  }
+}

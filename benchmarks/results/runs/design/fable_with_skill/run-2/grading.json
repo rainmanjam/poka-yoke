@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "| (Base & { readonly status: \"trialing\"; readonly trialEndsAt: Date }) |..."
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "Each variant carries only its status-specific fields, no overlap"
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": true,
+      "evidence": "function assertNever(x: never) in switch default: return assertNever(sub);"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": true,
+      "evidence": "type Brand<T, B> with SubscriptionId = Brand<string, \"SubscriptionId\">"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": true,
+      "evidence": "export function transition(sub: Subscription, t: Transition) with switch gating from canceled state"
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "\"Misuses enumerated\" (5 items) followed by \"Rungs reached / consciously left open\" section"
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "First misuse: \"Bag of optionals\" rejected; union + brands recommended"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 7,
+    "pass_rate": 1.0
+  }
+}

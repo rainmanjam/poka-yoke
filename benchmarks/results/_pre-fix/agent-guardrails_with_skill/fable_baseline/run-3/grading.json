@@ -1,0 +1,49 @@
+{
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "\"CLAUDE.md is advice to the model\" and \"you've built an instruction, not a fixture\""
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "\"Then strip the rules out of CLAUDE.md (or reduce to one sentence)\" - explicitly directs away from primary fix"
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": true,
+      "evidence": "JSON syntax with `\"deny\": [\"Bash(git push --force*)\", \"Bash(git push -f*)\", \"Bash(git push *--force*)\"]\""
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": true,
+      "evidence": "\"Optional: a `PreToolUse` hook that greps the command for `--force`, `-f`, or `+refs`\""
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": true,
+      "evidence": "\"the tool sees this at the moment of editing, which is the only place a reminder actually helps\" with concrete header example"
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": false,
+      "evidence": "No mention of testing or verification"
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": false,
+      "evidence": "No mention of committing rules to the repository"
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": true,
+      "evidence": "\"Every shouted rule dilutes the rest of the file\" and \"a rule that's enforced elsewhere doesn't need to be shouted\""
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

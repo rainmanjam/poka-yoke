@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "type Subscription = SubscriptionBase & (| { status: \"trialing\"; ... } | { status: \"active\"; ... } | ...) \u2014 status discriminates"
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "canceled variant has only status, canceledAt, and cancellation; trialing has only status and trialEndsAt"
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": true,
+      "evidence": "function assertNever(x: never) with default: return assertNever(sub) in switch"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": true,
+      "evidence": "SubscriptionId and CustomerId are branded types using Brand<T, B> pattern"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": false,
+      "evidence": "Provides function signature canTransition(...): boolean but implementation throws 'not yet defined' \u2014 no actual constraint"
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Discusses preventing nonsense states, explains nested CancellationReason union prevents 'voluntary: true + payment_failed', names ID swap prevention, branding benefits"
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "Misuse section item 1 rejects bag allowing 'active + retryCount: 3'"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 7,
+    "pass_rate": 0.8571
+  }
+}

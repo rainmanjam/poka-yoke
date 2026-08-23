@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "4999b9f80438",
+  "expectations": [
+    {
+      "text": "States that a written agreement or reminder is not enforcement",
+      "passed": true,
+      "evidence": "\"Everything you've done is the same device: *training*. Training degrades. Two weeks and ~50% adherence isn't a discipline problem on your team, it's the expected decay curve of a rule that lives in someone's memory.\""
+    },
+    {
+      "text": "Recommends a pre-commit hook to run the formatter automatically",
+      "passed": true,
+      "evidence": "\"If you'd rather it fail than autofix: pre-commit hook for speed, plus `--check` as a **required** CI check for authority.\""
+    },
+    {
+      "text": "Notes that pre-commit is bypassable with --no-verify and must be backed by a CI check",
+      "passed": true,
+      "evidence": "\"The hook alone is not enforcement; `--no-verify` exists.\" plus \"plus `--check` as a **required** CI check for authority\""
+    },
+    {
+      "text": "Recommends a type check as a required CI check",
+      "passed": true,
+      "evidence": "\"Branch protection with those jobs marked **Required**\" for the type checks"
+    },
+    {
+      "text": "Recommends baselining or ratcheting rather than enforcing across the whole repo at once",
+      "passed": true,
+      "evidence": "\"enforce on changed files only, or generate a baseline of existing violations and fail only on *new* ones. The count can only go down.\""
+    },
+    {
+      "text": "Notes that branch protection is what makes a CI check actually required",
+      "passed": true,
+      "evidence": "\"Branch protection with those jobs marked **Required**. Without it, CI is advisory and you're back to persuasion\""
+    },
+    {
+      "text": "Recommends the failure message tell the developer how to fix it",
+      "passed": true,
+      "evidence": "\"Make the failure message teach \u2014 name the file, say `run make fmt`, not `error: rule violated`. That's the one moment prose actually works, because someone is guaranteed to read it.\""
+    },
+    {
+      "text": "Does not primarily recommend rewriting CONTRIBUTING.md, more reminders, or more discipline",
+      "passed": true,
+      "evidence": "No mention of these alternatives; focuses on tooling and automation"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

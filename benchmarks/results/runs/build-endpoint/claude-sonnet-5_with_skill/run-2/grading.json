@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "9b2ce0ce8a1c",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Includes Prisma schema, migration, branded types with factories, session types, error definitions, Stripe/Prisma clients, validation schemas, and complete route handler with error middleware"
+    },
+    {
+      "text": "Requires an idempotency key as a parameter rather than making it optional",
+      "passed": true,
+      "evidence": "Handler: `if (!idempotencyKeyHeader) throw Errors.MissingIdempotencyKey();` \u2014 missing header throws before any logic"
+    },
+    {
+      "text": "Backs idempotency with a database unique constraint, not application logic alone",
+      "passed": true,
+      "evidence": "Schema: `@@unique([tenantId, idempotencyKey])` and migration: `CREATE UNIQUE INDEX \"Refund_tenantId_idempotencyKey_key\"`"
+    },
+    {
+      "text": "Uses distinct types for the identifiers rather than bare strings for both order and refund ids",
+      "passed": false,
+      "evidence": "Brands `OrderId` with factory function, but `RefundId` is never defined; Refund.id remains a bare string from Prisma model"
+    },
+    {
+      "text": "Handles money as integer minor units rather than a float",
+      "passed": true,
+      "evidence": "Zod: `.int(\"amountCents must be an integer...\").positive()`, Prisma: `amountCents Int`, checked in Postgres with `CHECK (amountCents > 0)`"
+    },
+    {
+      "text": "Validates the refund amount server-side against the order rather than trusting the caller",
+      "passed": true,
+      "evidence": "Transaction calculates remaining balance: `const remaining = order.totalCents - (reserved._sum.amountCents ?? 0); if (body.amountCents > remaining) { throw ... }`"
+    },
+    {
+      "text": "Scopes the write so one tenant or user cannot refund another's order",
+      "passed": true,
+      "evidence": "Order query: `WHERE id = ${orderId} AND \"tenantId\" = ${session.tenantId}` with tenantId from session; comment explains 'miss and no-such-order return the identical 404'"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Table 'Devices installed, and the rung each reaches' enumerates hazards (Cross-tenant IDOR, retried POST, over-refunding, invalid reason, invalid amount, Stripe failures, missing key) and marks all as 'Control' rung"
+    },
+    {
+      "text": "Names at least one thing it deliberately left possible and why",
+      "passed": true,
+      "evidence": "Section 'What I deliberately left open' names three: stuck pending rows (needs reconciliation job, not in scope), $1M cap (placeholder), nullable stripePaymentIntentId (for backfill)"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 9,
+    "pass_rate": 0.8889
+  }
+}

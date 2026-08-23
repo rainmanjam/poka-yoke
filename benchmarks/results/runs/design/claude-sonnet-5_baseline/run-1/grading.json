@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "export type Subscription = | { status: \"trialing\"; ... } | { status: \"active\"; ... } | { status: \"past_due\"; ... } | { status: \"canceled\"; ... };"
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "Inside `case \"past_due\"` the compiler *knows* `retryCount` and `gracePeriodEndsAt` exist and `renewsAt` doesn't."
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": true,
+      "evidence": "Shows assertNever function with default: return assertNever(sub);"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": true,
+      "evidence": "declare const brand: unique symbol; type Brand<T, B> = T & { readonly [brand]: B }; export type SubscriptionId = Brand<string, \"SubscriptionId\">;"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": false,
+      "evidence": "One thing left open on purpose: **legal state transitions aren't encoded here** (can you go `past_due` \u2192 `trialing`? probably not, but that's a business rule, not a shape rule)."
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Lists: Optional-bag trap, New status added later, Swappable IDs, Cancellation is really two shapes"
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "Entire response contrasts discriminated union against the optional-bag trap."
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 7,
+    "pass_rate": 0.8571
+  }
+}

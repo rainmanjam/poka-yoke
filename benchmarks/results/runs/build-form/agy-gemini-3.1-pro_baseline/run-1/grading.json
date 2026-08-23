@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "31eb11dca414",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Includes mock useDocuments, useArchiveDocuments, useDeleteDocuments hooks with full implementation"
+    },
+    {
+      "text": "Produces actual working component code rather than only a list of recommendations",
+      "passed": true,
+      "evidence": "Complete export default function DocumentsTable with all state, handlers, and JSX"
+    },
+    {
+      "text": "Makes the destructive action recoverable rather than relying on a confirmation dialog alone",
+      "passed": false,
+      "evidence": "Uses window.confirm() as sole safety: 'if (window.confirm(...)) { await deleteDocs(...) }'"
+    },
+    {
+      "text": "Shows the count of affected items before the action is taken",
+      "passed": true,
+      "evidence": "Displays in action bar: {selectedCount.toLocaleString()} selected"
+    },
+    {
+      "text": "Distinguishes select-all-on-page from select-all-matching rather than conflating them",
+      "passed": true,
+      "evidence": "isAllMatchingSelected state and separate banner logic for when 'isAllPageSelected && !isAllMatchingSelected && totalCount > pageIds.length'"
+    },
+    {
+      "text": "Separates the destructive action from the benign one visually or spatially",
+      "passed": true,
+      "evidence": "Archive is neutral gray (hover:text-gray-300), Delete is red (text-red-400 hover:text-red-300)"
+    },
+    {
+      "text": "Does not make the destructive action the default focus or primary button",
+      "passed": true,
+      "evidence": "Archive and Delete are both plain secondary buttons with no primary styling"
+    },
+    {
+      "text": "Notes that the server must enforce the rules, not just the UI",
+      "passed": false,
+      "evidence": "No mention of server-side enforcement requirement in explanation or code"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": false,
+      "evidence": "Response ends with code block without analysis of prevented misuses"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 9,
+    "pass_rate": 0.6667
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "31eb11dca414",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "BulkActionsTable component with table, bulk actions bar, pagination, and mock mutation functions provided in full"
+    },
+    {
+      "text": "Produces actual working component code rather than only a list of recommendations",
+      "passed": true,
+      "evidence": "Entire response is working TypeScript/React code with no recommendation sections"
+    },
+    {
+      "text": "Makes the destructive action recoverable rather than relying on a confirmation dialog alone",
+      "passed": false,
+      "evidence": "Delete only uses `window.confirm()` dialog with no undo/recovery mechanism. Checklist specifically requires 'rather than relying on a confirmation dialog alone'"
+    },
+    {
+      "text": "Shows the count of affected items before the action is taken",
+      "passed": true,
+      "evidence": "BulkActionsBar displays `{selectedIds.size} selected` before any action buttons"
+    },
+    {
+      "text": "Distinguishes select-all-on-page from select-all-matching rather than conflating them",
+      "passed": true,
+      "evidence": "Bulkbar shows: '{selectedIds.size} selected {totalCount > pageSize && ` of ${totalCount} total`}' \u2014 displays both page selection and total count"
+    },
+    {
+      "text": "Separates the destructive action from the benign one visually or spatially",
+      "passed": true,
+      "evidence": "Archive: 'text-gray-700 hover:bg-gray-50 border border-gray-300'. Delete: 'text-red-700 hover:bg-red-50 border border-red-300' \u2014 distinct color treatment"
+    },
+    {
+      "text": "Does not make the destructive action the default focus or primary button",
+      "passed": true,
+      "evidence": "Archive button appears first; Delete uses red but equivalent visual weight and styling pattern"
+    },
+    {
+      "text": "Notes that the server must enforce the rules, not just the UI",
+      "passed": false,
+      "evidence": "No mention of server-side validation or enforcement of authorization rules"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": false,
+      "evidence": "Closes with feature list and 'Replace archiveDocuments and deleteDocuments with actual API calls' \u2014 does not name any prevented misuses"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 9,
+    "pass_rate": 0.6667
+  }
+}

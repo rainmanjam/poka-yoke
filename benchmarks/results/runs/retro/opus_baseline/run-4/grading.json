@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "1af6b213502f",
+  "expectations": [
+    {
+      "text": "States plainly that the recent-charge lookup is not sufficient",
+      "passed": true,
+      "evidence": "No \u2014 and the check you added is itself a new hazard."
+    },
+    {
+      "text": "Identifies the lookup as a check-then-act race rather than a device",
+      "passed": true,
+      "evidence": "The check is a read followed by a write with a gap in between; your incident lives in that gap."
+    },
+    {
+      "text": "Recommends a required idempotency key on the charge path",
+      "passed": true,
+      "evidence": "Make the key a required parameter of your charge wrapper \u2014 no default, no Optional."
+    },
+    {
+      "text": "Recommends a database unique constraint backing the idempotency key",
+      "passed": true,
+      "evidence": "Unique DB constraint on that key in your charges table. Insert the intent row before calling Stripe."
+    },
+    {
+      "text": "Separates the defect from the mistake from the underlying system hazard",
+      "passed": true,
+      "evidence": "Defect: 340 customers charged twice. Mistake: the retry path called charge() again with no idempotency key. Hazard: your queue is at-least-once, charge() is callable without an idempotency key..."
+    },
+    {
+      "text": "Locates the hazard as a system property rather than as a worker bug or human error",
+      "passed": true,
+      "evidence": "Only the third one is fixable. The first two are already over."
+    },
+    {
+      "text": "Sweeps for other non-idempotent side effects reachable from a retry",
+      "passed": true,
+      "evidence": "confirmation emails, outbound webhooks, ledger writes, credit grants. Sweep by shape, not by the word 'charge'"
+    },
+    {
+      "text": "Treats 'second time this happened' as evidence for pushing to a Control-rung device",
+      "passed": true,
+      "evidence": "The part that matters most: it's the second time...The hazard isn't payments \u2014 it's that consumers on an at-least-once queue are written as if delivery were exactly-once."
+    },
+    {
+      "text": "Attributes cause to the system, not to any person",
+      "passed": true,
+      "evidence": "The hazard isn't payments \u2014 it's that consumers on an at-least-once queue..."
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "82f963d241f9",
+  "expectations": [
+    {
+      "text": "Pushes back on the 'are you sure?' modal as the primary fix",
+      "passed": true,
+      "evidence": "Honest answer: no \u2014 not as the primary fix"
+    },
+    {
+      "text": "Explains habituation or click-through blindness as why frequent dialogs stop working",
+      "passed": true,
+      "evidence": "Users develop click-through blindness, and then it also weakens the dialogs that do matter"
+    },
+    {
+      "text": "Recommends reversibility (soft delete with a retention window) as the strongest option",
+      "passed": true,
+      "evidence": "1. **Soft-delete + trash with retention.** ... This is the real answer, and it's under-used precisely because it's a backend change"
+    },
+    {
+      "text": "Recommends grace-period undo as a strong low-friction option",
+      "passed": true,
+      "evidence": "2. **Grace-period undo toast.** \"Workspace `acme-prod` deleted. Undo\" for ~10s"
+    },
+    {
+      "text": "Recommends type-the-workspace-name confirmation for the irreversible case",
+      "passed": true,
+      "evidence": "3. **Type-to-confirm** (`type acme-prod to delete`) \u2014 reserve this for the *permanent purge* from trash, not the everyday delete"
+    },
+    {
+      "text": "If a dialog is retained, requires it to name the workspace and the scale of what is lost",
+      "passed": true,
+      "evidence": "make it name the object and the scale \u2014 \"Delete `acme-prod`? 14 projects, 3,201 files. Recoverable from Trash for 30 days.\""
+    },
+    {
+      "text": "Notes that the server must enforce the deletion rules, not just the UI",
+      "passed": true,
+      "evidence": "the endpoint still accepts the call. Enforce it server-side too"
+    },
+    {
+      "text": "Gives an explicit preference order rather than an undifferentiated list of ideas",
+      "passed": true,
+      "evidence": "## The preference order for this action followed by numbered 1, 2, 3 with explicit rankings"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

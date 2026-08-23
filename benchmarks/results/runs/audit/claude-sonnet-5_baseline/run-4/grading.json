@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": true,
+      "evidence": "\"Smaller: `fromAccount`/`toAccount` are adjacent same-type params \u2014 a swapped call compiles and silently reverses the transfer\""
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "\"Charge retry with no idempotency key\" section: \"If Stripe processes the charge but the response is lost (timeout), the `catch` fires, `retry=true` re-calls `chargeCustomer` \u2014 a second, independent charge\""
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": true,
+      "evidence": "\"On final failure the exception is swallowed and `null` returned, so callers can't tell 'declined' from 'charged, confirmation lost.'\""
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": false,
+      "evidence": "No mention of money values stored as floats vs integers; 'Set aside' mentions 'float arithmetic' but not the representation hazard"
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "\"The `$executeRawUnsafe` + template-literal pattern is also one caller-supplied filter away from injection\""
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "\"Non-exhaustive status switch\" finding: \"A new status... silently skips `enableFeatures`/`disableFeatures`\""
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": true,
+      "evidence": "\"handleWebhook(body) does `JSON.parse(body)`... Nothing verifies the request came from Stripe\""
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "\"Anyone who can POST\", \"a swapped call compiles\", \"Call `transfer(id, id, amount)`\" \u2014 all describe actions, not developer qualities"
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "Findings ranked: (1) unauthenticated webhook, (2) charge retry, (3) transfer race, (4) raw SQL, (5) non-exhaustive switch"
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": true,
+      "evidence": "\"verify with `stripe.webhooks.constructEvent`\", \"require an idempotency key\", \"one atomic conditional update\", \"delete exactly the fetched IDs\", \"`default: assertNever(status)`\""
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "\"No write access granted\" and ends asking \"Want me to apply any of these (I'd need write approval for the file)\""
+    }
+  ],
+  "summary": {
+    "passed": 10,
+    "total": 11,
+    "pass_rate": 0.9091
+  }
+}

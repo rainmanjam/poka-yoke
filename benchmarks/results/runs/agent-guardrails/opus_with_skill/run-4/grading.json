@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "5b62450c21d2",
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "\"Instructions to an agent are **rung zero** \u2014 training, not a device. Caps and repetition don't move the rung; they change nothing about enforcement.\""
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "\"Both rules are irreversible actions, so they need **Control**, not better prose. Here's the replacement.\""
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": true,
+      "evidence": "Provides JSON block with Edit, Write, and Bash deny entries for both rules"
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": true,
+      "evidence": "\"A hook, because the deny rules leak\" followed by hook configuration and guard_dangerous_commands.py reference"
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": true,
+      "evidence": "\"A bare \"denied\" produces a creative workaround, often worse. Name what was blocked, why, and the alternative \u2014 as above.\""
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": true,
+      "evidence": "Provides two bash echo/pipe verification commands with expected outcomes"
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": true,
+      "evidence": "\"`settings.json`, not `settings.local.json` \u2014 a rule on one machine is the same failure as documenting it.\""
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": true,
+      "evidence": "\"Caps and repetition don't move the rung\" and Insight: \"The tell that you need a device, not better wording, is that you've written the same correction more than once.\""
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

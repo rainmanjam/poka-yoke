@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "5b62450c21d2",
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "Caps and repetition are training, and training doesn't hold. Caps just means the failure will be spectacular when it happens."
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "To fix this, convert those rules to **devices**\u2014automated checks that make violations **mechanically impossible** before they reach git"
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": false,
+      "evidence": "Recommends only git hooks (.git/hooks/pre-commit, .git/hooks/pre-push), no mention of settings.json"
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": false,
+      "evidence": "Recommends git hooks only, no mention of PreToolUse or Claude Code hooks"
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": false,
+      "evidence": "Messages like 'Resolve conflicts with rebase/merge instead' apply the principle but response does not explicitly explain it as a design principle"
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": true,
+      "evidence": "Before committing these hooks, deliberately break the rule on purpose and watch the hook catch it. Then you'll know it's real."
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": false,
+      "evidence": "Provides local installation instructions only; no mention of version control or team-wide enforcement"
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": true,
+      "evidence": "Caps and repetition are training, and training doesn't hold."
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "total": 8,
+    "pass_rate": 0.5
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": true,
+      "evidence": "\"there's a window where old pods/instances (still running the code that reads legacy_email) can hit the DB after the column is already gone \u2014 that's a live error\""
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "\"Ship the code-only change today... Run the DROP COLUMN as its own deploy, separately.\""
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": true,
+      "evidence": "\"The DROP COLUMN is the irreversible step. The restore path is 'point-in-time recovery / a full backup restore'\""
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": true,
+      "evidence": "\"The code-only deploy has a two-minute rollback (revert). The drop does not\" and \"your rollback is a DB restore, on a weekend, with reduced coverage\""
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "\"if you drop it at 4pm Friday and something unexpected reads it, your rollback is a DB restore, on a weekend, with reduced coverage\""
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": true,
+      "evidence": "\"a CI guard that blocks DROP/destructive ALTER from landing in the same PR as app code, so this split becomes automatic going forward\""
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "\"Green CI and passing tests don't cover this, because tests don't exercise 'old code, new schema' during a rolling deploy\""
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "\"This part is fully reversible (git revert + redeploy)\" for code changes vs DROP COLUMN as irreversible"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "018a96d90c3c",
+  "expectations": [
+    {
+      "text": "States that system prompt instructions are not a reliable control on model behaviour",
+      "passed": true,
+      "evidence": "A prompt is training, not a safeguard. Put the guarantees in the refund workflow itself"
+    },
+    {
+      "text": "Recommends structured output against a schema rather than extracting values from prose",
+      "passed": true,
+      "evidence": "Extract into a strict schema: `{order_id, amount_minor, currency, reason_code, confidence}`"
+    },
+    {
+      "text": "Recommends validating the refund amount server-side against the actual order",
+      "passed": true,
+      "evidence": "Validate against authoritative order data before calling the API: order exists, currency matches, amount is positive, and total refunded + requested amount \u2264 paid amount"
+    },
+    {
+      "text": "Recommends a required idempotency key on the refund call",
+      "passed": true,
+      "evidence": "Generate a stable key such as `refund:{order_id}:{refund_request_id}` and enforce it both in your database (unique constraint) and at the refund API"
+    },
+    {
+      "text": "Recommends a database constraint or equivalent so a duplicate refund is rejected rather than merely avoided",
+      "passed": true,
+      "evidence": "enforce it both in your database (unique constraint) and at the refund API"
+    },
+    {
+      "text": "Recommends human confirmation or an approval gate for the irreversible refund action",
+      "passed": false,
+      "evidence": "Describes deterministic validation and execution with review only for ambiguous/invalid cases; does not recommend an approval gate for the main refund flow or for large amounts"
+    },
+    {
+      "text": "Identifies prompt injection risk from the customer-supplied message reaching a privileged action",
+      "passed": false,
+      "evidence": "No explicit identification of prompt injection risk"
+    },
+    {
+      "text": "Recommends bounds or caps on the refund amount",
+      "passed": true,
+      "evidence": "total refunded + requested amount \u2264 paid amount; core invariant enforces the cap"
+    },
+    {
+      "text": "Does not primarily recommend changes to the prompt wording",
+      "passed": true,
+      "evidence": "Focuses on schema design, server validation, idempotency, and workflow separation with no prompt rewording suggestions"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 9,
+    "pass_rate": 0.7778
+  }
+}

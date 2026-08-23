@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "31eb11dca414",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Provides types.ts, API functions, useDocumentSelection hook, and four components (BulkActionsBar, ConfirmBulkActionDialog, UndoToast, DocumentsTable) that form a complete, integrated system"
+    },
+    {
+      "text": "Produces actual working component code rather than only a list of recommendations",
+      "passed": true,
+      "evidence": "All code is implementation (components, hooks, API functions), not recommendations or sketches"
+    },
+    {
+      "text": "Makes the destructive action recoverable rather than relying on a confirmation dialog alone",
+      "passed": true,
+      "evidence": "Implements undoBulkAction with undoToken and UndoToast component; undo works for both page-scoped and all-matching selections"
+    },
+    {
+      "text": "Shows the count of affected items before the action is taken",
+      "passed": true,
+      "evidence": "Count shown in BulkActionsBar (`{count.toLocaleString()} selected`), in ConfirmBulkActionDialog title, and before calling mutation"
+    },
+    {
+      "text": "Distinguishes select-all-on-page from select-all-matching rather than conflating them",
+      "passed": true,
+      "evidence": "Uses two modes in SelectionState (`{mode: 'page'}` vs `{mode: 'all-matching'}`), separate selectPage and selectAllMatching functions, and explicit prompt to upgrade from page to all-matching selection"
+    },
+    {
+      "text": "Separates the destructive action from the benign one visually or spatially",
+      "passed": true,
+      "evidence": "Archive button: slate border/text styling; Delete button: red border/background styling; clear visual distinction"
+    },
+    {
+      "text": "Does not make the destructive action the default focus or primary button",
+      "passed": false,
+      "evidence": "In ConfirmBulkActionDialog, the delete/confirm button uses `bg-red-600` (filled primary style) while cancel uses secondary styling"
+    },
+    {
+      "text": "Notes that the server must enforce the rules, not just the UI",
+      "passed": false,
+      "evidence": "Response mentions backend soft-delete assumption but does not explicitly state that server-side enforcement (access control, validation) is necessary"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Final section explicitly names: 'Rung 1: a hard-delete with no recovery path can't happen' and 'Rung 2: a bulk action whose true scope is invisible...is stopped by a dialog'"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 9,
+    "pass_rate": 0.7778
+  }
+}

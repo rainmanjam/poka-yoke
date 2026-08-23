@@ -1,0 +1,2 @@
+description = "Pipelines, warehouses, dbt models and metrics, where failure is silently wrong numbers rather than a crash"
+prompt = "Load the poka-yoke `data` skill from plugins/poka-yoke/skills/data/SKILL.md and follow it for this request. Classify what happens when the mistake occurs and how the device notices, then propose the strongest device that prevents it and say which rung it reaches. If the request does not fit this mode, say so in one line and hand off to the mode that does."

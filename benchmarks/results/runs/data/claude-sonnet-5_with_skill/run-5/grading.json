@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "No \u2014 that test can pass on exactly the data that just cost you three weeks."
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "the coalesce is doing exactly its job (avoid a crash) while destroying the one signal (`NULL`) that would have said something broke."
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": true,
+      "evidence": "Warning \u2014 reconciliation, not row-count. Add an assertion comparing this table's revenue total to the upstream source total."
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": true,
+      "evidence": "Whatever you add needs to sit *between* load and publish and be able to block promotion \u2014 not run after and email someone."
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "add a contract check on the upstream table's schema (expected columns present, by name) that fails loud the moment a rename lands \u2014 treat a rename as drop+add, not a compatible change."
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "Either assert the null rate on the joined column before the coalesce and fail the build"
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": true,
+      "evidence": "A detection-only test that fires after the dashboard is already live is what let this run three weeks."
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": true,
+      "evidence": "the coalesce is doing exactly its job (avoid a crash) while destroying the one signal (`NULL`) that would have said something broke."
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

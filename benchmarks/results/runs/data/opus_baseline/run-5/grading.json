@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "No. And worse: your new test would have passed for all three weeks. A check that stays green through the exact incident it was written for isn't a device, it's a rumour"
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "The actual fault-masker is the COALESCE. The join *did* fail loudly \u2014 it produced nulls... You caught the scream and turned it into 0. That's except: pass in SQL."
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": true,
+      "evidence": "Reconciliation to source. Warehouse revenue total vs. the source system total, within tolerance. Make that a job."
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": true,
+      "evidence": "Assert between load and publish. Build to staging \u2192 test staging \u2192 promote on pass. Right now your tests, whatever they check, run beside the pipeline rather than in front of the dashboard."
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "Schema contract at the boundary. Assert the columns you depend on exist with expected types, before the transform runs. A rename should be a hard break."
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "Join match-rate assertion. count(*) where dim_key is null / count(*) on the fact table. Volume vs. same weekday last week"
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": false,
+      "evidence": "Mentions three weeks in framing but does not identify the detection lag itself as a finding requiring its own fix."
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": true,
+      "evidence": "The join *did* fail loudly \u2014 it produced nulls, which is a pipeline screaming... Nothing downstream can distinguish 'no revenue' from 'no join.'"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

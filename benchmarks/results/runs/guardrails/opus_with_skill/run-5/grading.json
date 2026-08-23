@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "4999b9f80438",
+  "expectations": [
+    {
+      "text": "States that a written agreement or reminder is not enforcement",
+      "passed": true,
+      "evidence": "\"Everything you've tried is the same device: **rung 0, training**. Not a weak version of enforcement; not enforcement at all. ~50% compliance after two weeks is the normal, expected yield of rung 0.\""
+    },
+    {
+      "text": "Recommends a pre-commit hook to run the formatter automatically",
+      "passed": true,
+      "evidence": "\"Pre-commit hook that runs the formatter and re-stages. The commit comes out formatted whether or not anyone remembered.\""
+    },
+    {
+      "text": "Notes that pre-commit is bypassable with --no-verify and must be backed by a CI check",
+      "passed": false,
+      "evidence": "Response uses word 'bypassable' (\"authority behind the bypassable hook\") but does not explicitly mention `--no-verify` as the mechanism for bypassing"
+    },
+    {
+      "text": "Recommends a type check as a required CI check",
+      "passed": true,
+      "evidence": "\"Neither hook matters until both jobs are **required checks under branch protection**.\""
+    },
+    {
+      "text": "Recommends baselining or ratcheting rather than enforcing across the whole repo at once",
+      "passed": true,
+      "evidence": "\"enforce on **changed files only**, or generate a baseline of today's errors and fail only on *new* ones. The count can only go down.\""
+    },
+    {
+      "text": "Notes that branch protection is what makes a CI check actually required",
+      "passed": true,
+      "evidence": "\"Neither hook matters until both jobs are **required checks under branch protection**. Without that, CI is advisory and you're back to rung 0 with extra YAML.\""
+    },
+    {
+      "text": "Recommends the failure message tell the developer how to fix it",
+      "passed": true,
+      "evidence": "\"Confirm the failure message names the exact command to fix it \u2014 a gate that says `error: rule violated` produces a workaround, not a fix.\""
+    },
+    {
+      "text": "Does not primarily recommend rewriting CONTRIBUTING.md, more reminders, or more discipline",
+      "passed": true,
+      "evidence": "No mention of these alternatives; asks for technical details instead"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

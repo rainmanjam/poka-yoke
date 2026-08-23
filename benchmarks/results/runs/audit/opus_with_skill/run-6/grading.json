@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": true,
+      "evidence": "Item #9: 'Swappable `from`/`to` \u2014 `:17`'; 'Two adjacent strings; reversed arguments compile and pass review.'"
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "Item #4: 'Retry re-charges, no idempotency key \u2014 `:55-58`'; 'the charge succeeded, the response was lost, the catch retries. Classic double charge.'"
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": true,
+      "evidence": "Item #6: 'Failed charge returns `null` \u2014 `:59`'; 'Collapses declined / timed-out / Stripe-down into one value.'"
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": false,
+      "evidence": "Item #8 mentions 'Float money compounds it' as secondary concern in discount function, but money-as-number is not flagged as a primary finding."
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "Item #5: 'The separate `findMany` also means the returned count isn't the deleted count'; discusses predicate issues."
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "Item #7: 'Stringly-typed status, non-exhaustive switch \u2014 `:67-78`'; '`\"cancelled\"` (British spelling) writes successfully, matches no branch'"
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": false,
+      "evidence": "Item #1 discusses unsigned webhook and mentions '`event.data.customer` and `.amount` are attacker-chosen' but does not explicitly call out JSON.parse."
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "Item #5: 'No argument'; Item #3: 'pass a destination ID that doesn't exist'"
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "Items 1-7 are critical findings; 'Set aside (5)' contains lower-priority issues."
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": true,
+      "evidence": "Item #2: 'One `$transaction`, `findUniqueOrThrow`, and a conditional decrement'; Item #3: '`Money` constructor rejecting non-positive/non-integer'"
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "All findings in conversation; write permission denied."
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 11,
+    "pass_rate": 0.8182
+  }
+}

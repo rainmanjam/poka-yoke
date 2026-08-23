@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "`type Subscription = | TrialingSubscription | ... | CanceledSubscription` with status as discriminant"
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "Each interface contains only its relevant fields; CanceledSubscription uses nested Cancellation union"
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": true,
+      "evidence": "`function assertNever(x: never)` called in default arm of `daysUntilNextEvent` switch"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": true,
+      "evidence": "`type SubscriptionId = string & { readonly __brand: 'SubscriptionId' }`"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": false,
+      "evidence": "Provides only a TODO stub with comment `// TODO(you): return true only for transitions your billing logic actually allows`; no actual implementation"
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Identifies that flat `{ reason: string; voluntary: boolean }` allows nonsensical pairs like `payment_failed + voluntary: true`, then nests Cancellation union to prevent it"
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "Opens by referencing poka-yoke ritual and describing the bag-of-optionals risk, then prescribes discriminated union"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 7,
+    "pass_rate": 0.8571
+  }
+}

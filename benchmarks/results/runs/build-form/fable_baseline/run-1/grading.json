@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "31eb11dca414",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Includes types.ts, api.ts, useSelection.ts, useBulkAction.ts, BulkActionsBar.tsx, DocumentsTable.tsx with full implementations"
+    },
+    {
+      "text": "Produces actual working component code rather than only a list of recommendations",
+      "passed": true,
+      "evidence": "All code is executable React/TypeScript, not pseudocode or recommendations"
+    },
+    {
+      "text": "Makes the destructive action recoverable rather than relying on a confirmation dialog alone",
+      "passed": true,
+      "evidence": "Soft-delete to trash with 30-day retention, undo button in toast calls undoBulk API"
+    },
+    {
+      "text": "Shows the count of affected items before the action is taken",
+      "passed": true,
+      "evidence": "{p.count.toLocaleString()} of {p.total.toLocaleString()} selected; Archive {p.count.toLocaleString()}; Move {p.count.toLocaleString()} to trash"
+    },
+    {
+      "text": "Distinguishes select-all-on-page from select-all-matching rather than conflating them",
+      "passed": true,
+      "evidence": "Selection discriminated union with 'ids' vs 'all-matching' modes; selectAllMatching callback explicit; display shows '(all matching)' label"
+    },
+    {
+      "text": "Separates the destructive action from the benign one visually or spatially",
+      "passed": true,
+      "evidence": "Visual divider <span className=\"mx-2 h-5 w-px bg-slate-300\" />; archive has slate styling, delete has red (border-red-300, text-red-700)"
+    },
+    {
+      "text": "Does not make the destructive action the default focus or primary button",
+      "passed": true,
+      "evidence": "Archive button rendered first; Delete button styled secondary with red text, not autoFocus"
+    },
+    {
+      "text": "Notes that the server must enforce the rules, not just the UI",
+      "passed": true,
+      "evidence": "Server contract section: honour Idempotency-Key, COUNT(*) verification returning 409 on mismatch, soft deletes not hard deletes"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": false,
+      "evidence": "Closes with 'What's left possible on purpose' (inverted framing); discusses rationale for what's allowed rather than naming specific misuses prevented"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 9,
+    "pass_rate": 0.8889
+  }
+}

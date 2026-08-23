@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "9b2ce0ce8a1c",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Provides handler with try-catch error handling, schema with datasource/generator, and migration; sendError() helper handles all error cases"
+    },
+    {
+      "text": "Requires an idempotency key as a parameter rather than making it optional",
+      "passed": true,
+      "evidence": "idempotencyKeySchema.safeParse(header) with error response if !idempotencyKey.success"
+    },
+    {
+      "text": "Backs idempotency with a database unique constraint, not application logic alone",
+      "passed": true,
+      "evidence": "@@unique([orderId, idempotencyKey]) in schema; UNIQUE constraint in migration"
+    },
+    {
+      "text": "Uses distinct types for the identifiers rather than bare strings for both order and refund ids",
+      "passed": false,
+      "evidence": "Uses z.string().uuid() for validation but no branded types or type aliases for either identifier"
+    },
+    {
+      "text": "Handles money as integer minor units rather than a float",
+      "passed": true,
+      "evidence": "z.number().int().positive().max(100_000_000); INTEGER in schema"
+    },
+    {
+      "text": "Validates the refund amount server-side against the order rather than trusting the caller",
+      "passed": true,
+      "evidence": "Aggregates PENDING/SUCCEEDED refunds, checks alreadyReservedCents + input.amountCents > order.totalCents, throws 422"
+    },
+    {
+      "text": "Scopes the write so one tenant or user cannot refund another's order",
+      "passed": true,
+      "evidence": "RLS uses NULLIF(current_setting('app.tenant_id', true), '')::uuid; composite FK on (orderId, tenantId); sets tenant in transaction"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "cross-tenant refunding impossible at query and database-policy layers, over-refunds prevented by locked order row, duplicate refunds prevented by idempotency key"
+    },
+    {
+      "text": "Names at least one thing it deliberately left possible and why",
+      "passed": false,
+      "evidence": "Response ends with control summary but does not explicitly state a design choice left possible or its rationale"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 9,
+    "pass_rate": 0.7778
+  }
+}

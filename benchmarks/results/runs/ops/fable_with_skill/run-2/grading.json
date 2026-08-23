@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": true,
+      "evidence": "for some window, old pods/instances still running the previous code will issue `SELECT ... legacy_email` against a table where the column no longer exists. Every one of those queries errors"
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "This is textbook expand/contract \u2014 you're at the *contract* step, which is the one that gets its own deploy: [Deploy A: code changes] [Deploy B: next week DROP COLUMN]"
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": true,
+      "evidence": "Once it runs, the data in that column is gone \u2014 a code revert does not bring it back. What restores it is a database backup taken *before* the migration, and only one that someone has actually restored from"
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": true,
+      "evidence": "Deploy A rolls back in the time it takes to redeploy the previous image. Deploy B rolls back via a restore, which is hours and needs the people who know the restore procedure"
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "The Friday question is really: is the restore path staffed this afternoon and over the weekend?"
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": true,
+      "evidence": "fail any PR whose changed migrations contain `DROP`... unless it carries an explicit `destructive-migration` label \u2014 and reject the label on PRs that also touch application code, which mechanically enforces the split"
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "CI green is true but irrelevant to the two actual risks"
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "Deploy A rolls back in the time it takes to redeploy... Deploy B rolls back via a restore"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

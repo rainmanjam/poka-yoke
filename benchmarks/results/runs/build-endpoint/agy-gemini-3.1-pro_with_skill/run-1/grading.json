@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "9b2ce0ce8a1c",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Handler, Prisma schema, and SQL migration all provided inline with full implementation"
+    },
+    {
+      "text": "Requires an idempotency key as a parameter rather than making it optional",
+      "passed": true,
+      "evidence": "RefundRequestSchema includes `idempotencyKey: z.string().min(1).brand<\"IdempotencyKey\">()` as required field"
+    },
+    {
+      "text": "Backs idempotency with a database unique constraint, not application logic alone",
+      "passed": true,
+      "evidence": "CREATE UNIQUE INDEX \"Refund_idempotencyKey_key\" on idempotencyKey + Prisma @unique annotation"
+    },
+    {
+      "text": "Uses distinct types for the identifiers rather than bare strings for both order and refund ids",
+      "passed": true,
+      "evidence": "Declares Brand<T,B> pattern with OrderId, TenantId, UserId, IdempotencyKey types"
+    },
+    {
+      "text": "Handles money as integer minor units rather than a float",
+      "passed": true,
+      "evidence": "amountCents: z.number().int().positive() and CHECK (\"amountCents\" > 0)"
+    },
+    {
+      "text": "Validates the refund amount server-side against the order rather than trusting the caller",
+      "passed": true,
+      "evidence": "if (amountCents > order.totalCents) { throw new Error(...) }"
+    },
+    {
+      "text": "Scopes the write so one tenant or user cannot refund another's order",
+      "passed": true,
+      "evidence": "where: { id: orderId, tenantId: session.tenantId } ensures tenant isolation"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Final section explicitly enumerates 4 misuses designed out: cross-tenant leak, double refunds, partial writes, parameter swapping"
+    },
+    {
+      "text": "Names at least one thing it deliberately left possible and why",
+      "passed": true,
+      "evidence": "Explicitly states: network drop after Stripe success leaves PENDING, impossible to eliminate without background reconciliation job"
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

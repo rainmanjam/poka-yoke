@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "4999b9f80438",
+  "expectations": [
+    {
+      "text": "States that a written agreement or reminder is not enforcement",
+      "passed": true,
+      "evidence": "\"The core problem is that you are relying on training (Slack, standup, CONTRIBUTING.md)... People will always forget instructions. To solve this permanently, we need to replace the training with devices\""
+    },
+    {
+      "text": "Recommends a pre-commit hook to run the formatter automatically",
+      "passed": true,
+      "evidence": "Provides .pre-commit-config.yaml with 'ruff-format' hook and describes \"A local device (pre-commit hook): Formats code and checks types on the developer's machine before the commit succeeds\""
+    },
+    {
+      "text": "Notes that pre-commit is bypassable with --no-verify and must be backed by a CI check",
+      "passed": false,
+      "evidence": "Does not mention --no-verify, the bypass mechanism, or explicitly state why CI is necessary to back pre-commit. Implies difficulty but never states the specific problem."
+    },
+    {
+      "text": "Recommends a type check as a required CI check",
+      "passed": true,
+      "evidence": "GitHub Actions workflow includes 'name: Type Check (mypy)' with 'run: mypy .'"
+    },
+    {
+      "text": "Recommends baselining or ratcheting rather than enforcing across the whole repo at once",
+      "passed": false,
+      "evidence": "No mention of baselining, ratcheting, or gradual rollout. Open question asks about strictness level but proposed solution applies to full repo (. in commands). Does not recommend limiting enforcement to new code."
+    },
+    {
+      "text": "Notes that branch protection is what makes a CI check actually required",
+      "passed": false,
+      "evidence": "No mention of branch protection rules or branch protection configuration anywhere in the response."
+    },
+    {
+      "text": "Recommends the failure message tell the developer how to fix it",
+      "passed": false,
+      "evidence": "CI commands shown as bare `ruff format --check .` and `mypy .` with no instruction to add helpful error messages or fix guidance to developers."
+    },
+    {
+      "text": "Does not primarily recommend rewriting CONTRIBUTING.md, more reminders, or more discipline",
+      "passed": true,
+      "evidence": "Explicitly rejects training approach and recommends automated devices instead. Does not suggest CONTRIBUTING.md changes."
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "total": 8,
+    "pass_rate": 0.5
+  }
+}

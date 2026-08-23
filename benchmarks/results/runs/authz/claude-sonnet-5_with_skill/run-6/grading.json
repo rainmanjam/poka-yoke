@@ -1,0 +1,60 @@
+{
+  "assertions_sha": "bcf79cb43709",
+  "expectations": [
+    {
+      "text": "Flags the nested comments and attachments resolvers as unscoped by tenant",
+      "passed": true,
+      "evidence": "Document.comments / Document.attachments nested resolvers \u2014 Medium/Latent"
+    },
+    {
+      "text": "Flags updateDocument for scoping on id alone without a tenant constraint",
+      "passed": true,
+      "evidence": "updateDocument never checks tenant \u2014 cross-tenant write \u2014 where: { id: documentId }"
+    },
+    {
+      "text": "Flags exportWorkspace taking tenantId from the client-controlled request body",
+      "passed": true,
+      "evidence": "exportWorkspace takes tenantId from the request body, and interpolates it into raw SQL"
+    },
+    {
+      "text": "Flags searchDocuments as returning rows across all tenants",
+      "passed": true,
+      "evidence": "searchDocuments accepts session but never filters by it \u2014 search runs over every tenant's documents"
+    },
+    {
+      "text": "Flags adminListDocuments as checking authentication but not authorization or tenant",
+      "passed": true,
+      "evidence": "adminListDocuments checks authentication, not tenant \u2014 no tenant filter on the findMany"
+    },
+    {
+      "text": "Enumerates all the affected sites rather than fixing only the first one found",
+      "passed": true,
+      "evidence": "Lists 5 findings with complete coverage"
+    },
+    {
+      "text": "Recommends a structural device (scoped repository, row-level security, or equivalent) rather than only adding where-clauses site by site",
+      "passed": true,
+      "evidence": "Better: route this through a DocumentRepo constructed with session.tenantId so an unscoped .update() isn't reachable at all"
+    },
+    {
+      "text": "Recommends a cross-tenant test that attempts tenant A operations against tenant B resources",
+      "passed": true,
+      "evidence": "write the two-tenant test first so you can watch it go red on the current code before I patch it"
+    },
+    {
+      "text": "Identifies the raw interpolation of tenantId into $queryRawUnsafe as an injection hazard distinct in kind from the tenant-scoping bug",
+      "passed": true,
+      "evidence": "tenantId is spliced directly into $queryRawUnsafe...that's also a SQL injection vector, since tenantId is attacker-controlled"
+    },
+    {
+      "text": "Does not conclude the main query paths being scoped means the service is safe",
+      "passed": true,
+      "evidence": "Your instinct is wrong on the scope \u2014 the two obvious paths are correctly scoped, but there are four real cross-tenant paths"
+    }
+  ],
+  "summary": {
+    "passed": 10,
+    "total": 10,
+    "pass_rate": 1.0
+  }
+}

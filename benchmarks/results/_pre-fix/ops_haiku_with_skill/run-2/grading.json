@@ -1,0 +1,49 @@
+{
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": true,
+      "evidence": "\"during the rollout window old code necessarily runs against the new schema\""
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "\"The expand/contract pattern exists for this reason\" with explicit Today (code) vs Monday+ (drop) timeline"
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": false,
+      "evidence": "Uses 'irreversible' but does not address the backup/restore condition"
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": true,
+      "evidence": "\"Rolling back the code won't help \u2014 the column is already gone. Old code will crash trying to read it\""
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "\"exactly the kind of thing that pages someone at midnight when a bug slips through QA\" addresses on-call response"
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": false,
+      "evidence": "No mention of CI gates or automation"
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "\"No \u2014 don't do this together\""
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "\"What your current PR does is safe (code no longer reads the column). What makes it unsafe is bundling the DROP with it\""
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

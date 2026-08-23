@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "31eb11dca414",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Eight files provided (types, selection, api, useBulkDocumentActions, BulkActionsBar, ConfirmBulkTrashDialog, UndoToast, DocumentsTable) with complete implementations ready to use"
+    },
+    {
+      "text": "Produces actual working component code rather than only a list of recommendations",
+      "passed": true,
+      "evidence": "Full TSX implementations of DocumentsTable, BulkActionsBar, ConfirmBulkTrashDialog, UndoToast, and supporting modules with working mutations and state management"
+    },
+    {
+      "text": "Makes the destructive action recoverable rather than relying on a confirmation dialog alone",
+      "passed": true,
+      "evidence": "Soft-delete to Trash with 30-day retention + UndoToast component with undo mutation. Dialog text states: 'They move to Trash and are permanently deleted after 30 days. You can restore them from Trash until then.'"
+    },
+    {
+      "text": "Shows the count of affected items before the action is taken",
+      "passed": true,
+      "evidence": "BulkActionsBar displays `${formatCount(selection.count)} document...` before any action. ConfirmBulkTrashDialog title shows `Delete {formatCount(count)} document...?` before confirmation input"
+    },
+    {
+      "text": "Distinguishes select-all-on-page from select-all-matching rather than conflating them",
+      "passed": true,
+      "evidence": "Selection is discriminated union with `mode: 'include'` vs `mode: 'allMatching'`. Separate banners shown for each: 'All [pageIds.length] documents on this page are selected' with button 'Select all [total] documents matching this filter'"
+    },
+    {
+      "text": "Separates the destructive action from the benign one visually or spatially",
+      "passed": true,
+      "evidence": "Archive button: white background, primary styling. Delete button: red border (`border-red-500/60`), red text (`text-red-300`). Separated by vertical divider `<span aria-hidden className=\"ml-4 h-5 w-px bg-slate-700\" />`"
+    },
+    {
+      "text": "Does not make the destructive action the default focus or primary button",
+      "passed": true,
+      "evidence": "Archive is styled as primary button (white bg, `font-semibold`). Delete is secondary with danger styling. Archive button comes first in layout, making it the primary action"
+    },
+    {
+      "text": "Notes that the server must enforce the rules, not just the UI",
+      "passed": true,
+      "evidence": "Multiple places: 'The server must back this with a unique index on (user_id, idempotency_key)' in api.ts comments. Final section states: 'Hiding the buttons for unpermitted users is not included, because hiding is presentation: the /api/documents/bulk/* endpoints must enforce permissions and tenant scoping themselves'"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Final section titled 'What this shape makes impossible, and what it doesn't' explicitly lists: 'A bulk action on zero rows can't be expressed', 'A selection can't outlive its filter', 'Double-submission is closed by a required idempotencyKey', etc."
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

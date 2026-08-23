@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "4999b9f80438",
+  "expectations": [
+    {
+      "text": "States that a written agreement or reminder is not enforcement",
+      "passed": true,
+      "evidence": "\"CONTRIBUTING.md, the pin, and both standups are the same instrument \u2014 **training**. Training degrades\""
+    },
+    {
+      "text": "Recommends a pre-commit hook to run the formatter automatically",
+      "passed": true,
+      "evidence": "\"A pre-commit hook that **rewrites** the file rather than yelling about it\""
+    },
+    {
+      "text": "Notes that pre-commit is bypassable with --no-verify and must be backed by a CI check",
+      "passed": true,
+      "evidence": "\"because `--no-verify` exists and people under deadline use it... The hook is for speed, CI is for authority\""
+    },
+    {
+      "text": "Recommends a type check as a required CI check",
+      "passed": true,
+      "evidence": "\"Required check on new code = rung 1 at the merge boundary\""
+    },
+    {
+      "text": "Recommends baselining or ratcheting rather than enforcing across the whole repo at once",
+      "passed": true,
+      "evidence": "\"run the type check on changed files only, or generate a baseline of current violations and fail only on new ones\""
+    },
+    {
+      "text": "Notes that branch protection is what makes a CI check actually required",
+      "passed": true,
+      "evidence": "\"None of this holds without **branch protection with required checks**. That's the actual enforcement\""
+    },
+    {
+      "text": "Recommends the failure message tell the developer how to fix it",
+      "passed": true,
+      "evidence": "\"`Run 'make fmt' and commit \u2014 this is auto-fixable` produces a fixed PR\""
+    },
+    {
+      "text": "Does not primarily recommend rewriting CONTRIBUTING.md, more reminders, or more discipline",
+      "passed": true,
+      "evidence": "\"drop the CONTRIBUTING.md paragraph to one line pointing at the tooling \u2014 once the device exists, the prose is just something else to fall out of date\""
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

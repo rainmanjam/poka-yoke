@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "Defines `export type Subscription = | TrialingSubscription | ActiveSubscription | PastDueSubscription | CanceledSubscription;` with each type having `status: 'trialing'`, `status: 'active'`, etc."
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "TrialingSubscription has only trialEndDate, ActiveSubscription has only renewalDate, PastDueSubscription has retryCount/gracePeriodEnd, CanceledSubscription has cancelReason/isVoluntary. No field bleeding between types."
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": true,
+      "evidence": "Shows `default: const _exhaustiveCheck: never = sub; return _exhaustiveCheck;` in the switch statement"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": false,
+      "evidence": "Uses `id: string; userId: string; planId: string;` \u2014 all bare strings, not branded types"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": false,
+      "evidence": "No transition function or constraint mechanism provided; only type definitions shown"
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": false,
+      "evidence": "Mentions preventing one mistake in passing ('preventing you from accidentally accessing a field like `trialEndDate` on an `active` subscription') but does not systematically enumerate which misuses are prevented"
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "Recommends discriminated unions throughout; no optional-field pattern presented"
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "total": 7,
+    "pass_rate": 0.5714
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "1af6b213502f",
+  "expectations": [
+    {
+      "text": "States plainly that the recent-charge lookup is not sufficient",
+      "passed": true,
+      "evidence": "No... The new check is a check-then-act race \u2014 the same shape that produced the incident... Your fix addresses the mistake. The hazard is untouched."
+    },
+    {
+      "text": "Identifies the lookup as a check-then-act race rather than a device",
+      "passed": true,
+      "evidence": "The new check is a check-then-act race \u2014 the same shape that produced the incident, with an extra query in front of it."
+    },
+    {
+      "text": "Recommends a required idempotency key on the charge path",
+      "passed": true,
+      "evidence": "Idempotency key as a required param, derived from the queue message ID"
+    },
+    {
+      "text": "Recommends a database unique constraint backing the idempotency key",
+      "passed": true,
+      "evidence": "UNIQUE on (idempotency_key) in your charges table"
+    },
+    {
+      "text": "Separates the defect from the mistake from the underlying system hazard",
+      "passed": true,
+      "evidence": "Defect \u2014 340 customers charged twice. Mistake \u2014 the retry path called Stripe's charge without an idempotency key. Hazard \u2014 the charge call succeeds without one."
+    },
+    {
+      "text": "Locates the hazard as a system property rather than as a worker bug or human error",
+      "passed": true,
+      "evidence": "The hazard is untouched... Nothing in the signature, the type, or the database requires a charge to be idempotent \u2014 framed as system design"
+    },
+    {
+      "text": "Sweeps for other non-idempotent side effects reachable from a retry",
+      "passed": false,
+      "evidence": "Point me at the payments repo and I'll run detect_hazards.py... \u2014 offers to sweep but does not actually sweep in the response"
+    },
+    {
+      "text": "Treats 'second time this happened' as evidence for pushing to a Control-rung device",
+      "passed": false,
+      "evidence": "Does not reference the previous incident or 'second time' when recommending Control; only states 'Control is available and cheap here'"
+    },
+    {
+      "text": "Attributes cause to the system, not to any person",
+      "passed": true,
+      "evidence": "The hazard is untouched... framed as system design lacking idempotency requirements"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 9,
+    "pass_rate": 0.7778
+  }
+}

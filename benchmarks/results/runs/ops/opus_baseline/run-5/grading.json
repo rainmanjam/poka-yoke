@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": true,
+      "evidence": "\"For a few minutes, old pods are still running the old code that reads legacy_email, against a schema where the column is gone. That window is the outage.\""
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "\"Today: merge and deploy only the three code changes... Later, Monday-ish: a separate PR containing only the DROP.\""
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": true,
+      "evidence": "\"Rolling back the deploy rolls back the code; it does not bring the column back. Your only restore path is a point-in-time restore of the database.\""
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": true,
+      "evidence": "\"Code-only deploy: rollback is a revert, minutes, safe alone at 5pm. Post-DROP: rollback is a database restore with someone paged on a weekend.\""
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "\"Post-DROP: rollback is a database restore with someone paged on a weekend.\""
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": true,
+      "evidence": "\"a CI check that fails when a migration file containing DROP/destructive ALTER lands in the same PR as application code.\""
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "\"merge and deploy only the three code changes... hold the DROP.\""
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "\"Fully reversible \u2014 revert reverts it\" vs the DROP which is not reversible."
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

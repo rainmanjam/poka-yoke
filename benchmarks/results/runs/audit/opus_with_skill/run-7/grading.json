@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": true,
+      "evidence": "Item #4: '`transfer(from, to, \u2026)` \u2014 adjacent strings, swap compiles \u2014 `:17` \u2014 money / silent'"
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "Item #5: 'Retry with no idempotency key \u2014 `:55-58`'; describes timeout leading to double billing."
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": true,
+      "evidence": "Item #8: '`catch { return null }` makes a failed payment look handled' with discriminated union example."
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": true,
+      "evidence": "Item #10: 'Money as `number`, currency as a defaulted string'; '`applyDiscount` does float arithmetic with no rounding policy'"
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "Item #6: 'returns `doomed.length` from the SELECT while the DELETE re-evaluates the predicate independently'"
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "Item #9: '`updateSubscription(id, \"cancelled\")` stops billing'; 'a `default`-less switch'"
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": true,
+      "evidence": "Item #1: '`JSON.parse` also yields `any` (C7), so malformed real events fail deep inside Stripe's client'"
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "Item #6: 'call it with no arguments'; Item #3: 'pass a destination ID that doesn't exist'"
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "Items 1-10 are primary findings; 'Set aside (5)' contains lower-priority issues."
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": true,
+      "evidence": "Item #5 includes code: '`UPDATE accounts SET balance = balance - $1 WHERE id = $2 AND balance >= $1`'; Item #8 includes discriminated union type definition."
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "All findings in conversation."
+    }
+  ],
+  "summary": {
+    "passed": 11,
+    "total": 11,
+    "pass_rate": 1.0
+  }
+}

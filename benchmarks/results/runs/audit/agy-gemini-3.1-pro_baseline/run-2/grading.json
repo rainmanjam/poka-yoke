@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": false,
+      "evidence": "Mentions 'race conditions' in transfer but does not flag parameter swapping vulnerability"
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": false,
+      "evidence": "Mentions 'blind retries in chargeCustomer' but does not explicitly name the missing idempotency key"
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": false,
+      "evidence": "States 'silent payment failures' but does not identify a specific catch block returning null"
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": true,
+      "evidence": "Mentions 'floating-point precision errors' as a vulnerability"
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": false,
+      "evidence": "Does not mention SQL injection, raw SQL, or purgeCanceledAccounts in the provided summary"
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": false,
+      "evidence": "Does not mention subscription status validation or switch statements"
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": false,
+      "evidence": "Mentions 'completely unauthenticated webhook endpoints' but does not specifically flag JSON.parse of unvalidated body"
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": false,
+      "evidence": "Frames findings as vulnerabilities and qualities: 'would be vulnerable to race conditions', 'is vulnerable to...', not as specific actions taken"
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "Opens with: 'race conditions destroying money, silent payment failures, floating-point precision errors, and completely unauthenticated webhook endpoints that double-charge customers'"
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": false,
+      "evidence": "References 'payments_review_plan.md artifact' but the actual code proposals are not shown in this response"
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "Explicitly asks 'Are you evaluating my code-review skills here, or do you actually want me to apply these fixes?' and creates an artifact rather than modifying the file"
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "total": 11,
+    "pass_rate": 0.2727
+  }
+}

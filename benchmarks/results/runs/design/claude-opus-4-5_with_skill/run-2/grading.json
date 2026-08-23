@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "type Subscription = | { status: \"trialing\"; trialEndDate: Date } | { status: \"active\"; renewalDate: Date } | ..."
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "\"You cannot construct a subscription with mismatched fields \u2014 `{ status: \"active\", cancelReason: \"...\" }` won't typecheck\"; each variant lists only its own fields with no optionals"
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": true,
+      "evidence": "function assertNever(x: never): never { ... } ... default: return assertNever(sub);"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": false,
+      "evidence": "Branding is offered only for Date fields (TrialEndDate, GracePeriodEnd, RenewalDate); no subscription/customer ID field appears anywhere, and cancelReason refinement is a string-literal union, not an ID type"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": false,
+      "evidence": "Only `getNextBillingAction` (a read-only formatter) is provided; no transition function, no allowed-transition map, and no discussion of constraining state changes"
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "\"**What this prevents (Control rung):** - You cannot access `trialEndDate` without first narrowing to `status === \"trialing\"`...\" plus the numbered Misuse Enumeration table"
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "\"**The bag-of-optionals trap**\" is named as an anti-pattern; the recommendation is the discriminated union with \"no optional bags\""
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "total": 7,
+    "pass_rate": 0.7143
+  }
+}

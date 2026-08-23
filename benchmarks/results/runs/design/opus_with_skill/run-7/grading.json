@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "`Subscription = Core & (| { readonly status: \"trialing\"; readonly trialEndsAt: Date } | { readonly status: \"active\"; readonly renewsAt: Date } | ...)`; four inline variants with status literals"
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "Canceled variant carries {status, canceledAt, cancellation}; Trialing carries {status, trialEndsAt}; intersection distributes so no variant contains optionals from others"
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": true,
+      "evidence": "`function assertNever(x: never)` defined; used in `accessEndsAt()` switch with four cases plus default; notes 'adding \"paused\" breaks the build here'"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": true,
+      "evidence": "SubscriptionId, CustomerId, PlanId as `Brand<string, ...>`; RetryCount as `Brand<number, ...>` with range-checked constructor"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": true,
+      "evidence": "Single `transition(s: Subscription, e: Event): Subscription | TransitionError` function (shown as TODO stub); all fields readonly; 'The ONLY path to a new state. Every field is readonly so nothing else can assign one.'"
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Lists 6 numbered misuses: '(1) A single flat record...has 5 optionals \u2014 it claims 32 states are legal when 4 are', '(2) `voluntary: boolean` next to a free-text reason permits...', etc.; explains how each is prevented"
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "Primary recommendation is discriminated union; flat optional-fields record listed as first misuse and its problems detailed"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 7,
+    "pass_rate": 1.0
+  }
+}

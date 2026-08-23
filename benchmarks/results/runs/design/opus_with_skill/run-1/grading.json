@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "`Subscription = SubscriptionCore & (| { readonly status: \"trialing\"; ...} | { readonly status: \"active\"; ...} | ...)`"
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "trialing has only trialEndsAt; active has only renewsAt; past_due has attempt/gracePeriodEndsAt/lastFailureAt; canceled has cancellation/accessEndsAt"
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": true,
+      "evidence": "Shows `assertNever` function definition and uses it in `isEntitled` switch with `default: return assertNever(sub);`"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": true,
+      "evidence": "`SubscriptionId = Brand<string, \"SubscriptionId\">`, `CustomerId`, `PlanId`, `UserId`, `Instant` all branded"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": true,
+      "evidence": "Shows `transition()` function stub and explicitly states `readonly` everywhere makes it 'the only way to reach a new state'"
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Has '## Misuse enumeration' table with 8 numbered hazards (C8, C2, F1, M3, C3/C1, F7, C9 mapped to catalog codes)"
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "Explicitly criticizes bag-of-optionals: '`{status, trialEndsAt?, ...}` claims **2\u2076 = 64 states**. Four are real.' Then provides discriminated union as solution"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 7,
+    "pass_rate": 1.0
+  }
+}

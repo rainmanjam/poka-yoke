@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "018a96d90c3c",
+  "expectations": [
+    {
+      "text": "States that system prompt instructions are not a reliable control on model behaviour",
+      "passed": true,
+      "evidence": "\"'Be careful to extract the exact amount' and 'never refund the same order twice' are instructions to the component that's making the mistake \u2014 rung 0 in poka-yoke terms (training, not a device). They'll reduce the rate; they can't make it zero, and they'll drift as the prompt grows.\""
+    },
+    {
+      "text": "Recommends structured output against a schema rather than extracting values from prose",
+      "passed": true,
+      "evidence": "\"switch to the provider's structured/tool-call mode with a tight schema: reason as an enum you define, no notes free-text field, extra=forbid\""
+    },
+    {
+      "text": "Recommends validating the refund amount server-side against the actual order",
+      "passed": true,
+      "evidence": "\"your server validates the amount against the actual order record, not the chat \u2014 0 < amount <= order.total - order.already_refunded\""
+    },
+    {
+      "text": "Recommends a required idempotency key on the refund call",
+      "passed": true,
+      "evidence": "\"a required idempotency key on the refund call (refund:{order_id}, or {order_id, reason_version}), backed by a unique constraint\""
+    },
+    {
+      "text": "Recommends a database constraint or equivalent so a duplicate refund is rejected rather than merely avoided",
+      "passed": true,
+      "evidence": "\"backed by a unique constraint, reserved in the same transaction as the refund. The prompt line becomes unnecessary; the DB refuses.\""
+    },
+    {
+      "text": "Recommends human confirmation or an approval gate for the irreversible refund action",
+      "passed": true,
+      "evidence": "\"anything irreversible needs a human confirmation naming the exact action and parameters... customer-side confirm \u2014 Refund $49.99 to card ending 4242 for order #1234? [Yes]\""
+    },
+    {
+      "text": "Identifies prompt injection risk from the customer-supplied message reaching a privileged action",
+      "passed": true,
+      "evidence": "\"Prompt injection reach \u2014 What can the model reach if tricked? The customer message is untrusted input read by a component that can move money.\""
+    },
+    {
+      "text": "Recommends bounds or caps on the refund amount",
+      "passed": true,
+      "evidence": "\"enforce a business-rule cap in code: cumulative refunds on an order \u2264 order total\""
+    },
+    {
+      "text": "Does not primarily recommend changes to the prompt wording",
+      "passed": true,
+      "evidence": "Focuses entirely on code-level devices; notes prompt lines are \"fine to keep as belt-and-suspenders; just don't count them\" rather than recommending rewording"
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": true,
+      "evidence": "A deploy isn't atomic \u2014 for a window, old pods/processes are still running against the new schema. If the column drops before every instance is running the code that stopped reading it, those old instances start erroring."
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "Ship the code-only change today. Deploy it. Let it run\u2026Then drop the column in its own migration, its own PR, its own deploy."
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": true,
+      "evidence": "The DROP COLUMN is the irreversible step. Restore path = a database backup/snapshot restore. If someone later needs legacy_email, it's gone."
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": true,
+      "evidence": "A code revert is a 20-minute fix any day of the week. A dropped column that turns out to matter needs a DB restore, ideally with someone who knows the restore procedure awake and available."
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "Friday afternoon is a bad time to need that person [who knows the restore procedure]."
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": false,
+      "evidence": "Offers to help check what CI guard would catch this ('ops mode has a device for that') but does not recommend adding one."
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "Short answer: don't merge it as one PR, and don't drop the column this afternoon regardless."
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "Reversible: the code changes that stop reading legacy_email. Irreversible: the DROP COLUMN."
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

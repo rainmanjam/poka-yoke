@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "4999b9f80438",
+  "expectations": [
+    {
+      "text": "States that a written agreement or reminder is not enforcement",
+      "passed": true,
+      "evidence": "\"You've now delivered the same rule through three channels... are all the same device \u2014 training... the 50% number is the measurement of how well training works. Rung 0 (docs, reminders, review checklists) \u2192 you need rung 1 (impossible) or rung 2.\""
+    },
+    {
+      "text": "Recommends a pre-commit hook to run the formatter automatically",
+      "passed": true,
+      "evidence": "\"Pre-commit hook that auto-fixes and re-stages, not one that scolds.\" Provides ruff-format config."
+    },
+    {
+      "text": "Notes that pre-commit is bypassable with --no-verify and must be backed by a CI check",
+      "passed": true,
+      "evidence": "\"Three layers, cheapest first:... Pre-commit hook... CI check as the authority, because --no-verify exists.\""
+    },
+    {
+      "text": "Recommends a type check as a required CI check",
+      "passed": true,
+      "evidence": "\"Type annotations can't be auto-fixed, so it's a ratchet problem.\" Provides CI job for types check."
+    },
+    {
+      "text": "Recommends baselining or ratcheting rather than enforcing across the whole repo at once",
+      "passed": true,
+      "evidence": "\"Enforce on changed files only. The violation count can then only go down.\""
+    },
+    {
+      "text": "Notes that branch protection is what makes a CI check actually required",
+      "passed": true,
+      "evidence": "\"Branch protection with these as required checks. Without it, both jobs are advisory and you've built a more elaborate reminder.\" Provides gh api command."
+    },
+    {
+      "text": "Recommends the failure message tell the developer how to fix it",
+      "passed": true,
+      "evidence": "\"Make the failure teach. error: rule violated produces a workaround... Unformatted files. Run: ruff format . \u2014 or enable format-on-save so this never fires again produces a fix.\""
+    },
+    {
+      "text": "Does not primarily recommend rewriting CONTRIBUTING.md, more reminders, or more discipline",
+      "passed": true,
+      "evidence": "Primary recommendations are devices. CONTRIBUTING.md edit is secondary: \"Finally: replace the CONTRIBUTING.md paragraph with one line pointing at the checks.\""
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

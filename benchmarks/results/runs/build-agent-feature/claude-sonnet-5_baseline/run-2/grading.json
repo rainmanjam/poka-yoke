@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "3ef52a8f1e5d",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Three complete modules (types.py, classifier.py, ticketing.py) with example usage in __main__; runs as-is with ANTHROPIC_API_KEY set"
+    },
+    {
+      "text": "Uses structured output against a schema rather than parsing the model's prose",
+      "passed": true,
+      "evidence": "CLASSIFY_TOOL defines JSON schema with enum; parses response via block.input (tool payload), not prose parsing"
+    },
+    {
+      "text": "Constrains the classification to a closed set the code enforces, not just the prompt",
+      "passed": true,
+      "evidence": "Team(str, Enum) with three values; tool schema lists enum; runtime parsing via Team(payload['team']) enforces it"
+    },
+    {
+      "text": "Handles the case where the model returns something outside the allowed set",
+      "passed": true,
+      "evidence": "try/except catches ValueError from Team(payload['team']); raises ClassificationError, caught in retry loop"
+    },
+    {
+      "text": "Has a deterministic fallback or explicit failure path rather than a silent default",
+      "passed": true,
+      "evidence": "ClassificationError raised after MAX_RETRIES exhausted; caught in main block with logger.exception(); not silent"
+    },
+    {
+      "text": "Treats the customer email as untrusted text that could carry instructions",
+      "passed": true,
+      "evidence": "tool_choice forces model to call classify_email; enum constraint on output makes adversarial email content irrelevant to the result"
+    },
+    {
+      "text": "Bounds cost or retries in code rather than requesting it in the prompt",
+      "passed": true,
+      "evidence": "MAX_RETRIES=3, max_tokens=256, model=claude-haiku-4-5; comment explains cost rationale"
+    },
+    {
+      "text": "Closes by naming which failures the design makes impossible",
+      "passed": false,
+      "evidence": "Closing section discusses remaining failure modes (API exhaustion) and asks user to pick strategy, but does not explicitly summarize which failures are now impossible (invalid routing, silent drops, malformed payloads, prompt escape)"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

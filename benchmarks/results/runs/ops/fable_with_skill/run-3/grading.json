@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": true,
+      "evidence": "for some window, the *old* code \u2014 the version that still reads `legacy_email` in three places \u2014 runs against a schema where the column is gone. Every one of those three paths errors on a missing column"
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "Expand/contract: [PR A: remove the three reads] [PR B: next week DROP COLUMN]"
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": true,
+      "evidence": "`git revert` brings the code back; it does not bring the data back. What restores it is a backup or point-in-time recovery \u2014 and only if someone has actually *restored* from it"
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": true,
+      "evidence": "For PR A: revert in minutes, no staffing concern. For the combined PR: recovery is a database restore"
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "Friday afternoon is exactly when the people who'd run it are leaving. The Friday rule isn't superstition; it's a question about recovery time versus who's awake"
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": false,
+      "evidence": "Recommends gate that fails 'unless the PR carries an explicit `destructive-migration-approved` label' but does not specify rejecting the label when application code is present\u2014mechanism allows bad combination if labeled"
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "CI green is true but irrelevant... CI passed because tests run new code against new schema; that combination never exists during a rollout"
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "`git revert` brings the code back; it does not bring the data back"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

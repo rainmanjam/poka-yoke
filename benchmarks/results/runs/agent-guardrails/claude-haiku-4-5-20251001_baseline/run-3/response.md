@@ -1,0 +1,3 @@
+The hook templates I showed above are the fix. Check your project's `.claude/settings.json` file—if it doesn't exist, create it in your project root. The `before_edit` and `before_bash` hooks will run *before* I attempt the action, not after. Harness-level enforcement beats prompt-level intention every time.
+
+The key difference: poka-yoke is right. Instructions are guidance; devices are prevention. Your team shouldn't have to remember your rules—your harness should enforce them.

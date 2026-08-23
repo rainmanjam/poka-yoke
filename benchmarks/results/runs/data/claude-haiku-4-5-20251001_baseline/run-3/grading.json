@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "\"Not quite. That test checks presence but not correctness\u2014it's the 'detector that reported' problem\""
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "\"They're just full of nulls (or zeros from coalescing)\""
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": false,
+      "evidence": "No mention of validating against upstream data or a source of truth"
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": false,
+      "evidence": "No discussion of assertion timing or preventing bad data from reaching dashboards"
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": false,
+      "evidence": "No mention of data contracts or schema checks"
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "\"revenue values are NOT null and NOT all zeros\" and \"check the sum matches a known range\""
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": false,
+      "evidence": "No mention of the three-week detection gap"
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": true,
+      "evidence": "\"An empty table from a completely failed query is easy to spot; silent data corruption isn't.\""
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "total": 8,
+    "pass_rate": 0.5
+  }
+}

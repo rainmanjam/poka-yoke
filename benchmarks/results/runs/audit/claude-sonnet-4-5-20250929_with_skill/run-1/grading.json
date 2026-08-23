@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": true,
+      "evidence": "\"**Swappable account parameters** \u2014 `transfer(to, from, amount)` compiles and silently sends money the wrong direction\""
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "\"**Double-charging on retry** \u2014 no idempotency key means network timeouts will charge customers twice\""
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": false,
+      "evidence": "No mention of a catch block, returning null, or swallowed errors; the closest is the generic phrase \"fail silently in production,\" which describes the class of hazards generally rather than flagging the catch-returns-null site."
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": true,
+      "evidence": "\"Floating-point arithmetic on money (`balance: number`) \u2192 penny discrepancies compound over reconciliation cycles\""
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "\"**SQL injection** in the purge function via string interpolation\""
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": false,
+      "evidence": "Mentions \"Unbounded status strings instead of enums \u2192 typos compile, features neither enable nor disable\" \u2014 a typing complaint about status values, but no mention of a switch statement or missing exhaustiveness/default case."
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": false,
+      "evidence": "Webhook is flagged only for \"Missing webhook signature verification\"; no mention of JSON.parse or unvalidated parsing of the body's shape."
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "Findings are framed as actions/events: \"`transfer(to, from, amount)` compiles and silently sends money the wrong direction\", \"if the second DB update fails\", \"if called without arguments\" \u2014 no attribution to developer carelessness or skill."
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "\"The worst offenders:\" lists non-atomic transfers (permanent loss), double-charging, SQL injection, and mass deletion first, with float rounding and status strings last under \"The data corruption\"."
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": false,
+      "evidence": "Only gestures at devices in aggregate \u2014 \"The poka-yoke devices I proposed make each mistake either impossible (compile error) or loudly announced (transaction rollback, constraint violation)\" and \"Branded types for account IDs and money\"; no per-finding fix for SQL injection, webhook, dangerous default, or double-charge is stated in this response."
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "The response describes findings and asks \"Should I apply the critical fixes (#1-5, #8) now, or do you want to review the full audit document first?\" \u2014 indicating no fixes applied to source files."
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 11,
+    "pass_rate": 0.6364
+  }
+}

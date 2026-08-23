@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "3ef52a8f1e5d",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Includes complete `InboundEmail` and `RoutingDecision` types, `route_email()` classifier with retry logic, `process_inbound_email()` orchestrator, and explicit stubs for ticketing/escalation with clear NotImplementedError messages."
+    },
+    {
+      "text": "Uses structured output against a schema rather than parsing the model's prose",
+      "passed": true,
+      "evidence": "`client.messages.parse(model=_MODEL, ..., output_format=RoutingDecision)` with Pydantic schema; response parsed via `response.parsed_output`."
+    },
+    {
+      "text": "Constrains the classification to a closed set the code enforces, not just the prompt",
+      "passed": true,
+      "evidence": "`Team = Literal[\"billing\", \"technical\", \"account\"]` in the type definition; Pydantic enforces the Literal at validation time, independent of prompt."
+    },
+    {
+      "text": "Handles the case where the model returns something outside the allowed set",
+      "passed": true,
+      "evidence": "`model_config = ConfigDict(extra=\"forbid\")` rejects extra fields; `if decision is None` catches validation failures; retries or raises `RoutingFailure` on invalid schema."
+    },
+    {
+      "text": "Has a deterministic fallback or explicit failure path rather than a silent default",
+      "passed": true,
+      "evidence": "Raises `RoutingFailure` after max_attempts exhausted; calls `escalate_for_manual_triage()` in exception handler (not a silent default to any team); `process_inbound_email()` returns early on failure."
+    },
+    {
+      "text": "Treats the customer email as untrusted text that could carry instructions",
+      "passed": true,
+      "evidence": "Code checks `if getattr(response, 'stop_reason', None) == 'refusal'` and handles it separately; insight explicitly states 'email bodies are untrusted user input and could contain something that trips a safety classifier'; refusal handling shows code expects injection attempts."
+    },
+    {
+      "text": "Bounds cost or retries in code rather than requesting it in the prompt",
+      "passed": true,
+      "evidence": "`max_attempts=2` loop with `time.sleep(0.5 * attempt)` backoff; `max_tokens=300` in API call; model pinned to `claude-haiku-4-5-20251001` (cheapest tier); no retry instructions in prompt."
+    },
+    {
+      "text": "Closes by naming which failures the design makes impossible",
+      "passed": true,
+      "evidence": "Design notes section explicitly states: 'Made impossible: the model cannot route to a team outside the three named ones (Literal + `extra=\"forbid\"` + retry-then-fail), and a failed/refused classification cannot silently masquerade as a real routing decision'; also names 'Left possible on purpose: a wrong-but-valid classification'."
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

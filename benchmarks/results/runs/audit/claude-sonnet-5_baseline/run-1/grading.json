@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": true,
+      "evidence": "Finding #4: '`transfer(b, a, amt)` silently reverses direction, ships as a passing-looking call'"
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "Finding #3: 'same invoice charged twice. This is the exact shape of a real double-charge incident'"
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": true,
+      "evidence": "Finding #3 secondary note: 'Also stop swallowing the error to `null` \u2014 log it or rethrow'"
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": false,
+      "evidence": "Not mentioned in any finding"
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "Finding #2: 'hand-strung into raw SQL' and device: 'drop the raw SQL for the ORM call'"
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "Finding #5: 'the `switch` below it has no `default`. Pass `\"actve\"` (typo)... the DB record updates, but neither `enableFeatures` nor `disableFeatures` runs'"
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": false,
+      "evidence": "Not mentioned; Set Aside only references unused timeout variable"
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "Findings frame mistakes as actions: 'anyone who can reach this endpoint POSTs', 'call `purgeCanceledAccounts()`', '`transfer(b, a, amt)` silently reverses'"
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "Webhook (money), purgeCanceledAccounts (irreversible), chargeCustomer (money), transfer (money) ranked before Set Aside cosmetic items"
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": true,
+      "evidence": "Each finding includes code: `stripe.webhooks.constructEvent()`, branded AccountId types, DB transactions, idempotencyKey, union types"
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "No files written; conversation-only response"
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 11,
+    "pass_rate": 0.8182
+  }
+}

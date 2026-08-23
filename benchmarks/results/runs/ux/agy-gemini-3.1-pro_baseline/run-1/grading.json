@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "82f963d241f9",
+  "expectations": [
+    {
+      "text": "Pushes back on the 'are you sure?' modal as the primary fix",
+      "passed": true,
+      "evidence": "\"The current proposal is to add an 'Are you sure?' modal, but as per the poka-yoke `ux` principles, this is a **Rung 0** (ineffective) device\""
+    },
+    {
+      "text": "Explains habituation or click-through blindness as why frequent dialogs stop working",
+      "passed": true,
+      "evidence": "\"because users quickly develop click-through blindness and click 'Yes' reflexively\""
+    },
+    {
+      "text": "Recommends reversibility (soft delete with a retention window) as the strongest option",
+      "passed": true,
+      "evidence": "\"**Option 1: Soft Delete (Rung 1 - Control) \u2014 Recommended** ... move it to a 'Trash' state with a 30-day retention period\""
+    },
+    {
+      "text": "Recommends grace-period undo as a strong low-friction option",
+      "passed": false,
+      "evidence": "Grace-period undo (toast with undo button) is not mentioned; only soft delete, type-to-confirm, and specific consequence dialog are offered"
+    },
+    {
+      "text": "Recommends type-the-workspace-name confirmation for the irreversible case",
+      "passed": true,
+      "evidence": "\"**Option 2: Type-to-Confirm (Rung 2 - Warning)** Require the user to type the exact workspace name to confirm the deletion\""
+    },
+    {
+      "text": "If a dialog is retained, requires it to name the workspace and the scale of what is lost",
+      "passed": true,
+      "evidence": "\"the dialog must state exact facts: 'Delete workspace 'Production' and its 15 projects permanently?'\""
+    },
+    {
+      "text": "Notes that the server must enforce the deletion rules, not just the UI",
+      "passed": false,
+      "evidence": "Not mentioned; open questions ask about backend capability but do not state that the server must enforce rules"
+    },
+    {
+      "text": "Gives an explicit preference order rather than an undifferentiated list of ideas",
+      "passed": true,
+      "evidence": "\"Option 1: Soft Delete (Rung 1 - Control) \u2014 Recommended\" is marked as preferred"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

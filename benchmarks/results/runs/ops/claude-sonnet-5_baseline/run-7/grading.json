@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": false,
+      "evidence": "Discusses external consumers; does not identify the primary app's old code against new schema scenario"
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "\"expand/contract: stop reading the column first (deploy, bake for a while, confirm nothing errors), *then* drop it in a separate, later deploy\""
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": true,
+      "evidence": "\"Dropping `legacy_email` is not reversible by revert... Restore path is only whatever backup/PITR you have\""
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": true,
+      "evidence": "\"A botched column drop found at 5pm Friday means restoring from backup with a skeleton crew, not a two-minute revert\""
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "\"restoring from backup with a skeleton crew\" and \"not because it's Friday, but because it collapses your ability to catch\""
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": false,
+      "evidence": "No mention of CI gates or automated guardrails"
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "\"merge now, that's fine\" but \"Hold the deploy of the drop itself\" \u2014 does not approve full change as-is"
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "Section 1 identifies irreversible drop; code changes are reversible by revert"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

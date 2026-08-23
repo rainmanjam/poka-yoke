@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": true,
+      "evidence": "\"Deploys aren't atomic \u2014 for some period, old pods/instances are still running against the new schema... If *anything* still reads or writes `legacy_email`... it errors the moment the column disappears\""
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "\"Split it: PR A (now): stop reading/writing `legacy_email`... PR B (later, not Friday): the actual `DROP COLUMN`\""
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": true,
+      "evidence": "\"Once it runs, the data is gone from the live table \u2014 restoring it means a database restore (backup or point-in-time recovery), not a code revert\""
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": true,
+      "evidence": "\"For PR A, rollback is a normal revert. For PR B, there is no rollback once the drop runs \u2014 only a restore.\""
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "\"Asking 'can I deploy this afternoon' is really asking 'am I comfortable initiating an irreversible action right before the weekend, with fewer people watching'\""
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": false,
+      "evidence": "No recommendation for a CI gate; discusses splitting and verification of other readers instead."
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "\"Straight answer: don't ship the drop this afternoon\""
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "\"the 'column drop' and 'code that no longer reads it' are two different risk profiles stapled into one PR\""
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

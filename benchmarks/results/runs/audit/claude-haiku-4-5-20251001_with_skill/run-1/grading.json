@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": true,
+      "evidence": "Finding #4: 'Pass `transfer(toId, fromId)` by accident. Both are strings; TypeScript sees nothing wrong.'"
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "Finding #3: 'Customer charged twice, silent' and proposes 'Add idempotency key to the webhook call'"
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": true,
+      "evidence": "Finding #9: 'catch swallows all errors, returns `null`, and conditionally retries'"
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": true,
+      "evidence": "Finding #6: 'Store or pass money as `number`. `0.1 + 0.2 !== 0.3` in floating point'"
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "Finding #1: 'function interpolates it directly into a raw SQL string without escaping'"
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "Finding #7: 'Add a new status like `\"paused\"`, but forget the switch case'"
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": true,
+      "evidence": "Finding #5: '`JSON.parse(body)` throws if body is malformed. `event.data.customer` and `event.data.amount` are unchecked'"
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "Findings framed as: 'A caller provides a date', 'Pass...by accident', 'network hiccup' \u2014 all actionable mistakes, not developer qualities"
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "Explicitly states 'Five critical findings (SQL injection, non-atomic transfer, unidempotent retry, swappable IDs, unvalidated webhook)' before discussing Boolean flags (#8) as less critical"
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": true,
+      "evidence": "Each finding includes a 'Device' section with specific code: 'Use parameterized queries', 'Wrap both updates in a transaction', 'use branded newtype IDs', 'Add idempotency key to Stripe call', etc."
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "Response is analysis only; no file modifications"
+    }
+  ],
+  "summary": {
+    "passed": 11,
+    "total": 11,
+    "pass_rate": 1.0
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": false,
+      "evidence": "Finding #1 addresses negative amounts, not parameter-swapping. Finding #5 mentions assertions but focuses on atomicity and currency, not order."
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "A **required** `idempotencyKey` parameter, passed to Stripe, backed by `UNIQUE (customer_id, idempotency_key)`"
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": true,
+      "evidence": "Then `return null` on failure makes a failed charge indistinguishable from a successful one to any caller that doesn't check"
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": true,
+      "evidence": "Float arithmetic on money accumulates error across aggregation... `z.number().min(0).max(100).brand<\"Percent\">()`, integer cents throughout"
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "Note the `$executeRawUnsafe` template on line 86: injection isn't reachable today because `cutoff` is a `Date`, but the shape invites the next parameter to be a string"
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "The DB write succeeds, the `switch` matches nothing, there's no `default`, and `disableFeatures` never runs"
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": true,
+      "evidence": "No signature verification... `JSON.parse` into `any` means nothing validates the shape either"
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "Call `transfer(myAccount, victimAccount, -100)`, Call it with no argument, Anyone who can reach the endpoint POSTs, Call `updateSubscription(id, \"cancelled\")`"
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "Verdict: `transfer` accepts a negative amount... that's an authorization bypass, not a rounding bug, and it outranks everything else here"
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": true,
+      "evidence": "PositiveAmount parse, maxRows cap with throw, stripe.webhooks.constructEvent, conditional update in transaction with CHECK constraint, literal unions with assertNever"
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "I haven't touched any files \u2014 the skill says propose first"
+    }
+  ],
+  "summary": {
+    "passed": 10,
+    "total": 11,
+    "pass_rate": 0.9091
+  }
+}

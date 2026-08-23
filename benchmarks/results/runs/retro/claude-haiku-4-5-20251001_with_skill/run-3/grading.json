@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "1af6b213502f",
+  "expectations": [
+    {
+      "text": "States plainly that the recent-charge lookup is not sufficient",
+      "passed": true,
+      "evidence": "**No, the current fix is not enough.**"
+    },
+    {
+      "text": "Identifies the lookup as a check-then-act race rather than a device",
+      "passed": true,
+      "evidence": "with a fatal TOCTOU race: [shows Thread A/B check-and-charge pattern]"
+    },
+    {
+      "text": "Recommends a required idempotency key on the charge path",
+      "passed": true,
+      "evidence": "**Idempotency key required** \u2014 not optional \u2014 on every charge operation. Schema this as a required parameter"
+    },
+    {
+      "text": "Recommends a database unique constraint backing the idempotency key",
+      "passed": true,
+      "evidence": "**Unique constraint** on `(order_id, idempotency_key)` or your equivalent. The database refuses the duplicate"
+    },
+    {
+      "text": "Separates the defect from the mistake from the underlying system hazard",
+      "passed": true,
+      "evidence": "**Defect:** 340 customers double-charged / **Mistake:** retry called charge() / **Hazard:** Charge operations do not require idempotency key"
+    },
+    {
+      "text": "Locates the hazard as a system property rather than as a worker bug or human error",
+      "passed": true,
+      "evidence": "this is a queue redelivery pattern that exists at every external operation in the system"
+    },
+    {
+      "text": "Sweeps for other non-idempotent side effects reachable from a retry",
+      "passed": true,
+      "evidence": "Every Stripe call (emails to external systems, webhook deliveries, ledger writes)"
+    },
+    {
+      "text": "Treats 'second time this happened' as evidence for pushing to a Control-rung device",
+      "passed": true,
+      "evidence": "this is the *second* incident of this type...Make the mistake *impossible* at the database level [Control]"
+    },
+    {
+      "text": "Attributes cause to the system, not to any person",
+      "passed": true,
+      "evidence": "Analysis frames cause as queue redelivery pattern and system design (missing constraints/required parameters), not person error"
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

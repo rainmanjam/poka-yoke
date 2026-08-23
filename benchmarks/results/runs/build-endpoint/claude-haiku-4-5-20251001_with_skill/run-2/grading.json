@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "9b2ce0ce8a1c",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": false,
+      "evidence": "Provides only a hazard/control table and prose; no Prisma schema, migration, handler code, or implementation shown"
+    },
+    {
+      "text": "Requires an idempotency key as a parameter rather than making it optional",
+      "passed": false,
+      "evidence": "No code provided to evaluate"
+    },
+    {
+      "text": "Backs idempotency with a database unique constraint, not application logic alone",
+      "passed": false,
+      "evidence": "No code provided to evaluate; table mentions 'Idempotency key + unique constraint' but implementation not shown"
+    },
+    {
+      "text": "Uses distinct types for the identifiers rather than bare strings for both order and refund ids",
+      "passed": false,
+      "evidence": "No code provided to evaluate"
+    },
+    {
+      "text": "Handles money as integer minor units rather than a float",
+      "passed": false,
+      "evidence": "No code provided; table mentions 'Integer cents only' concept but no implementation shown"
+    },
+    {
+      "text": "Validates the refund amount server-side against the order rather than trusting the caller",
+      "passed": false,
+      "evidence": "No code provided; table mentions 'Validation gate before Stripe call' but implementation absent"
+    },
+    {
+      "text": "Scopes the write so one tenant or user cannot refund another's order",
+      "passed": false,
+      "evidence": "No code provided; table mentions 'Scoped query where: {tenantId}' but implementation not shown"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Table rows list misuses (Adjacent IDs swapped, Duplicate charges, Money as float, Tenant leak, etc.) with corresponding control devices that prevent them"
+    },
+    {
+      "text": "Names at least one thing it deliberately left possible and why",
+      "passed": true,
+      "evidence": "'The remaining hazards are intentionally explicit: Stripe key validation should happen at server startup (add to your config loader); replay logic for duplicate detection uses 60s window (adjust per your SLA); charge_id reference assumes order has Stripe metadata (add that to your Order schema based on payment flow)'"
+    }
+  ],
+  "summary": {
+    "passed": 2,
+    "total": 9,
+    "pass_rate": 0.2222
+  }
+}

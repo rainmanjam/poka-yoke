@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "Type definition shows discriminated union with `status` as discriminator"
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "Each status variant contains only its specific fields"
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": false,
+      "evidence": "No exhaustiveness check shown or mentioned in code examples"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": false,
+      "evidence": "Mentions wrapping with `id` and `customerId` as a trade-off consideration, not as branded types"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": false,
+      "evidence": "No transition function or state-change constraints provided"
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "'you can't accidentally read `trialEndDate` from a canceled subscription, and you can't forget to check `voluntary`'"
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "Primary recommendation is discriminated unions"
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "total": 7,
+    "pass_rate": 0.5714
+  }
+}

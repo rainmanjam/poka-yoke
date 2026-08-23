@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "the test you added is the kind that can't fail... Your new test would have been green throughout the incident"
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "The defect wasn't the rename... The defect was... COALESCE(x, 0) is the data equivalent of except: pass: it converts a loud failure into a plausible number."
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": true,
+      "evidence": "#4 Reconciliation to source. Daily: warehouse revenue total vs. the billing/ledger system, within tolerance."
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": true,
+      "evidence": "these have to run between load and publish, and block promotion... Checks that run after publication and email a failure still let finance see the wrong number first."
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "#3 Schema contract on the upstream input. Assert the expected columns and types exist before you read them. A rename then fails *attributably*, at the boundary."
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "#2 Join-integrity assertion... assert match rate. #5 Variance band on the metric. Revenue vs. same weekday."
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": false,
+      "evidence": "Does not explicitly identify the three-week detection lag as a finding. Focuses on detection mechanisms but does not frame the lag itself as a problem requiring its own solution."
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": true,
+      "evidence": "COALESCE(x, 0) is the data equivalent of except: pass: it converts a loud failure into a plausible number."
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

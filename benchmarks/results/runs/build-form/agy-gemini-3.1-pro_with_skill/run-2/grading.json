@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "31eb11dca414",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "DocumentTable component with hooks, table rendering, DeleteConfirmModal, complete implementation"
+    },
+    {
+      "text": "Produces actual working component code rather than only a list of recommendations",
+      "passed": true,
+      "evidence": "Full DocumentTable component with state management and JSX"
+    },
+    {
+      "text": "Makes the destructive action recoverable rather than relying on a confirmation dialog alone",
+      "passed": false,
+      "evidence": "Delete uses only type-to-confirm dialog. Archive has grace-period undo via setUndoToast, but delete (the destructive action) has no recovery mechanism"
+    },
+    {
+      "text": "Shows the count of affected items before the action is taken",
+      "passed": true,
+      "evidence": "{selectedCount} selected' shown in bulk action bar, and 'Delete {count} documents?' in modal"
+    },
+    {
+      "text": "Distinguishes select-all-on-page from select-all-matching rather than conflating them",
+      "passed": true,
+      "evidence": "isAllVisibleSelected and isAllMatchingSelected tracked separately; 'Select all {totalCount} matching documents' button shown conditionally"
+    },
+    {
+      "text": "Separates the destructive action from the benign one visually or spatially",
+      "passed": true,
+      "evidence": "Archive is gray/white bordered button; Delete is red text on white with red border. Visually distinct."
+    },
+    {
+      "text": "Does not make the destructive action the default focus or primary button",
+      "passed": true,
+      "evidence": "DeleteConfirmModal has autoFocus on input field, not the delete button"
+    },
+    {
+      "text": "Notes that the server must enforce the rules, not just the UI",
+      "passed": false,
+      "evidence": "Code includes idempotency keys but does not note server-side enforcement requirements"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": false,
+      "evidence": "Response closes with 'Per your instructions, the above component is complete and designed under the Poka-Yoke interface paradigms.' Misuses are listed in preamble, not at close."
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 9,
+    "pass_rate": 0.6667
+  }
+}

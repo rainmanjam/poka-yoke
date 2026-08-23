@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": true,
+      "evidence": "[MAJ-3] Account IDs are swappable... `fromAccount` and `toAccount` are indistinguishable strings, so a caller can reverse them without a type error"
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "[CRT-2] Payment retry can double-charge at [payments.ts:45]... Require a caller-supplied idempotency key, persist it with a unique constraint"
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": true,
+      "evidence": "[MAJ-1] Errors are silently converted to `null` at [payments.ts:55]... A caller cannot distinguish a decline, invalid request, Stripe outage, or an indeterminate charged state"
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": true,
+      "evidence": "[MAJ-4] Money uses JavaScript floating-point numbers at [payments.ts:12]... Balances, amounts, and discounts can accumulate rounding errors"
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "[MAJ-5] Raw SQL is unnecessarily unsafe at [payments.ts:86]... Interpolating values into `executeRawUnsafe` establishes an injection-prone pattern"
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "[MAJ-6] Subscription state accepts arbitrary strings at [payments.ts:67]... Model status as a discriminated union with an exhaustive transition function"
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": true,
+      "evidence": "[MAJ-2] Webhook input is neither authenticated nor validated at [payments.ts:93]... `JSON.parse` also yields untrusted `any`"
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "Someone receiving a legitimate...event will call `chargeCustomer` again; A network timeout can occur after Stripe accepts; Concurrent transfers can both pass the balance check"
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "Critical: invoice charges again, retry double-charge, transfers create money; Major: errors to null, webhook auth, swappable IDs, money floating-point, SQL, subscription; Minor: receipt failures, timeout"
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": true,
+      "evidence": "CRT-1: 'Verify Stripe's signature...deduplicate...mark/reconcile'; CRT-2: 'Require idempotency key, persist with unique constraint'; CRT-3: 'Use one database transaction with integer minor units'; MAJ-1 through MAJ-6 and MIN-1-2 all include specific devices"
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "No indication of file modification"
+    }
+  ],
+  "summary": {
+    "passed": 11,
+    "total": 11,
+    "pass_rate": 1.0
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "31eb11dca414",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Provides types.ts, useBulkSelection.ts, api/documents.ts, BulkActionsBar.tsx, DocumentsTable.tsx with all pieces present"
+    },
+    {
+      "text": "Produces actual working component code rather than only a list of recommendations",
+      "passed": true,
+      "evidence": "Full React/TypeScript implementation with hooks, state management, and complete components"
+    },
+    {
+      "text": "Makes the destructive action recoverable rather than relying on a confirmation dialog alone",
+      "passed": false,
+      "evidence": "Delete is not recoverable: 'I didn't make delete reversible (soft-delete + trash) even though that's the stronger Control-rung device... because that's a backend/schema decision outside a UI component.' Archive is reversible via undo, but Delete relies on type-to-confirm dialog alone."
+    },
+    {
+      "text": "Shows the count of affected items before the action is taken",
+      "passed": true,
+      "evidence": "{selectedCount.toLocaleString()} selected in bar and count shown in delete dialog: 'Delete {count.toLocaleString()} document{count === 1 ? \"\" : \"s\"}?'"
+    },
+    {
+      "text": "Distinguishes select-all-on-page from select-all-matching rather than conflating them",
+      "passed": true,
+      "evidence": "Discriminated union Selection type with kind: 'explicit' vs 'allMatching'; showSelectAllBanner only appears when 'allOnPageSelected && totalCount > pageIds.length'"
+    },
+    {
+      "text": "Separates the destructive action from the benign one visually or spatially",
+      "passed": true,
+      "evidence": "Archive and Delete buttons separated with distinct styling: Archive has gray border/text, Delete has red border/text. Comment: 'Destructive action: separated spatially and styled distinctly from Archive'"
+    },
+    {
+      "text": "Does not make the destructive action the default focus or primary button",
+      "passed": true,
+      "evidence": "Delete button is styled as secondary (border button with red text), not primary or focused"
+    },
+    {
+      "text": "Notes that the server must enforce the rules, not just the UI",
+      "passed": false,
+      "evidence": "No explicit statement that server must enforce authorization, validation, or rules enforcement. Mentions idempotency keys but not server-side enforcement responsibility."
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Closing note lists Control-rung devices (double-submit guard via disabled state, discriminated union preventing ambiguous state, explicit select-all split) and items 'Left possible on purpose'"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 9,
+    "pass_rate": 0.7778
+  }
+}

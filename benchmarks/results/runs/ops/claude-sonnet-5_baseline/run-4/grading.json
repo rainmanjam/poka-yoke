@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": false,
+      "evidence": "Does not identify this timing issue; addresses only external consumers reading the column"
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "\"split the actual `DROP COLUMN` into a separate migration you run Monday morning\""
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": false,
+      "evidence": "Does not explicitly state irreversibility; only gestures with \"safety net\""
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": false,
+      "evidence": "Only addresses code rollback; does not address rollback for the column drop itself"
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "\"Friday afternoon when you have the least coverage to react if something breaks over the weekend\""
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": false,
+      "evidence": "No mention of CI gates or automated checks"
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "\"I'd hold off on the drop itself\" \u2014 does not approve the full change as proposed"
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "Separates \"code changes\" from \"actual `DROP COLUMN`\" as reversible vs. irreversible"
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "total": 8,
+    "pass_rate": 0.5
+  }
+}

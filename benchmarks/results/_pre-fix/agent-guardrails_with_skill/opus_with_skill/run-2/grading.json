@@ -1,0 +1,49 @@
+{
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "\"An instruction in CLAUDE.md is **rung 0** on Shingo's ladder \u2014 it isn't a poka-yoke at all, it's training.\""
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "\"The tell you already have: **you repeated the rule.** That's the signal to stop writing instructions and install a device.\""
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": true,
+      "evidence": "Shows full JSON syntax: `{ \"permissions\": { \"deny\": [\"Bash(git push --force:*)\", \"Bash(git push -f:*)\", \"Edit(./src/generated/**)\", \"Write(./src/generated/**)\"]}}`"
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": true,
+      "evidence": "\"A PreToolUse hook for the force-push case, because the pattern needs logic \u2014 `--force-with-lease` is the safe form and a blanket string match either blocks it wrongly or misses `-f`.\""
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": true,
+      "evidence": "\"**The deny message is the device, not the denial.** A bare \\\"denied\\\" makes the agent invent a workaround, usually worse. Name what was blocked, why, and the safe alternative.\""
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": true,
+      "evidence": "\"verify each rule fires (blocked action denied, neighbouring legitimate action still works) \u2014 untested hooks fail open more often than you'd expect\""
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": true,
+      "evidence": "\"`.claude/settings.json`, committed so it exists for the team, not just whoever set it up\""
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": true,
+      "evidence": "\"an agent is the worst possible trainee: no memory of yesterday's correction, a context that gets compacted mid-task, and subagents that were never handed the file\""
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "82f963d241f9",
+  "expectations": [
+    {
+      "text": "Pushes back on the 'are you sure?' modal as the primary fix",
+      "passed": true,
+      "evidence": "the modal is the weakest device on the list, it's not where your problem is"
+    },
+    {
+      "text": "Explains habituation or click-through blindness as why frequent dialogs stop working",
+      "passed": true,
+      "evidence": "any dialog a user meets repeatedly gets click-through blindness, at which point it's friction on every legitimate delete and protection on none"
+    },
+    {
+      "text": "Recommends reversibility (soft delete with a retention window) as the strongest option",
+      "passed": true,
+      "evidence": "Soft-delete + 30-day trash + an undo toast. That's **rung 1 (Control)**"
+    },
+    {
+      "text": "Recommends grace-period undo as a strong low-friction option",
+      "passed": true,
+      "evidence": "Table layer includes undo toast as part of the device"
+    },
+    {
+      "text": "Recommends type-the-workspace-name confirmation for the irreversible case",
+      "passed": false,
+      "evidence": "Type-to-confirm not mentioned anywhere in response"
+    },
+    {
+      "text": "If a dialog is retained, requires it to name the workspace and the scale of what is lost",
+      "passed": true,
+      "evidence": "Delete **Acme Prod** \u2014 47 projects, 1,204 files. Recoverable for 30 days."
+    },
+    {
+      "text": "Notes that the server must enforce the deletion rules, not just the UI",
+      "passed": false,
+      "evidence": "No mention of server-side enforcement, idempotency, or endpoint scoping"
+    },
+    {
+      "text": "Gives an explicit preference order rather than an undifferentiated list of ideas",
+      "passed": false,
+      "evidence": "Presents as complementary layers in a table, not as ranked preference order (1st choice vs 2nd vs 3rd)"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "total": 8,
+    "pass_rate": 0.625
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "1af6b213502f",
+  "expectations": [
+    {
+      "text": "States plainly that the recent-charge lookup is not sufficient",
+      "passed": true,
+      "evidence": "\"It leaves the hazard fully intact\""
+    },
+    {
+      "text": "Identifies the lookup as a check-then-act race rather than a device",
+      "passed": true,
+      "evidence": "\"It's read-then-act with no lock. Attempt 1 times out but is still in flight\""
+    },
+    {
+      "text": "Recommends a required idempotency key on the charge path",
+      "passed": true,
+      "evidence": "\"Stripe idempotency keys, derived deterministically from business identity\""
+    },
+    {
+      "text": "Recommends a database unique constraint backing the idempotency key",
+      "passed": true,
+      "evidence": "\"Plus a **DB unique constraint on `(invoice_id, billing_period)`**\""
+    },
+    {
+      "text": "Separates the defect from the mistake from the underlying system hazard",
+      "passed": true,
+      "evidence": "Explicitly labeled: Defect (charged twice), Mistake (called charge() second time), Hazard (charge not idempotent + queue at-least-once)"
+    },
+    {
+      "text": "Locates the hazard as a system property rather than as a worker bug or human error",
+      "passed": true,
+      "evidence": "\"Those two facts are incompatible, and nothing in the system enforces the contract between them\""
+    },
+    {
+      "text": "Sweeps for other non-idempotent side effects reachable from a retry",
+      "passed": true,
+      "evidence": "\"Every consumer on an at-least-once queue with a non-idempotent side effect has this bug available right now: refunds, payouts, emails, provisioning, webhook fan-out\""
+    },
+    {
+      "text": "Treats 'second time this happened' as evidence for pushing to a Control-rung device",
+      "passed": true,
+      "evidence": "\"Second occurrence means the hazard isn't in the payment handler \u2014 it's in the worker framework\" with framework-level Control device"
+    },
+    {
+      "text": "Attributes cause to the system, not to any person",
+      "passed": true,
+      "evidence": "Entire analysis frames as system incompatibility (queue semantics + side effects), no personal attribution"
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

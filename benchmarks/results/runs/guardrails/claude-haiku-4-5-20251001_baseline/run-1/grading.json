@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "4999b9f80438",
+  "expectations": [
+    {
+      "text": "States that a written agreement or reminder is not enforcement",
+      "passed": true,
+      "evidence": "\"Training degrades. You're at 50% compliance because half the team either didn't see it, forgot, or consciously cut corners. Writing it down again won't help.\""
+    },
+    {
+      "text": "Recommends a pre-commit hook to run the formatter automatically",
+      "passed": true,
+      "evidence": "\"Pre-commit hook (warning) \u2014 runs the formatter on git commit, catches it immediately, fails if code isn't formatted\""
+    },
+    {
+      "text": "Notes that pre-commit is bypassable with --no-verify and must be backed by a CI check",
+      "passed": true,
+      "evidence": "\"Anyone in a hurry does git commit --no-verify and they're gone... Run the same check in both so --no-verify is painful but not a complete escape hatch\""
+    },
+    {
+      "text": "Recommends a type check as a required CI check",
+      "passed": true,
+      "evidence": "\"Strict type checking in CI (control) \u2014 tsc --strict or equivalent, blocks PRs that have unannotated code\""
+    },
+    {
+      "text": "Recommends baselining or ratcheting rather than enforcing across the whole repo at once",
+      "passed": false,
+      "evidence": "Not mentioned; all recommendations assume full enforcement from the start"
+    },
+    {
+      "text": "Notes that branch protection is what makes a CI check actually required",
+      "passed": true,
+      "evidence": "\"The critical piece: without branch protection that makes these checks required to merge, they're optional... Set branch protection to require the CI check to pass (the real enforcement)\""
+    },
+    {
+      "text": "Recommends the failure message tell the developer how to fix it",
+      "passed": false,
+      "evidence": "Not mentioned"
+    },
+    {
+      "text": "Does not primarily recommend rewriting CONTRIBUTING.md, more reminders, or more discipline",
+      "passed": true,
+      "evidence": "Explicitly rejects training/reminders approach; focuses entirely on automated devices"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

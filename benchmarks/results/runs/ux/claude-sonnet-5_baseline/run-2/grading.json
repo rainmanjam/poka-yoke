@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "82f963d241f9",
+  "expectations": [
+    {
+      "text": "Pushes back on the 'are you sure?' modal as the primary fix",
+      "passed": true,
+      "evidence": "\"a modal alone won't fix this\" and \"It stops nobody and adds friction to everyone\""
+    },
+    {
+      "text": "Explains habituation or click-through blindness as why frequent dialogs stop working",
+      "passed": true,
+      "evidence": "\"they're clicking through a routine flow on autopilot, and a generic confirm dialog is exactly the kind of thing autopilot clicks past\""
+    },
+    {
+      "text": "Recommends reversibility (soft delete with a retention window) as the strongest option",
+      "passed": true,
+      "evidence": "\"Make it reversible (the real fix): soft-delete with a 30-day trash/restore window\""
+    },
+    {
+      "text": "Recommends grace-period undo as a strong low-friction option",
+      "passed": true,
+      "evidence": "\"Grace-period undo: delete immediately, show 'Workspace Deleted \u2014 Undo' for ~10s. Zero friction on intentional deletes\""
+    },
+    {
+      "text": "Recommends type-the-workspace-name confirmation for the irreversible case",
+      "passed": true,
+      "evidence": "\"require typing the workspace name to confirm (GitHub repo-delete pattern)\""
+    },
+    {
+      "text": "If a dialog is retained, requires it to name the workspace and the scale of what is lost",
+      "passed": false,
+      "evidence": "Notes that current dialog \"doesn't even tell them what they're about to lose\" but does not prescribe what retained dialogs should contain"
+    },
+    {
+      "text": "Notes that the server must enforce the deletion rules, not just the UI",
+      "passed": false,
+      "evidence": "Mentions \"backend change\" but does not explicitly state server must enforce rules"
+    },
+    {
+      "text": "Gives an explicit preference order rather than an undifferentiated list of ideas",
+      "passed": true,
+      "evidence": "\"Practical order of effort: soft-delete + restore (backend change, biggest win) \u2192 undo toast \u2192 type-to-confirm\""
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

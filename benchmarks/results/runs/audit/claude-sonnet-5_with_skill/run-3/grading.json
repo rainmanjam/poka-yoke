@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": false,
+      "evidence": "Finding 4 discusses non-null assertions but does not flag the swappable-params issue"
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "Finding 2: 'Charges have no idempotency key... two real charges for one invoice'"
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": false,
+      "evidence": "Only Finding 2 on idempotency; no separate finding flagging the catch block swallowing error"
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": false,
+      "evidence": "Not mentioned in findings or set-aside section"
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "Finding 3: replace `$executeRawUnsafe` string interpolation with a parameterized query"
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "Finding 5: 'a literal union type for status with an `assertNever` default arm'"
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": false,
+      "evidence": "Finding 1 addresses unauthenticated webhook but does not explicitly mention JSON.parse"
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "Framed as 'call purgeCanceledAccounts()', 'pass any status string', 'POST any body'"
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "Top: unauthenticated webhook, idempotency, purgeCanceledAccounts, non-atomic transfer"
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": true,
+      "evidence": "Each finding includes Device section with specific control measures"
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "No file modifications present; this is a code review only"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 11,
+    "pass_rate": 0.6364
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "1af6b213502f",
+  "expectations": [
+    {
+      "text": "States plainly that the recent-charge lookup is not sufficient",
+      "passed": true,
+      "evidence": "\"that fix stops the exact replay you just had, but it's a rung-3 (Detection) patch with a real gap\""
+    },
+    {
+      "text": "Identifies the lookup as a check-then-act race rather than a device",
+      "passed": true,
+      "evidence": "\"It's a check-then-act race, and it's the exact race that caused the incident... Both attempts can run the 'any recent charge of this amount?' query before either has written its own charge row\""
+    },
+    {
+      "text": "Recommends a required idempotency key on the charge path",
+      "passed": true,
+      "evidence": "\"pass it as Stripe's idempotency_key on charges.create\""
+    },
+    {
+      "text": "Recommends a database unique constraint backing the idempotency key",
+      "passed": true,
+      "evidence": "\"Add a unique constraint on that key in your own payments table\""
+    },
+    {
+      "text": "Separates the defect from the mistake from the underlying system hazard",
+      "passed": true,
+      "evidence": "Lists: Defect (340 double-charged), Mistake (redelivery without tying attempts), Hazard (charging not idempotent by construction)"
+    },
+    {
+      "text": "Locates the hazard as a system property rather than as a worker bug or human error",
+      "passed": true,
+      "evidence": "\"charging is not idempotent by construction \u2014 nothing in the code or schema requires a stable key per logical charge\""
+    },
+    {
+      "text": "Sweeps for other non-idempotent side effects reachable from a retry",
+      "passed": true,
+      "evidence": "\"the same hazard shape... almost certainly exists anywhere else that queue feeds a consumer: receipt/notification emails, webhook handlers, ledger writes, subscription-status updates\""
+    },
+    {
+      "text": "Treats 'second time this happened' as evidence for pushing to a Control-rung device",
+      "passed": true,
+      "evidence": "\"If there was a first incident like this before, worth checking whether that fix was also a rung-3 patch rather than a rung-1 constraint \u2014 that pattern of 'fix the symptom, not the affordance' is usually why it repeats\""
+    },
+    {
+      "text": "Attributes cause to the system, not to any person",
+      "passed": true,
+      "evidence": "\"charging is not idempotent by construction \u2014 nothing in the code or schema requires\" \u2014 system design property"
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

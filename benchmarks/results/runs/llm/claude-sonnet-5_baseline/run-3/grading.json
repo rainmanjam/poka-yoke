@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "018a96d90c3c",
+  "expectations": [
+    {
+      "text": "States that system prompt instructions are not a reliable control on model behaviour",
+      "passed": true,
+      "evidence": "the two prompt additions you made are rung zero \u2014 they're instructions to an unreliable component, not devices"
+    },
+    {
+      "text": "Recommends structured output against a schema rather than extracting values from prose",
+      "passed": true,
+      "evidence": "have the model call a `propose_refund(order_id, amount_cents, reason)` tool with a schema (amount as an integer in cents, not a free-form string)"
+    },
+    {
+      "text": "Recommends validating the refund amount server-side against the actual order",
+      "passed": true,
+      "evidence": "Device: before refunding, look up the order and clamp/reject: amount must be \u2264 (amount actually paid \u2212 amount already refunded)"
+    },
+    {
+      "text": "Recommends a required idempotency key on the refund call",
+      "passed": true,
+      "evidence": "idempotency key = order ID (or order ID + attempt) on the refund call"
+    },
+    {
+      "text": "Recommends a database constraint or equivalent so a duplicate refund is rejected rather than merely avoided",
+      "passed": true,
+      "evidence": "backed by a **unique constraint** in the DB/at the payment processor, not just an app-level check"
+    },
+    {
+      "text": "Recommends human confirmation or an approval gate for the irreversible refund action",
+      "passed": true,
+      "evidence": "for refunds over some threshold (or all of them, if volume allows), require explicit confirmation \u2014 either a human-in-the-loop step or at minimum an echo-back-and-confirm turn"
+    },
+    {
+      "text": "Identifies prompt injection risk from the customer-supplied message reaching a privileged action",
+      "passed": false,
+      "evidence": "No explicit identification of prompt injection risk (though mentions restricting free-text to prevent smuggling extra context)"
+    },
+    {
+      "text": "Recommends bounds or caps on the refund amount",
+      "passed": true,
+      "evidence": "amount must be \u2264 (amount actually paid \u2212 amount already refunded)"
+    },
+    {
+      "text": "Does not primarily recommend changes to the prompt wording",
+      "passed": true,
+      "evidence": "Dismisses prompt additions at the start; focuses on structural devices (tool schemas, validation, idempotency, confirmation)"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 9,
+    "pass_rate": 0.8889
+  }
+}

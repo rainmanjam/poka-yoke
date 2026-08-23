@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "a 'table isn't empty' test only checks volume, and this incident wasn't a volume failure."
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "COALESCE(revenue, 0) converted those misses into valid-looking zeros. That line is the actual hazard, independent of what test exists."
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": true,
+      "evidence": "Reconciliation check: warehouse revenue sum vs. source-system revenue sum, daily, with a tight tolerance."
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": true,
+      "evidence": "checked in the pipeline before publish, not after."
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "A data contract on the upstream table \u2014 if they can rename columns without your pipeline erroring, the same incident happens again next quarter with a different column."
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "Assert join-key match rate \u2248 100% between the two tables, checked in the pipeline before publish, not after."
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": false,
+      "evidence": "Response addresses technical fixes but makes no mention of the detection/monitoring gap that allowed the problem to persist three weeks unnoticed."
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": false,
+      "evidence": "States 'code actively converting a signal into noise' but never explains the consequence or WHY silence is more dangerous than a visible failure."
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

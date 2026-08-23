@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "1af6b213502f",
+  "expectations": [
+    {
+      "text": "States plainly that the recent-charge lookup is not sufficient",
+      "passed": true,
+      "evidence": "'**No, the check you added is not enough.**'"
+    },
+    {
+      "text": "Identifies the lookup as a check-then-act race rather than a device",
+      "passed": true,
+      "evidence": "Describes race condition and frames as 'informative' (Warning/Detection rung) device rather than true device"
+    },
+    {
+      "text": "Recommends a required idempotency key on the charge path",
+      "passed": false,
+      "evidence": "Says 'we should pass an **`Idempotency-Key`** header' but does not emphasize making it required/mandatory in code; lacks enforcement language like 'required parameter'"
+    },
+    {
+      "text": "Recommends a database unique constraint backing the idempotency key",
+      "passed": false,
+      "evidence": "Not mentioned in response; only references sweeping for other Stripe calls without keys"
+    },
+    {
+      "text": "Separates the defect from the mistake from the underlying system hazard",
+      "passed": true,
+      "evidence": "Explicitly separates all three with distinct descriptions"
+    },
+    {
+      "text": "Locates the hazard as a system property rather than as a worker bug or human error",
+      "passed": true,
+      "evidence": "'The Stripe API call does not require an idempotency key' frames as system constraint issue"
+    },
+    {
+      "text": "Sweeps for other non-idempotent side effects reachable from a retry",
+      "passed": true,
+      "evidence": "'sweep the codebase to find any other places we call Stripe without an idempotency key'"
+    },
+    {
+      "text": "Treats 'second time this happened' as evidence for pushing to a Control-rung device",
+      "passed": false,
+      "evidence": "Does not reference the repetition; recommends Control-rung without connecting to the 'second time' statement"
+    },
+    {
+      "text": "Attributes cause to the system, not to any person",
+      "passed": true,
+      "evidence": "Attributes to system-level missing constraint"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 9,
+    "pass_rate": 0.6667
+  }
+}

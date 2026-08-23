@@ -1,0 +1,60 @@
+{
+  "assertions_sha": "bcf79cb43709",
+  "expectations": [
+    {
+      "text": "Flags the nested comments and attachments resolvers as unscoped by tenant",
+      "passed": true,
+      "evidence": "\"Nested resolvers do not independently enforce tenant ownership \u2014 [documents.ts:29]... `comments` and `attachments` query only by `documentId`.\""
+    },
+    {
+      "text": "Flags updateDocument for scoping on id alone without a tenant constraint",
+      "passed": true,
+      "evidence": "\"Cross-tenant update / IDOR \u2014 [documents.ts:41]... `updateDocument` updates by `id` alone.\""
+    },
+    {
+      "text": "Flags exportWorkspace taking tenantId from the client-controlled request body",
+      "passed": true,
+      "evidence": "\"Client-controlled tenant + SQL injection \u2014 [documents.ts:52]... `exportWorkspace` takes `tenantId` from `req.body`\""
+    },
+    {
+      "text": "Flags searchDocuments as returning rows across all tenants",
+      "passed": true,
+      "evidence": "\"Unscoped search \u2014 [documents.ts:65]... Any search can return document IDs and titles from all tenants.\""
+    },
+    {
+      "text": "Flags adminListDocuments as checking authentication but not authorization or tenant",
+      "passed": true,
+      "evidence": "\"Admin listing is authenticated, not authorized or scoped \u2014 [documents.ts:75]... Any signed-in user can retrieve the 200 newest documents across every tenant.\""
+    },
+    {
+      "text": "Enumerates all the affected sites rather than fixing only the first one found",
+      "passed": true,
+      "evidence": "Lists six separate issues: exportWorkspace, searchDocuments, adminListDocuments, updateDocument, nested resolvers, author lookup"
+    },
+    {
+      "text": "Recommends a structural device (scoped repository, row-level security, or equivalent) rather than only adding where-clauses site by site",
+      "passed": true,
+      "evidence": "\"Put all tenant-owned tables behind PostgreSQL RLS... Expose a `TenantDb` / scoped repository constructed with `session.tenantId`\""
+    },
+    {
+      "text": "Recommends a cross-tenant test that attempts tenant A operations against tenant B resources",
+      "passed": true,
+      "evidence": "\"Add one table-driven two-tenant test: create tenants A and B, then attempt every read, search, export, nested resolver, update, and admin operation from A against B's resources\""
+    },
+    {
+      "text": "Identifies the raw interpolation of tenantId into $queryRawUnsafe as an injection hazard distinct in kind from the tenant-scoping bug",
+      "passed": true,
+      "evidence": "\"It also interpolates that value into `$queryRawUnsafe`, allowing an attacker to alter the SQL predicate and potentially export every tenant.\" \u2014 identified as separate attack vector from client-supplied tenant ID"
+    },
+    {
+      "text": "Does not conclude the main query paths being scoped means the service is safe",
+      "passed": true,
+      "evidence": "\"the scoped root queries are good, but the service is not tenant-safe overall\""
+    }
+  ],
+  "summary": {
+    "passed": 10,
+    "total": 10,
+    "pass_rate": 1.0
+  }
+}

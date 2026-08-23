@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "5b62450c21d2",
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "Caps and repetition can increase salience a little, but neither creates enforcement"
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "The real fix is: ensure the bad state can't merge or reach the protected branch"
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": false,
+      "evidence": "Mentions pre-commit hooks, GitHub branch protection, but never mentions settings.json or permission deny rules"
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": false,
+      "evidence": "Mentions local Git hook but does not recommend PreToolUse hooks"
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": false,
+      "evidence": "Suggests providing safe commands but does not frame this as deny message content"
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": false,
+      "evidence": "No mention of testing or verifying the devices work"
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": false,
+      "evidence": "Does not mention committing rules or applying them to the team"
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": true,
+      "evidence": "neither creates enforcement\u2014so occasional failures are expected"
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "total": 8,
+    "pass_rate": 0.375
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": true,
+      "evidence": "During rollout, old workers, queued jobs, rollback artifacts, or another service can still query the column and fail as soon as the schema changes"
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "Split it: deploy the read-removal first... then schedule the drop as a separate explicitly approved migration"
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": true,
+      "evidence": "The irreversible step is DROP COLUMN legacy_email... Proceed only with a verified, tested restore/PITR path"
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": false,
+      "evidence": "Mentions reverting code won't restore data and needing a restore path, but does not describe the rollback scenario"
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "Friday is fine only if the destructive step has a tested restore path and an available owner who can execute it"
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": false,
+      "evidence": "No mention of CI gates"
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "No\u2014don't deploy the combined code-and-drop migration this afternoon"
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "The irreversible step is DROP COLUMN... deploy the read-removal first [reversible]... hold the column drop"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

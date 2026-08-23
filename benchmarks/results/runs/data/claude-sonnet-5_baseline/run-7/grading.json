@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "\"No \u2014 'table isn't empty' wouldn't have caught this\""
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "\"'COALESCE(x, 0)' on a join result is doing the same thing as `except: pass` \u2014 it converts a loud failure (nulls propagating, dashboard breaking visibly) into a quiet, plausible-looking wrong number\""
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": true,
+      "evidence": "\"Reconciliation: warehouse total vs. source-system total...Only 'does the sum match the source' catches a join silently dropping data\""
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": false,
+      "evidence": "Asks \"does this test run *before* the table is published?\" but does not recommend it should"
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": false,
+      "evidence": "No data contract or schema check mentioned"
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "\"Null-rate assertion on the join key\" and \"a volume check with the floor set at zero\""
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": false,
+      "evidence": "Diagnoses the gap (\"A three-week miss usually means...\") but does not treat it as needing its own fix"
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": true,
+      "evidence": "\"a row-count check, a null check, a schema check \u2014 all of those can pass on a perfectly well-formed, wrong number. Only 'does the sum match the source' catches a join silently dropping data\""
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "total": 8,
+    "pass_rate": 0.625
+  }
+}

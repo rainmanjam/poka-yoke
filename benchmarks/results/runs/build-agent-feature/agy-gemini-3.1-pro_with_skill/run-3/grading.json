@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "3ef52a8f1e5d",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Defines Settings, Team, IncomingEmail, RoutingDecision types; async classify_email() function; process_webhook() entry point; create_ticket(); module-level client setup; complete flow"
+    },
+    {
+      "text": "Uses structured output against a schema rather than parsing the model's prose",
+      "passed": true,
+      "evidence": "tools=[{\"input_schema\": RoutingDecision.model_json_schema()}] with tool_choice forcing tool; parses block.input via RoutingDecision.model_validate()"
+    },
+    {
+      "text": "Constrains the classification to a closed set the code enforces, not just the prompt",
+      "passed": true,
+      "evidence": "Team = Literal[\"billing\", \"technical\", \"account\"]; RoutingDecision.team typed as Team; Pydantic validation enforces constraint"
+    },
+    {
+      "text": "Handles the case where the model returns something outside the allowed set",
+      "passed": true,
+      "evidence": "RoutingDecision.model_validate(block.input) raises ValidationError if invalid team returned; exception propagates with explicit failure; design rationale acknowledges delegation to queue"
+    },
+    {
+      "text": "Has a deterministic fallback or explicit failure path rather than a silent default",
+      "passed": true,
+      "evidence": "match/assert_never ensures exhaustive branching; no silent defaults; ValidationError propagates explicitly"
+    },
+    {
+      "text": "Treats the customer email as untrusted text that could carry instructions",
+      "passed": false,
+      "evidence": "Email body interpolated into prompt (f\"From: {email.from_address}\\nSubject: {email.subject}\\n\\n{email.body}\") without sanitization; no mitigation for prompt injection despite email being untrusted input"
+    },
+    {
+      "text": "Bounds cost or retries in code rather than requesting it in the prompt",
+      "passed": true,
+      "evidence": "max_tokens=1024 and temperature=0.0 set in API call"
+    },
+    {
+      "text": "Closes by naming which failures the design makes impossible",
+      "passed": true,
+      "evidence": "Section 'Mistake-proofing Design Rationale' enumerates 5 misuses with devices and rungs; section 'Consciously left possible' acknowledges Claude hallucinating invalid JSON"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

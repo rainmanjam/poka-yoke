@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": false,
+      "evidence": "Describes the approach ('we define four distinct interfaces') but actual code is referenced in an unseen artifact, not shown in response"
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": false,
+      "evidence": "Described but not shown; artifact referenced but not included in response text"
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": false,
+      "evidence": "Mentioned ('I've included an `assertNever` helper') but code implementation not shown"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": false,
+      "evidence": "Mentioned ('we use branded types') but code implementation not shown"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": false,
+      "evidence": "Not mentioned in response"
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": false,
+      "evidence": "Does not provide explicit list; mentions 'protect against common hazards' generically but no explicit naming of impossible misuses"
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "'Discriminated Union over Bag-of-Optionals (Hazard C8): Instead of a single `Subscription` struct with all fields made optional, we define four distinct interfaces'"
+    }
+  ],
+  "summary": {
+    "passed": 1,
+    "total": 7,
+    "pass_rate": 0.1429
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "31eb11dca414",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Eight files provided (types, selection, api, useBulkDocumentActions, BulkActionsBar, ConfirmBulkTrashDialog, DocumentsTable, toasts) with complete implementations and toast provider"
+    },
+    {
+      "text": "Produces actual working component code rather than only a list of recommendations",
+      "passed": true,
+      "evidence": "Full TSX implementations including DocumentsTable, BulkActionsBar, ConfirmBulkTrashDialog, custom toast system with working mutations"
+    },
+    {
+      "text": "Makes the destructive action recoverable rather than relying on a confirmation dialog alone",
+      "passed": true,
+      "evidence": "Soft-delete to Trash with 30-day retention. Dialog states: 'They will be recoverable from Trash for 30 days, then deleted permanently.' Undo provided via toast action with 10-second window"
+    },
+    {
+      "text": "Shows the count of affected items before the action is taken",
+      "passed": true,
+      "evidence": "BulkActionsBar shows `{nf.format(count)} {count === 1 ? 'document' : 'documents'} selected`. ConfirmBulkTrashDialog title: `Move {nf.format(count)} ... to Trash?` before confirmation required"
+    },
+    {
+      "text": "Distinguishes select-all-on-page from select-all-matching rather than conflating them",
+      "passed": true,
+      "evidence": "Discriminated union with mode: 'include' | 'allMatching'. BulkActionsBar renders conditional: `selection.mode === 'allMatching' && <span>(everything matching your filters)</span>`. Separate `canEscalate` button for 'Select all N matching'"
+    },
+    {
+      "text": "Separates the destructive action from the benign one visually or spatially",
+      "passed": true,
+      "evidence": "Archive button: `bg-slate-900` (primary). Delete button: `border border-red-300` (secondary). Separated by vertical divider: `<span aria-hidden className=\"mx-1 h-6 w-px bg-slate-200\" />`"
+    },
+    {
+      "text": "Does not make the destructive action the default focus or primary button",
+      "passed": true,
+      "evidence": "Archive is primary button (bg-slate-900). Delete is secondary (border-red-300). Dialog explicitly focuses Cancel: `useEffect(() => cancelRef.current?.focus(), [])`"
+    },
+    {
+      "text": "Notes that the server must enforce the rules, not just the UI",
+      "passed": true,
+      "evidence": "api.ts comments: 'Server contract: unique index on (actor_id, idempotency_key)' and 'F7 \u2014 hard server cap (MAX_BULK = 10_000)'. Final note: 'Hiding the buttons is presentation \u2014 the /bulk/* endpoints must enforce per-document permission themselves'"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Table titled 'What this makes impossible, and what it leaves open' with rows: 'Select all silently meaning 4,312 instead of 50', 'Acting on a selection made under a different filter', 'Bulk action with an empty predicate', 'Double-click charging twice', etc."
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

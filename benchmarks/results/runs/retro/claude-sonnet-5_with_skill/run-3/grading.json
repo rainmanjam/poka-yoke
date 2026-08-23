@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "1af6b213502f",
+  "expectations": [
+    {
+      "text": "States plainly that the recent-charge lookup is not sufficient",
+      "passed": true,
+      "evidence": "No \u2014 the fix you shipped is a warning-rung patch on top of a control-rung problem"
+    },
+    {
+      "text": "Identifies the lookup as a check-then-act race rather than a device",
+      "passed": true,
+      "evidence": "TOCTOU race: if the timeout was long enough to trigger a redelivery, it's plausible for two workers (or two retries) to both run the 'any recent charge?' query, both see nothing yet, and both charge."
+    },
+    {
+      "text": "Recommends a required idempotency key on the charge path",
+      "passed": true,
+      "evidence": "Generate an idempotency key once per logical charge attempt (e.g. order_id or invoice_id, not a random UUID per call) and pass it as Stripe's Idempotency-Key."
+    },
+    {
+      "text": "Recommends a database unique constraint backing the idempotency key",
+      "passed": true,
+      "evidence": "Back it with a unique constraint in your own DB on (order_id) or (idempotency_key) in the charges table"
+    },
+    {
+      "text": "Separates the defect from the mistake from the underlying system hazard",
+      "passed": true,
+      "evidence": "Defect: 340 customers double-charged. Mistake: the redelivered message called the charge path a second time. Hazard: the charge path has no way to know 'have I already done this specific charge'"
+    },
+    {
+      "text": "Locates the hazard as a system property rather than as a worker bug or human error",
+      "passed": true,
+      "evidence": "Frames as system property: 'the charge call was never given one \u2014 that's the missing constraint'"
+    },
+    {
+      "text": "Sweeps for other non-idempotent side effects reachable from a retry",
+      "passed": true,
+      "evidence": "are there other queue consumers in this system with the same non-idempotent shape (any other worker that does 'act on message' without a dedup key)"
+    },
+    {
+      "text": "Treats 'second time this happened' as evidence for pushing to a Control-rung device",
+      "passed": true,
+      "evidence": "A device that hasn't been watched to fire is a belief, not a control, and you said yourself this is the second time."
+    },
+    {
+      "text": "Attributes cause to the system, not to any person",
+      "passed": true,
+      "evidence": "Attributes to system design (missing idempotency key, no database constraint)"
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

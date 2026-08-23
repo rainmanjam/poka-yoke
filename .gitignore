@@ -1,0 +1,34 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+node_modules/
+.DS_Store
+.remember/
+*.skill
+poka-yoke-workspace/
+.claude/settings.local.json
+.claude/commands/
+benchmarks/results/_pre-fix/
+
+# YouTube script project, local working files, not part of the plugin
+video/
+
+# Working directories for the review and outreach orchestrators, raw per-agent output,
+# reproducible and large.
+.review-work/
+.outreach-work/
+
+# Local working material: drafts, launch notes, the outreach plan, review output.
+# The contents are ignored rather than the directory, so a file dropped in here is private
+# by default. Only the README is committed, so the convention stays discoverable.
+private/*
+!private/README.md
+
+# Crop-proof overlays from scripts/make_banners.js. They verify that each banner survives
+# the crop its platform applies, which is worth checking and not worth committing. Regenerate
+# with `node scripts/make_banners.js`.
+docs/assets/banner/_proof-*.png

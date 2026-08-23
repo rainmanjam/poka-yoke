@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": false,
+      "evidence": "Addresses data verification and downstream dependencies, but does not identify the core rollout window issue"
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": false,
+      "evidence": "No mention of expand/contract or staggered deployment pattern"
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": true,
+      "evidence": "A column drop is instant but irreversible"
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": false,
+      "evidence": "How long until someone can roll back?\u2014addresses timing window, not rollback mechanics or procedure"
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "Friday afternoon into evening means a narrow window before oncall context switches"
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": false,
+      "evidence": "No mention of CI gates or automation"
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": false,
+      "evidence": "If...you've verified...it's low-risk enough for Friday afternoon\u2014this provides conditional approval"
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": false,
+      "evidence": "States column drop is irreversible but does not explicitly distinguish reversible code changes from irreversible schema drop"
+    }
+  ],
+  "summary": {
+    "passed": 2,
+    "total": 8,
+    "pass_rate": 0.25
+  }
+}

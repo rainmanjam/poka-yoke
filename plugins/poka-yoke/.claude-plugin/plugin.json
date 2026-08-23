@@ -1,0 +1,39 @@
+{
+  "name": "poka-yoke",
+  "displayName": "Poka-Yoke",
+  "description": "Mistake-proof your code, your pipeline, and your agents. Audits code for mistakes that are possible, designs APIs where misuse cannot be expressed, installs guardrails, and turns incidents into devices that prevent recurrence.",
+  "version": "0.1.0",
+  "author": {
+    "name": "rainmanjam",
+    "url": "https://github.com/rainmanjam"
+  },
+  "homepage": "https://github.com/rainmanjam/poka-yoke",
+  "repository": "https://github.com/rainmanjam/poka-yoke",
+  "license": "MIT",
+  "keywords": [
+    "code-review",
+    "defensive design",
+    "defensive-design",
+    "error proof",
+    "error-prevention",
+    "fail safe",
+    "foolproof",
+    "footgun",
+    "guardrails",
+    "hardening",
+    "idiot proof",
+    "invalid states unrepresentable",
+    "lean",
+    "mistake proof",
+    "mistake-proofing",
+    "poka-yoke",
+    "poke yoke",
+    "poke-yoke",
+    "reliability",
+    "shigeo shingo",
+    "shingo",
+    "toyota production system",
+    "type-safety",
+    "zero defects"
+  ]
+}

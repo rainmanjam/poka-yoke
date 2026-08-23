@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "5b62450c21d2",
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "Caps and repetition don't change the failure mode... A 10% miss rate on a soft instruction is about what you should expect"
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "move both rules out of the model's judgement and into the harness and into git... *shorten* the CLAUDE.md entry to one line"
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": true,
+      "evidence": "Shows deny rules for Edit(src/generated/**), Write(src/generated/**), Bash(git push --force*)"
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": true,
+      "evidence": "**2. A PreToolUse hook** that actually parses the command... exits 2 with a message if the Bash command contains"
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": false,
+      "evidence": "Response mentions 'exits 2 with a message' but does not explain what message content should say what to do instead; no example provided"
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": true,
+      "evidence": "prove each check can fail. Hand-edit a generated file and watch CI go red; try `git push -f`... and watch the remote reject it"
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": false,
+      "evidence": "Shows `.claude/settings.json` but does not explicitly recommend committing it; focuses on git-level enforcement instead"
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": true,
+      "evidence": "CLAUDE.md is *training*: it lives in context, competes with everything else in context, and gets compacted, deprioritized"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

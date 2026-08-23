@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "9b2ce0ce8a1c",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Provides ids.ts, refund.ts, config.ts, tenantScope.ts, createRefund.ts service, refunds.ts handler, Prisma schema, migration, reconcileRefunds.ts job, and test suite\u2014all inline"
+    },
+    {
+      "text": "Requires an idempotency key as a parameter rather than making it optional",
+      "passed": true,
+      "evidence": "CreateRefundInput interface has `readonly idempotencyKey: IdempotencyKey` (no optional); HTTP handler returns 400 if missing: `if (!key.success) { return res.status(400)...}`"
+    },
+    {
+      "text": "Backs idempotency with a database unique constraint, not application logic alone",
+      "passed": true,
+      "evidence": "Schema declares `@@unique([tenantId, idempotencyKey])`; migration creates index `CREATE UNIQUE INDEX \"Refund_tenantId_idempotencyKey_key\"`; application logic handles violations but database enforces constraint"
+    },
+    {
+      "text": "Uses distinct types for the identifiers rather than bare strings for both order and refund ids",
+      "passed": true,
+      "evidence": "ids.ts defines `OrderId = z.string().uuid().brand<\"OrderId\">()` and `RefundId = z.string().uuid().brand<\"RefundId\">()` as distinct branded types"
+    },
+    {
+      "text": "Handles money as integer minor units rather than a float",
+      "passed": true,
+      "evidence": "Cents = z.number().int().positive(); all amounts use Cents type throughout"
+    },
+    {
+      "text": "Validates the refund amount server-side against the order rather than trusting the caller",
+      "passed": true,
+      "evidence": "Reserve method uses guarded UPDATE: `UPDATE \"Order\" ... WHERE ... AND \"refundedCents\" + ${input.amountCents}::int <= \"totalCents\"` with check `if (claimed === 0) { throw new OverRefund(...) }`"
+    },
+    {
+      "text": "Scopes the write so one tenant or user cannot refund another's order",
+      "passed": true,
+      "evidence": "Uses TenantScope wrapper enforcing tenantId on all DB calls; compound key `@@unique([id, tenantId, currency])`; RLS policies `CREATE POLICY tenant_isolation ON \"Order\" USING (\"tenantId\" = current_setting('app.tenant_id'))`; tenantId sourced from session"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Section 'What this makes impossible, and at which rung' lists 12 misuses (swapping ids, cross-tenant refund, double refund, over-refund, etc.) with devices and rungs"
+    },
+    {
+      "text": "Names at least one thing it deliberately left possible and why",
+      "passed": true,
+      "evidence": "Section 'Left possible on purpose' names 3 things: nullable stripePaymentIntentId (needs backfill), RLS depends on middleware (ESLint guard missing), no approval gate on large refunds (would need state machine addition)"
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

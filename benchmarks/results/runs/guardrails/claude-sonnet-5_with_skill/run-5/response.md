@@ -1,0 +1,12 @@
+Half your PRs still landing unformatted/untyped after CONTRIBUTING.md + Slack + standup is exactly the pattern this repo's guardrails skill exists for: **every mechanism you used so far is rung 0** — a comment, a wiki page, a Slack pin, and a standup mention are all "training," and training degrades. Nothing enforces the rule; everyone just has to remember it, and half won't.
+
+The fix isn't a better reminder, it's a gate. Concretely, in order of what to install:
+
+1. **Formatter as a pre-commit hook**, not documentation — `prettier --check` / `black --check` (or `--write` if you want it auto-fixing) wired into `.pre-commit-config.yaml` or a Husky hook. Fast (seconds), so it won't get skipped for being slow — but it's bypassable with `--no-verify`, so it's not the real enforcement, just the fast feedback loop.
+2. **The same check as a required CI check** — this is the one that actually matters, because CI can't be `--no-verify`'d. Run `prettier --check` / `tsc --noEmit` / `mypy --strict` in CI and mark it required in branch protection. Without branch protection, a required check is just a suggestion.
+3. **Baseline before you ratchet.** If you turn strict type-checking on for the whole repo today, you'll get a wall of pre-existing failures and someone will revert it by Friday. Either scope the check to changed files (`git diff --name-only origin/main... | xargs mypy`) or generate a baseline of current violations and fail CI only on *new* ones. That's how the rule actually holds instead of getting rolled back.
+4. **Make the failure message teach** — not `error: type check failed`, but "this function is missing a return type annotation — add `-> None` (or the right type) and push again." That's the one place prose still earns its keep: at the exact moment someone hits the gate.
+
+The honest reason the retro + docs approach doesn't work isn't people being careless — it's that nothing about the system changes when the rule is violated. Once the CI check is required, "half the PRs are unformatted" becomes structurally impossible rather than a compliance problem.
+
+If you want, I can generate the actual pre-commit config + CI workflow for your stack (tell me the language/tooling — TS+Prettier+ESLint? Python+Black+mypy? something else) — this repo has ready-to-adapt templates under `plugins/poka-yoke/assets/devices/pre-commit/` and `.../github-actions/` I can start from.

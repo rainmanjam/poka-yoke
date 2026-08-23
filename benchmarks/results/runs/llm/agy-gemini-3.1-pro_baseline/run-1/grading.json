@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "018a96d90c3c",
+  "expectations": [
+    {
+      "text": "States that system prompt instructions are not a reliable control on model behaviour",
+      "passed": true,
+      "evidence": "prompt instructions are 'rung zero' (training)... will inevitably degrade... The model acts as an untrusted client"
+    },
+    {
+      "text": "Recommends structured output against a schema rather than extracting values from prose",
+      "passed": true,
+      "evidence": "Ensure the bot uses a strict structured output schema (e.g. JSON Schema via constrained decoding) for the refund amount, rather than regex parsing prose"
+    },
+    {
+      "text": "Recommends validating the refund amount server-side against the actual order",
+      "passed": true,
+      "evidence": "Server-Side Bounds Checking: The `refund(amount)` API must independently fetch the original order total and reject any request where `amount > order_total`"
+    },
+    {
+      "text": "Recommends a required idempotency key on the refund call",
+      "passed": true,
+      "evidence": "The bot's tool schema should either automatically inject an idempotency key (e.g., `refund_{order_id}`)"
+    },
+    {
+      "text": "Recommends a database constraint or equivalent so a duplicate refund is rejected rather than merely avoided",
+      "passed": true,
+      "evidence": "Ensure your backend has a unique constraint on the refund action for a given order, so a second request safely returns a `200 OK` (or `409 Conflict`) without moving any money"
+    },
+    {
+      "text": "Recommends human confirmation or an approval gate for the irreversible refund action",
+      "passed": false,
+      "evidence": "No approval gate or human confirmation workflow recommended"
+    },
+    {
+      "text": "Identifies prompt injection risk from the customer-supplied message reaching a privileged action",
+      "passed": false,
+      "evidence": "No mention of prompt injection risk"
+    },
+    {
+      "text": "Recommends bounds or caps on the refund amount",
+      "passed": true,
+      "evidence": "reject any request where `amount > order_total`"
+    },
+    {
+      "text": "Does not primarily recommend changes to the prompt wording",
+      "passed": true,
+      "evidence": "Focuses on devices and backend controls; prompt changes are secondary (removal rather than rewording)"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 9,
+    "pass_rate": 0.7778
+  }
+}

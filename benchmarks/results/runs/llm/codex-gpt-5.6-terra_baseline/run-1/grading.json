@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "018a96d90c3c",
+  "expectations": [
+    {
+      "text": "States that system prompt instructions are not a reliable control on model behaviour",
+      "passed": true,
+      "evidence": "Prompts are useful for extraction, but they aren't a reliable control for moving money"
+    },
+    {
+      "text": "Recommends structured output against a schema rather than extracting values from prose",
+      "passed": true,
+      "evidence": "Extract structured fields: `order_id`, `amount_minor`, `currency`, `reason`, and confidence/evidence"
+    },
+    {
+      "text": "Recommends validating the refund amount server-side against the actual order",
+      "passed": true,
+      "evidence": "Resolve the order server-side; never let the model invent the amount or currency. Validate the requested amount is positive, matches the order's currency, and is \u2264 remaining refundable balance"
+    },
+    {
+      "text": "Recommends a required idempotency key on the refund call",
+      "passed": true,
+      "evidence": "a stable idempotency key. Make the check-and-create atomic, and pass the same key to the payment provider"
+    },
+    {
+      "text": "Recommends a database constraint or equivalent so a duplicate refund is rejected rather than merely avoided",
+      "passed": true,
+      "evidence": "Enforce duplicate prevention in the refund service/database: a unique refund operation keyed by order/payment"
+    },
+    {
+      "text": "Recommends human confirmation or an approval gate for the irreversible refund action",
+      "passed": true,
+      "evidence": "require human approval for large amounts, partial refunds, ambiguous messages, or repeat requests"
+    },
+    {
+      "text": "Identifies prompt injection risk from the customer-supplied message reaching a privileged action",
+      "passed": false,
+      "evidence": "No explicit identification of prompt injection risk; mentions testing malformed inputs but does not name the vulnerability"
+    },
+    {
+      "text": "Recommends bounds or caps on the refund amount",
+      "passed": true,
+      "evidence": "Validate the requested amount is positive, matches the order's currency, and is \u2264 remaining refundable balance; require human approval for large amounts"
+    },
+    {
+      "text": "Does not primarily recommend changes to the prompt wording",
+      "passed": true,
+      "evidence": "Focuses entirely on system-level controls (structured output, server-side validation, idempotency, approval gates) with no prompt rewording suggestions"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 9,
+    "pass_rate": 0.8889
+  }
+}

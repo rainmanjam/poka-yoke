@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "Five interfaces (Trialing, Active, Canceling, PastDue, Canceled) each with `readonly status: \"trialing\"|\"active\"|\"canceling\"|\"past_due\"|\"canceled\"`; combined as `SubscriptionState = Trialing | Active | Canceling | PastDue | Canceled`"
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "Canceled has {status, canceledAt, accessEndsAt, cancellation}; Trialing has {status, trialEndsAt, convertsToPriceId}; no overlap"
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": true,
+      "evidence": "`function assertNever(x: never)` defined; used in `entitlement()` switch with five cases covering all states plus default; recommends `@typescript-eslint/switch-exhaustiveness-check`"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": true,
+      "evidence": "SubscriptionId, CustomerId, PriceId all `Brand<string, ...>`; RetryCount as `Brand<number, ...>` with range validation"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": true,
+      "evidence": "Single `transition(sub: Subscription, event: SubscriptionEvent, clock: Clock): Result<Subscription, TransitionError>` function; all fields readonly; 'The only ways to obtain a Subscription are parseSubscription and transition'"
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Lists 6 numbered misuses in 'First, the misuse enumeration' section; e.g., '`voluntary: boolean` + `cancelReason: string` are independently settable...permits `voluntary: true, reason: \"payment_failed\"`' \u2014 then explains nested union prevents this"
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "Primary recommendation is discriminated union; lists as first misuse: '6 optional fields claim 2^6 = 64 states. You have 4.'"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 7,
+    "pass_rate": 1.0
+  }
+}

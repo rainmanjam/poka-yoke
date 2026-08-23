@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "4999b9f80438",
+  "expectations": [
+    {
+      "text": "States that a written agreement or reminder is not enforcement",
+      "passed": true,
+      "evidence": "\"CONTRIBUTING.md, a Slack pin, and two standup mentions are three instances of the same device \u2014 training. In Shingo's ladder they're rung 0: they rely on someone remembering at the moment of the commit.\""
+    },
+    {
+      "text": "Recommends a pre-commit hook to run the formatter automatically",
+      "passed": true,
+      "evidence": "\"Pre-commit hook runs the formatter in write mode on staged files \u2014 it fixes and restages rather than failing.\""
+    },
+    {
+      "text": "Notes that pre-commit is bypassable with --no-verify and must be backed by a CI check",
+      "passed": true,
+      "evidence": "\"Never rely on the hook alone \u2014 --no-verify exists and people under deadline use it.\" and \"CI runs the same formatter in check mode as a required check. This is the actual enforcement.\""
+    },
+    {
+      "text": "Recommends a type check as a required CI check",
+      "passed": true,
+      "evidence": "\"Fail only on new untyped code. The violation count can only go down. Required check + branch protection.\""
+    },
+    {
+      "text": "Recommends baselining or ratcheting rather than enforcing across the whole repo at once",
+      "passed": true,
+      "evidence": "\"Generate a baseline of existing violations, or enforce on changed files only. Turning mypy --strict on across an existing repo yields hundreds of failures.\""
+    },
+    {
+      "text": "Notes that branch protection is what makes a CI check actually required",
+      "passed": true,
+      "evidence": "\"Required check + branch protection. Without branch protection, a CI workflow is advisory and the whole device is inert.\""
+    },
+    {
+      "text": "Recommends the failure message tell the developer how to fix it",
+      "passed": true,
+      "evidence": "\"Make the failure message teach. error: rule violated produces a workaround... produces a fix. This is the one place prose belongs.\""
+    },
+    {
+      "text": "Does not primarily recommend rewriting CONTRIBUTING.md, more reminders, or more discipline",
+      "passed": true,
+      "evidence": "Primary recommendations are devices (hooks, CI, ratcheting). CONTRIBUTING.md mention is secondary: \"Delete the CONTRIBUTING.md paragraph \u2014 replace it with one line pointing at the gate.\""
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

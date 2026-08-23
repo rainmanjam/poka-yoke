@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "1af6b213502f",
+  "expectations": [
+    {
+      "text": "States plainly that the recent-charge lookup is not sufficient",
+      "passed": true,
+      "evidence": "Opens with 'No, that is not enough.'"
+    },
+    {
+      "text": "Identifies the lookup as a check-then-act race rather than a device",
+      "passed": true,
+      "evidence": "Describes race condition where both workers check simultaneously and miss, plus frames it as 'Detection/Warning (Rung 2/3) mechanism' rather than true device"
+    },
+    {
+      "text": "Recommends a required idempotency key on the charge path",
+      "passed": false,
+      "evidence": "Mentions idempotency keys only within a referenced plan ('I've created an [Implementation Plan]... using **Stripe Idempotency Keys**'), does not state plainly in the response itself"
+    },
+    {
+      "text": "Recommends a database unique constraint backing the idempotency key",
+      "passed": false,
+      "evidence": "Mentions 'database unique constraints' only within the plan reference, not stated in response"
+    },
+    {
+      "text": "Separates the defect from the mistake from the underlying system hazard",
+      "passed": true,
+      "evidence": "Explicitly lists all three: 'The Defect,' 'The Mistake,' and 'The Hazard' with distinct descriptions"
+    },
+    {
+      "text": "Locates the hazard as a system property rather than as a worker bug or human error",
+      "passed": true,
+      "evidence": "Hazard stated as 'The charge function and Stripe integration lack a required idempotency constraint'"
+    },
+    {
+      "text": "Sweeps for other non-idempotent side effects reachable from a retry",
+      "passed": false,
+      "evidence": "No mention of sweeping for other non-idempotent paths; focuses only on the Stripe charge case"
+    },
+    {
+      "text": "Treats 'second time this happened' as evidence for pushing to a Control-rung device",
+      "passed": false,
+      "evidence": "Recommends Control-rung but does not reference the repetition as justification"
+    },
+    {
+      "text": "Attributes cause to the system, not to any person",
+      "passed": true,
+      "evidence": "Attributes to missing system constraint, no personal attribution"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "total": 9,
+    "pass_rate": 0.5556
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "5b62450c21d2",
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "You're using training to control an operator that sometimes ignores training. Caps and repetition are still rung-zero instructions"
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "Keep CLAUDE.md for facts\u2014where generated code comes from, and how to regenerate it\u2014not rules you need the agent to obey"
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": true,
+      "evidence": "Shows deny array with Bash and Edit/Write patterns with wildcards"
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": true,
+      "evidence": "Force-push also needs a PreToolUse hook: permission patterns are prefix matches, so they can miss forms such as git push origin main --force"
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": true,
+      "evidence": "give it a useful refusal [message with what to do]; the message tells Claude what to do"
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": true,
+      "evidence": "Then prove the device: Attempt a force push; confirm it is denied and the message tells Claude what to do"
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": true,
+      "evidence": "Put this in committed .claude/settings.json, not settings.local.json, so every clone gets it"
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": true,
+      "evidence": "You're using training to control an operator that sometimes ignores training"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

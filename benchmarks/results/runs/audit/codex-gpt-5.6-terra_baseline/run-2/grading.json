@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": true,
+      "evidence": "[MIN-1] Swappable positional arguments... `transfer(to, from, amount)` is valid TypeScript and moves money backwards"
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "[MAJ-1] Retrying can double-charge at [payments.ts:44]... Require an idempotency key and pass it to Stripe"
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": true,
+      "evidence": "[MAJ-2] Failures are silently converted to `null` at [payments.ts:55]"
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": true,
+      "evidence": "[MAJ-5] Money and input constraints are absent... Balances use JS `number`, which permits floating-point rounding"
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "[MAJ-3] Raw interpolated SQL at [payments.ts:86]... `$executeRawUnsafe` embeds a runtime value in SQL"
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "[MAJ-4] Subscription side effects can silently be skipped... the switch has no exhaustive/default failure"
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": true,
+      "evidence": "[CRT-1] Unsigned webhook can initiate charges... Arbitrary JSON is parsed... there is no Stripe signature verification, schema validation"
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "A failure after the debit but before the credit destroys money; `transfer(to, from, amount)` moves money backwards; `\"cancelled\"` instead of `\"canceled\"` updates the DB"
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "Critical section: unsigned webhook, non-atomic transfers, purge defaults; Major section: retries, failures, SQL, subscription, money constraints; Minor: swappable args, receipts, config"
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": false,
+      "evidence": "[CRT-1] describes the problem but proposes no device; [CRT-3] states 'It hard-deletes without a limit or confirmation' but no concrete device; [MIN-3] notes timeout is unused with no device proposed"
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "No indication of file modification"
+    }
+  ],
+  "summary": {
+    "passed": 10,
+    "total": 11,
+    "pass_rate": 0.9091
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "9b2ce0ce8a1c",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Provides types.ts, service.ts, handler.ts, schema.prisma, and migration.sql; all interconnected with proper imports and ready to deploy"
+    },
+    {
+      "text": "Requires an idempotency key as a parameter rather than making it optional",
+      "passed": true,
+      "evidence": "Handler checks `const key = IdempotencyKey.safeParse(req.header('Idempotency-Key')); if (!key.success) { res.status(400)...` and passes key to service.create() method"
+    },
+    {
+      "text": "Backs idempotency with a database unique constraint, not application logic alone",
+      "passed": true,
+      "evidence": "Schema has `@@unique([tenantId, idempotencyKey])` and migration creates `CREATE UNIQUE INDEX 'refunds_tenant_id_idempotency_key_key'`"
+    },
+    {
+      "text": "Uses distinct types for the identifiers rather than bare strings for both order and refund ids",
+      "passed": true,
+      "evidence": "Branded types defined: `export const TenantId = z.string().uuid().brand<'TenantId'>()` and `OrderId = z.string().uuid().brand<'OrderId'>()`"
+    },
+    {
+      "text": "Handles money as integer minor units rather than a float",
+      "passed": true,
+      "evidence": "Prisma schema: `amountCents: Int`; validation: `z.number().int().positive().max(100_000_000)`"
+    },
+    {
+      "text": "Validates the refund amount server-side against the order rather than trusting the caller",
+      "passed": true,
+      "evidence": "Service aggregates existing refunds, calculates refundableCents, checks `if (req.amountCents > refundableCents)` within transaction with `FOR UPDATE` lock"
+    },
+    {
+      "text": "Scopes the write so one tenant or user cannot refund another's order",
+      "passed": true,
+      "evidence": "Order loaded via `WHERE id = ${req.orderId}::uuid AND tenant_id = ${tenantId}::uuid FOR UPDATE`; RLS policies created with `CREATE POLICY 'refunds_tenant_isolation' USING ('tenant_id' = current_setting('app.tenant_id', true)::uuid)`"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Closing section: 'Impossible now (Control): cross-tenant refund (session-scoped load + RLS), over-refund under concurrency (FOR UPDATE + summed check), double refund on retry (required key + unique index + Stripe key)...'"
+    },
+    {
+      "text": "Names at least one thing it deliberately left possible and why",
+      "passed": true,
+      "evidence": "'Left possible, deliberately: stripePaymentIntentId is nullable \u2014 existing orders have no value. Control would require a backfill I can't write without your data; the handler refuses with 409 instead (Warning).'"
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

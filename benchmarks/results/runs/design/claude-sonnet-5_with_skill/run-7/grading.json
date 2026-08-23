@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "export type Subscription = SubscriptionBase & (| { status: \"trialing\"; ... } | ...) \u2014 status is discriminant"
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "canceled variant has only status, cancelReason, voluntary; active only has status and renewalDate \u2014 no cross-variant fields"
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": true,
+      "evidence": "function assertNever(x: never) with default: return assertNever(sub) in nextActionDate switch"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": true,
+      "evidence": "Brands SubscriptionId, CustomerId, and PlanId using Brand<T, B> pattern"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": false,
+      "evidence": "Explicitly states 'One thing not modeled here: legal transitions' and defers implementation; no constraint provided"
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Names that union prevents retryCount access off active sub (compile error), assertNever catches new statuses, branded IDs prevent swaps; discusses making cancelReason a union to prevent 'voluntary: true + payment_failed'"
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "Opening misuse enumeration rejects flat interface with optional fields allowing nonsense like 'active + retryCount'"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 7,
+    "pass_rate": 0.8571
+  }
+}

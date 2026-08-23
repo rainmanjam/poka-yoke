@@ -1,0 +1,5 @@
+CLAUDE.md text is a prompt, not a permission system — every token of it is a *probabilistic* nudge, not a hard constraint the model literally cannot cross. Caps and repetition raise the odds it gets followed, but they don't change the mechanism: a long session, a big diff, or a plausible-looking edge case can still push the model past it, and once it's in the tool call, nothing stops execution.
+
+The fix that actually gets you to zero is the same principle this repo's own CLAUDE.md argues for: move the rule out of something Claude has to remember and into something the harness enforces mechanically. Concretely, a `PreToolUse` hook in `.claude/settings.json` that denies any `Edit`/`Write` touching `src/generated/**` and any `Bash` command matching `git push --force`/`-f` — that runs outside the model's judgment entirely, so there's no "maybe" left.
+
+Want me to set that up? I'd use the `update-config` skill to add the two deny rules.

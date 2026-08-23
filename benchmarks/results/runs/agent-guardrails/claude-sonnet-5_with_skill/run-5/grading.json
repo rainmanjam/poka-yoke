@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "5b62450c21d2",
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "CLAUDE.md rules are rung zero: they're training text, and training degrades under long contexts, compaction, and subagents that never load the file."
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "Fixing your wording won't move that number; installing a device will."
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": true,
+      "evidence": "Shows deny syntax with concrete examples: 'Edit(./src/generated/**)', 'Bash(git push --force:*)', 'Bash(git push -f:*)'"
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": true,
+      "evidence": "A hook, because 'never force push' needs one and a deny rule doesn't fully cover it... Copy it into your repo at `.claude/hooks/guard_dangerous_commands.py`"
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": true,
+      "evidence": "The deny message is what actually redirects the agent \u2014 a bare 'denied' produces a workaround, often a worse one. The hook's message already names what was blocked, why, and the safe alternative (`--force-with-lease`)."
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": true,
+      "evidence": "Shows bash commands to verify the hook fires and doesn't over-block; for generated-files, actually try editing a file and confirm you get a denial"
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": true,
+      "evidence": "commit this, not `.local.json`, or the protection only exists on your machine"
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": false,
+      "evidence": "Mentions mechanisms (context compaction, subagents) but does not explicitly explain why caps/repetition specifically fail to make instructions reliable given these mechanisms"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

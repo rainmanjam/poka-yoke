@@ -1,0 +1,3 @@
+Confirmation modals are the weakest control — users develop "modal blindness" and click through without reading. A stronger pattern: **soft delete to trash** (30-day retention) + an **undo toast** that appears for 10-15 seconds after the action. Users who panic-emailed can self-recover from trash, and the undo toast catches immediate "oops" moments without friction for intentional deletes.
+
+The tradeoff is storage cost for the trash retention window, but that's almost always cheaper than support tickets and lost trust.

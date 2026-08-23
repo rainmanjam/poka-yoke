@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "018a96d90c3c",
+  "expectations": [
+    {
+      "text": "States that system prompt instructions are not a reliable control on model behaviour",
+      "passed": true,
+      "evidence": "The two prompt lines you added are what this framework calls rung zero: requests to a component with a non-zero error rate. They're worth keeping, but neither one can fail loudly, so neither is a device."
+    },
+    {
+      "text": "Recommends structured output against a schema rather than extracting values from prose",
+      "passed": true,
+      "evidence": "Instead, fetch the order's refundable line items server-side and have the model select an ID from that list... Open-ended generation becomes a closed set a Literal/enum enforces"
+    },
+    {
+      "text": "Recommends validating the refund amount server-side against the actual order",
+      "passed": true,
+      "evidence": "Re-validate server-side regardless. The refund endpoint must independently check the amount against the actual order total minus prior refunds, and reject anything over."
+    },
+    {
+      "text": "Recommends a required idempotency key on the refund call",
+      "passed": true,
+      "evidence": "You need an idempotency key \u2014 deterministic, derived from the refund request (order ID + line item + a request UUID)"
+    },
+    {
+      "text": "Recommends a database constraint or equivalent so a duplicate refund is rejected rather than merely avoided",
+      "passed": true,
+      "evidence": "backed by a unique constraint in the database. Not a SELECT then INSERT: that's a TOCTOU race that fails exactly when traffic is high."
+    },
+    {
+      "text": "Recommends human confirmation or an approval gate for the irreversible refund action",
+      "passed": false,
+      "evidence": "Response asks what policy the user wants (listing confirmation as one option) but does not recommend a human gate as a device."
+    },
+    {
+      "text": "Identifies prompt injection risk from the customer-supplied message reaching a privileged action",
+      "passed": false,
+      "evidence": "No mention of prompt injection or untrusted customer input risks."
+    },
+    {
+      "text": "Recommends bounds or caps on the refund amount",
+      "passed": true,
+      "evidence": "Cap refunds per conversation and per hour; alert on refund volume anomalies."
+    },
+    {
+      "text": "Does not primarily recommend changes to the prompt wording",
+      "passed": true,
+      "evidence": "Entire approach focuses on structural controls (schemas, constraints, validation), not prompt rewording."
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 9,
+    "pass_rate": 0.7778
+  }
+}

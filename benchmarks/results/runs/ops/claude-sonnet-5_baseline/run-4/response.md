@@ -1,0 +1,3 @@
+I'd hold off on the drop itself, even though the code changes are fine to ship. The risk isn't your three call sites — it's whatever *outside* the repo still reads `legacy_email` (a report, an export job, an analytics query, another service) that CI can't catch, combined with dropping a column on a Friday afternoon when you have the least coverage to react if something breaks over the weekend.
+
+Recommendation: merge and deploy the code changes today (they stop reading the column), but split the actual `DROP COLUMN` into a separate migration you run Monday morning — that gives you a rollback-friendly window where the column still exists as a safety net if anything unexpected surfaces.

@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "1af6b213502f",
+  "expectations": [
+    {
+      "text": "States plainly that the recent-charge lookup is not sufficient",
+      "passed": true,
+      "evidence": "\"No. The check cannot fire in the incident it was written for.\""
+    },
+    {
+      "text": "Identifies the lookup as a check-then-act race rather than a device",
+      "passed": true,
+      "evidence": "\"TOCTOU. Redelivery is often concurrent with attempt 1 still in flight. Both read 'no charge,' both proceed.\""
+    },
+    {
+      "text": "Recommends a required idempotency key on the charge path",
+      "passed": true,
+      "evidence": "\"Idempotency key on every Stripe call, derived deterministically from the message/order ID\""
+    },
+    {
+      "text": "Recommends a database unique constraint backing the idempotency key",
+      "passed": true,
+      "evidence": "\"DB unique constraint on `(order_id, purpose)`\""
+    },
+    {
+      "text": "Separates the defect from the mistake from the underlying system hazard",
+      "passed": true,
+      "evidence": "Explicitly labels three categories: Defect (charged twice), Mistake (retry called charge again), Hazard (path not idempotent)"
+    },
+    {
+      "text": "Locates the hazard as a system property rather than as a worker bug or human error",
+      "passed": true,
+      "evidence": "\"The hazard isn't in the worker \u2014 it's that your queue is at-least-once and side-effecting consumers aren't idempotent\""
+    },
+    {
+      "text": "Sweeps for other non-idempotent side effects reachable from a retry",
+      "passed": true,
+      "evidence": "\"Every other consumer of that queue has this bug latent: refunds, transfers, provisioning, emails, webhook fanout\""
+    },
+    {
+      "text": "Treats 'second time this happened' as evidence for pushing to a Control-rung device",
+      "passed": true,
+      "evidence": "\"The 'second time' is the real finding\" followed by Control-rung device recommendations"
+    },
+    {
+      "text": "Attributes cause to the system, not to any person",
+      "passed": true,
+      "evidence": "All causality framed as system properties (queue semantics, idempotency), no personal attribution"
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

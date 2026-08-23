@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "Your test would have been green for all three weeks. You've added a check that cannot fail on the incident it was written for."
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "COALESCE(revenue, 0)...Null means 'we don't know.' Zero means 'we know, and it's nothing.' Coalescing destroys that distinction irreversibly"
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": true,
+      "evidence": "Reconciliation to source, blocking publish\u2014daily warehouse revenue total vs. the billing system total. Only 'does it agree' catches this class."
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": true,
+      "evidence": "Build \u2192 staging \u2192 test \u2192 promote ordering, so 1\u20134 can actually stop publication instead of emailing about it"
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "Schema contract at ingest\u2014explicit column list, assert the expected set on read. Rename \u2192 hard failure at the boundary, attributable to upstream"
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "Join match-rate assertion, row-count surfaced on the dashboard face, and multiple other assertions beyond non-empty check"
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": true,
+      "evidence": "It ran monthly, with three weeks of lag, executed by a human. That's rung 3 at its slowest."
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": true,
+      "evidence": "COALESCE(x, -1) would have screamed on day one...destroys that distinction irreversibly\u2014no downstream check anywhere can recover the difference. Directly contrasts plausibility (masks error) with implausibility (alerts immediately)."
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "82f963d241f9",
+  "expectations": [
+    {
+      "text": "Pushes back on the 'are you sure?' modal as the primary fix",
+      "passed": true,
+      "evidence": "\"Not yet \u2014 that modal is **rung 0** (relies on reading) and won't solve the problem.\""
+    },
+    {
+      "text": "Explains habituation or click-through blindness as why frequent dialogs stop working",
+      "passed": true,
+      "evidence": "\"A generic confirmation users see repeatedly trains **click-through blindness** \u2014 they press \"Confirm\" reflexively... A confirmation dialog a user sees fifty times a day stops being a decision point.\""
+    },
+    {
+      "text": "Recommends reversibility (soft delete with a retention window) as the strongest option",
+      "passed": true,
+      "evidence": "\"1. **Soft-delete + Trash (Rung 1: Control)** \u2190 Start here ... Move workspace to trash with 30-day retention\""
+    },
+    {
+      "text": "Recommends grace-period undo as a strong low-friction option",
+      "passed": true,
+      "evidence": "\"2. **Grace-period undo (Rung 1: Control)** ... show \"Deleted workspace-name. **Undo**\" toast for 10 seconds ... Still zero friction, still recoverable\""
+    },
+    {
+      "text": "Recommends type-the-workspace-name confirmation for the irreversible case",
+      "passed": true,
+      "evidence": "\"3. **Type-to-confirm** ... Require typing the workspace name ... Use **only** for genuinely catastrophic actions\""
+    },
+    {
+      "text": "If a dialog is retained, requires it to name the workspace and the scale of what is lost",
+      "passed": true,
+      "evidence": "\"1. Name the object: `\"Delete 'production-api'?\"` ... 2. State the scale: `\"3 projects and 1,204 files\"`\""
+    },
+    {
+      "text": "Notes that the server must enforce the deletion rules, not just the UI",
+      "passed": false,
+      "evidence": "Only says soft-delete \"is a backend change, not just UI\" as an explanation for why it gets skipped; never states that the server/API must enforce deletion rules or guard against non-UI callers."
+    },
+    {
+      "text": "Gives an explicit preference order rather than an undifferentiated list of ideas",
+      "passed": true,
+      "evidence": "\"## Better devices, strongest first\" with numbered 1\u20134 and \"\u2190 Start here\" / \"\u2190 If soft-delete is blocked\" / \"\u2190 If you must\""
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

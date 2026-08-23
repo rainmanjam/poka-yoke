@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "31eb11dca414",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Provides types.ts, selection.ts, api.ts, useBulkAction.ts, ConfirmDeleteDialog.tsx, BulkActionsBar.tsx, DocumentsTable.tsx, and Pagination component with full implementations."
+    },
+    {
+      "text": "Produces actual working component code rather than only a list of recommendations",
+      "passed": true,
+      "evidence": "All components written with complete JSX, event handlers, Tailwind styling, and state management including reducer pattern and hooks."
+    },
+    {
+      "text": "Makes the destructive action recoverable rather than relying on a confirmation dialog alone",
+      "passed": true,
+      "evidence": "Soft-deletes with 30-day trash period; provides undoToken in BulkResult; toast offers 'Undo' action: 'toast.success(label, { duration: 10_000, action: { label: 'Undo', onClick: () => undoBulk(result.undoToken!) }'"
+    },
+    {
+      "text": "Shows the count of affected items before the action is taken",
+      "passed": true,
+      "evidence": "BulkActionsBar displays '{count.toLocaleString()} document{count === 1 ? '' : 's'} selected' before any button interaction."
+    },
+    {
+      "text": "Distinguishes select-all-on-page from select-all-matching rather than conflating them",
+      "passed": true,
+      "evidence": "Selection has include vs allMatching modes; table includes explicit escalation banners showing difference; bar shows '(all matching your filters)' only when mode is allMatching."
+    },
+    {
+      "text": "Separates the destructive action from the benign one visually or spatially",
+      "passed": true,
+      "evidence": "Archive button with slate-300 border, followed by '<div className=\"mx-1 h-6 w-px bg-slate-200\" aria-hidden=\"true\" />', then Delete with red-200 border and red-700 text."
+    },
+    {
+      "text": "Does not make the destructive action the default focus or primary button",
+      "passed": true,
+      "evidence": "Delete button styled identically to Archive (white bg, borders only); dialog focuses input or cancel: '(mustType ? inputRef : cancelRef).current?.focus()' \u2014 never the delete button."
+    },
+    {
+      "text": "Notes that the server must enforce the rules, not just the UI",
+      "passed": true,
+      "evidence": "Explicit 'Server contract you need to hold up' section: '**Re-apply the tenant/permission scope to `filter` server-side.** The client sends a filter, not a list \u2014 never trust it as an authorization boundary.'"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Closes with 'What this shape makes impossible, and what it leaves open': lists Rung 1 impossibilities (sending 50 IDs, stale filter, double-apply, silent growth); Rung 2 choices; Left possible on purpose."
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

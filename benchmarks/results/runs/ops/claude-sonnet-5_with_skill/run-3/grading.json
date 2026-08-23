@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": true,
+      "evidence": "If the drop and the code change ship in the same deploy, any instance still running old code mid-rollout will hit column does not exist \u2014 a hard error."
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "Deploy A (today): the three code changes. Deploy B (separate, non-Friday): the DROP COLUMN, once you've watched Deploy A run clean for a bit."
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": true,
+      "evidence": "The DROP COLUMN is the irreversible step \u2014 once it lands, legacy_email data is gone unless restored from a backup."
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": true,
+      "evidence": "A code-only revert is a 20-minute fix any time. A dropped-column revert on a Friday evening with reduced on-call is the scenario the rule exists for."
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "A dropped-column revert on a Friday evening with reduced on-call \u2014 explicitly references staffing availability."
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": false,
+      "evidence": "Mentions a CI gate exists in guardrails and offers to set it up ('want me to set that up?') but does not recommend adding one."
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "don't merge this as one PR."
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "Deploy A is reversible \u2014 redeploying old code still works since the column still exists. Deploy B is the irreversible DROP COLUMN."
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

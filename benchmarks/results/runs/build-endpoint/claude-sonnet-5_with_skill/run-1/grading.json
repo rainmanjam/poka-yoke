@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "9b2ce0ce8a1c",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Includes Prisma schema, migration SQL, branded types, validation schemas, error class, service layer, handler, and route wiring \u2014 all pieces needed to run the endpoint"
+    },
+    {
+      "text": "Requires an idempotency key as a parameter rather than making it optional",
+      "passed": true,
+      "evidence": "Handler: `const keyResult = IdempotencyKeyHeaderSchema.safeParse(req.header(\"Idempotency-Key\")); if (!keyResult.success) { res.status(400)... }` \u2014 missing header throws 400"
+    },
+    {
+      "text": "Backs idempotency with a database unique constraint, not application logic alone",
+      "passed": true,
+      "evidence": "Schema: `@@unique([tenantId, idempotencyKey])` and migration: `CREATE UNIQUE INDEX \"Refund_tenantId_idempotencyKey_key\"`"
+    },
+    {
+      "text": "Uses distinct types for the identifiers rather than bare strings for both order and refund ids",
+      "passed": false,
+      "evidence": "Brands `OrderId` in types file, but `RefundId` is never defined as a branded type; Refund.id remains a bare string from the Prisma model"
+    },
+    {
+      "text": "Handles money as integer minor units rather than a float",
+      "passed": true,
+      "evidence": "Zod: `.int().positive().transform((n) => n as Cents)`, Prisma: `amountCents Int`, branded type `Cents = Brand<number, \"Cents\">`"
+    },
+    {
+      "text": "Validates the refund amount server-side against the order rather than trusting the caller",
+      "passed": true,
+      "evidence": "Transaction aggregates reserved refunds and checks: `if (alreadyReserved + amountCents > order.totalCents) { throw new RefundError(422, ...) }`"
+    },
+    {
+      "text": "Scopes the write so one tenant or user cannot refund another's order",
+      "passed": true,
+      "evidence": "Order lookup: `WHERE \"id\" = ${orderId} AND \"tenantId\" = ${tenantId}` with tenantId from session, never from request body"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Lists misuses enumerated before writing, then explains controls: 'closes the exact double-charge shape', 'two concurrent refund requests can't both pass the balance check', 'an unscoped read isn't reachable'"
+    },
+    {
+      "text": "Names at least one thing it deliberately left possible and why",
+      "passed": true,
+      "evidence": "Section 'Left open, on purpose': stuck pending rows need a reconciliation job; explains the trade-off of not holding DB lock across Stripe call to avoid lock-timeout storms"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 9,
+    "pass_rate": 0.8889
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": true,
+      "evidence": "\"Swapped args\" \u2014 two adjacent `string` params (C1). `transfer(dst, src, amt)` compiles and reverses the payment."
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "No idempotency key anywhere (M2). The catch can't tell \"charge failed\" from \"charge succeeded, response timed out\" \u2014 and the timeout case is exactly when `retry` fires."
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": true,
+      "evidence": "`return null` on any error (X1) means a forgotten null-check reads a failed payment as a completed one, and the Stripe error \u2014 declined? network? our bug? \u2014 is discarded."
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": true,
+      "evidence": "Float money with no rounding rule, so reconciliation drifts... `balance: number` is float money with no currency bound to it, so USD and EUR balances add."
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "`$executeRawUnsafe` with an interpolated value is safe *today* only because `toISOString()` is"
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "`updateSubscription(id, \"cancelled\")` writes the garbage value, then matches neither case and falls through \u2014 no `default` (F1)."
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": true,
+      "evidence": "`JSON.parse` into `any`. Anyone who can reach the endpoint POSTs `{\"type\":\"invoice.paid\",...}` and charges an arbitrary customer"
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "\"Call `transfer(a, b, -100)`\", \"Call it with no argument\", \"Anyone who can reach the endpoint POSTs\""
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "Ranks `purgeCanceledAccounts` irreversible delete first, then transfer/webhook money-movement issues before status enum issues"
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": true,
+      "evidence": "branded `AccountId`, `PositiveCents` smart constructor, conditional decrement in transaction, `stripe.webhooks.constructEvent`, unique constraints, `assertNever`"
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "I haven't touched any files \u2014 audit mode proposes first"
+    }
+  ],
+  "summary": {
+    "passed": 11,
+    "total": 11,
+    "pass_rate": 1.0
+  }
+}

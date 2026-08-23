@@ -1,0 +1,49 @@
+{
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "a line in CLAUDE.md \u2014 caps, repeated, bolded, whatever \u2014 is **rung 0: training**. Training degrades. Capitalizing it twice doesn't move it up a rung; it's still a thing the agent has to *remember*"
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "Stop writing instructions; install devices."
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": true,
+      "evidence": "{ \"permissions\": { \"deny\": [ \"Bash(git push --force:*)\", ... \"Edit(./src/generated/**)\", \"Write(./src/generated/**)\" ] } }"
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": true,
+      "evidence": "Plain deny patterns are dumb about variants... The plugin's `guard_dangerous_commands.py` hook handles those with a regex"
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": true,
+      "evidence": "**The message is the device** \u2014 a bare \"denied\" produces a creative workaround; a message saying *what to do instead* produces the right action."
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": true,
+      "evidence": "After installing: attempt a force-push and an edit to `src/generated/foo.ts` and confirm both the denial and its message; then confirm `git push origin feature` and an edit to `src/foo.ts` still work."
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": true,
+      "evidence": "`.claude/settings.json` (committed, so it applies to every teammate's agent, not just yours)"
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": true,
+      "evidence": "Context compaction... Subagents... Pressure \u2014 a rejected push or a stubborn generated-file diff creates a local incentive to 'just fix it'"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

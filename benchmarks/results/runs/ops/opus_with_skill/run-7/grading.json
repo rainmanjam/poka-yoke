@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": true,
+      "evidence": "old pods are still running `SELECT ... legacy_email` against a schema where it no longer exists. Every request through those three paths 500s"
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "You're at step 5 of expand/contract... Ship the code-only PR today... drop the column Tuesday"
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": true,
+      "evidence": "`git revert` brings back the code, not the bytes \u2014 those are gone the moment the migration runs"
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": true,
+      "evidence": "Your only restore path is a backup... The drop: needs a restore, two people, and hours"
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "The skill's line is that timing is about staffing and recovery speed, not superstition"
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": true,
+      "evidence": "a CI check that fails any PR whose migrations contain `DROP`, `TRUNCATE`, or `ALTER ... DROP` unless the PR carries an explicit approval label"
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "\"CI is green\" proves nothing about the column"
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "Steps 1\u20134 are reversible; step 5 gets its own deploy precisely because it isn't"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

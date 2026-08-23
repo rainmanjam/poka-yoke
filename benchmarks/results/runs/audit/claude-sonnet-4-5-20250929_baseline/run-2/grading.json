@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": true,
+      "evidence": "\"13. **Argument swapping** \u2014 `transfer(from, to, amt)` easy to reverse\""
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "\"**3. Blind retry = double charging** (lines 56-58) Retries on *any* error, including successful charges that failed to return. Customer gets charged twice.\" \u2014 retry double-charge named, though 'idempotency key' is not used"
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": false,
+      "evidence": "Only 'Fire-and-forget receipts' (void sendReceiptEmail) is flagged as a silent failure; no mention of a catch block returning null. Item 10 mentions null assertions on lookups, not error swallowing."
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": true,
+      "evidence": "\"**8. Floating-point money** (line 64) ... JavaScript floats lose cents. $10.00 - 33% = $6.699999999\""
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "\"**1. SQL Injection** (line 86-88) ... Template literals in `executeRawUnsafe` = direct SQL injection.\""
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "\"12. **Unbounded status enum** \u2014 accepts any string, silent no-op on typos\""
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": true,
+      "evidence": "\"**4. No webhook signature verification** (line 93-100) Anyone can POST fake \"invoice.paid\" events to your endpoint and trigger arbitrary charges.\" \u2014 external webhook body treated as unvalidated/untrusted input"
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "Findings are framed as code behaviors/conditions (\"Two separate updates with no transaction\", \"Retries on *any* error\"); no characterization of the developer"
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "\"\ud83d\udd34 Critical (will cause data loss or financial damage)\" listed first (SQL delete, non-atomic transfers, double charging) before \ud83d\udfe1 High and \ud83d\udfe0 Medium cosmetic items"
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": false,
+      "evidence": "No fixes proposed at all \u2014 every item states the hazard only (e.g. \"Two separate updates with no transaction\"), with no device such as wrapping in a transaction, idempotency key, or minor-unit integers"
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "Response is analysis-only text; no file modifications described or implied"
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 11,
+    "pass_rate": 0.8182
+  }
+}

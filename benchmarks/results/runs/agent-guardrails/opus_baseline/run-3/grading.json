@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "5b62450c21d2",
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "\"An instruction in CLAUDE.md is training, and training degrades: under compaction, in long contexts, and in subagents that never loaded the file.\""
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "Frames prose as training that degrades; solution flows to devices, not rewording"
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": true,
+      "evidence": "Provides jsonc config with Edit, Write, and Bash deny patterns for src/generated/ and force-push"
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": true,
+      "evidence": "\"Conditional matching needs a `PreToolUse` hook that inspects the command.\" References existing poka-yoke hook at specific path"
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": true,
+      "evidence": "\"The deny message is the actual device\" section shows example with what was blocked, why, and what to edit instead"
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": true,
+      "evidence": "\"Prove it fires \u2014 both directions\" with test commands; \"Untested hooks fail open more often than people expect.\""
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": true,
+      "evidence": "\"`.claude/settings.json`, committed (not `settings.local.json` \u2014 that protects your laptop only, which is the same failure as documenting it)\""
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": true,
+      "evidence": "\"Caps and repetition are the only levers prose has\" and \"training degrades: under compaction, in long contexts, and in subagents\""
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

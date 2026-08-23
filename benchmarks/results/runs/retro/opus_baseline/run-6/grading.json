@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "1af6b213502f",
+  "expectations": [
+    {
+      "text": "States plainly that the recent-charge lookup is not sufficient",
+      "passed": true,
+      "evidence": "No \u2014 and the way it fails is the same way the original failed. Your new check is a read-then-write race."
+    },
+    {
+      "text": "Identifies the lookup as a check-then-act race rather than a device",
+      "passed": true,
+      "evidence": "Your new check is a read-then-write race."
+    },
+    {
+      "text": "Recommends a required idempotency key on the charge path",
+      "passed": true,
+      "evidence": "Type the parameter as required so the timeout path can't be written without one."
+    },
+    {
+      "text": "Recommends a database unique constraint backing the idempotency key",
+      "passed": true,
+      "evidence": "A unique constraint on your own charges table keyed on that same identifier."
+    },
+    {
+      "text": "Separates the defect from the mistake from the underlying system hazard",
+      "passed": true,
+      "evidence": "Defect: 340 customers charged twice. Mistake: the retry path called charge() again with no dedupe token. Hazard: charging is not idempotent, and nothing..."
+    },
+    {
+      "text": "Locates the hazard as a system property rather than as a worker bug or human error",
+      "passed": true,
+      "evidence": "Hazard: charging is not idempotent, and nothing in the type system, the API call, or the database prevents a second charge from existing."
+    },
+    {
+      "text": "Sweeps for other non-idempotent side effects reachable from a retry",
+      "passed": true,
+      "evidence": "duplicate emails, webhook re-fires to customers, double ledger entries, inventory decremented twice, provisioning run twice"
+    },
+    {
+      "text": "Treats 'second time this happened' as evidence for pushing to a Control-rung device",
+      "passed": true,
+      "evidence": "The part that matters most, given this is the second time... If the first incident was also fixed at one call site, that's the pattern to break"
+    },
+    {
+      "text": "Attributes cause to the system, not to any person",
+      "passed": true,
+      "evidence": "At-least-once delivery isn't a payment property \u2014 it's a property of your queue."
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

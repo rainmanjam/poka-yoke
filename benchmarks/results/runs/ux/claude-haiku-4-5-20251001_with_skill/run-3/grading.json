@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "82f963d241f9",
+  "expectations": [
+    {
+      "text": "Pushes back on the 'are you sure?' modal as the primary fix",
+      "passed": true,
+      "evidence": "\"Modal = Rung 2 (Warning). Adds friction to every delete and still doesn't stop the mistake\""
+    },
+    {
+      "text": "Explains habituation or click-through blindness as why frequent dialogs stop working",
+      "passed": true,
+      "evidence": "\"They develop click-through blindness and press 'Confirm' with the same reflex they press 'OK'\""
+    },
+    {
+      "text": "Recommends reversibility (soft delete with a retention window) as the strongest option",
+      "passed": true,
+      "evidence": "\"Soft-delete + trash = Rung 1 (Control). The mistake becomes reversible, so it needs no gate at all\""
+    },
+    {
+      "text": "Recommends grace-period undo as a strong low-friction option",
+      "passed": true,
+      "evidence": "\"Undo toast = Grace-period undo. Full recovery on the mistaken action, no friction on legitimate deletes\""
+    },
+    {
+      "text": "Recommends type-the-workspace-name confirmation for the irreversible case",
+      "passed": false,
+      "evidence": "Type-to-confirm option not mentioned"
+    },
+    {
+      "text": "If a dialog is retained, requires it to name the workspace and the scale of what is lost",
+      "passed": false,
+      "evidence": "No dialog retained as option (rejects modal, does not propose alternative dialog with consequence info)"
+    },
+    {
+      "text": "Notes that the server must enforce the deletion rules, not just the UI",
+      "passed": false,
+      "evidence": "No mention of server-side enforcement"
+    },
+    {
+      "text": "Gives an explicit preference order rather than an undifferentiated list of ideas",
+      "passed": true,
+      "evidence": "Establishes preference: Rung 1 (soft-delete + trash) > Rung 2 (modal)"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "total": 8,
+    "pass_rate": 0.625
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "| (SubscriptionBase & { status: \"trialing\"; trialEndDate: Date }) | ... \u2014 status is the discriminant across all variants"
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "Each intersection in the union adds only its own fields; trialing has only trialEndDate, active only renewalDate, etc."
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": true,
+      "evidence": "assertNever function provided; used in describe switch with default: return assertNever(sub)"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": true,
+      "evidence": "SubscriptionId, CustomerId, PlanId all branded using Brand<T, B> pattern"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": false,
+      "evidence": "Explicitly states this doesn't cover and leaves it to user; mentions isValidTransition but doesn't provide it"
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Lists 4 specific misuses: ID swapping, bag-of-optionals nonsense, silent undefined reads, new status not breaking build"
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "Primary design is discriminated union; explicitly rejects optionals throughout"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 7,
+    "pass_rate": 0.8571
+  }
+}

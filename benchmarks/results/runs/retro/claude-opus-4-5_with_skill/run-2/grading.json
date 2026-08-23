@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "1af6b213502f",
+  "expectations": [
+    {
+      "text": "States plainly that the recent-charge lookup is not sufficient",
+      "passed": true,
+      "evidence": "\"This is not enough. You already have proof it isn't \u2014 this is the second time.\""
+    },
+    {
+      "text": "Identifies the lookup as a check-then-act race rather than a device",
+      "passed": true,
+      "evidence": "\"Race condition | Two workers can both pass the check before either writes\" and \"check-before-write pattern ... The race window between checking and writing is exactly where duplicates slip through\"; also \"It's a check, not a constraint\""
+    },
+    {
+      "text": "Recommends a required idempotency key on the charge path",
+      "passed": true,
+      "evidence": "\"charge(customerId, amount, idempotencyKey) \u2014 no optional, no default\" / \"Make idempotency key a required parameter to charge functions\""
+    },
+    {
+      "text": "Recommends a database unique constraint backing the idempotency key",
+      "passed": true,
+      "evidence": "\"Add UNIQUE(customer_id, idempotency_key) constraint on charges table ... a constraint that the database enforces atomically\""
+    },
+    {
+      "text": "Separates the defect from the mistake from the underlying system hazard",
+      "passed": true,
+      "evidence": "Table: \"Defect | 340 customers double-charged\", \"Mistake | Retry path called charge again without an idempotency key\", \"Hazard | The payment system has no mechanism...\""
+    },
+    {
+      "text": "Locates the hazard as a system property rather than as a worker bug or human error",
+      "passed": true,
+      "evidence": "\"The payment system has no mechanism that makes duplicate charges for the same logical intent impossible\" and \"Nothing stops a future code path from skipping it\""
+    },
+    {
+      "text": "Sweeps for other non-idempotent side effects reachable from a retry",
+      "passed": true,
+      "evidence": "\"Class Sweep ... Every other queue consumer that calls a payment endpoint / Any webhook handler that triggers charges / Subscription renewal jobs / Retry/recovery scripts ... likely exists at multiple sites\""
+    },
+    {
+      "text": "Treats 'second time this happened' as evidence for pushing to a Control-rung device",
+      "passed": true,
+      "evidence": "\"if a mistake has happened twice, the system is telling you exactly where to install a device\" + \"The Device You Need: Idempotency Key (Rung 1 \u2014 Control)\""
+    },
+    {
+      "text": "Attributes cause to the system, not to any person",
+      "passed": true,
+      "evidence": "Cause framed throughout as missing system constraint (\"It's a check, not a constraint\", \"no idempotency at all\"); no individual or team blamed anywhere"
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": true,
+      "evidence": "\"CI never ran old code + new schema \u2014 and that's the state that exists for real during every deploy, while old pods drain. Those three call sites throw column does not exist.\""
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "\"Two PRs: Now: the three code changes only... Later (next week): the DROP, alone, after you've confirmed from query logs.\""
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": true,
+      "evidence": "\"The data is gone at that instant... point-in-time restore of the whole database to before the migration \u2014 not a revert.\""
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": true,
+      "evidence": "\"Normally Friday is fine \u2014 you revert in ten minutes. But once the column is dropped, revert makes it worse... Recovery is a database restore, with a weekend on-call rotation.\""
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "\"Recovery is a database restore, with a weekend on-call rotation.\""
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": true,
+      "evidence": "\"a CI check that fails when a migration containing DROP/destructive ALTER lands in the same PR as application code.\""
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "\"ship the code half this afternoon with confidence. Hold the DROP for Monday-to-Wednesday.\""
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "\"the three code changes only... Fully reversible \u2014 revert is a normal deploy\" vs the DROP."
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

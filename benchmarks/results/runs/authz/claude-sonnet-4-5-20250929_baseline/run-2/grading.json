@@ -1,0 +1,60 @@
+{
+  "assertions_sha": "bcf79cb43709",
+  "expectations": [
+    {
+      "text": "Flags the nested comments and attachments resolvers as unscoped by tenant",
+      "passed": true,
+      "evidence": "SEC-6 and SEC-7 explicitly flag comments and attachments resolvers as unscoped"
+    },
+    {
+      "text": "Flags updateDocument for scoping on id alone without a tenant constraint",
+      "passed": true,
+      "evidence": "SEC-3: 'No tenantId check \u2014 any user can modify any tenant's documents'"
+    },
+    {
+      "text": "Flags exportWorkspace taking tenantId from the client-controlled request body",
+      "passed": true,
+      "evidence": "SEC-1: 'exportWorkspace takes tenantId from req.body, allowing any user to export ANY tenant's data'"
+    },
+    {
+      "text": "Flags searchDocuments as returning rows across all tenants",
+      "passed": true,
+      "evidence": "SEC-4: 'No WHERE tenant_id = $1 clause' returning cross-tenant results"
+    },
+    {
+      "text": "Flags adminListDocuments as checking authentication but not authorization or tenant",
+      "passed": true,
+      "evidence": "SEC-5: 'weak auth check (only userId existence)' and 'No tenant scoping'"
+    },
+    {
+      "text": "Enumerates all the affected sites rather than fixing only the first one found",
+      "passed": true,
+      "evidence": "Lists 8 findings (SEC-1 through SEC-8) covering all vulnerable paths"
+    },
+    {
+      "text": "Recommends a structural device (scoped repository, row-level security, or equivalent) rather than only adding where-clauses site by site",
+      "passed": true,
+      "evidence": "Defense-in-Depth Recommendations include database RLS, middleware validation, monitoring, and penetration testing"
+    },
+    {
+      "text": "Recommends a cross-tenant test that attempts tenant A operations against tenant B resources",
+      "passed": true,
+      "evidence": "'Add integration tests that verify cross-tenant isolation for all paths'"
+    },
+    {
+      "text": "Identifies the raw interpolation of tenantId into $queryRawUnsafe as an injection hazard distinct in kind from the tenant-scoping bug",
+      "passed": true,
+      "evidence": "SEC-2 is a separate finding from SEC-1, treating SQL injection as distinct from client-controlled tenantId"
+    },
+    {
+      "text": "Does not conclude the main query paths being scoped means the service is safe",
+      "passed": true,
+      "evidence": "Acknowledges correct scoping of main paths but states 'This blocks SOC2 certification until fixed'"
+    }
+  ],
+  "summary": {
+    "passed": 10,
+    "total": 10,
+    "pass_rate": 1.0
+  }
+}

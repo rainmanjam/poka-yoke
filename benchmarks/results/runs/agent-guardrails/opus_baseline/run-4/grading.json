@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "5b62450c21d2",
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "Caps and repetition are the two knobs that don't exist \u2014 CLAUDE.md is training, and training degrades... long context dilutes it, compaction drops it, and subagents often never see it at all."
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "Moves immediately to deny rules and hooks; does not suggest rewording prose"
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": true,
+      "evidence": "Provides full JSON with Edit/Write/Bash deny patterns for both rules"
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": true,
+      "evidence": "Wire it as a `PreToolUse` hook on `Bash|Edit|Write` with reference to guard_dangerous_commands.py"
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": true,
+      "evidence": "Shows permissionDecisionReason with redirect: Change the schema in `src/schema/` and regenerate"
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": true,
+      "evidence": "Prove it fails section with test commands; An untested hook whose regex doesn't match...does nothing while looking like protection"
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": true,
+      "evidence": "Committed, not `settings.local.json` \u2014 a rule on one machine is the same failure as documenting it"
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": true,
+      "evidence": "Caps and repetition are the two knobs that don't exist...long context dilutes it, compaction drops it, and subagents often never see it at all"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

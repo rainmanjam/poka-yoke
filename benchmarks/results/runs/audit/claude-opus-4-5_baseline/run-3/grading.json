@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": false,
+      "evidence": "No mention of the two account parameters being interchangeable strings or of branded/nominal IDs; the transfer() findings cover only the missing transaction (#1) and non-null assertions (#7)."
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": false,
+      "evidence": "Idempotency is raised only for the webhook: 'No idempotency in webhook handler (lines 93-100) ... Stripe retries webhooks.' chargeCustomer's own retry path / missing idempotency key is never flagged."
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": true,
+      "evidence": "'Silent charge failures \u2014 chargeCustomer() returns null (line 59) Failed charges return null instead of throwing. Callers that don't explicitly check for null will think the charge succeeded.'"
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": true,
+      "evidence": "'Floating-point money \u2014 applyDiscount() ... produces values like 19.999999999999996. Use integer cents throughout, or a decimal library.'"
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "'SQL injection \u2014 purgeCanceledAccounts() (line 87) ... Direct string interpolation into raw SQL.'"
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "'Switch without default case \u2014 updateSubscription() (lines 70-77) Statuses like \"paused\", \"past_due\", \"trialing\" fall through silently.'"
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": false,
+      "evidence": "Only signature verification is raised ('Without stripe.webhooks.constructEvent() verification'); no mention of JSON.parse or the parsed payload's shape being trusted/unvalidated."
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "Findings are stated as code conditions and actions \u2014 'These two operations need to be wrapped in a database transaction', 'Use integer cents throughout' \u2014 with no characterization of the developer."
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "Critical section leads with 'Money can vanish \u2014 transfer() has no transaction' and 'Double-charging customers'; 'Unused variable' is last under Medium."
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": false,
+      "evidence": "Several findings carry no device: #2 SQL injection has no parameterized-query fix, #3 double-charge, #7 non-null assertions, #10 missing default case, and #11 unused variable state the problem only ('Dead code or forgotten implementation?')."
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "Response is analysis only, ending with an offer \u2014 'Want me to draft fixes for any of these?' \u2014 no edits reported."
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 11,
+    "pass_rate": 0.6364
+  }
+}

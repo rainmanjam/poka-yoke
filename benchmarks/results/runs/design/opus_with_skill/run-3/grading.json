@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "`Subscription = | (Core & { readonly status: \"trialing\"; ...}) | (Core & { readonly status: \"active\"; ...}) | ...`"
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "trialing has trialEndsAt; active has renewsAt; past_due has retryCount/gracePeriodEndsAt/lastFailureAt; canceled has canceledAt/cancellation"
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": true,
+      "evidence": "Shows `assertNever` function definition and uses it in `isEntitled` switch: `default: return assertNever(sub);`"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": true,
+      "evidence": "`SubscriptionId`, `CustomerId`, `PlanId`, `Instant`, `RetryCount` all branded with Brand<T, B>"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": true,
+      "evidence": "Shows `Event` union and `transition()` function signature; uses `readonly` everywhere to make it the only mutation path"
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Has '## The misuses I designed against' section with 6 numbered items identifying specific misuses (bag-of-optionals C8, boolean-flag C2, bare strings C1, etc.)"
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "Opens with misuses section calling out bag-of-optionals as problem, then provides discriminated union as solution"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 7,
+    "pass_rate": 1.0
+  }
+}

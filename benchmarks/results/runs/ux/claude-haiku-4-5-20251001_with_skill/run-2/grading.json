@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "82f963d241f9",
+  "expectations": [
+    {
+      "text": "Pushes back on the 'are you sure?' modal as the primary fix",
+      "passed": true,
+      "evidence": "\"Your situation\u2014users *keep* accidentally deleting workspaces\u2014is exactly where a modal *fails*\""
+    },
+    {
+      "text": "Explains habituation or click-through blindness as why frequent dialogs stop working",
+      "passed": true,
+      "evidence": "\"Users trained by dozens of benign 'OK' clicks will dismiss 'Are you sure?' reflexively\""
+    },
+    {
+      "text": "Recommends reversibility (soft delete with a retention window) as the strongest option",
+      "passed": true,
+      "evidence": "Listed #1: \"Soft-delete + trash (rung 1 \u2014 control). When a user deletes a workspace, move it to trash...Keep it for 30 days\""
+    },
+    {
+      "text": "Recommends grace-period undo as a strong low-friction option",
+      "passed": true,
+      "evidence": "Listed #2: \"Grace-period undo (rung 2 \u2014 warning). Delete immediately, but show 'Workspace deleted. [Undo]' as a toast\""
+    },
+    {
+      "text": "Recommends type-the-workspace-name confirmation for the irreversible case",
+      "passed": true,
+      "evidence": "Listed #3: \"Type-to-confirm...require the user to type the workspace name to confirm deletion\""
+    },
+    {
+      "text": "If a dialog is retained, requires it to name the workspace and the scale of what is lost",
+      "passed": false,
+      "evidence": "No explicit dialog option that shows both workspace name and scale of data loss"
+    },
+    {
+      "text": "Notes that the server must enforce the deletion rules, not just the UI",
+      "passed": false,
+      "evidence": "No mention of server-side enforcement"
+    },
+    {
+      "text": "Gives an explicit preference order rather than an undifferentiated list of ideas",
+      "passed": true,
+      "evidence": "Clear 1-2-3 numbered ranking with rung designations"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "\"The union: `type Subscription = TrialingSubscription | ActiveSubscription | ...`\" and \"The `switch` statement on `status`\" \u2014 discriminant is the status field"
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "\"Four separate types (one per state): `TrialingSubscription` \u2192 has `trialEndDate` ... `CanceledSubscription` \u2192 has `cancelReason` enum and `voluntary: boolean`\""
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": false,
+      "evidence": "\"Exhaustiveness checking: The `switch` statement on `status` will cause a TypeScript error if you add a new state but forget to handle it.\" \u2014 asserted as a property but no assertNever/never arm is shown; the code is not present (\"Creating `src/subscription-types.ts` now...\")"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": false,
+      "evidence": "Branded IDs are described only in the Insight box as a general rationale (\"Without branding, TypeScript sees both `subscriptionId` and `customerId` as plain strings\"); the actual design section lists no ID fields or branded types among the four variants"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": false,
+      "evidence": "\"The TODO at the bottom marks where state transition functions would go. You'll need to define which transitions are legal\" \u2014 explicitly deferred to the user"
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "\"A string-based status like `status: \"canceled\"` lets you accidentally access `renewal_date` on a canceled subscription. A discriminated union makes TypeScript prevent that at compile time.\""
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "Primary recommendation is \"Four separate types (one per state)\" joined in a union; no optional-field interface is proposed"
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "total": 7,
+    "pass_rate": 0.5714
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "82f963d241f9",
+  "expectations": [
+    {
+      "text": "Pushes back on the 'are you sure?' modal as the primary fix",
+      "passed": true,
+      "evidence": "\"an 'are you sure?' modal is the weakest device on the ladder, and it's the one that stops working fastest\""
+    },
+    {
+      "text": "Explains habituation or click-through blindness as why frequent dialogs stop working",
+      "passed": true,
+      "evidence": "\"users who see the same dialog on every delete develop click-through blindness within days\""
+    },
+    {
+      "text": "Recommends reversibility (soft delete with a retention window) as the strongest option",
+      "passed": true,
+      "evidence": "Table row 1: \"Soft-delete + trash | Workspace goes to a 'Deleted workspaces' area, restorable by the user for e.g. 30 days. | Control\""
+    },
+    {
+      "text": "Recommends grace-period undo as a strong low-friction option",
+      "passed": true,
+      "evidence": "Table row 2: \"Grace-period undo | Delete immediately, show 'Workspace *Acme Marketing* deleted. **Undo**' for ~10s. | Control\""
+    },
+    {
+      "text": "Recommends type-the-workspace-name confirmation for the irreversible case",
+      "passed": true,
+      "evidence": "Table row 3: \"Type-to-confirm | User must type the workspace name to proceed (GitHub repo delete).\""
+    },
+    {
+      "text": "If a dialog is retained, requires it to name the workspace and the scale of what is lost",
+      "passed": true,
+      "evidence": "\"1. **Name the object** \u2014 'Delete **Acme Marketing**?'\" and \"2. **State the scale** \u2014 'This workspace has 14 members and 2,310 documents.'\""
+    },
+    {
+      "text": "Notes that the server must enforce the deletion rules, not just the UI",
+      "passed": true,
+      "evidence": "\"the server must enforce permissions \u2014 hiding a button isn't authorization\""
+    },
+    {
+      "text": "Gives an explicit preference order rather than an undifferentiated list of ideas",
+      "passed": true,
+      "evidence": "\"**My recommendation: do #1.**\" with fallback guidance for if #1 can't happen this sprint"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

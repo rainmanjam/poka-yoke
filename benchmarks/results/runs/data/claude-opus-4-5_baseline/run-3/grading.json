@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "No, 'not empty' is insufficient. That test would not have caught this incident \u2014 you had rows, they just contained wrong values."
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "Your `COALESCE(x, 0)` converted a screaming failure (NULL = \"join found nothing\") into silent plausibility. The system's natural error signal got muted."
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": false,
+      "evidence": "Recommends only internal checks: tolerance bands, schema contracts, freshness/completeness checks. No external reconciliation (e.g., compare dashboard revenue against upstream system, Stripe, or actual business records)."
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": true,
+      "evidence": "Row count / sum assertions at transform time and Schema contract tests in CI that fail upstream deploy are both before-publication controls."
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "Schema contract tests \u2014 Register expected column names/types. Fail CI when upstream changes break contracts before they reach prod."
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "Add tolerance-band assertions and expected row count within range. Freshness + completeness checks not just 'rows exist'."
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": false,
+      "evidence": "No mention of the three-week silent failure, monitoring gap, or why alerting failed to catch this. Treats only the technical root cause (COALESCE masking), not the detection infrastructure failure."
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": true,
+      "evidence": "Your `COALESCE(x, 0)` converted a screaming failure into silent plausibility. The system's natural error signal got muted. (Implies people act on wrong numbers but catch loud failures.)"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

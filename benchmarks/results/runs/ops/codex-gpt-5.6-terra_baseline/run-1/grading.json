@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": true,
+      "evidence": "Confirms every running consumer is on that version\u2014workers, cron jobs, integrations, BI/ETL, admin scripts, and rollback images"
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "Deploy the code that no longer reads legacy_email... Drop the column in a later, separately reversible release"
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": false,
+      "evidence": "Says 'destructive schema migration' and implies needing a restore plan, but never states 'irreversible'"
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": false,
+      "evidence": "Mentions needing a 'tested database restore/rollback plan' but does not describe the rollback scenario or mechanics"
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "On a Friday, I'd merge the compatibility change, but schedule the actual column removal for a staffed window"
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": false,
+      "evidence": "No mention of CI gates or blocking mechanisms"
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "Don't deploy the column drop this afternoon as a single change... Green CI proves the tested code paths, not unversioned consumers or an emergency rollback path"
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "Deploy the code... Drop the column in a later, separately reversible release"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "total": 8,
+    "pass_rate": 0.625
+  }
+}

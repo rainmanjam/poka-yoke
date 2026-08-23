@@ -1,0 +1,10 @@
+{
+  "type": "object",
+  "properties": {
+    "answer": {
+      "type": "string",
+      "description": "The complete answer in full, inline. Never a file path, artifact link, or summary pointing elsewhere."
+    }
+  },
+  "required": ["answer"]
+}

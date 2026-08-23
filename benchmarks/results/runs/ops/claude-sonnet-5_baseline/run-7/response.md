@@ -1,0 +1,11 @@
+Short answer: separate "can I merge" from "can I deploy this afternoon" — they're not the same question, and for a `DROP COLUMN` change they shouldn't be bundled.
+
+**1. What's irreversible, and what restores it?** Dropping `legacy_email` is not reversible by revert — a `git revert` gets your code back but not the column's data. Restore path is only whatever backup/PITR you have, and it's likely to lose anything written between backup and drop. If you don't know your restore path off the top of your head, treat this as unrecoverable.
+
+**2. What breaks during the rollout window?** This is the real question CI can't answer: is there *anything* still reading `legacy_email` that isn't in this PR — a read replica, a BI/analytics job, another service, a cached query, a mobile client hitting an older API version? "Three places in the code updated, tests pass" only covers the app repo you're looking at, not downstream consumers.
+
+**3. Can the irreversible part ship separately?** Yes, and it should. The safe pattern is expand/contract: stop reading the column first (deploy, bake for a while, confirm nothing errors), *then* drop it in a separate, later deploy. If this PR both stops reading it and drops it in the same change, that's the thing to split — not because it's Friday, but because it collapses your ability to catch problem #2 before it's unrecoverable.
+
+**4. If it goes wrong, who's around and how fast is rollback?** This is where Friday afternoon actually matters — not superstition, just staffing. A botched column drop found at 5pm Friday means restoring from backup with a skeleton crew, not a two-minute revert.
+
+**Recommendation:** merge now, that's fine — it's reviewed and reversible in git. Hold the deploy of the drop itself until you've confirmed nothing outside this repo reads that column, and ideally until Monday morning when a bad outcome doesn't sit unattended over the weekend. If you already know nothing else touches it and rollback is fast, then the size of the diff doesn't matter — go ahead.

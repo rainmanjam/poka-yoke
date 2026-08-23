@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "018a96d90c3c",
+  "expectations": [
+    {
+      "text": "States that system prompt instructions are not a reliable control on model behaviour",
+      "passed": true,
+      "evidence": "The prompt can improve extraction quality, but it cannot guarantee money correctness or uniqueness"
+    },
+    {
+      "text": "Recommends structured output against a schema rather than extracting values from prose",
+      "passed": true,
+      "evidence": "Have the model return a structured *refund request*: `order_id`, `amount_minor` (integer cents), `currency`, `reason`"
+    },
+    {
+      "text": "Recommends validating the refund amount server-side against the actual order",
+      "passed": true,
+      "evidence": "Server-side, look up the order and validate: order exists and belongs to that customer, currency matches, amount is positive, within the paid/refundable balance"
+    },
+    {
+      "text": "Recommends a required idempotency key on the refund call",
+      "passed": true,
+      "evidence": "Require an idempotency key derived from the order plus the customer's actual refund request/event ID"
+    },
+    {
+      "text": "Recommends a database constraint or equivalent so a duplicate refund is rejected rather than merely avoided",
+      "passed": true,
+      "evidence": "persist it with a unique database constraint. A retry or duplicate bot call must return the original refund result, not issue another refund"
+    },
+    {
+      "text": "Recommends human confirmation or an approval gate for the irreversible refund action",
+      "passed": true,
+      "evidence": "Require explicit confirmation for ambiguous messages, unusual amounts, or refunds above a threshold. Show the resolved order and amount before execution"
+    },
+    {
+      "text": "Identifies prompt injection risk from the customer-supplied message reaching a privileged action",
+      "passed": false,
+      "evidence": "No explicit identification of prompt injection risk"
+    },
+    {
+      "text": "Recommends bounds or caps on the refund amount",
+      "passed": true,
+      "evidence": "within the paid/refundable balance; refunds above a threshold"
+    },
+    {
+      "text": "Does not primarily recommend changes to the prompt wording",
+      "passed": true,
+      "evidence": "Focuses on system architecture (structured requests, server validation, idempotency, confirmation gates) with no prompt rewording suggestions"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 9,
+    "pass_rate": 0.8889
+  }
+}

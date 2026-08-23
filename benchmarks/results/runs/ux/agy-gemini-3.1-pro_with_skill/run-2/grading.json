@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "82f963d241f9",
+  "expectations": [
+    {
+      "text": "Pushes back on the 'are you sure?' modal as the primary fix",
+      "passed": true,
+      "evidence": "\"An 'are you sure?' modal is highly susceptible to click-through blindness.\""
+    },
+    {
+      "text": "Explains habituation or click-through blindness as why frequent dialogs stop working",
+      "passed": true,
+      "evidence": "\"Users see these dialogs so often that they dismiss them reflexively without reading\""
+    },
+    {
+      "text": "Recommends reversibility (soft delete with a retention window) as the strongest option",
+      "passed": true,
+      "evidence": "\"implement a soft-delete (a trash/recycle bin with a retention period, e.g., 30 days)\" as option 1"
+    },
+    {
+      "text": "Recommends grace-period undo as a strong low-friction option",
+      "passed": true,
+      "evidence": "\"Grace-period undo (Control - Rung 1)...show a toast: 'Workspace deleted. [Undo]'\""
+    },
+    {
+      "text": "Recommends type-the-workspace-name confirmation for the irreversible case",
+      "passed": true,
+      "evidence": "\"Type-to-confirm (Warning - Rung 2)...require an action proportional to the blast radius. A modal that asks the user to type the exact workspace name\""
+    },
+    {
+      "text": "If a dialog is retained, requires it to name the workspace and the scale of what is lost",
+      "passed": true,
+      "evidence": "\"'Delete workspace 'production-api' permanently? This will destroy 1,204 files.' The button must be labeled 'Delete forever'\""
+    },
+    {
+      "text": "Notes that the server must enforce the deletion rules, not just the UI",
+      "passed": false,
+      "evidence": "Not mentioned"
+    },
+    {
+      "text": "Gives an explicit preference order rather than an undifferentiated list of ideas",
+      "passed": true,
+      "evidence": "Clear numbered list: 1. Make it reversible, 2. Grace-period undo, 3. Type-to-confirm, 4. Specific consequence dialog"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "assertions_sha": "bcf79cb43709",
+  "expectations": [
+    {
+      "text": "Flags the nested comments and attachments resolvers as unscoped by tenant",
+      "passed": true,
+      "evidence": "Finding #6: 'No Defensive Scoping' flags comments, attachments, and author resolvers"
+    },
+    {
+      "text": "Flags updateDocument for scoping on id alone without a tenant constraint",
+      "passed": true,
+      "evidence": "Finding #1: 'where: { id: documentId }, // \u2190 no tenantId'"
+    },
+    {
+      "text": "Flags exportWorkspace taking tenantId from the client-controlled request body",
+      "passed": true,
+      "evidence": "Finding #2: 'The tenant is client-controlled. An attacker sets tenantId to any value'"
+    },
+    {
+      "text": "Flags searchDocuments as returning rows across all tenants",
+      "passed": true,
+      "evidence": "Finding #4: 'Search returns documents from all tenants'"
+    },
+    {
+      "text": "Flags adminListDocuments as checking authentication but not authorization or tenant",
+      "passed": true,
+      "evidence": "Finding #5: 'Checks authentication but not authorization'"
+    },
+    {
+      "text": "Enumerates all the affected sites rather than fixing only the first one found",
+      "passed": true,
+      "evidence": "Lists 6 findings in detail with summary table covering all findings"
+    },
+    {
+      "text": "Recommends a structural device (scoped repository, row-level security, or equivalent) rather than only adding where-clauses site by site",
+      "passed": true,
+      "evidence": "Recommends 'Scoped repositories' and 'implement database RLS'; insight states 'Scoped repositories would make all five of these unwritable'"
+    },
+    {
+      "text": "Recommends a cross-tenant test that attempts tenant A operations against tenant B resources",
+      "passed": true,
+      "evidence": "'or write the cross-tenant isolation test that would have caught them'"
+    },
+    {
+      "text": "Identifies the raw interpolation of tenantId into $queryRawUnsafe as an injection hazard distinct in kind from the tenant-scoping bug",
+      "passed": true,
+      "evidence": "Finding #3 dedicated entirely to SQL injection: 'Even if Finding 2 were fixed, a malicious session value could still inject' \u2014 shows hazards are independent"
+    },
+    {
+      "text": "Does not conclude the main query paths being scoped means the service is safe",
+      "passed": true,
+      "evidence": "'Your assessment that the main query paths are scoped is correct... But 5 of the 8 exported functions bypass that scoping entirely'"
+    }
+  ],
+  "summary": {
+    "passed": 10,
+    "total": 10,
+    "pass_rate": 1.0
+  }
+}

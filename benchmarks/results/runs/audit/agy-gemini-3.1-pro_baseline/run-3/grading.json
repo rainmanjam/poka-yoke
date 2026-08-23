@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": true,
+      "evidence": "Adds validation check: if (fromAccount === toAccount) throw new Error('cannot transfer to same account')"
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": false,
+      "evidence": "Addresses 'Remove the recursive, blind retry' but does not explicitly mention idempotency keys or name this missing mechanism"
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": false,
+      "evidence": "Discusses error handling improvements but does not identify or flag a specific existing catch block returning null"
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": true,
+      "evidence": "States: 'Suffers from floating-point precision issues with currency' and fixes with Math.round"
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "States: 'Susceptible to raw SQL bad practices' and 'Remove `$executeRawUnsafe`. Use Prisma's `deleteMany`'"
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "In updateSubscription section: 'Add a default case to throw an error for unexpected statuses' and provides exhaustive switch code"
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": false,
+      "evidence": "Addresses webhook signature verification using stripe.webhooks.constructEvent but does not specifically flag JSON.parse on unvalidated input"
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "Names specific actions: 'Currently swallows errors and retries blindly', 'does not verify the Stripe signature', 'uses Prisma's increment/decrement operations'"
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": false,
+      "evidence": "Sections ordered as: transfer, chargeCustomer, applyDiscount, updateSubscription, purgeCanceledAccounts, handleWebhook. Cosmetic issues (applyDiscount precision) mixed throughout rather than ranked below critical issues"
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": true,
+      "evidence": "For each issue provides specific code: transaction wrapper, validation checks, Math.round(), stripe.webhooks.constructEvent(), exhaustive switch, Prisma.deleteMany()"
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": false,
+      "evidence": "Shows code blocks marked '#### [MODIFY] benchmarks/fixtures/payments.ts' indicating direct modification of the fixture file, not output artifacts"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 11,
+    "pass_rate": 0.5455
+  }
+}

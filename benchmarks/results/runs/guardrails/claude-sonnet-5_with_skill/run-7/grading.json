@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "4999b9f80438",
+  "expectations": [
+    {
+      "text": "States that a written agreement or reminder is not enforcement",
+      "passed": true,
+      "evidence": "CONTRIBUTING.md, a pinned Slack message, and two standup mentions are all the same rung: rung 0, training. They rely on someone remembering, and training decays"
+    },
+    {
+      "text": "Recommends a pre-commit hook to run the formatter automatically",
+      "passed": true,
+      "evidence": "Back it with a pre-commit hook for speed"
+    },
+    {
+      "text": "Notes that pre-commit is bypassable with --no-verify and must be backed by a CI check",
+      "passed": true,
+      "evidence": "--no-verify exists and people under deadline use it. The hook is for fast feedback; CI is the authority"
+    },
+    {
+      "text": "Recommends a type check as a required CI check",
+      "passed": true,
+      "evidence": "Run the formatter's `--check` mode and the type checker (`tsc --noEmit`, `mypy`, whatever your stack uses) as a required status check"
+    },
+    {
+      "text": "Recommends baselining or ratcheting rather than enforcing across the whole repo at once",
+      "passed": true,
+      "evidence": "If you turn strict formatting/typing on for the whole repo today, you'll get hundreds of failures on old code and the check gets reverted by Friday. Instead, gate only on changed files"
+    },
+    {
+      "text": "Notes that branch protection is what makes a CI check actually required",
+      "passed": true,
+      "evidence": "wired into branch protection so the PR literally cannot merge red"
+    },
+    {
+      "text": "Recommends the failure message tell the developer how to fix it",
+      "passed": true,
+      "evidence": "`error: 3 files not formatted` produces a confused dev and a workaround. `error: 3 files not formatted \u2014 run \\`black .\\` and recommit` produces a fix"
+    },
+    {
+      "text": "Does not primarily recommend rewriting CONTRIBUTING.md, more reminders, or more discipline",
+      "passed": true,
+      "evidence": "No suggestion for improving documentation or discipline"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "No \u2014 that test would have stayed green through the entire three-week incident."
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "COALESCE(revenue, 0) is doing the same thing as except: pass \u2014 it took a loud failure...and converted it into a quiet, plausible-looking wrong number."
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": true,
+      "evidence": "Reconciliation on the revenue table: sum(revenue) in the warehouse vs. the equivalent total pulled from the source system (or upstream table pre-join), daily, with a tolerance band."
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": false,
+      "evidence": "Discusses alert/fail for null rate checks but makes no mention of timing relative to publication or preventing bad data from reaching the dashboard."
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "this is a missing data contract on the upstream column. A rename should have broken the pipeline loudly at ingest, not degraded it silently three joins downstream."
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "replace it with an assertion on null rate for the join key *before* the coalesce"
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": false,
+      "evidence": "No mention of detection, monitoring, or alerting gaps that allowed the failure to persist unnoticed."
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": true,
+      "evidence": "it took a loud failure (null propagating, dashboard breaking visibly) and converted it into a quiet, plausible-looking wrong number. \u2014 implying silence escapes detection whereas loud failure would be caught."
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

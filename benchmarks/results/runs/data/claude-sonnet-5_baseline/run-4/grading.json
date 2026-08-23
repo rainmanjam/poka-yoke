@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "\"No, that test would not have caught this incident\""
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "\"Coalescing a join-miss to 0 converts 'I don't know this value' into 'this value is zero' \u2014 a normal, plausible-looking number. That's the design choice that let three weeks pass.\""
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": true,
+      "evidence": "\"Reconciliation check ('does it agree?'): sum of revenue in your table vs. a source-of-truth total (billing system, upstream table row sum)\""
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": false,
+      "evidence": "No mention of pre-publication assertion timing; discusses 'loud failure same-day' but not publication blocking"
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": false,
+      "evidence": "No data contract or schema check mentioned"
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "\"Null-rate assertion on the joined column, pre-coalesce\" and \"Volume check with a floor\""
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": false,
+      "evidence": "Discusses what would catch the incident but not the three-week gap as a systemic failure"
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": false,
+      "evidence": "Contrasts failure modes but does not explain the relative danger compared to loud failures"
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "total": 8,
+    "pass_rate": 0.5
+  }
+}

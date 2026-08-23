@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "9b2ce0ce8a1c",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Provides handler, schema additions, and migration SQL with all required fields"
+    },
+    {
+      "text": "Requires an idempotency key as a parameter rather than making it optional",
+      "passed": false,
+      "evidence": "RefundRequest interface contains only { orderId, amountCents, reason }; no idempotency key"
+    },
+    {
+      "text": "Backs idempotency with a database unique constraint, not application logic alone",
+      "passed": false,
+      "evidence": "No idempotency mechanism present in handler or schema"
+    },
+    {
+      "text": "Uses distinct types for the identifiers rather than bare strings for both order and refund ids",
+      "passed": false,
+      "evidence": "Both Order and Refund have id: String without branded or distinct types"
+    },
+    {
+      "text": "Handles money as integer minor units rather than a float",
+      "passed": true,
+      "evidence": "amountCents: Int; explicit validation Number.isInteger(amountCents); passed to Stripe as integer"
+    },
+    {
+      "text": "Validates the refund amount server-side against the order rather than trusting the caller",
+      "passed": true,
+      "evidence": "if (amountCents > order.totalCents) check rejects with 400"
+    },
+    {
+      "text": "Scopes the write so one tenant or user cannot refund another's order",
+      "passed": true,
+      "evidence": "if (order.tenantId !== tenantId) check enforces tenant isolation before Stripe or database operations"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": false,
+      "evidence": "Ends with Insight block discussing authorization, charge ID, and status tracking\u2014features listed, not misuses made impossible"
+    },
+    {
+      "text": "Names at least one thing it deliberately left possible and why",
+      "passed": false,
+      "evidence": "Insight discusses what the design does, not what it deliberately permits or why"
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "total": 9,
+    "pass_rate": 0.4444
+  }
+}

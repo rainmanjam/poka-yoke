@@ -1,0 +1,2 @@
+description = "Forms, destructive actions and flows users get wrong"
+prompt = "Load the poka-yoke `ux` skill from plugins/poka-yoke/skills/ux/SKILL.md and follow it for this request. Classify what happens when the mistake occurs and how the device notices, then propose the strongest device that prevents it and say which rung it reaches. If the request does not fit this mode, say so in one line and hand off to the mode that does."

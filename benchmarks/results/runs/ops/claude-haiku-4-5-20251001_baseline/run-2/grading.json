@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": false,
+      "evidence": "Discusses independent rollback but does not identify the core issue of old code running against new schema during deployment"
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": false,
+      "evidence": "No mention of expand/contract or staggered deployment pattern"
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": false,
+      "evidence": "Discusses migration tool rollbacks and manual SQL, but does not explicitly state the column drop is irreversible"
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": true,
+      "evidence": "Most migration tools make this straightforward (`down` migration), but confirm yours does. If rolling back requires manual SQL, document it"
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "The main Friday afternoon risk is the support window; response time is constrained"
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": false,
+      "evidence": "No mention of CI gates or automation"
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": false,
+      "evidence": "Yes, with one caveat...If all three check out, you're good\u2014this provides approval (conditional, but approval nonetheless)"
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": false,
+      "evidence": "Does not explicitly distinguish which parts of the change are reversible vs irreversible"
+    }
+  ],
+  "summary": {
+    "passed": 2,
+    "total": 8,
+    "pass_rate": 0.25
+  }
+}

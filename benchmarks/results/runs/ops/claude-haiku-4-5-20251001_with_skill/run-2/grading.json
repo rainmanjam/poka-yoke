@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": true,
+      "evidence": "old instances will fail trying to read a column that's now gone. That's a 500-rate spike during deploy"
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "Ship two PRs... This follows the expand/contract pattern"
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": true,
+      "evidence": "Dropping `legacy_email`. Restore path: a database restore from backup (1\u20134 hours depending on your setup)"
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": true,
+      "evidence": "you're either redeploying old code (which fails, because the column is gone), or restoring a backup (takes hours)"
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "restoring a backup (takes hours, needs people). That's the worst possible moment"
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": true,
+      "evidence": "The skill also notes there's a CI guard for this: a check that blocks any `DROP COLUMN` unless explicitly approved"
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "Don't merge this yet"
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "The first is instantly rollbackable\u2014just deploy the old code again... Your current PR is the \"contract\" step \u2014 the irreversible one"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

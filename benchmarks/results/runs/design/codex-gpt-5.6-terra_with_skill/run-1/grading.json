@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "export type Subscription = | (SubscriptionBase & { status: \"trialing\"; ... })"
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "canceled variant has only 'cancellation', trialing has only 'trialEndsAt', no field overlap across variants"
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": false,
+      "evidence": "Mentions 'Use exhaustive switches when consuming it' but provides no assertNever implementation or exhaustiveness check code"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": true,
+      "evidence": "export type SubscriptionId = Brand<string, \"SubscriptionId\">; export type UtcInstant = Brand<string, \"UtcInstant\">; export type RetryCount = Brand<number, \"RetryCount\">;"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": false,
+      "evidence": "Says 'keep status changes behind one transition function' but no implementation provided"
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "\"a canceled subscription cannot accidentally carry retry fields, and a trialing subscription cannot omit its trial end\""
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "\"Use a discriminated union, not one record full of optional fields\""
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "total": 7,
+    "pass_rate": 0.7143
+  }
+}

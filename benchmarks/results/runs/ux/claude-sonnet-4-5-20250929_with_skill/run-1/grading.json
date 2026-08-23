@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "82f963d241f9",
+  "expectations": [
+    {
+      "text": "Pushes back on the 'are you sure?' modal as the primary fix",
+      "passed": true,
+      "evidence": "\"**No \u2014 that's a rung 0 control.** It will fail the same way 'be careful' fails\""
+    },
+    {
+      "text": "Explains habituation or click-through blindness as why frequent dialogs stop working",
+      "passed": true,
+      "evidence": "\"people develop click-through blindness and press 'Yes' reflexively... A modal you see 50 times stops being a decision point.\""
+    },
+    {
+      "text": "Recommends reversibility (soft delete with a retention window) as the strongest option",
+      "passed": true,
+      "evidence": "\"1. **Make it reversible** (rung 1...) Soft-delete with a trash system: ... 30-day retention before permanent deletion\" \u2014 listed first as \"the real answer\""
+    },
+    {
+      "text": "Recommends grace-period undo as a strong low-friction option",
+      "passed": true,
+      "evidence": "\"2. **Grace-period undo** (rung 1-2) - Delete immediately, show toast: 'Workspace deleted. **Undo**' (5-10 seconds)\""
+    },
+    {
+      "text": "Recommends type-the-workspace-name confirmation for the irreversible case",
+      "passed": true,
+      "evidence": "\"3. **Type-to-confirm** (rung 2, only if truly irreversible) - 'Type the workspace name to confirm deletion'\""
+    },
+    {
+      "text": "If a dialog is retained, requires it to name the workspace and the scale of what is lost",
+      "passed": true,
+      "evidence": "\"Delete workspace 'Acme Corp'? This will permanently remove 1,247 files, 8 projects, and 3 team members.\""
+    },
+    {
+      "text": "Notes that the server must enforce the deletion rules, not just the UI",
+      "passed": false,
+      "evidence": "No mention of server-side/backend enforcement; all controls described are UI-level (modal, toast, trash) plus a 'background job purges' remark, which is about purge timing, not enforcement of rules against non-UI clients."
+    },
+    {
+      "text": "Gives an explicit preference order rather than an undifferentiated list of ideas",
+      "passed": true,
+      "evidence": "\"## Better approaches (preference order)\" with numbered 1\u20134 and \"This is the real answer\""
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

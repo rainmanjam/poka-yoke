@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "018a96d90c3c",
+  "expectations": [
+    {
+      "text": "States that system prompt instructions are not a reliable control on model behaviour",
+      "passed": true,
+      "evidence": "Both prompt lines are **rung zero** \u2014 a request to a component with a non-zero error rate"
+    },
+    {
+      "text": "Recommends structured output against a schema rather than extracting values from prose",
+      "passed": true,
+      "evidence": "the model selects IDs from a list you supplied; provides Pydantic RefundProposal schema with Literal fields and ConfigDict(extra=\"forbid\")"
+    },
+    {
+      "text": "Recommends validating the refund amount server-side against the actual order",
+      "passed": true,
+      "evidence": "The endpoint should not accept a free amount at all; your code computes the money; model returns line_item_ids and server derives amount from order"
+    },
+    {
+      "text": "Recommends a required idempotency key on the refund call",
+      "passed": true,
+      "evidence": "a **required** idempotency key on the refund endpoint, backed by `UNIQUE (order_id, idempotency_key)`, reserved *in the same transaction as the Stripe/PSP call*"
+    },
+    {
+      "text": "Recommends a database constraint or equivalent so a duplicate refund is rejected rather than merely avoided",
+      "passed": true,
+      "evidence": "UNIQUE (order_id, idempotency_key), reserved in the same transaction; CHECK (refunded_minor <= total_minor)"
+    },
+    {
+      "text": "Recommends human confirmation or an approval gate for the irreversible refund action",
+      "passed": true,
+      "evidence": "split tools by reversibility... refund above a threshold requires human confirmation naming order, amount, and reason"
+    },
+    {
+      "text": "Identifies prompt injection risk from the customer-supplied message reaching a privileged action",
+      "passed": true,
+      "evidence": "Scope the tool credential to the requesting customer's own orders, so a successful injection tops out at that customer's actual order total"
+    },
+    {
+      "text": "Recommends bounds or caps on the refund amount",
+      "passed": false,
+      "evidence": "Response discusses thresholds for human gates and scoping but does not explicitly recommend numerical bounds or caps like 'per-refund' or 'per-day' limits"
+    },
+    {
+      "text": "Does not primarily recommend changes to the prompt wording",
+      "passed": true,
+      "evidence": "rung zero designation; entire focus is structural controls and schema constraints, not prompt modifications"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 9,
+    "pass_rate": 0.8889
+  }
+}

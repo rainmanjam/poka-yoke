@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "82f963d241f9",
+  "expectations": [
+    {
+      "text": "Pushes back on the 'are you sure?' modal as the primary fix",
+      "passed": true,
+      "evidence": "\"Short answer: **no** \u2014 an 'are you sure?' modal is the weakest device on the ladder\""
+    },
+    {
+      "text": "Explains habituation or click-through blindness as why frequent dialogs stop working",
+      "passed": true,
+      "evidence": "\"A dialog they see every time becomes click-through blindness \u2014 they'll press 'Confirm' with the same reflex\""
+    },
+    {
+      "text": "Recommends reversibility (soft delete with a retention window) as the strongest option",
+      "passed": true,
+      "evidence": "Table row 1: \"Soft-delete + trash with retention (e.g. 30 days; 'Restore' in the UI) | Control\""
+    },
+    {
+      "text": "Recommends grace-period undo as a strong low-friction option",
+      "passed": true,
+      "evidence": "Table row 2: \"Grace-period undo \u2014 delete immediately, toast 'Workspace *Acme Prod* deleted \u00b7 **Undo**' for ~8s\""
+    },
+    {
+      "text": "Recommends type-the-workspace-name confirmation for the irreversible case",
+      "passed": true,
+      "evidence": "Table row 3: \"Type-to-confirm \u2014 only if a workspace is genuinely irreversible, high-blast-radius (GitHub repo deletion)\""
+    },
+    {
+      "text": "If a dialog is retained, requires it to name the workspace and the scale of what is lost",
+      "passed": true,
+      "evidence": "\"'Delete **Acme Prod**? 14 members, 2,310 documents. Recoverable for 30 days.'\""
+    },
+    {
+      "text": "Notes that the server must enforce the deletion rules, not just the UI",
+      "passed": true,
+      "evidence": "\"make sure the endpoint refuses non-owners (that's the `authz` half)\""
+    },
+    {
+      "text": "Gives an explicit preference order rather than an undifferentiated list of ideas",
+      "passed": true,
+      "evidence": "\"My recommendation: **do #1 (or #2 if #1 is expensive), and pair it with #4's wording.**\""
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "1af6b213502f",
+  "expectations": [
+    {
+      "text": "States plainly that the recent-charge lookup is not sufficient",
+      "passed": true,
+      "evidence": "The heuristic check you added (looking for a recent charge of the same amount) is **not enough** and is fundamentally unsafe"
+    },
+    {
+      "text": "Identifies the lookup as a check-then-act race rather than a device",
+      "passed": false,
+      "evidence": "Describes the race condition but never names it 'check-then-act race'; only says 'Race Conditions: If the queue redelivers the message rapidly, two worker instances could run simultaneously'"
+    },
+    {
+      "text": "Recommends a required idempotency key on the charge path",
+      "passed": true,
+      "evidence": "The industry-standard solution for this exact problem is to use **Idempotency Keys**"
+    },
+    {
+      "text": "Recommends a database unique constraint backing the idempotency key",
+      "passed": false,
+      "evidence": "No mention of database unique constraints; discusses idempotency at Stripe level only"
+    },
+    {
+      "text": "Separates the defect from the mistake from the underlying system hazard",
+      "passed": false,
+      "evidence": "Describes the problem but does not explicitly distinguish between the defect, the mistake, and the underlying hazard as three separate layers"
+    },
+    {
+      "text": "Locates the hazard as a system property rather than as a worker bug or human error",
+      "passed": true,
+      "evidence": "If the queue redelivers the message rapidly, two worker instances could run simultaneously\u2014frames as system behavior"
+    },
+    {
+      "text": "Sweeps for other non-idempotent side effects reachable from a retry",
+      "passed": true,
+      "evidence": "If your worker updates local database state after the Stripe charge... we must ensure we don't accidentally send the user two receipts or fulfill the order twice"
+    },
+    {
+      "text": "Treats 'second time this happened' as evidence for pushing to a Control-rung device",
+      "passed": false,
+      "evidence": "Does not acknowledge or reference the user's statement that this is the second occurrence"
+    },
+    {
+      "text": "Attributes cause to the system, not to any person",
+      "passed": true,
+      "evidence": "Attributes to queue redelivery and concurrent workers as system properties, not to worker implementation or personnel error"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "total": 9,
+    "pass_rate": 0.5556
+  }
+}

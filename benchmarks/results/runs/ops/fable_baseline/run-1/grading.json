@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": true,
+      "evidence": "If the migration runs before (or during) the rolling deploy, old app instances still reading `legacy_email` crash on every query touching that table"
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "This afternoon (safe): merge and deploy *only* the code change... Next week, mid-week, morning: run the `DROP COLUMN` as its own migration"
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": true,
+      "evidence": "It's irreversible. `DROP COLUMN` destroys data. A rollback of the deploy does not bring the column back. Your rollback path is \"restore from backup\""
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": true,
+      "evidence": "Your rollback path is \"restore from backup, which is a Friday-night activity nobody wants\""
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "which is a Friday-night activity nobody wants"
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": false,
+      "evidence": "No CI gate automation recommended; discusses manual checks and ORM-level protections instead"
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "Short answer: don't merge-and-deploy this as one step this afternoon. The \"small change\" framing is the hazard"
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "Separates code deployment (this afternoon, safe) from DROP COLUMN (next week)"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

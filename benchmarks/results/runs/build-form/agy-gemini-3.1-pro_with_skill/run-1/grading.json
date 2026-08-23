@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "31eb11dca414",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Full component with type definitions, mutation signatures, state management, and JSX rendering"
+    },
+    {
+      "text": "Produces actual working component code rather than only a list of recommendations",
+      "passed": true,
+      "evidence": "Exports DocumentBulkActions React component with hooks and complete implementation"
+    },
+    {
+      "text": "Makes the destructive action recoverable rather than relying on a confirmation dialog alone",
+      "passed": false,
+      "evidence": "Delete uses only type-to-confirm dialog; no recovery mechanism like soft-delete, grace period, or undo. Archive mentions 'In a real implementation: trigger a \"Documents archived. [Undo]\" toast here' but this is only for archive, not the destructive delete action"
+    },
+    {
+      "text": "Shows the count of affected items before the action is taken",
+      "passed": true,
+      "evidence": "selectedCount displayed in bulk actions bar: 'span className=\"font-semibold text-gray-900\"> {selectedCount} document{selectedCount === 1 ? '' : 's'} selected'"
+    },
+    {
+      "text": "Distinguishes select-all-on-page from select-all-matching rather than conflating them",
+      "passed": true,
+      "evidence": "Explicit isAllOnPageSelected vs selectAllMatching logic; shows 'Select all {totalMatchingCount} matching documents' button conditionally"
+    },
+    {
+      "text": "Separates the destructive action from the benign one visually or spatially",
+      "passed": true,
+      "evidence": "Archive button is gray/white with border; Delete button is red-600 with red text. Separated by border divider."
+    },
+    {
+      "text": "Does not make the destructive action the default focus or primary button",
+      "passed": true,
+      "evidence": "Delete modal input receives focus via placeholder, not the delete button. Archive appears first in button order."
+    },
+    {
+      "text": "Notes that the server must enforce the rules, not just the UI",
+      "passed": false,
+      "evidence": "Device notes section does not mention server-side enforcement requirements"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Device notes explicitly state: 'Scope escalation and double submission are impossible' and 'Accidental deletion requires work'"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 9,
+    "pass_rate": 0.7778
+  }
+}

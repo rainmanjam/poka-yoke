@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "`type Subscription = | (BaseSubscription & { status: 'trialing'; ... })` with switch on `sub.status`"
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "The 'canceled' arm has only `canceledAt` and `cancellation`; `trialEndDate` appears solely in the 'trialing' arm"
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": true,
+      "evidence": "`default: const _exhaustive: never = sub; return _exhaustive;`"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": false,
+      "evidence": "IDs are bare strings: `id: string; customerId: string; planId: string`. The only 'branded' comment is on `RetryCount = 0 | 1 | 2 | 3`, which is not an ID type"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": false,
+      "evidence": "Only `handleSubscription` is provided, which formats a display string; no transition function, allowed-transition map, or other constraint on state changes"
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "\"preventing access to `trialEndDate` on non-trialing subscriptions\"; \"Prevents 'voluntary cancellation due to payment failure' contradictions\"; \"Can't exceed 3 retries\""
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "No optional (`?`) fields anywhere; the primary recommendation is the per-state discriminated union"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "total": 7,
+    "pass_rate": 0.7143
+  }
+}

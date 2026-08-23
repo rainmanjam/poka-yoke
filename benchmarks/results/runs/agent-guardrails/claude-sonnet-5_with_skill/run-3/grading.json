@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "5b62450c21d2",
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "'Never do X' in CLAUDE.md is an instruction, not a device... caps and repetition don't change that, because the mechanism that's failing (attention over prose) is the same one you're doubling down on."
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "The fix is a PreToolUse deny that runs before the tool executes, not text the model has to remember to obey."
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": true,
+      "evidence": "Provides full JSON with permissions.deny array including Bash patterns and Edit/Write paths"
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": true,
+      "evidence": "Those need a PreToolUse hook on Bash that regex-checks the command string for push.*(force|-f\\b|\\+[\\w/-]+:)"
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": true,
+      "evidence": "Make the message redirect it... [provides two concrete messages showing what to do instead]"
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": true,
+      "evidence": "Before trusting it, actually run the blocked action and confirm you get the deny + message, then run a legitimate neighboring action and confirm it still works. An unverified hook is worse than none."
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": true,
+      "evidence": ".claude/settings.json, committed to the repo (not settings.local.json, which only protects your machine)"
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": true,
+      "evidence": "caps and repetition don't change that, because the mechanism that's failing (attention over prose) is the same one you're doubling down on... exactly the failure signature of something that usually gets read and occasionally doesn't"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

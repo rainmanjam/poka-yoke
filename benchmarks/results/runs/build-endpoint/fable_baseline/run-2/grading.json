@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "9b2ce0ce8a1c",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Includes schema additions, migration SQL, and complete handler with transaction-based reservation and Stripe integration"
+    },
+    {
+      "text": "Requires an idempotency key as a parameter rather than making it optional",
+      "passed": false,
+      "evidence": "Handler does not request any idempotency key from the client; instead generates one from row ID: `{ idempotencyKey: \\`refund:${pending.row.id}\\` }`"
+    },
+    {
+      "text": "Backs idempotency with a database unique constraint, not application logic alone",
+      "passed": true,
+      "evidence": "Idempotency is backed by the row ID's uniqueness via `@id @default(uuid())`, which is a DB constraint; Stripe call uses this as the idempotency key"
+    },
+    {
+      "text": "Uses distinct types for the identifiers rather than bare strings for both order and refund ids",
+      "passed": false,
+      "evidence": "Order id is `String @id @default(uuid())` and Refund id is `String @id @default(uuid())`; both bare strings in TypeScript"
+    },
+    {
+      "text": "Handles money as integer minor units rather than a float",
+      "passed": true,
+      "evidence": "`z.number().int().positive()` validation and `amountCents Int` in schema"
+    },
+    {
+      "text": "Validates the refund amount server-side against the order rather than trusting the caller",
+      "passed": true,
+      "evidence": "Checks `if (amountCents > remaining) { throw new RefundError(...) }` after calculating remaining balance"
+    },
+    {
+      "text": "Scopes the write so one tenant or user cannot refund another's order",
+      "passed": true,
+      "evidence": "Raw query `WHERE id = ${orderId} AND \"tenantId\" = ${tenantId}`, composite FK `FOREIGN KEY (\"orderId\", \"tenantId\") REFERENCES \"Order\"(\"id\", \"tenantId\")`"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": false,
+      "evidence": "Recap lists \"Devices included\" and \"Not included\" without explicitly naming which misuses are made impossible by the design"
+    },
+    {
+      "text": "Names at least one thing it deliberately left possible and why",
+      "passed": false,
+      "evidence": "\"Not included: a reconciliation job for rows stuck in \\`pending\\`, and tests \u2014 both worth adding next\" names what's omitted but provides no rationale for why it's deliberately left possible"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "total": 9,
+    "pass_rate": 0.5556
+  }
+}

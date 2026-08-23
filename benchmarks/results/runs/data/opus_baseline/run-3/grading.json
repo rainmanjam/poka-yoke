@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "\"Your new test would have been green every single day of the outage.\""
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "\"COALESCE(revenue, 0) converts 'we don't know' into 'we know, it's zero' \u2014 the data equivalent of except: pass. Zero is a plausible business value, so it can never look wrong.\""
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": true,
+      "evidence": "\"Warehouse total vs. billing/Stripe source total. This is the one.\""
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": true,
+      "evidence": "\"Assert between load and publish, not after. Build to staging \u2192 run assertions \u2192 promote on pass.\""
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "\"A contract at the ingest boundary \u2014 assert expected columns exist before the model runs \u2014 turns a rename from three silent weeks into a red build in one run, attributable to the upstream team.\""
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "\"null rate on revenue jumping 0% \u2192 100% on day one, yes... assert null_rate = 0 on the joined key.\""
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": false,
+      "evidence": "Uses the three-week period as evidence in the table but does not explicitly treat it as a detection gap worth its own fix; frames the insight around testing methodology instead"
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": true,
+      "evidence": "\"COALESCE(revenue, 0) converts 'we don't know'... Zero is a plausible business value, so it can never look wrong.\""
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

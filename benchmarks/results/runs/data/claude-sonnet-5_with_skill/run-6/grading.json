@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "No \u2014 it's rung 3 (Detection) at best, and it doesn't even detect the actual failure mode... Your test checks a property (`row_count > 0`) that this exact incident left untouched."
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "the `COALESCE` is doing the same thing `except: pass` does in application code \u2014 converting a detectable error (unmatched join key) into a plausible-looking success."
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": true,
+      "evidence": "Reconciliation check on the revenue table \u2014 warehouse total vs. source-system total, run between load and publish so it can block the pipeline."
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": true,
+      "evidence": "run between load and publish so it can block the pipeline, not just alert after."
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "Data contract on the upstream table \u2014 validate expected schema on ingest; treat a missing/renamed column as a hard failure or quarantine"
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "Null-rate assertion on the join key post-join \u2014 if the column you're joining on suddenly has a null-match rate spike"
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": false,
+      "evidence": "Response offers to document in a retro but does not explicitly treat three weeks of non-detection as a separate detection gap requiring its own fix."
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": true,
+      "evidence": "An emptiness check catches total pipeline death, not degraded joins \u2014 a different, much narrower hazard."
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

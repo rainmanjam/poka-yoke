@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128"
+     role="img" aria-labelledby="ts ds">
+  <title id="ts">poka-yoke</title>
+  <desc id="ds">The poka-yoke mark at small sizes: three lamps, green above amber above red.</desc>
+  <!--
+    Optical sizing. The full mark's housing and foot occupy about a fifth of its height and
+    stop resolving below 32px, where they become a grey smear under the lamps. Here they are
+    dropped and the lamps grown to fill the frame, so the three bands stay separate at 16px, which is the only thing a favicon has to do. Wider than the tower it stands in for,
+    deliberately: a narrow pill leaves dead space either side and reads as a sliver at 16px.
+  -->
+  <rect width="128" height="128" rx="28" fill="#141922"/>
+  <defs>
+    <clipPath id="ls"><rect x="26" y="16" width="76" height="96" rx="20"/></clipPath>
+  </defs>
+  <g clip-path="url(#ls)">
+    <rect x="26" y="16"  width="76" height="33" fill="#34d399"/>
+    <rect x="26" y="49"  width="76" height="32" fill="#fbbf24"/>
+    <rect x="26" y="81"  width="76" height="31" fill="#ff4d4d"/>
+  </g>
+</svg>

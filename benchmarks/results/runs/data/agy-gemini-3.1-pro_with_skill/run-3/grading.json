@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "the current mitigation\u2014a test ensuring the table is not empty\u2014is insufficient because it only checks if data exists, not if the values are correct"
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "The `COALESCE(col, 0)` masked the failure, turning nulls into plausible zeroes."
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": true,
+      "evidence": "A daily check that compares the total revenue in the warehouse against the source of truth (e.g., Stripe, billing DB)... This is the single most important device for financial data."
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": true,
+      "evidence": "Tests must run *before* the data reaches the dashboard. Write to a staging table... only promote/swap to the production table if they pass."
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "If a column is renamed, the pipeline should fail *before* the join even runs, explicitly stating that the contract was broken."
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "add a null-rate assertion on the raw column *before* the coalesce... Assert both a floor and a ceiling based on historical seasonality"
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": false,
+      "evidence": "No mention of detection/monitoring gaps that allowed three weeks of silence."
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": false,
+      "evidence": "Gestures at 'shift from always produce a number to fail loudly' but does not explain why silent wrongness is inherently more dangerous."
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "\"No, not enough \u2014 and it's actually checking the wrong thing\""
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "\"nulls got `COALESCE`d to 0, and the pipeline kept producing a full, plausible-looking table\""
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": true,
+      "evidence": "\"Add a **reconciliation check**: sum of this table's revenue vs. the upstream source table's revenue for the same window, within tolerance\""
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": true,
+      "evidence": "\"Make both checks **block publication** (run between load and publish, staging \u2192 test \u2192 promote), not run-after-and-email\""
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "\"Also worth an upstream data contract...validate-on-ingest against a declared schema so a rename becomes a loud quarantine event\""
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "\"You need a floor tied to expectation (e.g. row count within X% of the same weekday last month)\" (volume) and \"Add a **null-rate assertion** on the joined column(s)\""
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": false,
+      "evidence": "Discusses detecting the failure but not the three-week gap as its own systemic issue"
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": true,
+      "evidence": "\"That's the trap this skill calls out explicitly \u2014 a pipeline that succeeds while wrong is the dangerous case, not the one that fails loudly\""
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

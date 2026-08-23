@@ -1,0 +1,7 @@
+Short answer: not really — a confirmation modal is the weakest device on the ladder for this. Users who delete a workspace do it rarely, but *every* other workspace action might pass near a delete button, and once someone's seen "Are you sure?" a few times they click through it reflexively — so it adds friction to nobody's benefit and doesn't actually stop the panic-emails.
+
+The stronger fix (and what we landed on earlier today looking at this same flow): make deletion **reversible** instead of gated. Soft-delete into a 30-day trash + an "Undo" toast right after the delete action. That's zero friction on the accidental-click path (nothing to click through) and it fully covers the actual failure mode — support tickets are about un-deleting, not about being warned in advance.
+
+If you still want a modal on top of soft-delete for the truly final action (permanent purge from trash), that's the right place for it — type-to-confirm with the workspace name, since that's the one step that's actually irreversible.
+
+Three things block turning this into a real spec, same as before: what happens to billing/seats during the 30-day grace window, whether the workspace slug gets reused immediately or stays reserved, and who's allowed to restore (any admin, or only whoever deleted it). Want to work through those, or start with just the modal as a stopgap while soft-delete gets scoped separately?

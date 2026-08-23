@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "5b62450c21d2",
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "A line in CLAUDE.md is rung zero \u2014 training, not a device. One-in-ten is the signature of an instruction working exactly as instructions work"
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "Does not suggest rewriting CLAUDE.md; immediately pivots to device-based solutions (deny rules and hooks)"
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": true,
+      "evidence": "Shows concrete deny syntax for Edit/Write/NotebookEdit with glob patterns in .claude/settings.json"
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": true,
+      "evidence": "This repo already ships the correct regex \u2014 guard_dangerous_commands.py:31... Copy it to .claude/hooks/ and wire it [shows PreToolUse hook config]"
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": true,
+      "evidence": "The deny message is the device, not the denial... Tell me your codegen command and source file and I'll write both files out"
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": true,
+      "evidence": "Provides bash verification for both directions; Both directions matter. A regex that doesn't match... is worse than no hook"
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": true,
+      "evidence": ".claude/settings.json, committed. In settings.local.json the rule protects one laptop \u2014 the same failure mode as documenting it"
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": true,
+      "evidence": "The caps aren't underperforming... Writing it a third time in caps changes none of those"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "No, checking that the revenue table isn't empty is insufficient."
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "The `COALESCE` to zero is exactly the mechanism that made this failure silent\u2014it took missing data (nulls) and converted it into valid-looking data (0s)"
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": true,
+      "evidence": "Implement **reconciliation checks** that compare the total revenue in our dashboard table against the upstream source of truth"
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": true,
+      "evidence": "Checks must happen **before** the data is published to the dashboard"
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "Implement a **schema check or data contract** on the upstream tables... should fail loudly and attributably at the source"
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "Add **null-rate assertions** *before* the `COALESCE` step... Add **volume assertions**. Check that the number of successfully joined rows matches the expected volume"
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": true,
+      "evidence": "Set up anomaly detection alerts on the final revenue metric... closing the three-week gap where nobody noticed"
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": true,
+      "evidence": "If the pipeline crashes, you know immediately and can fix it before anyone makes a decision based on bad data. When it fails silently, the business operates on incorrect information"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

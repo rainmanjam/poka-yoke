@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "82f963d241f9",
+  "expectations": [
+    {
+      "text": "Pushes back on the 'are you sure?' modal as the primary fix",
+      "passed": true,
+      "evidence": "\"I strongly advise **against** using a generic 'are you sure?' modal as the primary fix\""
+    },
+    {
+      "text": "Explains habituation or click-through blindness as why frequent dialogs stop working",
+      "passed": true,
+      "evidence": "\"Users quickly develop habituation or 'click-through blindness' with frequent confirmation dialogs. They click 'Confirm' with the same reflex as 'OK'\""
+    },
+    {
+      "text": "Recommends reversibility (soft delete with a retention window) as the strongest option",
+      "passed": true,
+      "evidence": "\"1. **Make it Reversible (Strongest Option)**: Implement a soft delete with a retention window (e.g., a 30-day trash/recycle bin)\""
+    },
+    {
+      "text": "Recommends grace-period undo as a strong low-friction option",
+      "passed": true,
+      "evidence": "\"2. **Grace-Period Undo**: Perform the deletion immediately but show a 'Workspace deleted. [Undo]' toast for several seconds\""
+    },
+    {
+      "text": "Recommends type-the-workspace-name confirmation for the irreversible case",
+      "passed": true,
+      "evidence": "\"3. **Type-to-Confirm (For Irreversible Actions)**: If the deletion must remain irreversible, require the user to type the exact workspace name\""
+    },
+    {
+      "text": "If a dialog is retained, requires it to name the workspace and the scale of what is lost",
+      "passed": true,
+      "evidence": "\"it must state the exact workspace name and the scale of what is lost (e.g., 'Delete 'Production' and its 42 projects permanently?')\""
+    },
+    {
+      "text": "Notes that the server must enforce the deletion rules, not just the UI",
+      "passed": true,
+      "evidence": "\"The server must enforce the deletion rules, not just the UI. Hiding or gating the button in the UI is not enough; the backend API must be the ultimate authority\""
+    },
+    {
+      "text": "Gives an explicit preference order rather than an undifferentiated list of ideas",
+      "passed": true,
+      "evidence": "\"I recommend we follow this explicit preference order for destructive actions (strongest first):\" with numbered 1-4"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

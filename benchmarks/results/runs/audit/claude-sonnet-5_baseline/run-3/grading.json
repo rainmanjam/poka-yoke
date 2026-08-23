@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": false,
+      "evidence": "Not mentioned in main findings; Set Aside references adjacent boolean params but not string param swap risk"
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "Finding #2: 'matches the 340-customer double-charge pattern already on record. Silent: the retried call returns a normal-looking charge object'"
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": true,
+      "evidence": "Finding #2 secondary: 'on non-retry failure it swallows the exception and returns `null` (line 59)'"
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": false,
+      "evidence": "Not mentioned in any finding"
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "Finding #4: 'the raw `DELETE` re-runs its own filter instead of deleting the specific IDs already fetched into `doomed`' with device: 'delete by the exact ID set already fetched (`WHERE id IN (...)`)'"
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "Finding #5: 'the DB row updates to the new status, but neither `enableFeatures` nor `disableFeatures` runs'"
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": false,
+      "evidence": "Not mentioned in Set Aside (only unused timeout variable referenced)"
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "Findings frame as actions: 'POST any JSON body', '`updateSubscription(id, \"past_due\")`', 'call with `percentOff > 100`'"
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "Webhook (money), double charge (money), transfer (money), purgeCanceledAccounts (data loss) ranked first; cosmetic items in Set Aside"
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": true,
+      "evidence": "Each finding has code: `stripe.webhooks.constructEvent()`, idempotencyKey, transaction with `WHERE balance >= amount`, required parameter, union type"
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "No files written; conversation-only response"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 11,
+    "pass_rate": 0.7273
+  }
+}

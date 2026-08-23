@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "5b62450c21d2",
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "CLAUDE.md is prose, and prose is rung zero \u2014 it's training, not enforcement, and training degrades under long contexts, compaction, and subagents that never even read the file."
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "There's no `.claude/settings.json` in this repo at all, so right now nothing actually *stops* either action \u2014 Claude just usually remembers not to."
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": true,
+      "evidence": "Shows deny rules: 'Bash(git push --force:*)', 'Bash(git push -f:*)', 'Edit(./src/generated/**)', 'Write(./src/generated/**)'"
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": true,
+      "evidence": "neither of your two rules actually needs a `PreToolUse` hook; you got lucky in that both are expressible as static patterns... If you ever wanted `--force-with-lease` allowed but bare `--force` blocked... that's when you'd need a hook"
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": true,
+      "evidence": "Consider adding a companion message so the agent doesn't just try `git push -f` as a workaround... If you need to fix a mistaken push, ask the user to do it, or use `--force-with-lease`"
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": true,
+      "evidence": "Verify it actually fires \u2014 don't skip this: run `git push --force` and an edit to a file under `src/generated/` and confirm both get denied... An unverified deny rule is worse than none"
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": true,
+      "evidence": "`.claude/settings.json`, committed to the repo \u2014 not `settings.local.json`. A rule that only exists on your machine is the same failure mode as a CLAUDE.md line"
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": false,
+      "evidence": "States 'The ~1-in-10 failure rate isn't a wording problem' and mentions training degrades, but does not explicitly explain why caps/repetition specifically fail as a solution"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "31eb11dca414",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Provides types.ts, api/documents.ts, useBulkSelection.ts, useDocumentMutations.ts, ConfirmDeleteDialog.tsx, Toast.tsx, BulkActionsBar.tsx, DocumentsTable.tsx"
+    },
+    {
+      "text": "Produces actual working component code rather than only a list of recommendations",
+      "passed": true,
+      "evidence": "Full React/TypeScript implementation with hooks, grace period timer, state management, and all components"
+    },
+    {
+      "text": "Makes the destructive action recoverable rather than relying on a confirmation dialog alone",
+      "passed": true,
+      "evidence": "Implements DELETE_GRACE_MS = 6000; mutation held behind timer; toast offers 'Undo' which calls cancelDelete to clear timeout: 'Nothing destructive happens until the grace window elapses'"
+    },
+    {
+      "text": "Shows the count of affected items before the action is taken",
+      "passed": true,
+      "evidence": "{selectedCount.toLocaleString()} document{selectedCount === 1 ? '' : 's'} selected in bar; Delete dialog shows 'Delete {count.toLocaleString()} document{count === 1 ? '' : 's'}?' plus sampleTitles"
+    },
+    {
+      "text": "Distinguishes select-all-on-page from select-all-matching rather than conflating them",
+      "passed": true,
+      "evidence": "Separate boolean selectAllMatching; showSelectAllBanner logic: '!selectAllMatching && allOnPageSelected && totalMatching > pageIds.length'"
+    },
+    {
+      "text": "Separates the destructive action from the benign one visually or spatially",
+      "passed": true,
+      "evidence": "Archive and Delete buttons styled separately with distinct colors. Comment: 'Delete is spatially and visually separated from Archive so a mis-click can't slide from a benign bulk action into an irreversible one'"
+    },
+    {
+      "text": "Does not make the destructive action the default focus or primary button",
+      "passed": true,
+      "evidence": "Delete button is secondary style (border button), not primary or focused"
+    },
+    {
+      "text": "Notes that the server must enforce the rules, not just the UI",
+      "passed": false,
+      "evidence": "No explicit statement that server must enforce rules. Mentions backend soft-delete as 'what should really be a backend...device' but does not state server enforcement responsibility."
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Closing note explicitly lists 'Made impossible (Control):' with specific examples (ambiguous selection, delete firing before grace period, header checkbox implying more than visible page, delete button clickable before phrase matches), then 'Left possible on purpose:' with explicit examples"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 9,
+    "pass_rate": 0.8889
+  }
+}

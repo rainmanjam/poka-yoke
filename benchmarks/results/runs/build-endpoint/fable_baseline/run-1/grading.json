@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "9b2ce0ce8a1c",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Includes Prisma schema, migration SQL, and handler TypeScript with full logic for reservation, Stripe call, and persistence"
+    },
+    {
+      "text": "Requires an idempotency key as a parameter rather than making it optional",
+      "passed": false,
+      "evidence": "Code reads `const idempotencyKey = req.header(\"Idempotency-Key\") || undefined;` and passes `idempotencyKey: idempotencyKey ?? null`, making it optional"
+    },
+    {
+      "text": "Backs idempotency with a database unique constraint, not application logic alone",
+      "passed": true,
+      "evidence": "Schema has `@@unique([tenantId, idempotencyKey])` and migration creates `UNIQUE INDEX \"Refund_tenantId_idempotencyKey_key\"`"
+    },
+    {
+      "text": "Uses distinct types for the identifiers rather than bare strings for both order and refund ids",
+      "passed": false,
+      "evidence": "Both Order and Refund ids use `String @id @default(cuid())` with no branded types; TypeScript handler also uses bare strings"
+    },
+    {
+      "text": "Handles money as integer minor units rather than a float",
+      "passed": true,
+      "evidence": "`z.number().int().positive()` validation and `amountCents Int` schema type"
+    },
+    {
+      "text": "Validates the refund amount server-side against the order rather than trusting the caller",
+      "passed": true,
+      "evidence": "Calculates remaining balance and checks `if (input.amountCents > remaining) { throw new RefundError(...) }`"
+    },
+    {
+      "text": "Scopes the write so one tenant or user cannot refund another's order",
+      "passed": true,
+      "evidence": "Raw query uses `WHERE \"id\" = ${input.orderId} AND \"tenantId\" = ${session.tenantId}`, trigger enforces match, creates refund with `tenantId: session.tenantId`"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": false,
+      "evidence": "Closing section lists what's NOT covered (pending timeout) rather than naming prevented misuses; over-refund/double-refund prevention discussed earlier in insights but not at close"
+    },
+    {
+      "text": "Names at least one thing it deliberately left possible and why",
+      "passed": true,
+      "evidence": "\"pending row whose Stripe call timed out ambiguously... you need a reconciler \u2014 a cron that lists pending refunds... Without it, pending rows permanently reduce the refundable balance. That's the one item here that still relies on someone remembering.\""
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 9,
+    "pass_rate": 0.6667
+  }
+}

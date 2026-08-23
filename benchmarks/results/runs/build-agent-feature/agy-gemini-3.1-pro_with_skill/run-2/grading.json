@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "3ef52a8f1e5d",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Defines IncomingEmail, RoutingDecision types; classify_email() function; handle_incoming_webhook() entry point; submit_to_ticketing() with complete flow"
+    },
+    {
+      "text": "Uses structured output against a schema rather than parsing the model's prose",
+      "passed": true,
+      "evidence": "tools=[{\"input_schema\": RoutingDecision.model_json_schema()}] with tool_choice forcing the tool; extracts tool_use and validates via RoutingDecision.model_validate()"
+    },
+    {
+      "text": "Constrains the classification to a closed set the code enforces, not just the prompt",
+      "passed": true,
+      "evidence": "Team = Literal[\"billing\", \"technical\", \"account\"]; RoutingDecision.team constrained to Team; Pydantic enforces at runtime"
+    },
+    {
+      "text": "Handles the case where the model returns something outside the allowed set",
+      "passed": true,
+      "evidence": "RoutingDecision.model_validate() raises ValidationError; caught and converted to RuntimeError in handle_incoming_webhook()"
+    },
+    {
+      "text": "Has a deterministic fallback or explicit failure path rather than a silent default",
+      "passed": true,
+      "evidence": "except ValidationError catches and re-raises as RuntimeError; match/assert_never ensures exhaustive branching"
+    },
+    {
+      "text": "Treats the customer email as untrusted text that could carry instructions",
+      "passed": false,
+      "evidence": "Email body interpolated directly into prompt (f\"Body:\\n{email.body}\") without sanitization; no explicit defense against prompt injection in untrusted email content"
+    },
+    {
+      "text": "Bounds cost or retries in code rather than requesting it in the prompt",
+      "passed": true,
+      "evidence": "max_tokens=200 set in API call"
+    },
+    {
+      "text": "Closes by naming which failures the design makes impossible",
+      "passed": true,
+      "evidence": "Section 'What the design makes impossible' lists swapping, malformed payloads, hallucinated teams, unreachable branches, duplicate creation; lists what is consciously left possible"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

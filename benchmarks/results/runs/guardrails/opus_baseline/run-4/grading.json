@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "4999b9f80438",
+  "expectations": [
+    {
+      "text": "States that a written agreement or reminder is not enforcement",
+      "passed": true,
+      "evidence": "\"CONTRIBUTING.md, the Slack pin, standup twice \u2014 all rung zero. They're training, and training degrades...\""
+    },
+    {
+      "text": "Recommends a pre-commit hook to run the formatter automatically",
+      "passed": true,
+      "evidence": "\"Pre-commit hook with `--fix` so the unformatted state is not committable\""
+    },
+    {
+      "text": "Notes that pre-commit is bypassable with --no-verify and must be backed by a CI check",
+      "passed": false,
+      "evidence": "Mentions CI necessity (\"Without required checks configured on the branch, none of the above is enforcement\") but does not explicitly name the --no-verify bypass"
+    },
+    {
+      "text": "Recommends a type check as a required CI check",
+      "passed": true,
+      "evidence": "\"`mypy` (or `tsc --noEmit`) as a **required** CI check\""
+    },
+    {
+      "text": "Recommends baselining or ratcheting rather than enforcing across the whole repo at once",
+      "passed": true,
+      "evidence": "\"**Ratchet instead:** run the type check only on files changed in the PR, or generate a baseline of current violations and fail only on new ones\""
+    },
+    {
+      "text": "Notes that branch protection is what makes a CI check actually required",
+      "passed": true,
+      "evidence": "\"**Branch protection.** Without required checks configured on the branch, none of the above is enforcement... This is the piece that actually changes the 50%\""
+    },
+    {
+      "text": "Recommends the failure message tell the developer how to fix it",
+      "passed": true,
+      "evidence": "\"`Add a return annotation to parse_order() \u2014 run 'make types' locally to see this before pushing` produces a fix\""
+    },
+    {
+      "text": "Does not primarily recommend rewriting CONTRIBUTING.md, more reminders, or more discipline",
+      "passed": true,
+      "evidence": "\"Then delete the CONTRIBUTING.md line. Or rewrite it to describe the device rather than the obligation\""
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

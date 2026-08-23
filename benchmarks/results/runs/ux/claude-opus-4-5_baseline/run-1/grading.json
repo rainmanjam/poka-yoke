@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "82f963d241f9",
+  "expectations": [
+    {
+      "text": "Pushes back on the 'are you sure?' modal as the primary fix",
+      "passed": true,
+      "evidence": "\"A confirmation modal is the weakest rung on the mistake-proofing ladder... the actual need is **reversibility**, not a speed bump.\""
+    },
+    {
+      "text": "Explains habituation or click-through blindness as why frequent dialogs stop working",
+      "passed": true,
+      "evidence": "\"users click \\\"Yes\\\" reflexively without reading\""
+    },
+    {
+      "text": "Recommends reversibility (soft delete with a retention window) as the strongest option",
+      "passed": true,
+      "evidence": "\"**Soft-delete + trash** \u2014 workspace moves to a \\\"Recently Deleted\\\" folder, auto-purged after 30 days\" listed as #1"
+    },
+    {
+      "text": "Recommends grace-period undo as a strong low-friction option",
+      "passed": true,
+      "evidence": "\"**Undo toast** \u2014 \\\"Workspace deleted. [Undo]\\\" visible for 10 seconds after the action\""
+    },
+    {
+      "text": "Recommends type-the-workspace-name confirmation for the irreversible case",
+      "passed": true,
+      "evidence": "\"**Type-to-confirm** (optional, for high-value workspaces) \u2014 require typing the workspace name\""
+    },
+    {
+      "text": "If a dialog is retained, requires it to name the workspace and the scale of what is lost",
+      "passed": false,
+      "evidence": "No guidance on dialog content; the modal is dismissed but never specified to name the workspace or enumerate what would be lost (member count, data volume, etc.)"
+    },
+    {
+      "text": "Notes that the server must enforce the deletion rules, not just the UI",
+      "passed": false,
+      "evidence": "Absent \u2014 all three recommendations are described in UI terms (folder, toast, typing); no mention of API/server-side enforcement"
+    },
+    {
+      "text": "Gives an explicit preference order rather than an undifferentiated list of ideas",
+      "passed": true,
+      "evidence": "Numbered list with soft-delete first and \"**Type-to-confirm** (optional...)\" marked as lesser; plus \"weakest rung on the mistake-proofing ladder\" framing"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "\"No. That test could not have failed here.\" and \"it's a check that cannot go red in this failure mode, which is worse than no test because it reads as coverage.\""
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "\"`COALESCE(revenue, 0)` makes 'no data' and 'no revenue' the same value. The pipeline has no way to express *unknown*, so a total join failure renders as a business fact.\""
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": true,
+      "evidence": "\"Daily reconciliation: warehouse total vs billing source\""
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": true,
+      "evidence": "\"Assert *between* load and publish. A test that runs after publication has already lost.\""
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "\"Schema contract at ingest: assert expected columns/types, fail the load on a rename\""
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "\"Join match-rate assertion before publish (`matched / total`), staged \u2192 tested \u2192 promoted\""
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": true,
+      "evidence": "\"Your detection latency *was* the three weeks\" and recommends daily reconciliation to fix it"
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": false,
+      "evidence": "Describes mechanism (\"converts a loud failure into a quiet number\") but doesn't explain why the quiet number is dangerous, only that it swallows the signal."
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

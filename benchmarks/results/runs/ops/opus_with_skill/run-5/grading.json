@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": true,
+      "evidence": "there's a window where old instances \u2014 still selecting `legacy_email` \u2014 run against a schema where it no longer exists. That's `UndefinedColumn` errors"
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "Today: deploy only the code... Next week: the `DROP`, as its own deploy, once the code has baked"
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": true,
+      "evidence": "`git revert` does not bring the data back; only a restore from backup does"
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": true,
+      "evidence": "point-in-time recovery of the whole database plus re-applying everything written since"
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "Timing isn't superstition \u2014 it's staffing math"
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": true,
+      "evidence": "block any changed migration containing `DROP`/`TRUNCATE`/`ALTER \u2026 DROP` unless the PR carries an explicit approval label"
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "ship half of it this afternoon, not the drop"
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "The `DROP COLUMN` is. The code change isn't \u2014 that reverts in minutes"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

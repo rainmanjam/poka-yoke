@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "1af6b213502f",
+  "expectations": [
+    {
+      "text": "States plainly that the recent-charge lookup is not sufficient",
+      "passed": true,
+      "evidence": "\"Amount-matching is a band-aid.\" / \"Your amount-matching check is **detection-level** mistake-proofing \u2014 it catches duplicates after they've already been attempted. This has critical weaknesses\""
+    },
+    {
+      "text": "Identifies the lookup as a check-then-act race rather than a device",
+      "passed": true,
+      "evidence": "\"**Race conditions**: Two workers checking simultaneously before either writes\" \u2014 names the check-then-act gap, and contrasts it with structural controls"
+    },
+    {
+      "text": "Recommends a required idempotency key on the charge path",
+      "passed": true,
+      "evidence": "\"Audit `payments.ts` for all charge paths \u2014 ensure idempotency keys on every Stripe call\""
+    },
+    {
+      "text": "Recommends a database unique constraint backing the idempotency key",
+      "passed": false,
+      "evidence": "Only non-unique constraints appear: \"Database constraint: `CHECK (status IN ('pending', 'charging', 'charged', 'failed'))`\" and \"Add database constraints that prevent invalid state combinations\". No UNIQUE index on an idempotency/charge key is proposed."
+    },
+    {
+      "text": "Separates the defect from the mistake from the underlying system hazard",
+      "passed": false,
+      "evidence": "No three-layer separation; the closest is \"This isn't a one-time bug \u2014 it's a **systematic weakness**\", which conflates rather than distinguishes the 340 double charges, the redelivered retry, and the non-idempotent charge path."
+    },
+    {
+      "text": "Locates the hazard as a system property rather than as a worker bug or human error",
+      "passed": true,
+      "evidence": "\"Exactly-once semantics beat at-least-once + deduplication every time\" and \"Idempotency keys + state machines are structural controls that make the entire class of errors impossible\" \u2014 hazard placed in the delivery/architecture, not the worker code or an operator"
+    },
+    {
+      "text": "Sweeps for other non-idempotent side effects reachable from a retry",
+      "passed": false,
+      "evidence": "The audit is scoped to charges only \u2014 \"Audit `payments.ts` for all charge paths\". No mention of receipts, emails, webhooks, ledger writes, or other retry-reachable side effects."
+    },
+    {
+      "text": "Treats 'second time this happened' as evidence for pushing to a Control-rung device",
+      "passed": true,
+      "evidence": "\"This happened twice already. Detection didn't prevent it \u2014 and detection-based fixes often fail under load or edge cases.\" followed by \"**Elimination-Level Controls** (what you actually need)\""
+    },
+    {
+      "text": "Attributes cause to the system, not to any person",
+      "passed": true,
+      "evidence": "No person or team is blamed anywhere; cause is placed on \"at-least-once + deduplication\" and \"a **systematic weakness**\""
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 9,
+    "pass_rate": 0.6667
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "1af6b213502f",
+  "expectations": [
+    {
+      "text": "States plainly that the recent-charge lookup is not sufficient",
+      "passed": true,
+      "evidence": "No. The fix you shipped is a detection-rung device dressed as a control, and it has holes of its own."
+    },
+    {
+      "text": "Identifies the lookup as a check-then-act race rather than a device",
+      "passed": true,
+      "evidence": "It's a read-then-write race. Two workers picking up the same message... both see 'no recent charge' and both charge."
+    },
+    {
+      "text": "Recommends a required idempotency key on the charge path",
+      "passed": true,
+      "evidence": "Make the key a required parameter on your Stripe wrapper \u2014 not optional-for-backward-compat. Idempotency key derived from the intent, passed on every Stripe POST."
+    },
+    {
+      "text": "Recommends a database unique constraint backing the idempotency key",
+      "passed": true,
+      "evidence": "DB UNIQUE (idempotency_key) on your payments table, inserted before the Stripe call (pending), updated after"
+    },
+    {
+      "text": "Separates the defect from the mistake from the underlying system hazard",
+      "passed": true,
+      "evidence": "Defect: 340 customers charged twice. Mistake: the redelivered message called charge() again. Hazard: a charge can be created without an idempotency key."
+    },
+    {
+      "text": "Locates the hazard as a system property rather than as a worker bug or human error",
+      "passed": true,
+      "evidence": "at-least-once delivery guarantees this will happen again. That's the system property."
+    },
+    {
+      "text": "Sweeps for other non-idempotent side effects reachable from a retry",
+      "passed": true,
+      "evidence": "Grep every Stripe POST and every consumer of that queue. Anything else that calls Stripe \u2014 refunds, subscription changes, a backfill script \u2014 is still unguarded."
+    },
+    {
+      "text": "Treats 'second time this happened' as evidence for pushing to a Control-rung device",
+      "passed": true,
+      "evidence": "The first incident was probably a different consumer with the same shape \u2014 that's what 'second time' usually means. Recommends Control-rung idempotency key device."
+    },
+    {
+      "text": "Attributes cause to the system, not to any person",
+      "passed": true,
+      "evidence": "Stripe has supported Idempotency-Key; your code lets a charge exist without one. Frames as system design, not human error."
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

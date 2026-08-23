@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": true,
+      "evidence": "\"If the migration runs before every instance of the old code is off, or if anything else... still reads `legacy_email`... it breaks the moment the column disappears\""
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "\"This is a textbook expand/contract case... The safer shape: Ship the three code changes... Drop the column as its own deploy, separately\""
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": true,
+      "evidence": "\"Once it runs, `legacy_email` data is gone unless you have a very recent backup \u2014 and restoring means restoring the *whole table/database*\""
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": true,
+      "evidence": "\"Rolling back the code deploy is fast; rolling back a dropped column is not reversible by deploy at all \u2014 only by data restore.\""
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "\"This is the real Friday-afternoon question \u2014 not 'is the change small' but 'if this breaks at 4:45pm, is someone available to notice and fix it before Monday?'\""
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": false,
+      "evidence": "No recommendation for a CI gate; focuses on backup testing and checking for other hazards."
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "\"the code changes are fine to ship this afternoon. The `DROP COLUMN` is not something size or CI-green tells you is safe\""
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "\"the code changes are fine to ship this afternoon. The `DROP COLUMN` is not something size or CI-green tells you is safe \u2014 those verify correctness, not reversibility.\""
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

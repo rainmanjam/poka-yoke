@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "82f963d241f9",
+  "expectations": [
+    {
+      "text": "Pushes back on the 'are you sure?' modal as the primary fix",
+      "passed": true,
+      "evidence": "\"I'd push back on the confirmation modal \u2014 here's why\" and \"Better approach: soft-delete + trash\""
+    },
+    {
+      "text": "Explains habituation or click-through blindness as why frequent dialogs stop working",
+      "passed": true,
+      "evidence": "\"Users develop muscle memory to click \\\"OK\\\" on modals, so you'll still get panic emails\" and \"harder to habituation-click\""
+    },
+    {
+      "text": "Recommends reversibility (soft delete with a retention window) as the strongest option",
+      "passed": true,
+      "evidence": "\"Delete \u2192 Archive\", \"30-day retention \u2014 workspaces auto-purge after 30 days\", framed as \"Better approach\" / \"replacement\" rung"
+    },
+    {
+      "text": "Recommends grace-period undo as a strong low-friction option",
+      "passed": true,
+      "evidence": "\"Undo toast \u2014 \\\"Workspace deleted. **Undo**\\\" appears immediately after delete action\""
+    },
+    {
+      "text": "Recommends type-the-workspace-name confirmation for the irreversible case",
+      "passed": true,
+      "evidence": "\"If you must keep hard-delete... Require typing the workspace name (breaks muscle memory)\""
+    },
+    {
+      "text": "If a dialog is retained, requires it to name the workspace and the scale of what is lost",
+      "passed": true,
+      "evidence": "\"Show what will be lost (project count, last activity, team members)\" plus typing the workspace name"
+    },
+    {
+      "text": "Notes that the server must enforce the deletion rules, not just the UI",
+      "passed": false,
+      "evidence": "No mention of server-side/API enforcement; all controls described are UI-level (modal, toast, trash view). Only 'sketch out the soft-delete schema design?' is offered, which is not an enforcement claim."
+    },
+    {
+      "text": "Gives an explicit preference order rather than an undifferentiated list of ideas",
+      "passed": true,
+      "evidence": "\"Poka-yoke hierarchy: Elimination > Replacement > Facilitation > Detection > Mitigation\" with soft-delete as primary and \"If you must keep hard-delete\" as the fallback tier"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

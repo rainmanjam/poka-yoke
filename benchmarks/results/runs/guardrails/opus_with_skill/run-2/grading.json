@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "4999b9f80438",
+  "expectations": [
+    {
+      "text": "States that a written agreement or reminder is not enforcement",
+      "passed": true,
+      "evidence": "\"Those look like four interventions, but they're one device repeated four times \u2014 rung 0 on the poka-yoke ladder: training. 50% compliance after two weeks isn't a discipline problem. It's the ordinary half-life of a remembered rule.\""
+    },
+    {
+      "text": "Recommends a pre-commit hook to run the formatter automatically",
+      "passed": true,
+      "evidence": "\"Auto-fix at commit \u2014 .pre-commit-config.yaml. Note this hook rewrites the file rather than complaining about it.\" Provides ruff-format hook config."
+    },
+    {
+      "text": "Notes that pre-commit is bypassable with --no-verify and must be backed by a CI check",
+      "passed": true,
+      "evidence": "\"Pre-commit is bypassable by design \u2014 git commit --no-verify exists and people under deadline use it. The hook gives you speed; CI gives you enforcement.\""
+    },
+    {
+      "text": "Recommends a type check as a required CI check",
+      "passed": true,
+      "evidence": "Provides full GitHub Actions workflow job for types with mypy as required check"
+    },
+    {
+      "text": "Recommends baselining or ratcheting rather than enforcing across the whole repo at once",
+      "passed": true,
+      "evidence": "\"Enforce on changed files only \u2014 new code must be typed, existing code is grandfathered, and the violation count can only go down.\""
+    },
+    {
+      "text": "Notes that branch protection is what makes a CI check actually required",
+      "passed": true,
+      "evidence": "\"Without branch protection, that workflow is advisory and the entire device is inert.\" Provides gh api command for branch protection."
+    },
+    {
+      "text": "Recommends the failure message tell the developer how to fix it",
+      "passed": true,
+      "evidence": "\"That failure message is doing real work. A gate that says error: rule violated produces a confused engineer and a workaround; one that names the fix command produces a fixed PR.\" Includes instructional error messages in workflow."
+    },
+    {
+      "text": "Does not primarily recommend rewriting CONTRIBUTING.md, more reminders, or more discipline",
+      "passed": true,
+      "evidence": "Primary recommendations are devices. CONTRIBUTING.md edit is secondary simplification: \"Finally, edit CONTRIBUTING.md... replace the two bullets with a pointer to the device.\""
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

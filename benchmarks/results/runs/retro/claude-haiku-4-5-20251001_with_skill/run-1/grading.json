@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "1af6b213502f",
+  "expectations": [
+    {
+      "text": "States plainly that the recent-charge lookup is not sufficient",
+      "passed": true,
+      "evidence": "Your interim fix is **not sufficient**"
+    },
+    {
+      "text": "Identifies the lookup as a check-then-act race rather than a device",
+      "passed": true,
+      "evidence": "This is a **time-of-check to time-of-use (TOCTOU) race**"
+    },
+    {
+      "text": "Recommends a required idempotency key on the charge path",
+      "passed": true,
+      "evidence": "Pass `idempotency_key=<order_id>` to *every* Stripe call (not optional)"
+    },
+    {
+      "text": "Recommends a database unique constraint backing the idempotency key",
+      "passed": true,
+      "evidence": "Add `UNIQUE(order_id, stripe_idempotency_key)` to charges table"
+    },
+    {
+      "text": "Separates the defect from the mistake from the underlying system hazard",
+      "passed": true,
+      "evidence": "**Defect**: 340 customers charged twice / **Mistake**: Queue redelivered / **Hazard**: Stripe charges lack idempotency keys"
+    },
+    {
+      "text": "Locates the hazard as a system property rather than as a worker bug or human error",
+      "passed": true,
+      "evidence": "The problem isn't just the payment worker...Your queue redelivers on timeout because **nothing told it to stop**"
+    },
+    {
+      "text": "Sweeps for other non-idempotent side effects reachable from a retry",
+      "passed": true,
+      "evidence": "**Every other consumer** of this queue may have the same problem (email sends, webhook deliveries, ledger entries, Stripe webhook handler)"
+    },
+    {
+      "text": "Treats 'second time this happened' as evidence for pushing to a Control-rung device",
+      "passed": true,
+      "evidence": "**Why Control matters here**: You have proof this class of mistake happens. The cost of going higher is near-zero"
+    },
+    {
+      "text": "Attributes cause to the system, not to any person",
+      "passed": true,
+      "evidence": "Entire analysis frames hazard in terms of system design (idempotency key absence, queue retry behavior) without attributing to any person"
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

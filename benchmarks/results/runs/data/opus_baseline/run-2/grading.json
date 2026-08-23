@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "\"Your test would have passed on all 21 days of the incident. The table wasn't empty. It was full of rows whose value was 0.\""
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "\"The COALESCE(x, 0) is the actual hazard. It converts unknown into a legal, plausible, silently-wrong value \u2014 the data equivalent of except: pass.\""
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": true,
+      "evidence": "\"Reconciliation on revenue \u2014 sum the warehouse against the source of truth, daily. This is the only one of the four that catches logic errors.\""
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": true,
+      "evidence": "\"Build to staging \u2192 assert \u2192 promote on pass. If tests run after publish, bad numbers reach finance regardless of how good the tests are.\""
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "\"Contract at the boundary. Select columns explicitly so an upstream rename errors instead of yielding nulls.\""
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "\"Assert the null rate before coalescing... null_rate(amount) < threshold fails the build.\""
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": false,
+      "evidence": "Names it explicitly (\"Three weeks of silence is a UI failure too\") but proposes visibility as the fix (surfacing timestamps), not detection prevention"
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": true,
+      "evidence": "\"Nulls were your signal and you erased them before anything could look... a wrong join produces perfectly well-shaped wrong data.\""
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": true,
+      "evidence": "old code selects `legacy_email` against a schema where it no longer exists. Postgres doesn't return null there; it errors the whole query"
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "Deploy A (today): the three code changes only... Deploy B (next week): the `DROP COLUMN`, alone"
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": true,
+      "evidence": "The code changes revert in a `git revert`; the column does not come back with them"
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": true,
+      "evidence": "restore from backup or PITR \u2014 which brings back the *data*, not just the column, and a full restore rolls back everything else too"
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "Friday isn't superstition, it's staffing"
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": true,
+      "evidence": "any migration containing `DROP`, `TRUNCATE`, or `ALTER ... DROP` fails unless the PR carries an explicit `destructive-migration` label"
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "Green CI is expected here and tells you nothing about it: tests run one code version against one schema version"
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "Your PR is a reversible change and an irreversible one stapled together"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "No \u2014 and the reason is precise: **the table was never empty during the incident.** The rows were all there; a column in them was wrong. Your new test would have been green for the entire three weeks."
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "`COALESCE(x, 0)` on a money column is `except: pass` for data: it converts a loud null into a plausible zero."
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": true,
+      "evidence": "**1. Reconciliation on the revenue table.** Sum of revenue in the warehouse must match the billing/source system within a tolerance"
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": true,
+      "evidence": "Build to staging \u2192 test \u2192 promote. Finance shouldn't have been the detector."
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "**3. Schema contract on the upstream boundary.** Assert the exact columns you depend on exist, on ingest, so a rename fails at the source with a message naming the column"
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "assert the *rate* of rows hitting the fallback is ~0"
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": true,
+      "evidence": "**4. Dashboard shows last-reconciled, not just last-loaded.** Finance shouldn't have been the detector."
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": true,
+      "evidence": "it converts a loud null into a plausible zero \u2014 explicitly contrasting that a loud/failed state (null error) is preferable to silent/plausible state (coalesced zero), establishing why silent is more dangerous."
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

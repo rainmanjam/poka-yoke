@@ -1,0 +1,60 @@
+{
+  "assertions_sha": "bcf79cb43709",
+  "expectations": [
+    {
+      "text": "Flags the nested comments and attachments resolvers as unscoped by tenant",
+      "passed": true,
+      "evidence": "#5. `Document.comments:30` / `attachments:33` \u2014 breach / latent-but-live"
+    },
+    {
+      "text": "Flags updateDocument for scoping on id alone without a tenant constraint",
+      "passed": true,
+      "evidence": "#4. `updateDocument:41` \u2014 corruption / easy. `where: { id: documentId }` is the whole predicate"
+    },
+    {
+      "text": "Flags exportWorkspace taking tenantId from the client-controlled request body",
+      "passed": true,
+      "evidence": "#1. `exportWorkspace:52` \u2014 breach / trivial. Takes `tenantId` from `req.body`"
+    },
+    {
+      "text": "Flags searchDocuments as returning rows across all tenants",
+      "passed": true,
+      "evidence": "#3. `searchDocuments:65` \u2014 breach / trivial. Full-text search over every customer's documents, top 50"
+    },
+    {
+      "text": "Flags adminListDocuments as checking authentication but not authorization or tenant",
+      "passed": true,
+      "evidence": "#2. `adminListDocuments:75` \u2014 breach / trivial. `if (!session.userId)` is an *authentication* test in an authorization costume"
+    },
+    {
+      "text": "Enumerates all the affected sites rather than fixing only the first one found",
+      "passed": true,
+      "evidence": "Six findings systematically enumerated"
+    },
+    {
+      "text": "Recommends a structural device (scoped repository, row-level security, or equivalent) rather than only adding where-clauses site by site",
+      "passed": true,
+      "evidence": "Two devices that close the class: RLS with FORCE ROW LEVEL SECURITY, Scoped repository with tenant as required constructor arg"
+    },
+    {
+      "text": "Recommends a cross-tenant test that attempts tenant A operations against tenant B resources",
+      "passed": true,
+      "evidence": "Two tenants; from A, attempt every operation against B's resources; assert **404, not 403**"
+    },
+    {
+      "text": "Identifies the raw interpolation of tenantId into $queryRawUnsafe as an injection hazard distinct in kind from the tenant-scoping bug",
+      "passed": true,
+      "evidence": "And `$queryRawUnsafe` interpolates it \u2014 so `' OR '1'='1` dumps every tenant even after you fix the first two"
+    },
+    {
+      "text": "Does not conclude the main query paths being scoped means the service is safe",
+      "passed": true,
+      "evidence": "That's exactly what makes the file dangerous \u2014 they set the reader's expectation for six other paths"
+    }
+  ],
+  "summary": {
+    "passed": 10,
+    "total": 10,
+    "pass_rate": 1.0
+  }
+}

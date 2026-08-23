@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "\"No, that test won't catch this... A row-count-floor check and a not-empty check both pass on this exact incident, unchanged.\""
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "\"**Hazard**: `COALESCE(revenue, 0)` converts 'the join failed to find a match' into 'revenue is zero'\""
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": true,
+      "evidence": "\"reconciliation: daily job comparing aggregate revenue in the warehouse to the source-of-truth total\""
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": true,
+      "evidence": "\"assert the join match rate before publish... This is a self-check between load and publish, so it can block promotion rather than just report.\""
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "\"an ingest contract on the upstream table... This is what would have made the rename loud on day one instead of week three.\""
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "\"assert the join match rate before publish (e.g. `% of source rows with a null joined column < threshold`)\""
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": false,
+      "evidence": "Response describes the timeline but does not identify the 3-week detection lag as itself a gap requiring a distinct fix."
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": false,
+      "evidence": "Response does not explicitly contrast or explain the comparative danger of silent wrongness versus loud pipeline failure."
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

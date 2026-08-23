@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "1af6b213502f",
+  "expectations": [
+    {
+      "text": "States plainly that the recent-charge lookup is not sufficient",
+      "passed": true,
+      "evidence": "\"No, that's **not enough** \u2014 and the fact that this is the second time proves it.\""
+    },
+    {
+      "text": "Identifies the lookup as a check-then-act race rather than a device",
+      "passed": false,
+      "evidence": "It critiques the lookup as weak 'detection' with false negatives/timing windows and says it's 'post-hoc', but never identifies it as a check-then-act race (no mention that the check and the charge are not atomic, or that two concurrent workers could both pass the check)."
+    },
+    {
+      "text": "Recommends a required idempotency key on the charge path",
+      "passed": true,
+      "evidence": "\"Add Stripe idempotency keys to *all* charge operations (not optional parameter \u2014 required)\" with code showing `idempotencyKey: ...  // REQUIRED, not optional`"
+    },
+    {
+      "text": "Recommends a database unique constraint backing the idempotency key",
+      "passed": true,
+      "evidence": "\"CREATE UNIQUE INDEX idx_one_successful_charge_per_invoice ON charges(invoice_id) WHERE status = 'succeeded';\""
+    },
+    {
+      "text": "Separates the defect from the mistake from the underlying system hazard",
+      "passed": true,
+      "evidence": "\"**Defect**: 340 customers were double-charged / **Mistake**: The retry path called charge again without deduplication / **Hazard**: The charging system accepts duplicate payment attempts...\""
+    },
+    {
+      "text": "Locates the hazard as a system property rather than as a worker bug or human error",
+      "passed": true,
+      "evidence": "\"The root cause isn't 'the worker timed out' \u2014 timeouts are a constant in distributed systems... **Your payment system allows the same logical charge operation to execute multiple times without idempotency protection.**\""
+    },
+    {
+      "text": "Sweeps for other non-idempotent side effects reachable from a retry",
+      "passed": true,
+      "evidence": "\"How many other payment endpoints have this same hazard? (Subscription charges? Refunds? Payouts?)\" and \"**Sweep**: Audit every Stripe API call for missing idempotency keys\""
+    },
+    {
+      "text": "Treats 'second time this happened' as evidence for pushing to a Control-rung device",
+      "passed": true,
+      "evidence": "\"Since this is **recurrence #2**, you need Control-rung fixes\" and \"since it's happened twice, you have strong evidence that detection isn't working.\""
+    },
+    {
+      "text": "Attributes cause to the system, not to any person",
+      "passed": true,
+      "evidence": "No person is blamed; cause is placed on the system: \"The charging system accepts duplicate payment attempts and has no built-in idempotency guarantee\""
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 9,
+    "pass_rate": 0.8889
+  }
+}

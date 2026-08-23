@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": true,
+      "evidence": "swappable adjacent args (`transfer(from, to)`, `applyDiscount(20, 100)` \u2192 free, two adjacent booleans)"
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "Retry without an idempotency key \u2014 double charge / one timeout. Stripe can succeed and still throw locally; the retry creates a second real charge."
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": true,
+      "evidence": "catch \u2192 return null swallows declines *and* bugs so callers fulfill unpaid orders"
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": false,
+      "evidence": "Mentioned in set-aside ('balance: number drifts') but not as a primary finding; not highlighted with concrete impact."
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "raw interpolation into `$executeRawUnsafe`"
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "updateSubscription persists any string then silently falls through its switch, leaving canceled users entitled"
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": true,
+      "evidence": "Webhook moves money on unauthenticated input. No signature check. event.data.amount goes straight into chargeCustomer"
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": false,
+      "evidence": "Mixed approach: some findings clearly name actions ('Call it with no argument'), others describe missing features or failures ('No signature check', 'Retry without idempotency key') without framing as actionable mistakes."
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "Ranked by blast radius \u00d7 ease. Finding 1-4 are critical (purge, webhook, transfer, retry); findings 5-8 are secondary."
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": true,
+      "evidence": "Each finding has specific device: 'Make olderThan required, deleteMany by exact IDs counted, inside $transaction, with maxRows'; 'stripe.webhooks.constructEvent(rawBody, sig, secret)'; 'one $transaction, findUniqueOrThrow'; etc."
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "File write wasn't approved, so here it is in-conversation."
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 11,
+    "pass_rate": 0.8182
+  }
+}

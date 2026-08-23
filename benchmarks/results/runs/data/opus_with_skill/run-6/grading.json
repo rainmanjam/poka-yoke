@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "\"No. The test you added would have been green for all three weeks.\" and \"That check cannot go red in this failure mode \u2014 it's rung 3 (Detection) that detects nothing.\""
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "\"`COALESCE(x, 0)` over a measure is `except: pass` for numbers. Nothing in the path can distinguish 'no revenue' from 'no answer.'\""
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": true,
+      "evidence": "\"Reconciliation: warehouse revenue total vs. billing/ledger for the same period, daily\""
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": true,
+      "evidence": "\"The structural change that costs no tooling: build to staging \u2192 assert \u2192 promote. If your checks run after publication, they're Detection by construction.\""
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "\"Schema contract at ingest \u2014 declared column manifest vs. `INFORMATION_SCHEMA`, fail on absence\""
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "\"Null-rate assertion on `revenue` *before* the coalesce\" and \"Row-count band vs. same-weekday history\""
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": false,
+      "evidence": "Acknowledges that \"Your detection latency was the three weeks\" but doesn't frame the three-week gap itself as a detection problem worth fixing separately."
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": true,
+      "evidence": "\"NULL propagating to a dashboard as `\u2014` is ugly and honest; `0` is pretty and wrong.\" Explains silent wrong is dangerous because it appears correct."
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

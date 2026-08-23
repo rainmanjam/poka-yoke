@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "4999b9f80438",
+  "expectations": [
+    {
+      "text": "States that a written agreement or reminder is not enforcement",
+      "passed": true,
+      "evidence": "Stop adding reminders; make the repository enforce the agreement."
+    },
+    {
+      "text": "Recommends a pre-commit hook to run the formatter automatically",
+      "passed": true,
+      "evidence": "Provide a pre-commit hook that runs the formatter and relevant type checker automatically."
+    },
+    {
+      "text": "Notes that pre-commit is bypassable with --no-verify and must be backed by a CI check",
+      "passed": false,
+      "evidence": "Does not mention --no-verify or that pre-commit can be bypassed; mentions branch protection but does not explicitly connect it to pre-commit limitations."
+    },
+    {
+      "text": "Recommends a type check as a required CI check",
+      "passed": true,
+      "evidence": "Add CI checks that fail PRs with formatting drift or missing required type coverage."
+    },
+    {
+      "text": "Recommends baselining or ratcheting rather than enforcing across the whole repo at once",
+      "passed": false,
+      "evidence": "Absent entirely; response does not mention phased rollout or gradual enforcement."
+    },
+    {
+      "text": "Notes that branch protection is what makes a CI check actually required",
+      "passed": false,
+      "evidence": "Mentions 'Protect the main branch so required checks cannot be bypassed' but does not explicitly state branch protection is the mechanism that makes checks required."
+    },
+    {
+      "text": "Recommends the failure message tell the developer how to fix it",
+      "passed": false,
+      "evidence": "Absent entirely; no mention of failure messages or developer guidance."
+    },
+    {
+      "text": "Does not primarily recommend rewriting CONTRIBUTING.md, more reminders, or more discipline",
+      "passed": true,
+      "evidence": "Opens with 'Stop adding reminders' and focuses on technical enforcement, not documentation or messaging."
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "total": 8,
+    "pass_rate": 0.5
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "5b62450c21d2",
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": false,
+      "evidence": "jumps directly to solutions without explaining why CLAUDE.md is insufficient"
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": false,
+      "evidence": "does not explain that reworded CLAUDE.md is not the solution"
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": true,
+      "evidence": "Edit(./src/generated/**), Write(./src/generated/**), Bash(git push --force:*), Bash(git push -f:*)"
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": false,
+      "evidence": "treats force-push as simple deny pattern, but A explicitly warns this won't catch flag variations like git push origin main --force"
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": true,
+      "evidence": "The message needs to say what's blocked, why, and what to do instead"
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": true,
+      "evidence": "verify by triggering each one (attempt a force-push, attempt an edit) to confirm they actually deny"
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": true,
+      "evidence": "Both belong in .claude/settings.json (committed), not .local.json"
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": false,
+      "evidence": "does not explain why CAPS/repetition fail"
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "total": 8,
+    "pass_rate": 0.5
+  }
+}

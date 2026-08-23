@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": false,
+      "evidence": "Transfer is discussed only for atomicity ('No transaction around transfer') and non-null assertions ('from!, to!'); no mention of interchangeable string params or argument-swap risk."
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": false,
+      "evidence": "chargeCustomer is only faulted for returning null: 'Callers can't distinguish success from silent failure.' No mention of idempotency keys, retries, or double-charging."
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": true,
+      "evidence": "\"`chargeCustomer` returns `null` on failure** | Callers can't distinguish success from silent failure. A failed charge looks like success to upstream code.\""
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": true,
+      "evidence": "\"Floating-point on money** | `price * (percentOff / 100)` produces float errors... Use integer cents.\""
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "\"SQL injection via `$executeRawUnsafe`** | Date interpolation looks safe but the pattern invites copy-paste disasters.\""
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "\"Incomplete switch on `status`** | Only handles `active`/`canceled`. Statuses like `past_due`, `paused`, `trialing` silently do nothing\""
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": true,
+      "evidence": "\"`JSON.parse(body)` trusts any POST. Attackers can forge `invoice.paid` events... Must verify `stripe-signature` header.\""
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "Hazards are framed as code actions/omissions, e.g. \"calling `purgeCanceledAccounts()` with no args defaults `cutoff` to *now*, deleting ALL canceled accounts\"; no developer-quality attributions anywhere."
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "Tiered 'Critical (money loss/security)' (transfer, purge/SQL, webhook) above 'High' and 'Medium', with 'Unused `timeout` variable' last."
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": false,
+      "evidence": "Only some findings get devices ('Needs `db.$transaction()`', 'verify `stripe-signature`', 'Use integer cents'); the SQL injection, null-return, incomplete switch, non-null assertions, and unused timeout findings have no proposed fix \u2014 it defers with 'Want me to show the fix for any of these?'"
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "Response is analysis-only; no file writes or edits are described or claimed."
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 11,
+    "pass_rate": 0.7273
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "4999b9f80438",
+  "expectations": [
+    {
+      "text": "States that a written agreement or reminder is not enforcement",
+      "passed": true,
+      "evidence": "You've already done the things that rely on memory... Slack, standups, and CONTRIBUTING.md are rung 0 (training)."
+    },
+    {
+      "text": "Recommends a pre-commit hook to run the formatter automatically",
+      "passed": true,
+      "evidence": "Run formatting automatically on changed files in a pre-commit hook for immediate feedback."
+    },
+    {
+      "text": "Notes that pre-commit is bypassable with --no-verify and must be backed by a CI check",
+      "passed": true,
+      "evidence": "people bypass slow hooks. CI remains the non-bypassable backstop."
+    },
+    {
+      "text": "Recommends a type check as a required CI check",
+      "passed": true,
+      "evidence": "Run the same formatter and type checker as required CI checks; protect the main branch so failing checks cannot merge."
+    },
+    {
+      "text": "Recommends baselining or ratcheting rather than enforcing across the whole repo at once",
+      "passed": true,
+      "evidence": "baseline it and fail only on new or changed violations. Ratchet the baseline down over time rather than creating a wall of failures."
+    },
+    {
+      "text": "Notes that branch protection is what makes a CI check actually required",
+      "passed": true,
+      "evidence": "protect the main branch so failing checks cannot merge."
+    },
+    {
+      "text": "Recommends the failure message tell the developer how to fix it",
+      "passed": true,
+      "evidence": "Make failures actionable: e.g., \"Formatting required \u2014 run `npm run format`\" and \"New code must pass `mypy`/`tsc`\""
+    },
+    {
+      "text": "Does not primarily recommend rewriting CONTRIBUTING.md, more reminders, or more discipline",
+      "passed": true,
+      "evidence": "You've already done the things that rely on memory. [Does not recommend repeating them]"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

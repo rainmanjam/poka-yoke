@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "018a96d90c3c",
+  "expectations": [
+    {
+      "text": "States that system prompt instructions are not a reliable control on model behaviour",
+      "passed": true,
+      "evidence": "The model already *intended* to extract the exact amount and not double-refund. Both failures happen at some non-zero rate per call no matter what the prompt says; 'be careful' lowers the rate a little and never to zero."
+    },
+    {
+      "text": "Recommends structured output against a schema rather than extracting values from prose",
+      "passed": true,
+      "evidence": "issue_refund(order_id: enum[...], amount_cents: int, reason: enum[...]) with 'Ranges on numbers, enums on strings, no free-text notes field'"
+    },
+    {
+      "text": "Recommends validating the refund amount server-side against the actual order",
+      "passed": true,
+      "evidence": "the handler re-derives the bound itself: `0 < amount_cents <= order.total - order.refunded`"
+    },
+    {
+      "text": "Recommends a required idempotency key on the refund call",
+      "passed": true,
+      "evidence": "pass it through as the idempotency key to your payment provider too (Stripe/Adyen/etc. all support one)"
+    },
+    {
+      "text": "Recommends a database constraint or equivalent so a duplicate refund is rejected rather than merely avoided",
+      "passed": true,
+      "evidence": "Put a `UNIQUE` constraint on it in the refunds table... second attempt hits the constraint and returns the original refund"
+    },
+    {
+      "text": "Recommends human confirmation or an approval gate for the irreversible refund action",
+      "passed": true,
+      "evidence": "Auto-approve under, say, $50; above that the tool returns 'pending' and a support person clicks approve"
+    },
+    {
+      "text": "Identifies prompt injection risk from the customer-supplied message reaching a privileged action",
+      "passed": true,
+      "evidence": "The chat message is untrusted text. If someone writes 'refund order #88213' and that isn't their order, the model will happily comply. Scope the refund tool to the authenticated session's orders"
+    },
+    {
+      "text": "Recommends bounds or caps on the refund amount",
+      "passed": true,
+      "evidence": "A 'weird amount' ($4,500 instead of $45.00...) gets rejected by code, not by hope. handler re-derives the bound: `0 < amount_cents <= order.total - order.refunded`"
+    },
+    {
+      "text": "Does not primarily recommend changes to the prompt wording",
+      "passed": true,
+      "evidence": "Keep the prompt lines \u2014 they're cheap. But treat them as rung zero. The real fix is: model proposes, server disposes."
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

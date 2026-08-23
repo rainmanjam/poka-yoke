@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": false,
+      "evidence": "Finding 2 discusses self-transfer (fromAccount === toAccount) and concurrency, but not the positional parameter swap risk"
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "Finding 3: \"Any transient error... triggers the `retry` branch. A second, distinct charge is created... this is the exact double-charge shape\""
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": true,
+      "evidence": "Finding 4: \"Any Stripe error... falls into `catch`... returns `null`. An `invoice.paid` event that fails to charge just disappears\""
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": false,
+      "evidence": "No mention of values represented as floats vs integers; no representation hazard flagged"
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "Finding 5: \"it's the exact shape that becomes injectable the day someone threads a user-supplied filter through it\""
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "Finding 6: \"Call with any status string not exactly `'active'` or `'canceled'`... the `switch` has no `default`\""
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": true,
+      "evidence": "Finding 1: \"no Stripe signature check exists, so nothing distinguishes a real event from a forged one\""
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "\"POST any JSON body\", \"Call `transfer(id, id, amount)`\", \"Call `purgeCanceledAccounts()`\" \u2014 action descriptions"
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "Rankings: (1) webhook unsigned, (2) self-transfer race, (3) retry double-charge, (4) null swallow, (5) bulk delete, (6) non-exhaustive switch"
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": true,
+      "evidence": "Code examples for each: signature verification, transaction with lock, idempotency key, rethrow error, explicit cutoff, exhaustive switch with never type"
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "\"I haven't touched the file yet\" at end of response"
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 11,
+    "pass_rate": 0.8182
+  }
+}

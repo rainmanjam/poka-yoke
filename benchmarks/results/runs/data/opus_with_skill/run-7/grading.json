@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "\"Run your new test against the data as it was during the three broken weeks. It passes.\" and \"A check that stays green through the exact incident it was written for is what this repo calls a rumour, not a device\""
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "\"`COALESCE(col, 0)` is the SQL cousin of `except: pass`. Both convert an absence into a value the downstream type system accepts. Nullability was the only signal that the join failed; the coalesce deleted it.\""
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": true,
+      "evidence": "\"**Reconciliation** \u2014 warehouse revenue total vs. source system total, daily\""
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": true,
+      "evidence": "\"**Build to staging \u2192 assert \u2192 promote** | structural | Makes all of the above able to *block* publication instead of emailing about it\""
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "\"**Schema contract on ingest** \u2014 column presence + type checked before the model runs; renames fail loudly and attributably\""
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "\"**Value floor vs. same weekday** (not \"non-empty\")\""
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": false,
+      "evidence": "Doesn't explicitly identify the three-week detection latency as a gap. States \"Why nothing caught it: the whys end at a missing constraint, not a missing person\" but doesn't frame detection latency as the problem."
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": false,
+      "evidence": "Explains the mechanism (\"Nullability was the only signal that the join failed; the coalesce deleted it\") but not why silent wrong is dangerous, only what caused it."
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "\"it doesn't matter how emphatically it's phrased, because the agent isn't consulting a rule at the moment it acts, it's pattern-matching on a compacted memory\""
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "\"The fix is to move both rules off rung 0 (prose) onto rung 1 (control)\""
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": true,
+      "evidence": "Provides JSON with Bash(git push --force:*), Edit(./src/generated/**), Write(./src/generated/**)"
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": false,
+      "evidence": "Does not mention PreToolUse hooks at all"
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": true,
+      "evidence": "\"worth writing something like 'Blocked: force-push is disabled on this repo. If you need to rewrite remote history, ask the user to run it themselves.'\""
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": false,
+      "evidence": "Does not recommend testing or verifying the device"
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": false,
+      "evidence": "Does not mention committing settings.json; only mentions server-side branch protection"
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": true,
+      "evidence": "\"That ~1-in-10 failure rate isn't a fluke, it's the expected failure rate for training-based enforcement \u2014 it doesn't matter how emphatically it's phrased\""
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "total": 8,
+    "pass_rate": 0.625
+  }
+}

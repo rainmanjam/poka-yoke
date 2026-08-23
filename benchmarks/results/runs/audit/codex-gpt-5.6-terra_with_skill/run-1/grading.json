@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": true,
+      "evidence": "Reverse the two string account IDs... Distinguish source and destination at the API boundary if positional calls remain. Use a named command object with validated, branded IDs"
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "recursively calls Stripe again without an idempotency key... Require an idempotency key, pass it to Stripe, persist/replay the result keyed to a request-payload fingerprint"
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": true,
+      "evidence": "It then returns `null` for all remaining failures, turning an uncertain financial outcome into a plausible 'no charge' result"
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": true,
+      "evidence": "Floating-point rounding leaks into balances and discounts; `amountCents` has a useful name but is still an unconstrained number"
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "`$executeRawUnsafe` is an unnecessary injection footgun... Replace with parameterized query"
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "Unknown statuses silently do nothing... Use a closed status union plus exhaustive handling"
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": true,
+      "evidence": "`JSON.parse` accepts untrusted data, no Stripe signature is verified, and no event ID is deduplicated"
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "All mistakes framed as actions: 'Send a forged event', 'Run two transfers from the same account concurrently', 'Set `retry` after a timeout'"
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "Top 3 findings are all 'money movement' category, followed by corruption, reconciliation, entitlement, then irreversible loss"
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": true,
+      "evidence": "Each finding specifies exact controls: 'verify provider signature', 'conditional debit in single transaction', 'unique constraint', 'branded IDs', etc."
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "Audit review output only; no code modifications made"
+    }
+  ],
+  "summary": {
+    "passed": 11,
+    "total": 11,
+    "pass_rate": 1.0
+  }
+}

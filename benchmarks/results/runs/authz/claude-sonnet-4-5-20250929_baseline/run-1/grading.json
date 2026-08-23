@@ -1,0 +1,60 @@
+{
+  "assertions_sha": "bcf79cb43709",
+  "expectations": [
+    {
+      "text": "Flags the nested comments and attachments resolvers as unscoped by tenant",
+      "passed": true,
+      "evidence": "SEC-5: 'Unscoped comments resolver' and SEC-6: 'Unscoped attachments resolver' both explicitly flagged"
+    },
+    {
+      "text": "Flags updateDocument for scoping on id alone without a tenant constraint",
+      "passed": true,
+      "evidence": "SEC-1: 'Update operation missing tenantId constraint'"
+    },
+    {
+      "text": "Flags exportWorkspace taking tenantId from the client-controlled request body",
+      "passed": true,
+      "evidence": "SEC-2: 'tenantId read from request body instead of session'"
+    },
+    {
+      "text": "Flags searchDocuments as returning rows across all tenants",
+      "passed": true,
+      "evidence": "SEC-3: 'Full-text search missing tenantId filter. Returns ranked results across ALL tenants.'"
+    },
+    {
+      "text": "Flags adminListDocuments as checking authentication but not authorization or tenant",
+      "passed": true,
+      "evidence": "SEC-4: 'Admin function returns documents from ALL tenants. No authorization check for admin role.'"
+    },
+    {
+      "text": "Enumerates all the affected sites rather than fixing only the first one found",
+      "passed": true,
+      "evidence": "Lists 7 distinct findings: SEC-1 through SEC-7 covering all functions"
+    },
+    {
+      "text": "Recommends a structural device (scoped repository, row-level security, or equivalent) rather than only adding where-clauses site by site",
+      "passed": true,
+      "evidence": "Dedicates 'Defense-in-Depth Recommendation' section with PostgreSQL Row-Level Security policies"
+    },
+    {
+      "text": "Recommends a cross-tenant test that attempts tenant A operations against tenant B resources",
+      "passed": true,
+      "evidence": "'Add integration test: User from tenant A cannot access tenant B resources'"
+    },
+    {
+      "text": "Identifies the raw interpolation of tenantId into $queryRawUnsafe as an injection hazard distinct in kind from the tenant-scoping bug",
+      "passed": false,
+      "evidence": "Mentions 'SQL injection via string interpolation' as 'Additional' detail under SEC-2, framing it as secondary to the client-controlled tenantId issue rather than a distinct vulnerability type"
+    },
+    {
+      "text": "Does not conclude the main query paths being scoped means the service is safe",
+      "passed": true,
+      "evidence": "Risk posture stated as CRITICAL with 7 violations; concludes 'This code fails SOC2 CC6.1 in 7 places'"
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 10,
+    "pass_rate": 0.9
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "export type Subscription = | { status: \"trialing\"; ... } | { status: \"active\"; ... } | { status: \"past_due\"; ... } | { status: \"canceled\"; ... }"
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "Each variant lists only its own state fields: trialing has trialEndDate, canceled has cancelReason/voluntary; \"Each variant carries *only* the fields that make sense for it\""
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": true,
+      "evidence": "function assertNever(x: never): never { ... } ... default: return assertNever(sub);"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": true,
+      "evidence": "type Brand<T, B> = T & { readonly [brand]: B }; export type SubscriptionId = Brand<string, \"SubscriptionId\">;"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": false,
+      "evidence": "No transition function or allowed-transition type is given; only a read-only getStatusMessage handler. Nothing constrains moving between states."
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "\"Misuse enumeration\" list plus \"sub.trialEndDate is a compile error until you've narrowed to status === \"trialing\"\" and \"Branded IDs mean transfer(subscriptionId, userId) is a type error\""
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "Primary recommendation is the discriminated union; optional-field approach is called out as a hazard: \"With optional fields, callers can construct nonsense.\""
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 7,
+    "pass_rate": 0.8571
+  }
+}

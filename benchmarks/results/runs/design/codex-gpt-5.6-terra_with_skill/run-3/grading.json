@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "export type Subscription = | (SubscriptionCore & { status: \"trialing\"; ... })"
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "canceled variant has only 'cancelReason' and 'isVoluntary'; no retry/grace/trial fields present"
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": false,
+      "evidence": "switch statement shown without default case or assertNever call; relies on implicit type-checker behavior without explicit implementation"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": true,
+      "evidence": "id: Brand<string, \"SubscriptionId\">; customerId: Brand<string, \"CustomerId\">; export type Instant = Brand<string, ...>; export type RetryCount = Brand<number, ...>"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": false,
+      "evidence": "No transition function provided"
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "\"A `trialing` subscription without a trial-end date. A canceled subscription carrying retry/grace-period fields. An active subscription accidentally treated as if it had a cancellation reason. A status typo.\""
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "\"Use a discriminated union\u2014each status carries exactly the fields that are valid for it\""
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "total": 7,
+    "pass_rate": 0.7143
+  }
+}

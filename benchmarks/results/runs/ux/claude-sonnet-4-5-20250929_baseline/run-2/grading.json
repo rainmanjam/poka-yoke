@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "82f963d241f9",
+  "expectations": [
+    {
+      "text": "Pushes back on the 'are you sure?' modal as the primary fix",
+      "passed": true,
+      "evidence": "\"No \u2014 confirmation modals are **detection-level** controls (rung 2/5 on the poka-yoke ladder). They catch mistakes but don't prevent them\""
+    },
+    {
+      "text": "Explains habituation or click-through blindness as why frequent dialogs stop working",
+      "passed": true,
+      "evidence": "\"users habitually click through after a few deletions\" and \"Users develop 'click-through muscle memory'\""
+    },
+    {
+      "text": "Recommends reversibility (soft delete with a retention window) as the strongest option",
+      "passed": true,
+      "evidence": "\"**Soft delete** (substitution, rung 4) \u2014 'deleted' workspaces move to a Trash folder, auto-purge after 30 days\"; final rec: \"Soft-delete as default\""
+    },
+    {
+      "text": "Recommends grace-period undo as a strong low-friction option",
+      "passed": true,
+      "evidence": "\"**Undo toast** ... Show 'Workspace deleted. **Undo**' for 10 seconds post-delete. One-click recovery.\""
+    },
+    {
+      "text": "Recommends type-the-workspace-name confirmation for the irreversible case",
+      "passed": true,
+      "evidence": "\"**Hard-delete friction** (forcing function, rung 3) \u2014 Require typing the workspace name to permanently delete.\""
+    },
+    {
+      "text": "If a dialog is retained, requires it to name the workspace and the scale of what is lost",
+      "passed": false,
+      "evidence": "Mentions \"confirmation + name entry\" for permanent delete, but never requires the dialog to display the workspace name or the scale/quantity of data being destroyed"
+    },
+    {
+      "text": "Notes that the server must enforce the deletion rules, not just the UI",
+      "passed": false,
+      "evidence": "No mention of server-side/API enforcement; all controls described are UI-level (modal, toast, menu, trash folder)"
+    },
+    {
+      "text": "Gives an explicit preference order rather than an undifferentiated list of ideas",
+      "passed": true,
+      "evidence": "\"**Recommendation:** Soft-delete as default + optional hard-delete behind friction\" \u2014 singles out a top choice over the numbered alternatives"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

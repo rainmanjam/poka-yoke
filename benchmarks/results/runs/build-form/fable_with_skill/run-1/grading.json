@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "31eb11dca414",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Full code for types.ts, selection.ts, api.ts, useBulkAction.ts, BulkActionsBar.tsx, DocumentsTable.tsx with all imports and interconnections"
+    },
+    {
+      "text": "Produces actual working component code rather than only a list of recommendations",
+      "passed": true,
+      "evidence": "Complete React component implementations with hooks, state logic, and render logic\u2014not pseudo-code or recommendations"
+    },
+    {
+      "text": "Makes the destructive action recoverable rather than relying on a confirmation dialog alone",
+      "passed": true,
+      "evidence": "Soft-delete to 30-day trash + undoBatch(batchId) in useBulkAction.ts; toast shows 'Restored {affected} documents' with Undo button"
+    },
+    {
+      "text": "Shows the count of affected items before the action is taken",
+      "passed": true,
+      "evidence": "BulkActionsBar displays scope with count at top: '{scope}' (either 'all X matching documents' or 'X selected documents'); shown before delete confirmation"
+    },
+    {
+      "text": "Distinguishes select-all-on-page from select-all-matching rather than conflating them",
+      "passed": true,
+      "evidence": "Selection discriminated union with mode:'ids' vs mode:'all-matching'; togglePage only selects page; selectAllMatching is separate explicit action; comment: 'Header checkbox only ever means this page'"
+    },
+    {
+      "text": "Separates the destructive action from the benign one visually or spatially",
+      "passed": true,
+      "evidence": "Archive: filled dark bg-slate-800; Delete: red outline only; visual separator span with mx-2 h-5 w-px bg-slate-300 between them"
+    },
+    {
+      "text": "Does not make the destructive action the default focus or primary button",
+      "passed": true,
+      "evidence": "Archive is primary-styled (filled dark button with ml-auto); Delete is outline-only secondary style; Archive is benign, Delete is destructive"
+    },
+    {
+      "text": "Notes that the server must enforce the rules, not just the UI",
+      "passed": true,
+      "evidence": "Closing note states: 'the idempotency key must be unique-constrained per (user, key)' and 'filter target must be tenant-scoped server-side, not trusted from client'"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Closing section lists: acting on ambiguous all, double submission, stale selection, mis-clicking Delete; includes 'Left possible on purpose' rationale"
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

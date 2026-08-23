@@ -1,0 +1,49 @@
+{
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "The instruction is rung zero \u2014 training, not a device \u2014 and 1-in-10 is about what rung-zero enforcement looks like on an agent. Caps and repetition don't change the rung."
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "Once these are in, delete the two rules from CLAUDE.md."
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": true,
+      "evidence": "{ \"permissions\": { \"deny\": [ \"Bash(git push --force:*)\", \"Bash(git push -f:*)\", \"Edit(./src/generated/**)\", \"Write(./src/generated/**)\" ] } }"
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": true,
+      "evidence": "The plugin's PreToolUse hook for the conditional cases deny patterns miss \u2014 e.g. `--force` buried mid-command, or `-f` vs `--force-with-lease`."
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": true,
+      "evidence": "that message matters, because a bare \"denied\" produces a workaround attempt."
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": true,
+      "evidence": "Run the blocked action and confirm denial + message; run the neighbouring legitimate action... Untested hooks fail open"
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": true,
+      "evidence": "committed, so they exist for every teammate and every session, not just the machine that set them up"
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": true,
+      "evidence": "Context compaction... Subagents... Goal pressure \u2014 when a rebase leaves the branch diverged, `--force` is the shortest path to done"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

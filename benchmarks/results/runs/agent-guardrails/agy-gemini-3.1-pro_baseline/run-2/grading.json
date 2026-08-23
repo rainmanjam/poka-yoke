@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "5b62450c21d2",
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "\"The reason your `CLAUDE.md` instructions are failing is because they are **instructions, not devices.** As `poka-yoke`'s own guidelines emphasize: *instructions are rung zero (training), and training degrades.*\" and \"isn't a fluke or a wording problem\u2014it is exactly the statistical failure rate of something a model must 'remember'\""
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "\"To fix this, we need to move these constraints out of prose and into the tool boundary by using **devices**.\" Explicitly reframes away from prose/wording."
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": true,
+      "evidence": "Shows complete .claude/settings.json block with deny array listing Bash(git push --force:*), Edit(./src/generated/**), Write(./src/generated/**), etc."
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": true,
+      "evidence": "\"Deny rules only match prefixes... would bypass them. We need a `PreToolUse` hook to inspect the command.\" Provides concrete hook configuration with guard_dangerous_commands.py"
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": true,
+      "evidence": "\"A bare 'denied' produces a creative workaround. The message must state what was blocked, why, and what to do instead.\" Shows example messages like \"Use --force-with-lease if you must rewrite\" and \"edit its source and re-run it.\""
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": true,
+      "evidence": "\"Run the blocked action yourself (e.g. `git push origin main --force`) and confirm the hook fires and returns the exact message. An unverified device is worse than no device, because it creates confidence without protection.\""
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": true,
+      "evidence": "\"Commit these files in `.claude/settings.json` and `.claude/hooks/` so they protect the entire team, not just your local machine.\""
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": true,
+      "evidence": "\"The ~1-in-10 failure rate you are seeing isn't a fluke or a wording problem\" and explains training degrades under context compaction and subagents; mechanism (remembering), not wording, is what fails"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

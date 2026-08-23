@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "Four interfaces (TrialingSubscription, ActiveSubscription, PastDueSubscription, CanceledSubscription) each with `readonly status: \"trialing\"|\"active\"|\"past_due\"|\"canceled\"`, combined in `type Subscription = TrialingSubscription | ActiveSubscription | PastDueSubscription | CanceledSubscription`"
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "CanceledSubscription has only {id, customerId, planId, startedAt, status, canceledAt, cancellation}; no trialEndsAt or other variant-specific fields"
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": true,
+      "evidence": "`function assertNever(x: never)` defined; used in switch default case in `billingBannerFor()` function; recommends `@typescript-eslint/switch-exhaustiveness-check`"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": true,
+      "evidence": "SubscriptionId, CustomerId, PlanId all defined as `Brand<string, ...>`; RetryCount also branded as `Brand<number, ...>`"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": true,
+      "evidence": "Five transition functions (convertTrialToPaid, renew, paymentFailed, paymentRecovered, cancel) constrain transitions by signature; e.g., `renew(canceledSub, \u2026)` doesn't typecheck because no function accepts CanceledSubscription"
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Table enumerating misuses before types; then explains each: 'renew(canceledSub, \u2026) don't typecheck', 'Nothing accepts a CanceledSubscription, which makes canceled terminal by construction', 'a canceled subscription cannot hold a trial end date'"
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "Primary recommendation is discriminated union with transition functions; bag-of-optionals is listed as a misuse: 'Flat {...} \u2014 2\u2076 spellings for 4 states'"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 7,
+    "pass_rate": 1.0
+  }
+}

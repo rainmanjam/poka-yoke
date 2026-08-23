@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "4999b9f80438",
+  "expectations": [
+    {
+      "text": "States that a written agreement or reminder is not enforcement",
+      "passed": true,
+      "evidence": "every mechanism you used so far is rung 0 \u2014 a comment, a wiki page, a Slack pin, and a standup mention are all 'training,' and training degrades. Nothing enforces the rule"
+    },
+    {
+      "text": "Recommends a pre-commit hook to run the formatter automatically",
+      "passed": true,
+      "evidence": "Formatter as a pre-commit hook, not documentation \u2014 `prettier --check` / `black --check` (or `--write` if you want it auto-fixing)"
+    },
+    {
+      "text": "Notes that pre-commit is bypassable with --no-verify and must be backed by a CI check",
+      "passed": true,
+      "evidence": "it's bypassable with `--no-verify`, so it's not the real enforcement, just the fast feedback loop... The same check as a required CI check \u2014 this is the one that actually matters, because CI can't be --no-verify'd"
+    },
+    {
+      "text": "Recommends a type check as a required CI check",
+      "passed": true,
+      "evidence": "run `prettier --check` / `tsc --noEmit` / `mypy --strict` in CI and mark it required in branch protection"
+    },
+    {
+      "text": "Recommends baselining or ratcheting rather than enforcing across the whole repo at once",
+      "passed": true,
+      "evidence": "Either scope the check to changed files (`git diff --name-only origin/main... | xargs mypy`) or generate a baseline of current violations and fail CI only on *new* ones"
+    },
+    {
+      "text": "Notes that branch protection is what makes a CI check actually required",
+      "passed": true,
+      "evidence": "Without branch protection, a required check is just a suggestion"
+    },
+    {
+      "text": "Recommends the failure message tell the developer how to fix it",
+      "passed": true,
+      "evidence": "this function is missing a return type annotation \u2014 add `-> None` (or the right type) and push again gets fixed; a bare `error: rule violated` gets bypassed or ignored"
+    },
+    {
+      "text": "Does not primarily recommend rewriting CONTRIBUTING.md, more reminders, or more discipline",
+      "passed": true,
+      "evidence": "The fix isn't a better reminder, it's a gate"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "4999b9f80438",
+  "expectations": [
+    {
+      "text": "States that a written agreement or reminder is not enforcement",
+      "passed": true,
+      "evidence": "\"You've already done everything training can do \u2014 CONTRIBUTING.md, a pin, two standups \u2014 and got ~50%. That's not a compliance problem, it's the expected decay curve of an instruction.\""
+    },
+    {
+      "text": "Recommends a pre-commit hook to run the formatter automatically",
+      "passed": true,
+      "evidence": "\"Pre-commit hook (`pre-commit`/husky/lefthook) that formats on commit.\""
+    },
+    {
+      "text": "Notes that pre-commit is bypassable with --no-verify and must be backed by a CI check",
+      "passed": false,
+      "evidence": "Mentions pre-commit as 'convenience layer, not the gate' implying CI backing is needed, but does not explicitly mention --no-verify bypass mechanism."
+    },
+    {
+      "text": "Recommends a type check as a required CI check",
+      "passed": true,
+      "evidence": "\"CI job runs `<formatter> --check` and the type checker on every PR; the job is a **required status check** in branch protection\""
+    },
+    {
+      "text": "Recommends baselining or ratcheting rather than enforcing across the whole repo at once",
+      "passed": true,
+      "evidence": "\"use a ratchet (baseline the current count of untyped defs, fail if it goes up)\""
+    },
+    {
+      "text": "Notes that branch protection is what makes a CI check actually required",
+      "passed": true,
+      "evidence": "\"required status check in branch protection, so the merge button is disabled until it passes\""
+    },
+    {
+      "text": "Recommends the failure message tell the developer how to fix it",
+      "passed": false,
+      "evidence": "Not mentioned. Response discusses a 'one-line fix command' but not what the failure message itself should contain."
+    },
+    {
+      "text": "Does not primarily recommend rewriting CONTRIBUTING.md, more reminders, or more discipline",
+      "passed": true,
+      "evidence": "Explicitly rejects these: \"Another reminder, a PR template checkbox, a 'required reviewer.' That's what you've been doing.\""
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

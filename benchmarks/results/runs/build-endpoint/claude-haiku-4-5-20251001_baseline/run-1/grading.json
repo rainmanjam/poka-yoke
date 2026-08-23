@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "9b2ce0ce8a1c",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Provides complete schema, migration, handler with error handling, and route setup"
+    },
+    {
+      "text": "Requires an idempotency key as a parameter rather than making it optional",
+      "passed": false,
+      "evidence": "Handler accepts only { orderId, amountCents, reason }; no idempotency key parameter"
+    },
+    {
+      "text": "Backs idempotency with a database unique constraint, not application logic alone",
+      "passed": false,
+      "evidence": "No idempotency key or constraint implemented"
+    },
+    {
+      "text": "Uses distinct types for the identifiers rather than bare strings for both order and refund ids",
+      "passed": false,
+      "evidence": "Both Order and Refund use bare String type without branded/distinct types"
+    },
+    {
+      "text": "Handles money as integer minor units rather than a float",
+      "passed": true,
+      "evidence": "amountCents: Int in schema; validated and passed to Stripe as integer"
+    },
+    {
+      "text": "Validates the refund amount server-side against the order rather than trusting the caller",
+      "passed": true,
+      "evidence": "Explicit check: if (amountCents > order.totalCents) rejects with 400"
+    },
+    {
+      "text": "Scopes the write so one tenant or user cannot refund another's order",
+      "passed": true,
+      "evidence": "if (order.tenantId !== tenantId) check before Stripe call or database write"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": false,
+      "evidence": "Ends with 'Key design choices' section listing features, not explicit closure on impossible misuses"
+    },
+    {
+      "text": "Names at least one thing it deliberately left possible and why",
+      "passed": false,
+      "evidence": "Lists design choices (optimistic status, reason mapping) but never explicitly states what was deliberately left possible"
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "total": 9,
+    "pass_rate": 0.4444
+  }
+}

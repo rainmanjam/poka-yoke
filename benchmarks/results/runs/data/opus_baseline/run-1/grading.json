@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "\"It's a check that cannot fail against the failure you actually had.\""
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "\"COALESCE(x, 0) converts 'I don't know' into a legitimate-looking business value. Zero revenue is a number finance can read without flinching. Null is not.\""
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": true,
+      "evidence": "\"Daily: warehouse revenue total vs. billing/Stripe total, within tolerance, between load and publish\""
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": true,
+      "evidence": "\"build to staging, test staging, promote on pass\""
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "\"Schema contract at ingest \u2014 assert expected columns by name, fail the load\""
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": false,
+      "evidence": "Mentions shape checks in passing (\"Freshness, volume, and null-rate checks all validate shape\") but deprioritizes them; recommends join match-rate instead, not volume/null-rate on revenue"
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": false,
+      "evidence": "Frames the three-week silence as an ordering problem (\"a test that runs after publication just emails you about data finance already saw\") but does not explicitly call it out as its own detection gap needing prevention"
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": true,
+      "evidence": "\"a wrong join produces perfectly well-shaped, wrong data. Reconciliation is the only check that catches logic errors.\""
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

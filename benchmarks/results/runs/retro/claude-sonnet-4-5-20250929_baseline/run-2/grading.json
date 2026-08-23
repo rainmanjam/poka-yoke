@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "1af6b213502f",
+  "expectations": [
+    {
+      "text": "States plainly that the recent-charge lookup is not sufficient",
+      "passed": true,
+      "evidence": "\"No, amount matching is **detection-level** and won't prevent this from happening again.\""
+    },
+    {
+      "text": "Identifies the lookup as a check-then-act race rather than a device",
+      "passed": true,
+      "evidence": "\"Race condition: both workers check simultaneously, both see 'no recent charge,' both proceed\" \u2014 and labels it detection-level rather than an eliminating control."
+    },
+    {
+      "text": "Recommends a required idempotency key on the charge path",
+      "passed": true,
+      "evidence": "\"stripe.charges.create({ ... }, { idempotencyKey })\" \u2026 \"Add idempotency keys **today**\""
+    },
+    {
+      "text": "Recommends a database unique constraint backing the idempotency key",
+      "passed": false,
+      "evidence": "No unique constraint anywhere; the DB advice is a conditional UPDATE status guard and an outbox insert, neither of which is a uniqueness constraint on the key."
+    },
+    {
+      "text": "Separates the defect from the mistake from the underlying system hazard",
+      "passed": false,
+      "evidence": "Only a detection-vs-elimination distinction is drawn; the double charge (defect), the redelivered second charge attempt (mistake), and the non-idempotent charge path (hazard) are never separated as distinct layers."
+    },
+    {
+      "text": "Locates the hazard as a system property rather than as a worker bug or human error",
+      "passed": true,
+      "evidence": "Cause is placed in queue/worker concurrency and missing architectural controls \u2014 \"both workers check simultaneously\", \"you need elimination-level controls\", state machine/outbox \u2014 never in a coder's slip."
+    },
+    {
+      "text": "Sweeps for other non-idempotent side effects reachable from a retry",
+      "passed": false,
+      "evidence": "Absent \u2014 no mention of emails, receipts, webhooks, ledger writes, or any other side effect the redelivered message could re-execute; scope stays on the charge call."
+    },
+    {
+      "text": "Treats 'second time this happened' as evidence for pushing to a Control-rung device",
+      "passed": true,
+      "evidence": "\"Since this is the second occurrence, you need **elimination-level** controls\" and \"Since this is recurring, you need multiple layers.\""
+    },
+    {
+      "text": "Attributes cause to the system, not to any person",
+      "passed": true,
+      "evidence": "No person or team is blamed anywhere; framing is entirely about missing controls in the charge path."
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 9,
+    "pass_rate": 0.6667
+  }
+}

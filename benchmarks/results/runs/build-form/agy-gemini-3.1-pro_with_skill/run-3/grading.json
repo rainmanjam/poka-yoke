@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "31eb11dca414",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "DocumentTable component with state, handlers, table markup, and DeleteConfirmModal"
+    },
+    {
+      "text": "Produces actual working component code rather than only a list of recommendations",
+      "passed": true,
+      "evidence": "Full working component with React hooks and JSX implementation"
+    },
+    {
+      "text": "Makes the destructive action recoverable rather than relying on a confirmation dialog alone",
+      "passed": false,
+      "evidence": "Delete uses type-to-confirm with no recovery mechanism. Notes mention 'I left Archive immediately executable... combined with an immediate action plus a 5-10s Undo toast' but Delete has no undo/recovery."
+    },
+    {
+      "text": "Shows the count of affected items before the action is taken",
+      "passed": true,
+      "evidence": "'{selectedCount} documents selected' in bulk actions bar and 'Delete {selectedCount} ... documents?' in modal"
+    },
+    {
+      "text": "Distinguishes select-all-on-page from select-all-matching rather than conflating them",
+      "passed": true,
+      "evidence": "selectAllMode tracks 'none' | 'page' | 'all'; 'Select all {totalMatchingCount} matching documents' shown conditionally"
+    },
+    {
+      "text": "Separates the destructive action from the benign one visually or spatially",
+      "passed": true,
+      "evidence": "Archive is gray/white bordered; Delete is red-600. Visually distinct in bulk actions bar."
+    },
+    {
+      "text": "Does not make the destructive action the default focus or primary button",
+      "passed": true,
+      "evidence": "Cancel button has autoFocus in modal, not the Delete button"
+    },
+    {
+      "text": "Notes that the server must enforce the rules, not just the UI",
+      "passed": false,
+      "evidence": "Code includes idempotency keys but does not mention server-side enforcement"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Closes with 'Poka-yoke notes' stating 'What this prevents: - Accidental massive scale edits - Double submission - Inattentive deletion'"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 9,
+    "pass_rate": 0.7778
+  }
+}

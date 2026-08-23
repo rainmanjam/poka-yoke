@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "82f963d241f9",
+  "expectations": [
+    {
+      "text": "Pushes back on the 'are you sure?' modal as the primary fix",
+      "passed": true,
+      "evidence": "**Short answer: no, an \"are you sure?\" modal won't help.** ... The \"are you sure?\" modal stays on the shelf."
+    },
+    {
+      "text": "Explains habituation or click-through blindness as why frequent dialogs stop working",
+      "passed": true,
+      "evidence": "Users develop click-through blindness after seeing the same dialog fifty times. They'll hit \"Confirm\" with the same muscle memory they use for \"OK\""
+    },
+    {
+      "text": "Recommends reversibility (soft delete with a retention window) as the strongest option",
+      "passed": true,
+      "evidence": "**Recommendation:** Implement soft-delete with a 30-day trash retention"
+    },
+    {
+      "text": "Recommends grace-period undo as a strong low-friction option",
+      "passed": true,
+      "evidence": "**Grace-period undo** | \"Workspace deleted. [Undo]\" toast for 10 seconds. Zero friction, full recovery."
+    },
+    {
+      "text": "Recommends type-the-workspace-name confirmation for the irreversible case",
+      "passed": true,
+      "evidence": "**Type-to-confirm** | Type workspace name to delete (GitHub-style). Reserve for bulk or high-value."
+    },
+    {
+      "text": "If a dialog is retained, requires it to name the workspace and the scale of what is lost",
+      "passed": false,
+      "evidence": "Names the workspace (\"Delete `workspace-name`?\" dialog; \"A dialog that names the *specific object* being destroyed\") but never requires stating the scale of what is lost (e.g., number of projects/members/files destroyed)."
+    },
+    {
+      "text": "Notes that the server must enforce the deletion rules, not just the UI",
+      "passed": false,
+      "evidence": "No mention of server-side/API enforcement; all devices are described as UI/product behavior."
+    },
+    {
+      "text": "Gives an explicit preference order rather than an undifferentiated list of ideas",
+      "passed": true,
+      "evidence": "\"**Recommendation:** Implement soft-delete with a 30-day trash retention and an \"Undo\" toast\" plus rung-ranked table (Control vs Warning) and \"Reserve for bulk or high-value\""
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

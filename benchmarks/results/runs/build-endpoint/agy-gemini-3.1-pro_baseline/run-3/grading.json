@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "9b2ce0ce8a1c",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Includes Prisma schema, SQL migration, and TypeScript handler"
+    },
+    {
+      "text": "Requires an idempotency key as a parameter rather than making it optional",
+      "passed": false,
+      "evidence": "Handler extracts only `{ orderId, amountCents, reason }`; no idempotency key"
+    },
+    {
+      "text": "Backs idempotency with a database unique constraint, not application logic alone",
+      "passed": false,
+      "evidence": "No idempotency key field in Refund schema; no unique constraint"
+    },
+    {
+      "text": "Uses distinct types for the identifiers rather than bare strings for both order and refund ids",
+      "passed": false,
+      "evidence": "Both `Order.id` and `Refund.id` are bare `String` types; no branded types"
+    },
+    {
+      "text": "Handles money as integer minor units rather than a float",
+      "passed": true,
+      "evidence": "`amountCents` and `totalCents` are both `Int`"
+    },
+    {
+      "text": "Validates the refund amount server-side against the order rather than trusting the caller",
+      "passed": true,
+      "evidence": "`if (amountCents > order.totalCents) { return res.status(400)...}`"
+    },
+    {
+      "text": "Scopes the write so one tenant or user cannot refund another's order",
+      "passed": true,
+      "evidence": "`if (order.tenantId !== tenantId) { return res.status(403)...}`"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": false,
+      "evidence": "No closing design discussion or threat model"
+    },
+    {
+      "text": "Names at least one thing it deliberately left possible and why",
+      "passed": false,
+      "evidence": "No intentional design decisions explicitly named"
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "total": 9,
+    "pass_rate": 0.4444
+  }
+}

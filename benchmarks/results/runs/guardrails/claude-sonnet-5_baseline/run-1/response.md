@@ -1,0 +1,5 @@
+The pattern here is the one this repo's own CLAUDE.md names directly: anything that depends on someone remembering it is a training solution, and training decays — you're seeing that decay right now. The fix isn't a better reminder, it's a device that makes non-compliant code physically unable to merge: a CI check that runs the formatter and type checker and fails the PR if either finds diffs, plus a pre-commit hook so contributors get the same failure locally before they even push.
+
+Main tradeoff: this has real friction — you'll need to run the formatter once across the whole repo first (a "baseline" commit) so old violations don't block new PRs, and some contributors will be annoyed the first week. But it's the only version of this that doesn't require anyone to remember anything.
+
+Want me to look at what CI you're running and draft the actual gate (format-check + type-check steps, plus a pre-commit config)?

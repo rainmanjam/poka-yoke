@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "export type Subscription = | TrialingSubscription | ActiveSubscription | PastDueSubscription | CanceledSubscription; with status discriminant on each"
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "CanceledSubscription has canceledAt, accessEndsAt, cancellation; TrialingSubscription has trialEndsAt \u2014 no mixing of fields across variants"
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": true,
+      "evidence": "export function assertNever(x: never): never... with default: return assertNever(sub) in describeAccess switch"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": true,
+      "evidence": "type Brand<T, B extends string>; SubscriptionId, CustomerId, PlanId all branded"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": true,
+      "evidence": "Discriminated union constrains variants; provides LEGAL_TRANSITIONS structure and explicitly defers implementation to user business logic"
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Section 'Misuse enumeration first' explicitly lists 4 misuses with how each is prevented: 'Swappable params \u2014 prevented by branding', 'Nonsense states \u2014 prevented by discriminated union', 'voluntary/reason mixing \u2014 prevented by nested union', 'new case next year \u2014 prevented by exhaustiveness'"
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "Misuse #2 explicitly states 'naive shape claims 2^5 = 32 states. Four exist.' Provides discriminated union as solution"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 7,
+    "pass_rate": 1.0
+  }
+}

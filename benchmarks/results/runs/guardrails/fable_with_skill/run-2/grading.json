@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "4999b9f80438",
+  "expectations": [
+    {
+      "text": "States that a written agreement or reminder is not enforcement",
+      "passed": true,
+      "evidence": "\"nothing you can *say* will fix this, because the problem isn't the people \u2014 it's where the rule lives... A written rule has a half-life of about one onboarding\""
+    },
+    {
+      "text": "Recommends a pre-commit hook to run the formatter automatically",
+      "passed": true,
+      "evidence": "\"add a pre-commit hook that *runs the formatter* rather than complaining about it\""
+    },
+    {
+      "text": "Notes that pre-commit is bypassable with --no-verify and must be backed by a CI check",
+      "passed": true,
+      "evidence": "\"pre-commit hooks are bypassable with `--no-verify`, so the hook provides speed and CI provides authority\""
+    },
+    {
+      "text": "Recommends a type check as a required CI check",
+      "passed": true,
+      "evidence": "\"the type checker (`tsc --noEmit`, `mypy --strict`, etc.) \u2014 then mark both as **required checks in branch protection**\""
+    },
+    {
+      "text": "Recommends baselining or ratcheting rather than enforcing across the whole repo at once",
+      "passed": true,
+      "evidence": "\"Enforce on changed files only, or generate a baseline and fail only on *new* violations, so the count can only go down\""
+    },
+    {
+      "text": "Notes that branch protection is what makes a CI check actually required",
+      "passed": true,
+      "evidence": "\"mark both as **required checks in branch protection**. This is the whole trick. Without branch protection, CI is advisory\""
+    },
+    {
+      "text": "Recommends the failure message tell the developer how to fix it",
+      "passed": true,
+      "evidence": "\"it should say the exact command that fixes it (`run: npx prettier --write .`), not 'check failed'\""
+    },
+    {
+      "text": "Does not primarily recommend rewriting CONTRIBUTING.md, more reminders, or more discipline",
+      "passed": true,
+      "evidence": "No recommendation to rewrite or add reminders. Explicitly: \"One thing to leave alone: don't add a review checklist item or a PR template checkbox\""
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

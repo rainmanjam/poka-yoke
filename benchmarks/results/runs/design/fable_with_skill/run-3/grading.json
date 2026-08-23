@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "| (SubscriptionBase & { readonly status: \"trialing\"; readonly trialEndsAt: Date }) |..."
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "Union arms separate by status; canceled has reason/voluntary, trialing has trialEndsAt only"
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": true,
+      "evidence": "Defines function assertNever(x: never); enforces exhaustiveness via Extract type narrowing in per-function pattern"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": true,
+      "evidence": "type Brand<T, B> with SubscriptionId = Brand<string, \"SubscriptionId\">"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": true,
+      "evidence": "Per-function transitions (markPastDue) with Extract types: \"markPastDue(canceledSub, \u2026) does not compile\""
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "\"Misuses the types must make unsayable\" (4 items) followed by \"Rungs reached\" section"
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "First misuse: \"Bag of optionals claims 2\u2077 states; you have four\"; discriminated union recommended"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 7,
+    "pass_rate": 1.0
+  }
+}

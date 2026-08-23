@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "9b2ce0ce8a1c",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Provides complete types file, Prisma schema, SQL migration, and handler code in routes/refunds.ts"
+    },
+    {
+      "text": "Requires an idempotency key as a parameter rather than making it optional",
+      "passed": true,
+      "evidence": "Handler checks: `if (!idempotencyKey) { throw new HttpError(400, 'Idempotency-Key header is required...') }`"
+    },
+    {
+      "text": "Backs idempotency with a database unique constraint, not application logic alone",
+      "passed": true,
+      "evidence": "Schema has `idempotencyKey String @unique`, migration creates `CREATE UNIQUE INDEX`, and handler catches `P2002` constraint violation"
+    },
+    {
+      "text": "Uses distinct types for the identifiers rather than bare strings for both order and refund ids",
+      "passed": false,
+      "evidence": "Branded types `OrderId` and `TenantId` are defined in types/refund.ts but never used in the handler; Zod schema parses `orderId` as plain `z.string().min(1)` and function accepts it as string"
+    },
+    {
+      "text": "Handles money as integer minor units rather than a float",
+      "passed": true,
+      "evidence": "Schema uses `Int` for totalCents and amountCents; Zod schema uses `z.number().int().positive()`"
+    },
+    {
+      "text": "Validates the refund amount server-side against the order rather than trusting the caller",
+      "passed": true,
+      "evidence": "Handler aggregates existing refunds and checks: `if (amountCents > order.totalCents - alreadyCommitted) { throw HttpError(422, ...) }`"
+    },
+    {
+      "text": "Scopes the write so one tenant or user cannot refund another's order",
+      "passed": true,
+      "evidence": "Handler queries with: `SELECT * FROM \"Order\" WHERE id = ${orderId} AND \"tenantId\" = ${tenantId} FOR UPDATE`"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": false,
+      "evidence": "Response lists design choices preventing misuses (idempotency, FOR UPDATE, PENDING state, enum) but lacks a closing enumeration explicitly stating what misuses are now impossible"
+    },
+    {
+      "text": "Names at least one thing it deliberately left possible and why",
+      "passed": true,
+      "evidence": "Explicitly states: 'Left possible, on purpose: no RBAC check beyond \"authenticated member of the tenant\" \u2014 the spec didn't say refunds need elevated permissions'"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 9,
+    "pass_rate": 0.7778
+  }
+}

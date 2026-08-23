@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "82f963d241f9",
+  "expectations": [
+    {
+      "text": "Pushes back on the 'are you sure?' modal as the primary fix",
+      "passed": true,
+      "evidence": "\"The proposed 'Are you sure?' modal is not recommended.\""
+    },
+    {
+      "text": "Explains habituation or click-through blindness as why frequent dialogs stop working",
+      "passed": true,
+      "evidence": "\"users quickly develop click-through blindness, clicking 'Confirm' reflexively.\""
+    },
+    {
+      "text": "Recommends reversibility (soft delete with a retention window) as the strongest option",
+      "passed": true,
+      "evidence": "\"Make it reversible (Soft Delete - Rung 1 Control): The strongest device. Instead of deleting immediately, we move the workspace to a 'Trash' state with a retention period (e.g., 30 days).\""
+    },
+    {
+      "text": "Recommends grace-period undo as a strong low-friction option",
+      "passed": false,
+      "evidence": "Grace-period undo is not mentioned; trash state is discussed but not a time-limited undo button"
+    },
+    {
+      "text": "Recommends type-the-workspace-name confirmation for the irreversible case",
+      "passed": true,
+      "evidence": "\"Type-to-Confirm (Rung 2 Warning): If deletion must be genuinely irreversible, require the user to type the workspace's exact name to confirm.\""
+    },
+    {
+      "text": "If a dialog is retained, requires it to name the workspace and the scale of what is lost",
+      "passed": true,
+      "evidence": "Option 3 explicitly requires: \"Name the object: 'Delete workspace production-api'?\" and \"State the scale: 'This will permanently delete 14 projects and 3,201 files.'\""
+    },
+    {
+      "text": "Notes that the server must enforce the deletion rules, not just the UI",
+      "passed": false,
+      "evidence": "No explicit mention of server-side enforcement; verification plan only addresses UI-level bypass prevention"
+    },
+    {
+      "text": "Gives an explicit preference order rather than an undifferentiated list of ideas",
+      "passed": true,
+      "evidence": "\"Please select from the following alternatives in order of preference:\" followed by numbered options; Option 1 labeled \"The strongest device\""
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

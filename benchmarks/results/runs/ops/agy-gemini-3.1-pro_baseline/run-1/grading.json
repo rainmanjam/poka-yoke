@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": true,
+      "evidence": "During the rollout window, old application code runs against the new database schema. Any instances that haven't been replaced yet will crash when they try to query the dropped column."
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "We will use the **Contract** phase of the Expand/Contract pattern. PR 1: Ignore the Column (Deploy Today). PR 2: Drop the Column (Deploy Monday)."
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": true,
+      "evidence": "Dropping the `legacy_email` column is irreversible; recovering from a mistaken drop requires restoring from a database backup or point-in-time recovery."
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": true,
+      "evidence": "A code rollback takes minutes, but an irreversible database drop rollback takes hours of database restoration."
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "Since it is Friday afternoon, team availability is lowest over the weekend... The entire team will be available if we discover a secondary system was secretly relying on the column."
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": true,
+      "evidence": "Add a CI gate that fails the build if a PR contains both application code changes and destructive DDL (like `DROP COLUMN`)."
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "**Do not merge this PR as-is.** Green CI proves the *final* state works, but it does not test the rollout window."
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "PR 1 is Fully reversible. PR 2 is High (irreversible). Can the irreversible part ship separately? Yes, we must split the reversible code change from the irreversible column drop."
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

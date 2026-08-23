@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": true,
+      "evidence": "\"Both are `string`; `transfer(to, from, n)` compiles and moves money the wrong way.\""
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "\"Stripe times out *after* creating the charge; `retry=true`... calls again... No idempotency key anywhere.\""
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": true,
+      "evidence": "\"then `null` tells the caller *nothing* happened \u2014 inviting a third.\""
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": true,
+      "evidence": "\"9. Money as bare `number`, mixed units... `transfer` takes `amount`, `chargeCustomer` takes `amountCents`... `applyDiscount` yields fractional cents.\""
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "\"Also `$executeRawUnsafe` with string interpolation.\""
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "\"switches without `default`... switch silently falls through\""
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": true,
+      "evidence": "\"No signature check, `JSON.parse` \u2192 `any`, so anyone who can POST can drive\""
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "\"Two concurrent debits both pass the balance check\", \"If `to` doesn't exist, the debit succeeds and the credit throws.\""
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "Findings 1-6 are money/irreversible; findings 7-10 are corruption/flags/types/minor"
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": true,
+      "evidence": "\"Device: `stripe.webhooks.constructEvent`, a zod schema\", \"Device: `db.$transaction` with... `UPDATE \u2026 SET balance = balance - $n WHERE id = $from AND balance >= $n`\""
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "\"Per the audit skill I've proposed only \u2014 no edits.\""
+    }
+  ],
+  "summary": {
+    "passed": 11,
+    "total": 11,
+    "pass_rate": 1.0
+  }
+}

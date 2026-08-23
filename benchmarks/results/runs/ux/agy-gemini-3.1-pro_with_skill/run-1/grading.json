@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "82f963d241f9",
+  "expectations": [
+    {
+      "text": "Pushes back on the 'are you sure?' modal as the primary fix",
+      "passed": true,
+      "evidence": "\"An 'Are you sure?' modal is **not** recommended.\""
+    },
+    {
+      "text": "Explains habituation or click-through blindness as why frequent dialogs stop working",
+      "passed": true,
+      "evidence": "\"Users quickly develop click-through blindness to these modals and press 'Confirm' reflexively.\""
+    },
+    {
+      "text": "Recommends reversibility (soft delete with a retention window) as the strongest option",
+      "passed": true,
+      "evidence": "\"Make it reversible (Soft Delete): The best approach (Control, Rung 1). Instead of fully deleting the workspace immediately, move it to a 'trash' state with a 30-day retention period.\""
+    },
+    {
+      "text": "Recommends grace-period undo as a strong low-friction option",
+      "passed": true,
+      "evidence": "\"Grace-Period Undo: Delete immediately but show a toast with an 'Undo' button for 5-10 seconds, delaying the actual backend deletion.\""
+    },
+    {
+      "text": "Recommends type-the-workspace-name confirmation for the irreversible case",
+      "passed": true,
+      "evidence": "\"Type-to-Confirm (Warning, Rung 2): If soft-delete is too expensive to build right now, require the user to type the exact workspace name to confirm the deletion\""
+    },
+    {
+      "text": "If a dialog is retained, requires it to name the workspace and the scale of what is lost",
+      "passed": false,
+      "evidence": "Choice 2 dialog text is \"Delete workspace '[Name]' permanently?\" which names the workspace but does not state the scale of what is lost (projects, files, etc.)"
+    },
+    {
+      "text": "Notes that the server must enforce the deletion rules, not just the UI",
+      "passed": false,
+      "evidence": "No mention of server-side enforcement anywhere in the response"
+    },
+    {
+      "text": "Gives an explicit preference order rather than an undifferentiated list of ideas",
+      "passed": true,
+      "evidence": "Options labeled with preference markers: \"(Recommended)\" for Choice 1, \"(Warning, Rung 2)\" for others; soft delete described as \"best approach\""
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "018a96d90c3c",
+  "expectations": [
+    {
+      "text": "States that system prompt instructions are not a reliable control on model behaviour",
+      "passed": true,
+      "evidence": "system prompt says 'be careful' (rung 0 \u2014 does not work on probabilistic components)"
+    },
+    {
+      "text": "Recommends structured output against a schema rather than extracting values from prose",
+      "passed": true,
+      "evidence": "Device needed: **Structured output with schema validation** (rung 1 \u2014 control). Model cannot produce invalid amounts."
+    },
+    {
+      "text": "Recommends validating the refund amount server-side against the actual order",
+      "passed": true,
+      "evidence": "Before processing any refund, verify amount \u2264 order total and is a valid partial/full refund (rung 1)."
+    },
+    {
+      "text": "Recommends a required idempotency key on the refund call",
+      "passed": true,
+      "evidence": "on every `refund()` call, attach `idempotency_key = hash(order_id + timestamp_window)`"
+    },
+    {
+      "text": "Recommends a database constraint or equivalent so a duplicate refund is rejected rather than merely avoided",
+      "passed": true,
+      "evidence": "store it with a unique constraint. Second call with same key returns cached result"
+    },
+    {
+      "text": "Recommends human confirmation or an approval gate for the irreversible refund action",
+      "passed": true,
+      "evidence": "**Confirmation gate** \u2014 show extracted amount + reason to a human before calling the refund API."
+    },
+    {
+      "text": "Identifies prompt injection risk from the customer-supplied message reaching a privileged action",
+      "passed": true,
+      "evidence": "**Model injection via customer message** - Mistake: Customer says 'actually I want $0.01 refunded instead' in follow-up"
+    },
+    {
+      "text": "Recommends bounds or caps on the refund amount",
+      "passed": true,
+      "evidence": "verify amount \u2264 order total and is a valid partial/full refund"
+    },
+    {
+      "text": "Does not primarily recommend changes to the prompt wording",
+      "passed": true,
+      "evidence": "Response focuses on structured output, idempotency, server-side validation, and confirmation gates; dismisses prompt as rung 0"
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

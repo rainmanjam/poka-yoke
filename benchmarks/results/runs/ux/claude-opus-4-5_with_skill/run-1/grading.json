@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "82f963d241f9",
+  "expectations": [
+    {
+      "text": "Pushes back on the 'are you sure?' modal as the primary fix",
+      "passed": true,
+      "evidence": "\"**Short answer: no.** An \"are you sure?\" modal is rung 0 \u2014 it relies on the user reading it, and they won't.\""
+    },
+    {
+      "text": "Explains habituation or click-through blindness as why frequent dialogs stop working",
+      "passed": true,
+      "evidence": "\"Users who delete workspaces fifty times a day will click through with the same reflex they press \"OK\".\" and \"Click-through blindness. Protects nobody\""
+    },
+    {
+      "text": "Recommends reversibility (soft delete with a retention window) as the strongest option",
+      "passed": true,
+      "evidence": "\"### Recommendation \u2014 **Soft-delete + trash.** The workspace moves to a \"Recently Deleted\" section with a 30-day retention period.\""
+    },
+    {
+      "text": "Recommends grace-period undo as a strong low-friction option",
+      "passed": true,
+      "evidence": "\"fall back to **grace-period undo**: perform the delete immediately, show \"Workspace deleted. Undo\" toast for 10 seconds\" \u2014 listed as rung 1, \"Zero friction on happy path\""
+    },
+    {
+      "text": "Recommends type-the-workspace-name confirmation for the irreversible case",
+      "passed": true,
+      "evidence": "\"**Type workspace name to confirm** | 1 (Control) | Cannot be done reflexively. Reserve for *truly* catastrophic (account deletion).\""
+    },
+    {
+      "text": "If a dialog is retained, requires it to name the workspace and the scale of what is lost",
+      "passed": true,
+      "evidence": "\"**Dialog naming the specific workspace + contents** | 2 (Warning) | Better than \"are you sure\" but still dismissable.\""
+    },
+    {
+      "text": "Notes that the server must enforce the deletion rules, not just the UI",
+      "passed": false,
+      "evidence": "No mention of server-side enforcement; the only backend reference is \"Both require backend changes, not just a modal\", which is about implementing soft-delete/undo, not about the server enforcing deletion rules against UI-bypassing requests."
+    },
+    {
+      "text": "Gives an explicit preference order rather than an undifferentiated list of ideas",
+      "passed": true,
+      "evidence": "\"### The preference ladder for destructive actions\" table ranked by rung, plus \"**Soft-delete + trash.**\" as primary and \"fall back to **grace-period undo**\""
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

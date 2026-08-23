@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "No \u2014 that test would not have caught this incident. Walk through why, then what would."
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "The nulls were coalesced to 0 instead of surfaced... This is the data-world equivalent of `except: pass` \u2014 it converts a loud failure into a quiet, plausible-looking one."
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": true,
+      "evidence": "Reconciliation against the source system... Sum of revenue in the warehouse vs. the upstream system's total, with a tolerance."
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": false,
+      "evidence": "A discusses 'Assert the join match rate before you ever coalesce' but refers to pipeline ordering, not publication gating. No explicit recommendation that assertions block publication before dashboard update."
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "A schema contract on the upstream table... your ingest validates against it and quarantines on mismatch instead of letting a rename flow silently into a join miss."
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "Null-rate assertion on the pre-coalesce join output... Assert the join match rate before you ever coalesce, e.g. fail if >X% of rows are unmatched."
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": false,
+      "evidence": "Mentions 'three weeks later at close' retrospectively but does not treat the three-week detection latency as a separate gap requiring its own fix."
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": true,
+      "evidence": "If a revenue join can legitimately have no match, that needs an explicit, named case... not a default that's indistinguishable from 'correctly zero.'"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

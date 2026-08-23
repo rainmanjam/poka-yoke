@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "31eb11dca414",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Full component with state management, archiveDocuments, deleteDocuments, fetchDocuments, pagination, and styled table"
+    },
+    {
+      "text": "Produces actual working component code rather than only a list of recommendations",
+      "passed": true,
+      "evidence": "Complete TSX implementation with hooks, event handlers, conditional rendering, and full UI"
+    },
+    {
+      "text": "Makes the destructive action recoverable rather than relying on a confirmation dialog alone",
+      "passed": false,
+      "evidence": "Implements inline confirmation prompt with Cancel/Confirm buttons; no soft-delete, trash, undo, or recovery mechanism beyond the confirmation dialog"
+    },
+    {
+      "text": "Shows the count of affected items before the action is taken",
+      "passed": true,
+      "evidence": "Displays '{selectedIds.size} selected' and conditionally shows 'of {data.total} total' when selected < total"
+    },
+    {
+      "text": "Distinguishes select-all-on-page from select-all-matching rather than conflating them",
+      "passed": true,
+      "evidence": "Shows distinction via 'of {data.total} total' when count differs from page selection; makes clear that select-all toggles page items only"
+    },
+    {
+      "text": "Separates the destructive action from the benign one visually or spatially",
+      "passed": true,
+      "evidence": "Archive is white with blue border; Delete is red (bg-red-600); spatially separated in button row"
+    },
+    {
+      "text": "Does not make the destructive action the default focus or primary button",
+      "passed": true,
+      "evidence": "Archive appears first; Delete is second; confirmation requires additional interaction"
+    },
+    {
+      "text": "Notes that the server must enforce the rules, not just the UI",
+      "passed": false,
+      "evidence": "Final line: 'Replace the fetch URLs and mutation functions with your actual API/tRPC/GraphQL layer' \u2014 no note about server-side enforcement"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": false,
+      "evidence": "Closes with implementation detail about replacing fetch functions, not misuses prevented"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 9,
+    "pass_rate": 0.6667
+  }
+}

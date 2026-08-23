@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "5b62450c21d2",
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "\"A line in CLAUDE.md is *training*, and training degrades... Caps and repetition don't change the mechanism; ~1-in-10 is just what a probabilistic instruction looks like.\""
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "\"Both of your rules are irreversible actions, which is exactly where you need Control (mistake impossible), not Warning.\""
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": true,
+      "evidence": "Provides JSON block with Edit, Write, and Bash deny entries"
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": true,
+      "evidence": "\"A hook, because for force-push the pattern is not enough.\" with hook configuration details"
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": true,
+      "evidence": "\"A bare refusal produces a creative workaround. For generated files it needs to name the source:\" followed by detailed example message"
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": true,
+      "evidence": "Provides bash verification commands with expected deny/no-output results"
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": true,
+      "evidence": "\"`.claude/settings.json`, **committed** (not `settings.local.json`; that protects one machine, which is the same failure as documenting it)\""
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": true,
+      "evidence": "\"Caps and repetition don't change the mechanism; ~1-in-10 is just what a probabilistic instruction looks like.\""
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

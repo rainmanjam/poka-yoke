@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "\"Not quite \u2014 and this is exactly the pattern your CLAUDE.md warns about... It's not a device yet; it's a rumor.\""
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "\"upstream renamed a column \u2192 join returned NULLs \u2192 coalesced to 0 \u2192 table still had rows, numbers just looked low\""
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": false,
+      "evidence": "No mention of validating against upstream data or a source of truth"
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": false,
+      "evidence": "No discussion of assertion timing or preventing bad data from reaching dashboards"
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": false,
+      "evidence": "Discusses testing the failure but not detecting upstream schema changes with contracts or checks"
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "\"SELECT COUNT(*) FROM revenue WHERE revenue_amount > 0\" and \"distribution isn't suspiciously skewed to zero\""
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": false,
+      "evidence": "No mention of the three-week detection gap"
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": false,
+      "evidence": "Identifies the problem exists but doesn't compare silent failure to loud failure or explain the danger differential"
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "total": 8,
+    "pass_rate": 0.375
+  }
+}

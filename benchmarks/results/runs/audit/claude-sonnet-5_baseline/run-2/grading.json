@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": true,
+      "evidence": "Finding #7: '`transfer(toAccount, fromAccount, amount)` compiles and runs, moving money the opposite direction, silently'"
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "Finding #4: 'If the first call actually succeeded on Stripe's side but the response was lost (timeout, network blip), the retry creates a second real charge'"
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": true,
+      "evidence": "Finding #5 (standalone): '`catch (e) { ... return null }` discards the actual error entirely'"
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": false,
+      "evidence": "Not mentioned in any finding"
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "Finding #2: 'the actual delete reconstructs its own WHERE clause via raw SQL \u2014 if the two conditions ever drift, the reported count and the actual deleted rows silently diverge'"
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "Finding #6: 'Real Stripe statuses like `\"past_due\"`, `\"canceled\"`. The DB write happens unconditionally; the switch only knows `\"active\"` and `\"canceled\"`'"
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": true,
+      "evidence": "Set Aside section: '`handleWebhook`'s unguarded `JSON.parse`... crash-on-malformed-body'"
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "Findings frame as actions: 'Anyone who can POST JSON', 'Call `purgeCanceledAccounts()`', '`transfer(toAccount, fromAccount, amount)` compiles and runs'"
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "Webhook (money), purgeCanceledAccounts (data loss), transfer (money corruption), chargeCustomer (double charge) ranked first; Set Aside has lower-priority items"
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": true,
+      "evidence": "Each finding includes specific code: `stripe.webhooks.constructEvent()`, required parameter + minimum age check, transaction with locking, idempotencyKey, union type"
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "No files written; conversation-only response"
+    }
+  ],
+  "summary": {
+    "passed": 10,
+    "total": 11,
+    "pass_rate": 0.9091
+  }
+}

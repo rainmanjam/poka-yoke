@@ -1,0 +1,49 @@
+{
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "\"Capitalizing or repeating text doesn't change which rung it's on; a 1-in-10 failure rate is exactly what you'd expect from a prose rule under pressure\""
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "\"The fix \u2014 move both rules to a deny rule\""
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": true,
+      "evidence": "Creates settings.json with Bash(git push --force:*), Bash(git push -f:*), Edit(src/generated/**), Write(src/generated/**)"
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": true,
+      "evidence": "\"The plain deny rules above are simpler and sufficient for these two cases; you don't need the hook unless you want conditional logic\""
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": false,
+      "evidence": "Does not mention deny messages or what they should convey"
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": false,
+      "evidence": "Does not recommend testing or verifying the device"
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": true,
+      "evidence": "\"Create `.claude/settings.json` (commit it \u2014 team-wide, not personal)\""
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": true,
+      "evidence": "\"a 1-in-10 failure rate is exactly what you'd expect from a prose rule under pressure, not a sign you phrased it wrong\""
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "export type Subscription = | TrialingSubscription | ActiveSubscription | PastDueSubscription | CanceledSubscription"
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "TrialingSubscription has only trialEndsAt; CanceledSubscription has only canceledAt, reason, voluntary\u2014no overlap across variants"
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": true,
+      "evidence": "export function assertNever(x: never): never {...} used in hasAccess with default: return assertNever(sub)"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": true,
+      "evidence": "type SubscriptionId = Brand<string, 'SubscriptionId'>; type CustomerId = Brand<string, 'CustomerId'>; type PlanId = Brand<string, 'PlanId'>"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": false,
+      "evidence": "Mentions transitions should be functions (\"transitions should be functions returning a new variant, e.g. activate(...)\") but does not provide the actual implementation"
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Dedicated section listing: 'Nonsense state combos \u2014 closed', 'Swapping customerId/planId \u2014 closed', 'Missing a case when a state is added \u2014 closed', 'Mutating status in place \u2014 closed'"
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "Opens with 'A flat {status, trialEndsAt?, retryCount?, reason?, ...} claims 2\u2076 = 64 legal states; only 4 exist' as misuse to reject, then recommends union"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 7,
+    "pass_rate": 0.8571
+  }
+}

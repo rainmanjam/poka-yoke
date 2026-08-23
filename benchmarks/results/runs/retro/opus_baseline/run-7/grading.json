@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "1af6b213502f",
+  "expectations": [
+    {
+      "text": "States plainly that the recent-charge lookup is not sufficient",
+      "passed": true,
+      "evidence": "Short answer: no, and it fails hardest in exactly the scenario that caused the incident."
+    },
+    {
+      "text": "Identifies the lookup as a check-then-act race rather than a device",
+      "passed": true,
+      "evidence": "It's a TOCTOU race. Attempt 2 runs SELECT recent charge while attempt 1 is still in flight at Stripe"
+    },
+    {
+      "text": "Recommends a required idempotency key on the charge path",
+      "passed": true,
+      "evidence": "Then make the parameter required in the signature, so the next caller can't omit it."
+    },
+    {
+      "text": "Recommends a database unique constraint backing the idempotency key",
+      "passed": true,
+      "evidence": "UNIQUE constraint on the key in your own charges/attempts table, with the intent row inserted before the Stripe call."
+    },
+    {
+      "text": "Separates the defect from the mistake from the underlying system hazard",
+      "passed": true,
+      "evidence": "Defect \u2014 340 customers charged twice. Mistake \u2014 the redelivered message was processed as a new request. Hazard \u2014 an at-least-once queue feeds a non-idempotent side effect..."
+    },
+    {
+      "text": "Locates the hazard as a system property rather than as a worker bug or human error",
+      "passed": true,
+      "evidence": "The timeout is not the cause. Timeouts are normal and will recur. Redelivery is not a bug \u2014 it's the delivery guarantee you chose."
+    },
+    {
+      "text": "Sweeps for other non-idempotent side effects reachable from a retry",
+      "passed": true,
+      "evidence": "every consumer on that queue that writes, emails, or calls a third party... your Stripe webhook handler... ledger/balance writes"
+    },
+    {
+      "text": "Treats 'second time this happened' as evidence for pushing to a Control-rung device",
+      "passed": true,
+      "evidence": "That's also your answer to why this is the second time: the previous fix was almost certainly application-level and path-specific too"
+    },
+    {
+      "text": "Attributes cause to the system, not to any person",
+      "passed": true,
+      "evidence": "The hazard is that a charge request carries no stable identity, so 'again' and 'new' are indistinguishable."
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

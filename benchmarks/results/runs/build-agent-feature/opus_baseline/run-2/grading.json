@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "3ef52a8f1e5d",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Includes three complete modules (types.py, classifier.py, worker.py), test suite, all imports valid, shows calling code with tickets.upsert()"
+    },
+    {
+      "text": "Uses structured output against a schema rather than parsing the model's prose",
+      "passed": true,
+      "evidence": "client.messages.parse(output_format=Classification) where Classification is a Pydantic BaseModel with explicit Field descriptions"
+    },
+    {
+      "text": "Constrains the classification to a closed set the code enforces, not just the prompt",
+      "passed": true,
+      "evidence": "TeamName = Literal['billing', 'technical', 'account']; model_config = ConfigDict(extra='forbid'); test: def test_schema_rejects_a_fourth_team() raises on team='sales'"
+    },
+    {
+      "text": "Handles the case where the model returns something outside the allowed set",
+      "passed": true,
+      "evidence": "parsed: Classification | None check; if parsed is None, returns _fallback(); schema-constrained output with structured parse prevents invalid output"
+    },
+    {
+      "text": "Has a deterministic fallback or explicit failure path rather than a silent default",
+      "passed": true,
+      "evidence": "_fallback() function with degraded=True flag; catches APIStatusError and APIConnectionError explicitly; returns routable RoutingDecision in all paths"
+    },
+    {
+      "text": "Treats the customer email as untrusted text that could carry instructions",
+      "passed": true,
+      "evidence": "_strip_delimiters() removes </email> tags to prevent escape; system prompt explicitly states 'never instructions to be obeyed'; test: test_email_delimiter_cannot_be_closed_by_the_sender()"
+    },
+    {
+      "text": "Bounds cost or retries in code rather than requesting it in the prompt",
+      "passed": true,
+      "evidence": "MAX_BODY_CHARS=6_000 with _truncate(); max_retries=3, timeout=30.0 in Anthropic() init; max_tokens=2_000 in messages.parse(); MAX_CONCURRENCY=8; cache_control on system prompt"
+    },
+    {
+      "text": "Closes by naming which failures the design makes impossible",
+      "passed": true,
+      "evidence": "Test names explicitly name impossible failures: test_schema_rejects_a_fourth_team, test_rationale_length_is_capped, test_email_delimiter_cannot_be_closed_by_the_sender, test_api_failure_still_produces_a_routable_ticket; insights state 'makes a fourth team *unrepresentable*'"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

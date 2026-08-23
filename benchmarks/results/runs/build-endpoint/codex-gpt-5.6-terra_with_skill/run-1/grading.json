@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "9b2ce0ce8a1c",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Provides handler with error handling, schema additions, and migration; explicitly catches and responds to all errors within the route"
+    },
+    {
+      "text": "Requires an idempotency key as a parameter rather than making it optional",
+      "passed": true,
+      "evidence": "`requireIdempotencyKey()` throws HttpError(400) if missing or invalid; !/^[A-Za-z0-9._-]{1,200}$/.test(key)"
+    },
+    {
+      "text": "Backs idempotency with a database unique constraint, not application logic alone",
+      "passed": true,
+      "evidence": "@@unique([tenantId, idempotencyKey]) in schema; migration creates matching unique index"
+    },
+    {
+      "text": "Uses distinct types for the identifiers rather than bare strings for both order and refund ids",
+      "passed": false,
+      "evidence": "Defines branded type OrderId but not RefundId; Refund id remains plain String"
+    },
+    {
+      "text": "Handles money as integer minor units rather than a float",
+      "passed": true,
+      "evidence": "amountCents: number with validation < 1 || > 2_147_483_647; uses Int in schema"
+    },
+    {
+      "text": "Validates the refund amount server-side against the order rather than trusting the caller",
+      "passed": true,
+      "evidence": "Sums existing PENDING/SUCCEEDED refunds, compares reservedCents + input.amountCents against order.totalCents; throws 422 if exceeded"
+    },
+    {
+      "text": "Scopes the write so one tenant or user cannot refund another's order",
+      "passed": true,
+      "evidence": "RLS policies use current_setting('app.tenant_id'); composite FK on (orderId, tenantId); transaction sets tenant context"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Explicitly names: cross-tenant refund rows, concurrent over-refunds, retry-driven duplicate refunds"
+    },
+    {
+      "text": "Names at least one thing it deliberately left possible and why",
+      "passed": true,
+      "evidence": "Stripe's external outcome cannot be made locally atomic, so uncertain calls remain PENDING and retain the reserved amount until retry or webhook reconciles"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 9,
+    "pass_rate": 0.8889
+  }
+}

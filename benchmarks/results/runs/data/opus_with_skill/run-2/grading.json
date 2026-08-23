@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "No. That test would have been green for all 21 days. The table was never empty. It was full of plausible zeros."
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "COALESCE(revenue, 0) makes 'no matching row' and 'genuinely zero revenue' the same value."
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": true,
+      "evidence": "Daily reconciliation: warehouse total vs. source-of-truth total\u2014the only check that catches a logic error the data still looks fine after"
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": true,
+      "evidence": "build to staging, test staging, promote on pass. A suite that runs after publication...still lets bad numbers reach finance."
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "Contract check on upstream schema at ingest; quarantine to a dead-letter table, don't drop"
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "Assert join match rate against a floor between load and publish, promote only on pass"
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": true,
+      "evidence": "Finance's close *was* your reconciliation job. It runs monthly, with three weeks of lag, executed by a human."
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": false,
+      "evidence": "returns a plausible number instead of failing...silently took on semantic load\u2014describes the contrast but does not explain the consequences or why failure would be preferable"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

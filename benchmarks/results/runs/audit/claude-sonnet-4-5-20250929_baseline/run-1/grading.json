@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": true,
+      "evidence": "\"Accepts negative amounts, zero, NaN, swapped from/to. Caller error = data corruption.\" with fix \"Branded IDs (`type AccountId = string & {__brand: \"AccountId\"}`)\""
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "\"Retry double-charge (L56-58) ... `retry=true` charges the customer twice\" \u2192 \"Idempotency keys on Stripe calls\""
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": true,
+      "evidence": "\"Silent failures (L59) Returns `null` on error. Caller won't know charge failed\""
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": true,
+      "evidence": "\"Floating-point money (L64) JavaScript `number` uses binary floating-point ... Use integer cents everywhere\""
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "\"SQL injection in purge (L86-88) `$executeRawUnsafe` with string interpolation\""
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "\"Unbounded status strings (L14, L67) ... updateSubscription(id, \"actve\") // switch falls through, features never enabled\""
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": false,
+      "evidence": "Only signature verification is raised (\"Missing webhook auth (L93-94) No signature verification\"); no mention of JSON.parse or unvalidated/unparsed body shape as such"
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "Findings are framed as code/action situations \u2014 \"Two separate updates with no transaction wrapper\", \"Caller error = data corruption\" \u2014 with no attribution to developer traits"
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "\"\ud83d\udd34 Critical \u2014 Will Lose Money\" (race condition, double-charging, retry double-charge) listed before \"\ud83d\udfe1 High\" items"
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": true,
+      "evidence": "Every item has a \"Poka-yoke fix\": e.g. \"Database transaction or single atomic UPDATE\", \"Verify `Stripe-Signature` header\", \"`status: \"active\" | \"canceled\" | \"paused\"` (union type)\""
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "Response is analysis-only text; no file edits or writes described or implied"
+    }
+  ],
+  "summary": {
+    "passed": 10,
+    "total": 11,
+    "pass_rate": 0.9091
+  }
+}

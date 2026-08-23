@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": true,
+      "evidence": "\"### 2. Swappable account IDs \u2014 **Critical** / **Trivial**... Call `transfer(toAccount, fromAccount, 1000)` with arguments reversed. Compiles, passes review, moves money the wrong direction.\" with branded-type device"
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "\"### 3. Retry doubles the charge... **Today**: **None** \u2014 the retry has no idempotency key\" and \"The retry creates a second charge.\""
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": true,
+      "evidence": "\"### 6. Swallowed errors return null... The catch block returns `null`. The caller doesn't check for null or treats it as success.\""
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": true,
+      "evidence": "\"### 10. Money as a float... `balance: number` means `0.1 + 0.2 !== 0.3`\" \u2192 device: \"Integer cents + Money type that carries currency\""
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "\"### 7. SQL injection in purge... Injecting `'; DROP TABLE accounts; --` is now possible.\" with parameterized `$executeRaw` template fix"
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "\"the switch falls through to... nothing\" \u2192 device \"Literal union type + exhaustive switch\" with `const _exhaustive: never = status;`"
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": true,
+      "evidence": "\"### 4. Missing webhook signature verification... An attacker POSTs `{\"type\": \"invoice.paid\", \"data\": {...\"amount\": 999999}}` directly to your webhook endpoint\" \u2014 body treated as trusted external input; device is constructEvent before any processing"
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "Each finding has a \"**Mistake**:\" line phrased as an action, e.g. \"Call `purgeCanceledAccounts()` with no argument, or a far-future date.\" No developer-quality language."
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "\"**Ship-blocking (fix before production):** 1. Wrap `transfer` in a transaction (#1) 2. Add required idempotency key... \" with unused-timeout config ranked Low/last"
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": true,
+      "evidence": "Every finding has a \"**Device**\" plus code, e.g. \"Branded types for `SourceAccount` and `DestAccount` so swapping them is a compile error\" and `db.$transaction(async (tx) => {...})`"
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "No edits performed; ends with \"Would you like me to write this audit to `docs/poka-yoke/audit-2026-08-20.md`...?\""
+    }
+  ],
+  "summary": {
+    "passed": 11,
+    "total": 11,
+    "pass_rate": 1.0
+  }
+}

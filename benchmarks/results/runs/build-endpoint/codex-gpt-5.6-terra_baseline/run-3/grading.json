@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "9b2ce0ce8a1c",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Prisma schema, SQL migration, TypeScript handler with Stripe and Prisma calls, app.ts wiring example all present"
+    },
+    {
+      "text": "Requires an idempotency key as a parameter rather than making it optional",
+      "passed": false,
+      "evidence": "Generates idempotency key server-side: 'const idempotencyKey = `refund:${order.id}:${randomUUID()}`;' without requiring client input"
+    },
+    {
+      "text": "Backs idempotency with a database unique constraint, not application logic alone",
+      "passed": false,
+      "evidence": "No idempotencyKey field in Refund schema; no unique constraint on client idempotency (only on stripeRefundId)"
+    },
+    {
+      "text": "Uses distinct types for the identifiers rather than bare strings for both order and refund ids",
+      "passed": false,
+      "evidence": "Both Order.id and Refund.id are 'String @id'; TypeScript code treats orderId as bare string"
+    },
+    {
+      "text": "Handles money as integer minor units rather than a float",
+      "passed": true,
+      "evidence": "Schema: 'amountCents Int'; validation: '!Number.isSafeInteger(amountCents) || amountCents <= 0'"
+    },
+    {
+      "text": "Validates the refund amount server-side against the order rather than trusting the caller",
+      "passed": true,
+      "evidence": "Checks 'amountCents > order.totalCents - order.refundedCents' and throws 409 if exceeded"
+    },
+    {
+      "text": "Scopes the write so one tenant or user cannot refund another's order",
+      "passed": true,
+      "evidence": "Order lookup: 'where: { id: orderId, tenantId: session.tenantId }'"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": false,
+      "evidence": "Closing is about operational error handling ('Alert/reconcile this condition'), not what attacks are prevented"
+    },
+    {
+      "text": "Names at least one thing it deliberately left possible and why",
+      "passed": false,
+      "evidence": "No statement explaining any deliberately-allowed behavior or design choice"
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "total": 9,
+    "pass_rate": 0.4444
+  }
+}

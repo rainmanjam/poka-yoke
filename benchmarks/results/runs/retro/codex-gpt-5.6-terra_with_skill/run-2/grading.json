@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "1af6b213502f",
+  "expectations": [
+    {
+      "text": "States plainly that the recent-charge lookup is not sufficient",
+      "passed": true,
+      "evidence": "\"No. The 'recent charge with the same amount' check is a heuristic, not a control\""
+    },
+    {
+      "text": "Identifies the lookup as a check-then-act race rather than a device",
+      "passed": true,
+      "evidence": "\"Two redeliveries can both check before either charge exists (a race)\""
+    },
+    {
+      "text": "Recommends a required idempotency key on the charge path",
+      "passed": true,
+      "evidence": "\"Derive the Stripe idempotency key from that ID and require it in the payment gateway interface\u2014no worker or caller may generate a new key per delivery.\""
+    },
+    {
+      "text": "Recommends a database unique constraint backing the idempotency key",
+      "passed": true,
+      "evidence": "\"with a database uniqueness constraint matching one intended payment\""
+    },
+    {
+      "text": "Separates the defect from the mistake from the underlying system hazard",
+      "passed": true,
+      "evidence": "Explicit Defect/Mistake/Hazard labels with distinct statements for each"
+    },
+    {
+      "text": "Locates the hazard as a system property rather than as a worker bug or human error",
+      "passed": true,
+      "evidence": "\"the system permits a payment attempt to reach Stripe without a durable, required idempotency identity\""
+    },
+    {
+      "text": "Sweeps for other non-idempotent side effects reachable from a retry",
+      "passed": true,
+      "evidence": "\"Sweep every other Stripe POST path\u2014charges, PaymentIntent creation/confirmation, refunds, subscriptions\u2014for the same optional-or-generated-per-retry key hazard.\""
+    },
+    {
+      "text": "Treats 'second time this happened' as evidence for pushing to a Control-rung device",
+      "passed": true,
+      "evidence": "\"Given this is the second incident, I would not close it on the current change. The required device is 'one intended payment \u2192 one durable payment-attempt ID \u2192 one Stripe idempotency key,' not 'avoid recently matching amounts.'\""
+    },
+    {
+      "text": "Attributes cause to the system, not to any person",
+      "passed": true,
+      "evidence": "\"the system permits a payment attempt to reach Stripe without a durable, required idempotency identity\""
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

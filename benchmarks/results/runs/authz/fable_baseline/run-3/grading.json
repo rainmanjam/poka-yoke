@@ -1,0 +1,60 @@
+{
+  "assertions_sha": "bcf79cb43709",
+  "expectations": [
+    {
+      "text": "Flags the nested comments and attachments resolvers as unscoped by tenant",
+      "passed": true,
+      "evidence": "Document.comments, attachments, and author are scoped by parent.id only... but the moment any other resolver returns a Document shape, the children are free"
+    },
+    {
+      "text": "Flags updateDocument for scoping on id alone without a tenant constraint",
+      "passed": true,
+      "evidence": "where: { id: documentId } has no tenantId. Tenant A can overwrite the title/body of any document whose id it knows"
+    },
+    {
+      "text": "Flags exportWorkspace taking tenantId from the client-controlled request body",
+      "passed": true,
+      "evidence": "tenantId comes from req.body, not the session... tenant_id in a request body is client-controlled, full stop"
+    },
+    {
+      "text": "Flags searchDocuments as returning rows across all tenants",
+      "passed": true,
+      "evidence": "session is accepted and never used. Full-text search runs across every tenant's documents and returns ids and titles"
+    },
+    {
+      "text": "Flags adminListDocuments as checking authentication but not authorization or tenant",
+      "passed": true,
+      "evidence": "The only check is \"has a userId\". Returns the 200 most recent documents across all tenants to any logged-in caller. There's no role check and no tenant scope"
+    },
+    {
+      "text": "Enumerates all the affected sites rather than fixing only the first one found",
+      "passed": true,
+      "evidence": "Lists 5 findings ranked: exportWorkspace, updateDocument, searchDocuments, adminListDocuments, nested resolvers"
+    },
+    {
+      "text": "Recommends a structural device (scoped repository, row-level security, or equivalent) rather than only adding where-clauses site by site",
+      "passed": true,
+      "evidence": "Postgres RLS... FORCE ROW LEVEL SECURITY... A TenantDb built from the session (constructor requires tenantId), with the raw db lint-banned... Delete exportWorkspace's body-sourced tenant"
+    },
+    {
+      "text": "Recommends a cross-tenant test that attempts tenant A operations against tenant B resources",
+      "passed": true,
+      "evidence": "The two-tenant test: create tenants A and B, call every exported function from A against B's ids, assert 404/empty"
+    },
+    {
+      "text": "Identifies the raw interpolation of tenantId into $queryRawUnsafe as an injection hazard distinct in kind from the tenant-scoping bug",
+      "passed": true,
+      "evidence": "The id is also string-interpolated into $queryRawUnsafe, so ' OR 1=1 -- dumps the whole table. This one is a breach on its own"
+    },
+    {
+      "text": "Does not conclude the main query paths being scoped means the service is safe",
+      "passed": true,
+      "evidence": "The \"main query paths are scoped\" claim is true \u2014 and that's exactly the pattern: getDocument and Query.documents are fine, everything off the happy path leaks"
+    }
+  ],
+  "summary": {
+    "passed": 10,
+    "total": 10,
+    "pass_rate": 1.0
+  }
+}

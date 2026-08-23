@@ -1,0 +1,60 @@
+{
+  "assertions_sha": "bcf79cb43709",
+  "expectations": [
+    {
+      "text": "Flags the nested comments and attachments resolvers as unscoped by tenant",
+      "passed": true,
+      "evidence": "Finding 1: 'Nested resolvers leak across tenants' at documents.ts:30-37 explicitly lists Document.comments, Document.attachments, Document.author"
+    },
+    {
+      "text": "Flags updateDocument for scoping on id alone without a tenant constraint",
+      "passed": true,
+      "evidence": "Finding 2: 'Unscoped update allows cross-tenant modification' at documents.ts:46-48 shows vulnerable code with `where: { id: documentId }`"
+    },
+    {
+      "text": "Flags exportWorkspace taking tenantId from the client-controlled request body",
+      "passed": true,
+      "evidence": "Finding 3: 'Client-controlled tenant_id in export' notes 'POST {tenantId: \"victim-tenant-uuid\", format: \"json\"} from attacker session' and 'Attacker exports any tenant's full workspace'"
+    },
+    {
+      "text": "Flags searchDocuments as returning rows across all tenants",
+      "passed": true,
+      "evidence": "Finding 4: 'Search unscoped, returns all tenants' documents' states 'Returns top 50 matches across ALL tenants' documents'"
+    },
+    {
+      "text": "Flags adminListDocuments as checking authentication but not authorization or tenant",
+      "passed": true,
+      "evidence": "Finding 5: 'Admin path ignores tenant, returns global dataset' notes 'Every authenticated user sees all tenants' documents' and distinguishes authentication from authorization"
+    },
+    {
+      "text": "Enumerates all the affected sites rather than fixing only the first one found",
+      "passed": true,
+      "evidence": "Identifies all 5 findings with 'Recommended Order of Remediation' listing all five in priority sequence"
+    },
+    {
+      "text": "Recommends a structural device (scoped repository, row-level security, or equivalent) rather than only adding where-clauses site by site",
+      "passed": true,
+      "evidence": "Provides 'Control-rung alternative: Database RLS policies' and 'Control-rung alternative: Scoped repository pattern' for multiple findings"
+    },
+    {
+      "text": "Recommends a cross-tenant test that attempts tenant A operations against tenant B resources",
+      "passed": true,
+      "evidence": "Provides 'The Test That Proves It' section with test code creating tenantA and tenantB, creating docB in tenantB, then testing tenantA.session operations against docB.id"
+    },
+    {
+      "text": "Identifies the raw interpolation of tenantId into $queryRawUnsafe as an injection hazard distinct in kind from the tenant-scoping bug",
+      "passed": false,
+      "evidence": "Mentions 'Also: SQL injection via string template' but treats client-controlled tenantId and SQL injection as two aspects of one vulnerability in Finding 3 rather than identifying injection as conceptually distinct"
+    },
+    {
+      "text": "Does not conclude the main query paths being scoped means the service is safe",
+      "passed": true,
+      "evidence": "Response focuses entirely on vulnerabilities found; no statement that scoped main paths indicate safety"
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 10,
+    "pass_rate": 0.9
+  }
+}

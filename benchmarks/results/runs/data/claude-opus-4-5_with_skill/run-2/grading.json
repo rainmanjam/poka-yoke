@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "\"'Revenue table isn't empty'...and it only catches the extreme case \u2014 a completely empty table. Your actual incident produced a table that was *full of zeros*, which would pass this test.\""
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "\"The COALESCE pattern is the core hazard: it's the data equivalent of `except: pass`. It converts 'something is broken' into 'revenue is low this week'\""
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": true,
+      "evidence": "\"Reconciliation (Detection, but the right one): Sum revenue in your model daily against a trusted upstream total. This is the only check that catches *logic errors*\""
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": false,
+      "evidence": "Discusses detection devices and assertions but does not explicitly recommend they run before/gate dashboard publication"
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "\"Data contract on the upstream table: The upstream team declares the schema; renames are breaking changes that fail your pipeline loudly instead of producing NULLs.\""
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "Table shows \"Is there the right amount? (volume)\" and \"NULL rate check on revenue column\"; recommendations include \"NULL rate assertion before COALESCE\""
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": false,
+      "evidence": "Does not frame the 3-week silent failure as a specific detection gap requiring its own instrumentation or fix"
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": true,
+      "evidence": "\"Three weeks of wrong numbers that 'look low' is worse than three weeks of a failing pipeline\"; \"In data, silence is the defect\""
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "export type Subscription = TrialingSub | ActiveSub | PastDueSub | CanceledSub; with each variant having status: \"trialing\" | \"active\" | \"past_due\" | \"canceled\""
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "TrialingSub has trialEndDate, CanceledSub has only cancelReason/wasVoluntary; \"You can't accidentally access trialEndDate on a canceled sub\""
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": false,
+      "evidence": "No assertNever, no switch statement, no never arm anywhere; only the claim \"Adding a new status causes compile errors everywhere it's unhandled\""
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": false,
+      "evidence": "id: string; customerId: string; planId: string; \u2014 bare strings, no branding"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": false,
+      "evidence": "No transition function or state-change constraint; response covers only type shapes and a cancelReason question"
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "\"You can't accidentally access `trialEndDate` on a canceled sub\" and \"TypeScript enforces that you handle each case\""
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "\"Discriminated unions beat optional fields here\"; primary recommendation is the union with no optional fields"
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "total": 7,
+    "pass_rate": 0.5714
+  }
+}

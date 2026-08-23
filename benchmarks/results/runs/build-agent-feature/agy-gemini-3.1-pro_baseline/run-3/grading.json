@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "3ef52a8f1e5d",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Code includes Email and RoutingDecision types with RoutingDestination enum, SupportEmailRouter classifier class, and calling code with example email and ticketing output"
+    },
+    {
+      "text": "Uses structured output against a schema rather than parsing the model's prose",
+      "passed": true,
+      "evidence": "Uses Pydantic RoutingDecision with enum, derives tool schema from model_json_schema(), forces tool use with tool_choice, and parses with RoutingDecision(**content.input)"
+    },
+    {
+      "text": "Constrains the classification to a closed set the code enforces, not just the prompt",
+      "passed": true,
+      "evidence": "RoutingDestination enum with BILLING, TECHNICAL, ACCOUNT values; RoutingDecision uses this enum type; Pydantic validates; tool schema from model_json_schema() includes enum"
+    },
+    {
+      "text": "Handles the case where the model returns something outside the allowed set",
+      "passed": false,
+      "evidence": "RoutingDecision(**content.input) raises ValidationError if destination is invalid, but this is not caught anywhere\u2014no try-except in main, so error propagates uncaught"
+    },
+    {
+      "text": "Has a deterministic fallback or explicit failure path rather than a silent default",
+      "passed": true,
+      "evidence": "Raises RuntimeError if tool_use not found; temperature=0.0; no silent defaults"
+    },
+    {
+      "text": "Treats the customer email as untrusted text that could carry instructions",
+      "passed": false,
+      "evidence": "Email embedded directly in prompt: f\"From: {email.fromAddress}\\nSubject: {email.subject}\\nBody:\\n{email.body}\\n\" with no validation, escaping, or injection protection"
+    },
+    {
+      "text": "Bounds cost or retries in code rather than requesting it in the prompt",
+      "passed": true,
+      "evidence": "max_tokens=256 bounds request cost; model hardcoded to Haiku"
+    },
+    {
+      "text": "Closes by naming which failures the design makes impossible",
+      "passed": false,
+      "evidence": "Response ends with output section. No closing statement about failure modes or design guarantees."
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "total": 8,
+    "pass_rate": 0.625
+  }
+}

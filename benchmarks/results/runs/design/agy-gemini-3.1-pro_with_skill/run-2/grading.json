@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "Subscription type is defined as a union of TrialingSubscription | ActiveSubscription | PastDueSubscription | CanceledSubscription, each with a literal status field ('trialing', 'active', 'past_due', 'canceled')"
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "CanceledSubscription contains only status, cancelReason, and isVoluntary; no trial or renewal fields. TrialingSubscription contains only status and trialEndDate; no past_due fields."
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": false,
+      "evidence": "Response discusses exhaustiveness checking as possible ('if used with a never-assertion') but does not include actual code demonstrating an assertNever function, switch statement with never arm, or example exhaustiveness check"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": true,
+      "evidence": "SubscriptionId is defined as 'string & { readonly __brand: unique symbol }' to prevent mixing with other IDs"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": false,
+      "evidence": "Response explicitly states: 'We didn't add typestate constraints to restrict *transitions* between these states' and provides no transition function or state machine mechanism"
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Section 'What the design makes impossible' names three hazards: bag-of-optionals, primitive obsession, and non-exhaustive branching"
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "Response explicitly rejects 'A single Subscription struct with optional fields (trialEndDate?, retryCount?) allows invalid states' as an anti-pattern and recommends the union instead"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "total": 7,
+    "pass_rate": 0.7143
+  }
+}

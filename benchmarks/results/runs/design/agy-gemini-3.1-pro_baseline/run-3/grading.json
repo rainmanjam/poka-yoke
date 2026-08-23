@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "Uses 'status' discriminator; combines variants into union: `type Subscription = TrialingSubscription | ActiveSubscription | PastDueSubscription | CanceledSubscription`"
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "TrialingSubscription has trialEndDate, ActiveSubscription has renewalDate, etc. No overlapping optional fields."
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": false,
+      "evidence": "Example uses if statement checking one case; no exhaustiveness check or default arm shown"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": false,
+      "evidence": "IDs defined as bare strings: `id: string; customerId: string; planId: string`"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": false,
+      "evidence": "No transition function provided; references 'help you build functions' in verification plan but provides none"
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "States 'This ensures you can't accidentally access fields that don't belong to the current status' with example showing `trialEndDate` error"
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "Primary recommendation is discriminated union with separate interfaces per status, not optional fields"
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "total": 7,
+    "pass_rate": 0.5714
+  }
+}

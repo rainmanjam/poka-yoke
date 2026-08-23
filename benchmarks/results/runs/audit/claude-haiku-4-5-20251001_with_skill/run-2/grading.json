@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": false,
+      "evidence": "Finding #2 addresses non-atomic transfer but not the swappable parameter order risk. No finding explicitly flags parameter reversal."
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "Finding #1: 'A network timeout or retry causes `chargeCustomer()` to be called twice...Customers charged twice (silent money movement)'"
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": false,
+      "evidence": "Finding #8 mentions 'catch returns null' in passing but does not make chargeCustomer's catch block returning null a primary finding. Finding #6 addresses retry logic but not the null-return behavior specifically."
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": true,
+      "evidence": "Finding #4: 'Floating-point arithmetic on money...cumulative rounding errors silently create ledger discrepancies'"
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "Finding #5: 'SQL injection: `olderThan` date is interpolated directly into SQL string without parameterization'"
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "Finding #7: 'the switch has no `default` case requiring exhaustiveness. Code silently skips the new status'"
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": true,
+      "evidence": "Finding #8: 'Malformed JSON crashes the handler'. Finding #9: 'No schema validation on webhook body'"
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "Findings use actionable language: 'A network timeout or retry causes', 'A caller passing', 'Attacker sends'"
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "Critical findings (1-6) ordered before less critical ones; summary states '5 critical findings...could cause financial loss'"
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": true,
+      "evidence": "Each finding includes specific device: 'idempotency key...+ unique DB constraint', 'Wrap both updates in a transaction', 'Verify HMAC signature', 'Use `Decimal` type', etc."
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "Response is analysis only; no file modifications"
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 11,
+    "pass_rate": 0.8182
+  }
+}

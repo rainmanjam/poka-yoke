@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "type Subscription = | TrialingSubscription | ActiveSubscription | PastDueSubscription | CanceledSubscription; each with a literal `status` field"
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "CanceledSubscription = { status: \"canceled\"; cancelReason: string; voluntary: boolean; } \u2014 no trialEndDate"
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": false,
+      "evidence": "Only a comment: \"// If you forget a case, TypeScript warns (with exhaustiveness check)\" \u2014 no assertNever or never arm is written; the switch omits \"active\" and \"canceled\" cases entirely"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": false,
+      "evidence": "No ID fields or branded types appear anywhere; cancelReason remains a bare `string`"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": false,
+      "evidence": "Only `handleSubscription` (a read-only switch) is shown; no transition function or allowed-transition constraint"
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "\"nothing stops you from reading `trialEndDate` on a canceled subscription\" and \"sub.cancelReason is a type error\" in the trialing branch"
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "Recommends discriminated union; optionals mentioned only as the anti-pattern: \"A flat type with optional fields ... compiles but fails at runtime\""
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "total": 7,
+    "pass_rate": 0.5714
+  }
+}

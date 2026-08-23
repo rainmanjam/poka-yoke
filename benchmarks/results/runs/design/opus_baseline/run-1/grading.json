@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "SubscriptionState with status: \"trialing\" | \"active\" | \"past_due\" | \"canceled\" as discriminant"
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "trialing has only trialEndsAt, active has only renewsAt, past_due has retryCount/gracePeriodEndsAt, canceled has canceledAt/cancellation"
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": true,
+      "evidence": "assertNever function defined and used in entitlementEndsAt switch with default case"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": true,
+      "evidence": "Brand<string, 'SubscriptionId'>, Brand<string, 'CustomerId'>, Brand<string, 'PriceId'>, Brand<number, 'RetryCount'>"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": true,
+      "evidence": "function transition() that checks LEGAL_TRANSITIONS table and throws IllegalTransitionError on invalid transitions"
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Table with 7 rows enumerating misuses and how each is made impossible: discriminated union, inaccessible until narrowed, cancellation union, branded types, assertNever, bounds checking, transition guard"
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "Primary design is discriminated union; opens by explicitly contrasting with problematic 6-optional-fields approach"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 7,
+    "pass_rate": 1.0
+  }
+}

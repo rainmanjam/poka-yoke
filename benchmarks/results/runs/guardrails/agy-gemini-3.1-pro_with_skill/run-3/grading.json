@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "4999b9f80438",
+  "expectations": [
+    {
+      "text": "States that a written agreement or reminder is not enforcement",
+      "passed": true,
+      "evidence": "**Hazard:** The repository relies on human memory and voluntary compliance (Training/Documentation, which is Rung 0 in the Poka-Yoke framework). There are no system constraints to block unformatted or untyped code."
+    },
+    {
+      "text": "Recommends a pre-commit hook to run the formatter automatically",
+      "passed": true,
+      "evidence": "Includes .pre-commit-config.yaml with ruff-format and ruff-check hooks with --fix argument"
+    },
+    {
+      "text": "Notes that pre-commit is bypassable with --no-verify and must be backed by a CI check",
+      "passed": true,
+      "evidence": "Since `pre-commit` can be bypassed with `--no-verify`, we will add a required CI workflow to enforce formatting and typing."
+    },
+    {
+      "text": "Recommends a type check as a required CI check",
+      "passed": true,
+      "evidence": "Includes GitHub Actions workflow with type-check job running mypy on pull_request and push to main"
+    },
+    {
+      "text": "Recommends baselining or ratcheting rather than enforcing across the whole repo at once",
+      "passed": true,
+      "evidence": "Do you want to enforce these checks only on changed files in CI to avoid blocking current work on legacy code (the 'baseline and ratchet' approach)?"
+    },
+    {
+      "text": "Notes that branch protection is what makes a CI check actually required",
+      "passed": true,
+      "evidence": "To make this enforcement strictly binding, you must configure **Branch Protection** on the `main` branch... Without this step, the CI workflow is merely advisory (Rung 2)."
+    },
+    {
+      "text": "Recommends the failure message tell the developer how to fix it",
+      "passed": false,
+      "evidence": "Response does not include recommendations for custom failure messages or instructions on how developers should fix formatting/type errors"
+    },
+    {
+      "text": "Does not primarily recommend rewriting CONTRIBUTING.md, more reminders, or more discipline",
+      "passed": true,
+      "evidence": "Response focuses on automated enforcement mechanisms (pre-commit hooks and CI checks), not on revising documentation or sending more reminders"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

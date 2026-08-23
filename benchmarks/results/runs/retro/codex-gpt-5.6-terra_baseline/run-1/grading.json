@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "1af6b213502f",
+  "expectations": [
+    {
+      "text": "States plainly that the recent-charge lookup is not sufficient",
+      "passed": true,
+      "evidence": "No. The \"same recent amount\" lookup is a temporary tripwire, not a payment-safety guarantee"
+    },
+    {
+      "text": "Identifies the lookup as a check-then-act race rather than a device",
+      "passed": true,
+      "evidence": "It races: two workers can both look, see nothing, then both charge."
+    },
+    {
+      "text": "Recommends a required idempotency key on the charge path",
+      "passed": true,
+      "evidence": "Persist a stable Stripe idempotency key... Every redelivery retries the same PaymentIntent/request using the same idempotency key\u2014never creates a new charge"
+    },
+    {
+      "text": "Recommends a database unique constraint backing the idempotency key",
+      "passed": true,
+      "evidence": "Create one permanent `payment_operation` per order/invoice, with a unique database constraint on its business ID"
+    },
+    {
+      "text": "Separates the defect from the mistake from the underlying system hazard",
+      "passed": true,
+      "evidence": "Identifies defect (races/blocks purchases), distinguishes from mistake (checking without idempotency), locates hazard in system design (queue redelivery without idempotency)"
+    },
+    {
+      "text": "Locates the hazard as a system property rather than as a worker bug or human error",
+      "passed": true,
+      "evidence": "The durable fix is idempotency tied to the business operation\u2014not to a queue delivery or worker attempt"
+    },
+    {
+      "text": "Sweeps for other non-idempotent side effects reachable from a retry",
+      "passed": false,
+      "evidence": "Response focuses only on Stripe payments; does not mention emails, webhooks, ledger, or other queue consumers"
+    },
+    {
+      "text": "Treats 'second time this happened' as evidence for pushing to a Control-rung device",
+      "passed": true,
+      "evidence": "Because this is recurrence #2, prove the fix with fault-injection tests: force a timeout... Each must show exactly one successful charge"
+    },
+    {
+      "text": "Attributes cause to the system, not to any person",
+      "passed": true,
+      "evidence": "All diagnosis frames the hazard in system design (idempotency, queue redelivery, webhooks, reconciliation), never in operator/developer error"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 9,
+    "pass_rate": 0.8889
+  }
+}

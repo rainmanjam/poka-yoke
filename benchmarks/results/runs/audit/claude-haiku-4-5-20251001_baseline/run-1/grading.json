@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": false,
+      "evidence": "Mentions 'transferring to yourself fabricates money' but doesn't identify the type vulnerability of plain strings allowing silent swaps"
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "'No Stripe idempotency keys \u2014 If the first charge succeeds but times out on the client, the retry creates a second real charge'"
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": true,
+      "evidence": "'Silent charge failures \u2014 Errors are caught and discarded with no logging'"
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": true,
+      "evidence": "'Money as float \u2014 IEEE-754 rounding errors accumulate'"
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "'Raw SQL injection \u2014 `$executeRawUnsafe` with string interpolation'"
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": false,
+      "evidence": "Mentions 'Non-atomic subscription state' (different issue) but not the non-exhaustive switch vulnerability"
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": false,
+      "evidence": "No mention of JSON.parse; only mentions 'Unsigned webhooks'"
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "Uses action names like 'Unsigned webhooks', 'Webhook duplicate charges', 'No Stripe idempotency keys'"
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "Uses \ud83d\udd34 Critical (revenue loss) tier for money issues, \ud83d\udfe0 Important for secondary issues"
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": false,
+      "evidence": "Lists 11 issues but proposes zero devices; ends with 'Want me to check which ones your detector currently flags?' instead of proposing devices"
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "Response is text analysis only, no file modifications"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 11,
+    "pass_rate": 0.6364
+  }
+}

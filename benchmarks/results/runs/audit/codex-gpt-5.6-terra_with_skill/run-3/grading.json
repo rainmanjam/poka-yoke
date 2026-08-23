@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": true,
+      "evidence": "Brand `FromAccountId` and `ToAccountId` so callers cannot silently swap the two string arguments"
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "Stripe may have charged successfully even though this process never received the response... the recursive retry issues a second charge... require an `IdempotencyKey`"
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": true,
+      "evidence": "it returns `null`, erasing whether the payment was declined, failed, or actually succeeded remotely. Callers can proceed on a plausible but false result"
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": true,
+      "evidence": "JavaScript `number` is binary floating point; `price` and balances can accrue rounding errors, while `amountCents` is not verified as an integer minor-unit amount"
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "Replace `$executeRawUnsafe` with parameterized ORM/SQL"
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "use a closed `SubscriptionStatus` union plus `assertNever` exhaustiveness"
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": true,
+      "evidence": "send arbitrary JSON... There is no Stripe signature verification, schema validation, or idempotency"
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "Mistakes framed as actions: 'send arbitrary JSON', 'retry after a timeout', 'call `purgeCanceledAccounts()` without a cutoff', 'call `updateSubscription(id, \"past_due\")`'"
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "Top 4 findings: webhook charge, retry charge, transfer atomicity, account deletion; all money-movement or irreversible categories ranked highest"
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": true,
+      "evidence": "Each device specifies exact controls: 'verify signature against raw request body', 'reserve in database row with unique constraint', 'one database transaction with findUniqueOrThrow', 'Brand FromAccountId and ToAccountId'"
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "I made no changes. Audit review output only"
+    }
+  ],
+  "summary": {
+    "passed": 11,
+    "total": 11,
+    "pass_rate": 1.0
+  }
+}

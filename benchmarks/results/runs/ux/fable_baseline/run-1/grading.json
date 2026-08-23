@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "82f963d241f9",
+  "expectations": [
+    {
+      "text": "Pushes back on the 'are you sure?' modal as the primary fix",
+      "passed": true,
+      "evidence": "\"it'll help a little, and it's the weakest fix available\""
+    },
+    {
+      "text": "Explains habituation or click-through blindness as why frequent dialogs stop working",
+      "passed": true,
+      "evidence": "\"**Click-through blindness.** Users see confirm dialogs constantly and press OK by reflex.\""
+    },
+    {
+      "text": "Recommends reversibility (soft delete with a retention window) as the strongest option",
+      "passed": true,
+      "evidence": "\"1. **Make it reversible \u2014 soft delete with a retention window.**\" and \"This is the real fix\""
+    },
+    {
+      "text": "Recommends grace-period undo as a strong low-friction option",
+      "passed": true,
+      "evidence": "\"2. **Grace-period undo.** Delete immediately, show a \"Workspace deleted \u00b7 Undo\" toast for ~8s.\""
+    },
+    {
+      "text": "Recommends type-the-workspace-name confirmation for the irreversible case",
+      "passed": true,
+      "evidence": "\"3. **Type-to-confirm** (GitHub-style: type the workspace name). Only if you genuinely can't do #1\""
+    },
+    {
+      "text": "If a dialog is retained, requires it to name the workspace and the scale of what is lost",
+      "passed": true,
+      "evidence": "\"make it \"Delete **acme-prod** and its 14 projects / 2,300 files?\"\""
+    },
+    {
+      "text": "Notes that the server must enforce the deletion rules, not just the UI",
+      "passed": false,
+      "evidence": "Asks whether server enforces permission but does not state the principle that deletion enforcement must be server-side"
+    },
+    {
+      "text": "Gives an explicit preference order rather than an undifferentiated list of ideas",
+      "passed": true,
+      "evidence": "Numbered 1-4 with \"My recommendation: Do **1 + 2**\""
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

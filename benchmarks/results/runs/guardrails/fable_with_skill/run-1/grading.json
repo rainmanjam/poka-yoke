@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "4999b9f80438",
+  "expectations": [
+    {
+      "text": "States that a written agreement or reminder is not enforcement",
+      "passed": true,
+      "evidence": "\"Your three interventions \u2014 CONTRIBUTING.md, a Slack pin, standup reminders \u2014 are all the same intervention: training... the ~50% compliance at two weeks isn't a people problem, it's training decaying exactly on schedule\""
+    },
+    {
+      "text": "Recommends a pre-commit hook to run the formatter automatically",
+      "passed": true,
+      "evidence": "\"add a pre-commit hook that *auto-fixes* rather than complains\""
+    },
+    {
+      "text": "Notes that pre-commit is bypassable with --no-verify and must be backed by a CI check",
+      "passed": true,
+      "evidence": "\"A pre-commit hook alone is not enough \u2014 `--no-verify` exists and people under deadline use it. Hook for speed, CI for authority\""
+    },
+    {
+      "text": "Recommends a type check as a required CI check",
+      "passed": true,
+      "evidence": "\"Type annotations become a required CI check \u2014 `mypy --strict`, `tsc --noEmit`, whatever fits your stack\""
+    },
+    {
+      "text": "Recommends baselining or ratcheting rather than enforcing across the whole repo at once",
+      "passed": true,
+      "evidence": "\"enforce on changed files only, or generate a baseline of existing violations and fail only on new ones\""
+    },
+    {
+      "text": "Notes that branch protection is what makes a CI check actually required",
+      "passed": true,
+      "evidence": "\"Branch protection with both as required checks. This is the piece that makes everything else enforcement instead of suggestion\""
+    },
+    {
+      "text": "Recommends the failure message tell the developer how to fix it",
+      "passed": true,
+      "evidence": "\"Make the failure message teach. Not `error: check failed` but 'this file isn't formatted; run `make fmt` and re-push'\""
+    },
+    {
+      "text": "Does not primarily recommend rewriting CONTRIBUTING.md, more reminders, or more discipline",
+      "passed": true,
+      "evidence": "\"Stop trying to get people to follow it. Make the PRs unable to merge without it.\" No mention of rewriting or adding reminders."
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

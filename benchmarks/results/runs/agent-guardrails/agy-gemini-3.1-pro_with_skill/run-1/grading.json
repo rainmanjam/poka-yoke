@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "5b62450c21d2",
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "An agent will eventually forget or bypass a rule in `CLAUDE.md` no matter how many times you capitalize it"
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "replace the written instructions with Rung 1 (Control) mechanical devices"
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": true,
+      "evidence": "You can block this by denying the `Edit` tool outright using real syntax: `\"Edit(./src/generated/**)\"`"
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": true,
+      "evidence": "To block this reliably, you need a `PreToolUse` hook script that inspects the command with a regex"
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": true,
+      "evidence": "The message must tell the agent what to do instead: Blocked: Force-push can destroy commits... Use --force-with-lease if you must rewrite"
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": true,
+      "evidence": "Ask the agent to edit a file in `src/generated/` and watch it get denied. Then ask it to run `git push origin main --force` and confirm it sees your exact deny message"
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": true,
+      "evidence": "Put your deny rule and hook configuration in `.claude/settings.json` and commit it. If you put it in a local gitignored file, it only protects your machine"
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": true,
+      "evidence": "An agent will eventually forget or bypass a rule in `CLAUDE.md` no matter how many times you capitalize it"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

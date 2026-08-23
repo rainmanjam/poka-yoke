@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "5b62450c21d2",
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "instructions to an agent are rung zero. Caps and repetition don't change that; they're training, and training degrades"
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "Nothing is wrong with your prose... The fix is a device, not better wording. Pivots directly to deny rules and hooks"
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": true,
+      "evidence": "Shows concrete deny syntax for Edit/Write with glob patterns in .claude/settings.json"
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": true,
+      "evidence": "Deny entries match the start of the command... Add the prefix denies anyway, then wire the shipped guard. Shows PreToolUse hook config"
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": true,
+      "evidence": "a bare refusal produces a creative workaround. The shipped reason says Force-push can destroy commits... Write yours for src/generated/ the same way \u2014 name the codegen command"
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": true,
+      "evidence": "Provides bash verification commands; An unverified hook is worse than none \u2014 a regex that doesn't match the real command string does nothing while looking like protection"
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": true,
+      "evidence": ".claude/settings.json, committed. In settings.local.json it protects one machine, which is the same failure mode as documenting it"
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": true,
+      "evidence": "Caps and repetition don't change that... One-in-ten is what a well-written instruction looks like"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "018a96d90c3c",
+  "expectations": [
+    {
+      "text": "States that system prompt instructions are not a reliable control on model behaviour",
+      "passed": true,
+      "evidence": "\"instructions degrade, devices do not\u2014updating the system prompt is only 'training.' To truly fix this, we must build devices (hard mechanisms)\""
+    },
+    {
+      "text": "Recommends structured output against a schema rather than extracting values from prose",
+      "passed": false,
+      "evidence": "Recommends API redesign (accept `items_to_refund` instead of `amount`), not structured output schema validation from the LLM"
+    },
+    {
+      "text": "Recommends validating the refund amount server-side against the actual order",
+      "passed": true,
+      "evidence": "\"enforce a strict cap in the backend... if amount > max_amount: raise ValueError\""
+    },
+    {
+      "text": "Recommends a required idempotency key on the refund call",
+      "passed": true,
+      "evidence": "\"Implement Idempotency Keys: Ensure the API accepts an idempotency key (like the `order_id`)\""
+    },
+    {
+      "text": "Recommends a database constraint or equivalent so a duplicate refund is rejected rather than merely avoided",
+      "passed": true,
+      "evidence": "\"Add a unique constraint to the database for refunds (e.g., `UNIQUE(order_id)`)\""
+    },
+    {
+      "text": "Recommends human confirmation or an approval gate for the irreversible refund action",
+      "passed": false,
+      "evidence": "No mention of human review, approval gate, or confirmation step for refunds"
+    },
+    {
+      "text": "Identifies prompt injection risk from the customer-supplied message reaching a privileged action",
+      "passed": false,
+      "evidence": "No discussion of security risks, prompt injection, or customer message input sanitization"
+    },
+    {
+      "text": "Recommends bounds or caps on the refund amount",
+      "passed": true,
+      "evidence": "\"enforce a strict cap in the backend\" and validation that refund amount does not exceed order total"
+    },
+    {
+      "text": "Does not primarily recommend changes to the prompt wording",
+      "passed": true,
+      "evidence": "All proposed changes are API schema, database constraints, and validation logic; prompt wording is explicitly rejected as insufficient"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 9,
+    "pass_rate": 0.6667
+  }
+}

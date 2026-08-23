@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": true,
+      "evidence": "Item #7: '`transfer(from, to)` \u2014 adjacent strings, swap compiles \u2014 money / silent'"
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "Item #4: 'Retry without an idempotency key double-charges \u2014 money / silent'"
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": true,
+      "evidence": "Item #5: '`catch` returns `null` \u2014 silent wrong state'; 'Declined, network-failed, and succeeded are indistinguishable.'"
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": true,
+      "evidence": "Item #10: 'Currency is decorative \u2014 silent corruption'; discusses '`balance: number`' as part of the money movement issue."
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "Item #2: 'duplicates the predicate in a second dialect (`canceledAt` / `canceled_at`) where the copies can drift silently'"
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "Item #6: 'Stringly-typed status leaves canceled customers with paid features'; 'no default arm either, so a new `past_due` variant silently does nothing everywhere.'"
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": true,
+      "evidence": "Item #1: 'No signature check, `JSON.parse` into `any`. The `customer` and `amount` you POST are the ones charged'"
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "Item #2: 'An optional parameter defaulting to its most destructive value'; Item #7: 'reversed arguments compile and pass review'"
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "Items 1-4 are all money/auth findings; item 7 (parameter swap) and others ranked lower; 'Set aside (5)' for minimal issues."
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": true,
+      "evidence": "Item #1: '`stripe.webhooks.constructEvent(rawBody, sig, secret)` *then* a zod discriminated union'; Item #4: 'unique index on `(customer_id, idempotency_key)`'"
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "All findings in conversation; file write denied and acknowledged."
+    }
+  ],
+  "summary": {
+    "passed": 11,
+    "total": 11,
+    "pass_rate": 1.0
+  }
+}

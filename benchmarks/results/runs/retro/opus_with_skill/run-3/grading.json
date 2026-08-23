@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "1af6b213502f",
+  "expectations": [
+    {
+      "text": "States plainly that the recent-charge lookup is not sufficient",
+      "passed": true,
+      "evidence": "No, and it fails in the exact scenario that caused this... That lands at rung 2 that fails open. You need Control."
+    },
+    {
+      "text": "Identifies the lookup as a check-then-act race rather than a device",
+      "passed": true,
+      "evidence": "It's a check-then-act race (M5). Redelivery fires on visibility-timeout expiry... Both workers SELECT, both find nothing, both charge."
+    },
+    {
+      "text": "Recommends a required idempotency key on the charge path",
+      "passed": true,
+      "evidence": "An optional idempotency key is rung zero in a costume \u2014 implies requirement; key minted at enqueue time in message body"
+    },
+    {
+      "text": "Recommends a database unique constraint backing the idempotency key",
+      "passed": true,
+      "evidence": "CREATE UNIQUE INDEX ON payment_attempts (invoice_id, idempotency_key);"
+    },
+    {
+      "text": "Separates the defect from the mistake from the underlying system hazard",
+      "passed": true,
+      "evidence": "Defect: 340 customers double-charged, refunded. Mistake: the redelivered message ran the charge path a second time. Hazard: the charge effect is non-idempotent..."
+    },
+    {
+      "text": "Locates the hazard as a system property rather than as a worker bug or human error",
+      "passed": true,
+      "evidence": "nothing in the type system or the database says 'at most once per message' \u2014 framed as system design property"
+    },
+    {
+      "text": "Sweeps for other non-idempotent side effects reachable from a retry",
+      "passed": true,
+      "evidence": "every other consumer on that queue that emails/refunds/provisions/posts to a ledger; every Stripe webhook handler; every retry wrapper; every admin re-run job button"
+    },
+    {
+      "text": "Treats 'second time this happened' as evidence for pushing to a Control-rung device",
+      "passed": true,
+      "evidence": "Two incidents of one shape means the hazard isn't in the payment worker... The structural move is middleware that reserves the key before dispatching..."
+    },
+    {
+      "text": "Attributes cause to the system, not to any person",
+      "passed": true,
+      "evidence": "it's in pairing an at-least-once queue with consumers that mutate the outside world \u2014 attributed to system design, not individual"
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

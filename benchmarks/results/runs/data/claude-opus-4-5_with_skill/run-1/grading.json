@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "Opens with: \"No, a 'table isn't empty' check wouldn't have caught this incident.\""
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "\"The COALESCE to zero\" section: \"It converts 'I don't know' into 'zero' \u2014 and in revenue context, those are catastrophically different.\""
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": true,
+      "evidence": "\"Reconciliation to source\": \"Daily: does SUM(revenue) in your table match SUM(revenue) in the source system?\""
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": false,
+      "evidence": "Discusses prevention via contracts and detection via reconciliation, but does not explicitly recommend assertions block or run before dashboard publication"
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "\"Data contract on the source (Control)\" with example: \"columns: - name: revenue_amount # exact name, not 'whatever's there'\""
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "\"Volume vs. historical baseline\": \"Is today's revenue within 2 standard deviations...\" and \"Null rate monitoring on join columns\""
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": false,
+      "evidence": "Mentions \"Three weeks of decisions were made with wrong data\" but does not frame the 3-week detection delay as its own hazard requiring instrumentation"
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": true,
+      "evidence": "\"silence is the defect. The pipeline succeeded. The numbers looked plausible. The COALESCE to zero actively hid the problem\"; shows how wrong data gets acted upon"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "82f963d241f9",
+  "expectations": [
+    {
+      "text": "Pushes back on the 'are you sure?' modal as the primary fix",
+      "passed": true,
+      "evidence": "\"Honest answer: no, not on its own\""
+    },
+    {
+      "text": "Explains habituation or click-through blindness as why frequent dialogs stop working",
+      "passed": true,
+      "evidence": "\"users who see a dialog often enough stop reading it. They develop click-through blindness and dismiss it with the same reflex\""
+    },
+    {
+      "text": "Recommends reversibility (soft delete with a retention window) as the strongest option",
+      "passed": true,
+      "evidence": "\"1. **Soft-delete + 30-day trash.**\""
+    },
+    {
+      "text": "Recommends grace-period undo as a strong low-friction option",
+      "passed": true,
+      "evidence": "\"2. **Undo toast.** 'Workspace deleted. Undo' for ~10s\""
+    },
+    {
+      "text": "Recommends type-the-workspace-name confirmation for the irreversible case",
+      "passed": true,
+      "evidence": "\"3. **Type-to-confirm** (GitHub-style: type the workspace name). Reserve this for the genuinely irreversible purge\""
+    },
+    {
+      "text": "If a dialog is retained, requires it to name the workspace and the scale of what is lost",
+      "passed": true,
+      "evidence": "\"4. A confirm dialog *only* if it names the specifics: 'Delete **Acme Prod** \u2014 14 projects, 1,204 files?'\""
+    },
+    {
+      "text": "Notes that the server must enforce the deletion rules, not just the UI",
+      "passed": false,
+      "evidence": "No explicit mention of server-side enforcement requirement"
+    },
+    {
+      "text": "Gives an explicit preference order rather than an undifferentiated list of ideas",
+      "passed": true,
+      "evidence": "\"In preference order, strongest first: 1. Soft-delete + 30-day trash. 2. Undo toast. 3. Type-to-confirm... 4. A confirm dialog...\""
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

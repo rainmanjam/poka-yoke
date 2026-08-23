@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "82f963d241f9",
+  "expectations": [
+    {
+      "text": "Pushes back on the 'are you sure?' modal as the primary fix",
+      "passed": true,
+      "evidence": "Short answer: no \u2014 not as the main fix"
+    },
+    {
+      "text": "Explains habituation or click-through blindness as why frequent dialogs stop working",
+      "passed": true,
+      "evidence": "Users who see a dialog often develop click-through blindness; the dialog then protects nobody while taxing every legitimate delete"
+    },
+    {
+      "text": "Recommends reversibility (soft delete with a retention window) as the strongest option",
+      "passed": true,
+      "evidence": "1. **Soft-delete with retention** (rung 1). Workspace is marked deleted, hidden from the UI, purged after N days"
+    },
+    {
+      "text": "Recommends grace-period undo as a strong low-friction option",
+      "passed": true,
+      "evidence": "2. **Grace-period undo.** Delete fires immediately, toast shows \"Workspace deleted. Undo\" for ~10s"
+    },
+    {
+      "text": "Recommends type-the-workspace-name confirmation for the irreversible case",
+      "passed": true,
+      "evidence": "GitHub-style type-the-name is defensible here too, given blast radius \u2014 but only in front of permanent purge"
+    },
+    {
+      "text": "If a dialog is retained, requires it to name the workspace and the scale of what is lost",
+      "passed": true,
+      "evidence": "Delete **Acme Production** \u2014 14 projects, 3,204 files, 8 members?"
+    },
+    {
+      "text": "Notes that the server must enforce the deletion rules, not just the UI",
+      "passed": false,
+      "evidence": "Mentions backend changes but does not explicitly state the principle that the server must enforce deletion rules"
+    },
+    {
+      "text": "Gives an explicit preference order rather than an undifferentiated list of ideas",
+      "passed": true,
+      "evidence": "1. Soft-delete with retention, 2. Grace-period undo, 3. Self-serve restore"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

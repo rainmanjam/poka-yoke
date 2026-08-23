@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "82f963d241f9",
+  "expectations": [
+    {
+      "text": "Pushes back on the 'are you sure?' modal as the primary fix",
+      "passed": true,
+      "evidence": "Short answer: no \u2014 that's the weakest device available here, and the panic emails are the evidence."
+    },
+    {
+      "text": "Explains habituation or click-through blindness as why frequent dialogs stop working",
+      "passed": true,
+      "evidence": "A dialog they see repeatedly stops being a decision point \u2014 click-through blindness sets in"
+    },
+    {
+      "text": "Recommends reversibility (soft delete with a retention window) as the strongest option",
+      "passed": true,
+      "evidence": "Rung 1 (Control) \u2014 soft delete + trash + undo toast... A purge job hard-deletes after 30 days"
+    },
+    {
+      "text": "Recommends grace-period undo as a strong low-friction option",
+      "passed": true,
+      "evidence": "show `Workspace \"Acme Prod\" deleted. Undo` for ~8 seconds"
+    },
+    {
+      "text": "Recommends type-the-workspace-name confirmation for the irreversible case",
+      "passed": false,
+      "evidence": "Skip type-to-confirm unless a workspace delete is genuinely unrecoverable \u2014 used broadly it becomes copy-paste theater (discourages rather than recommends)"
+    },
+    {
+      "text": "If a dialog is retained, requires it to name the workspace and the scale of what is lost",
+      "passed": true,
+      "evidence": "name the workspace, state the scale (`Delete \"Acme Prod\" \u2014 14 projects, 1,204 files, 8 members?`)"
+    },
+    {
+      "text": "Notes that the server must enforce the deletion rules, not just the UI",
+      "passed": true,
+      "evidence": "`DELETE /workspaces/:id` needs tenant scoping and idempotency regardless of what the UI does"
+    },
+    {
+      "text": "Gives an explicit preference order rather than an undifferentiated list of ideas",
+      "passed": false,
+      "evidence": "Presents Rung 1 solution, then 'If you can't ship... the fallback is a dialog' \u2014 narrative ordering, not explicit preference-order statement"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

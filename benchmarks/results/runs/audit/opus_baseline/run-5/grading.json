@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": true,
+      "evidence": "Finding 8: transfer(from: string, to: string, ...) line 17... transfer(to, from, amount). It compiles, it runs, and the money goes the wrong way."
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "Finding 4: Retries on any exception, including a timeout where the charge actually succeeded... Two charges, one customer. This is the exact incident already in this repo's history."
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": true,
+      "evidence": "Finding 5: catch { return null } hides every failed charge \u2014 a declined card, an expired key, a network failure and a successful charge are the same non-event from the caller's side."
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": true,
+      "evidence": "Finding 9: applyDiscount has no bounds and floats money... float arithmetic on money accumulates rounding; price is also the only amount in this file not named in cents"
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "Finding 6: And `$executeRawUnsafe` with `${}` interpolation is safe *today* only because `cutoff` is a `Date`"
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "Finding 7: updateSubscription(id, \"actve\") ... the `switch` matches neither case, so neither `enableFeatures` nor `disableFeatures` runs"
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": true,
+      "evidence": "Finding 1: JSON.parse(body) is the entire validation... A real Stripe charge against a real customer. No signature check, no allowlist, no logging."
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "Each finding explicitly states 'Mistake:' with actionable descriptions: 'POST a hand-written...', 'transfer(victim, attacker, -5000)', 'Call with retry = true', 'Don't check the return value', 'Call it with no argument', etc."
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "Verdict leads with handleWebhook as highest priority; findings 2-5 cover money/irreversible issues; findings 6-9 are secondary."
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": true,
+      "evidence": "All 9 findings include concrete devices with code examples: stripe.webhooks.constructEvent with schema parse, branded Money type, db.$transaction with conditional updateMany, idempotencyKey + UNIQUE, discriminated Result type, required cutoff with 30d check, union SubStatus type with never exhaustiveness, branded AccountId, Percent newtype clamped to 0-100."
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "Response provides audit in-conversation without file modifications."
+    }
+  ],
+  "summary": {
+    "passed": 11,
+    "total": 11,
+    "pass_rate": 1.0
+  }
+}

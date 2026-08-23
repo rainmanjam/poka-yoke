@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "No. Your new test would have passed on all 21 days of the incident. Non-empty is a check that cannot fail in the failure mode you actually had."
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "The defect isn't the rename. It's COALESCE(x, 0). A null is a signal that the join failed; coalescing converts that signal into a plausible business number. Same shape as except: pass."
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": true,
+      "evidence": "Does it agree? (reconciliation) Yes \u2014 warehouse revenue total vs. the source system. #2 Reconcile to source."
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": true,
+      "evidence": "#4 Move the assertion before publication. Build to staging \u2192 test staging \u2192 promote on pass. If tests run after publish and email a failure, bad data still reached finance."
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "#3 Schema contract at ingest. Assert the expected columns exist with expected types before the join runs. A rename is a drop plus an add; it should break loudly."
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "#1 assert null_rate(revenue_raw) < threshold on the pre-coalesce column. #5 Distribution, not just presence. Revenue vs. trailing same-weekday median."
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": true,
+      "evidence": "Detection lag is its own finding. What caught this was a human at close \u2014 that's not a device, that's luck with a three-week latency."
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": true,
+      "evidence": "A null is a signal that the join failed; coalescing converts that signal into a plausible business number. Same shape as except: pass."
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

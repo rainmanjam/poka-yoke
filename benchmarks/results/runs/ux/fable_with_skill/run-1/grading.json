@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "82f963d241f9",
+  "expectations": [
+    {
+      "text": "Pushes back on the 'are you sure?' modal as the primary fix",
+      "passed": true,
+      "evidence": "\"no \u2014 an 'are you sure?' modal is the weakest device on the ladder, and it won't stop the emails.\""
+    },
+    {
+      "text": "Explains habituation or click-through blindness as why frequent dialogs stop working",
+      "passed": true,
+      "evidence": "\"Within a few weeks it's click-through blindness, and you've added friction to every legitimate delete while protecting nobody.\""
+    },
+    {
+      "text": "Recommends reversibility (soft delete with a retention window) as the strongest option",
+      "passed": true,
+      "evidence": "\"1. **Soft-delete with a trash/retention period \u2014 rung 1, Control.** Mark the workspace deleted, hide it, purge after 30 days\""
+    },
+    {
+      "text": "Recommends grace-period undo as a strong low-friction option",
+      "passed": true,
+      "evidence": "\"2. **Grace-period undo on top of that.** Delete immediately, show 'Workspace *Acme Marketing* deleted. **Undo**' for ~10 seconds.\""
+    },
+    {
+      "text": "Recommends type-the-workspace-name confirmation for the irreversible case",
+      "passed": true,
+      "evidence": "\"3. **If something genuinely can't be soft-deleted**... then gate *that* with **type-to-confirm** \u2014 the user types the workspace name.\""
+    },
+    {
+      "text": "If a dialog is retained, requires it to name the workspace and the scale of what is lost",
+      "passed": true,
+      "evidence": "\"Names the object: 'Delete **Acme Marketing**?' not 'this workspace'\" and \"States the scale: '14 members, 2,310 documents'\""
+    },
+    {
+      "text": "Notes that the server must enforce the deletion rules, not just the UI",
+      "passed": false,
+      "evidence": "No mention of server-side enforcement; only discusses adjacency and UI-level concerns."
+    },
+    {
+      "text": "Gives an explicit preference order rather than an undifferentiated list of ideas",
+      "passed": true,
+      "evidence": "\"(strongest first)\" header, numbered 1-4, with explicit recommendation: \"Do (1) + (2).\""
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

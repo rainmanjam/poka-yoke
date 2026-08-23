@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": true,
+      "evidence": "\"there's a window where old instances SELECT legacy_email against a schema that no longer has it \u2014 errors on every request through those three paths.\""
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "\"Today: merge the code change... Next week: separate PR, just the migration, after the code has soaked in prod.\""
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": true,
+      "evidence": "\"Nothing in the PR restores it \u2014 not a revert, not a redeploy. The only restore path is a database point-in-time restore.\""
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": true,
+      "evidence": "\"Code-only: minutes, and one person can do it. With the DROP: hours, needs someone with restore access, and Friday evening is when that person is least likely to be reachable.\""
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "\"Friday evening is when that person is least likely to be reachable.\""
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": true,
+      "evidence": "\"a CI check blocking destructive DDL in the same change as application code. Want me to write one for your repo?\""
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "\"Today: merge the code change... hold the DROP.\""
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "\"Fully revertible, safe to ship Friday\" vs the DROP which is not."
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

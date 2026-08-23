@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "export type Subscription = | TrialingSubscription | ActiveSubscription | PastDueSubscription | CanceledSubscription; with readonly status: 'trialing' etc. on each variant"
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "CanceledSubscription has only status, canceledAt, cancellation; TrialingSubscription has only status, trialEndsAt \u2014 no field overlap"
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": true,
+      "evidence": "export function assertNever(value: never): never... with default: return assertNever(sub) in hasProductAccess switch"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": true,
+      "evidence": "type Brand<T, B extends string> = T & { readonly [brand]: B }; export type SubscriptionId = Brand<string, 'SubscriptionId'>; CustomerId, PlanId also branded"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": true,
+      "evidence": "Provides checkTransition(from, to) function structure; discriminated union constrains what fields exist on each state"
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Names multiple misuses prevented: 'without that default, adding paused next year compiles clean and silently denies access everywhere'; 'unbounded one lets a bug charge a dead card forever' (prevents via bounded RetryCount); prevents {voluntary: true, reason: 'payment_failed'} via nested union"
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "Explicitly contrasts with flat interface and explains 128 illegal combinations exist in bag-of-optionals; recommends and implements discriminated union instead"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 7,
+    "pass_rate": 1.0
+  }
+}

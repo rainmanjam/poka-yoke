@@ -1,0 +1,23 @@
+[
+  {"query": "ok so we just had our second incident this quarter where someone ran a script against prod that was meant for staging. both times it was a different person. i don't want to just write another runbook page nobody reads, how do i actually stop this from being possible", "should_trigger": true},
+  {"query": "im about to write the public API for our billing SDK, the one external customers will integrate against. functions for charge, refund, subscribe, cancel. what should the signatures look like so people don't screw it up in ways that cost them money", "should_trigger": true},
+  {"query": "our support team keeps getting tickets from users who deleted a project by accident. currently there's a confirm dialog but clearly it isn't working. what would actually help", "should_trigger": true},
+  {"query": "can you look at src/payments/transfer.ts and tell me what's easy to get wrong in there? it's been reviewed twice but i have a bad feeling about it", "should_trigger": true},
+  {"query": "we're multi-tenant and i'm paranoid we've missed a tenant filter somewhere. is there a way to make it structurally impossible to write a query that isn't scoped, rather than me grepping for where clauses forever", "should_trigger": true},
+  {"query": "claude keeps editing files in src/generated/ even though our CLAUDE.md says not to, in caps. what am i doing wrong", "should_trigger": true},
+  {"query": "the team agreed to run the formatter before committing and half of them still don't. i've asked twice in standup. what do i do", "should_trigger": true},
+  {"query": "we shipped a migration on friday that dropped a column and the deploy took the api down for 20 mins because old pods were still reading it. want to make sure that specific shape of thing can't happen again", "should_trigger": true},
+  {"query": "our analytics numbers were wrong for like 3 weeks and nobody caught it because the pipeline was green the whole time. the join silently returned nulls and we coalesced to zero", "should_trigger": true},
+  {"query": "designing a state machine for order status, pending, paid, shipped, refunded, cancelled. how do i model this in typescript so you can't accidentally refund something that was never paid", "should_trigger": true},
+
+  {"query": "the test suite in packages/api is taking 11 minutes on CI and it's killing our iteration speed. can you figure out which specs are slow and see if any of them can be parallelised or mocked out", "should_trigger": false},
+  {"query": "getting `TypeError: Cannot read properties of undefined (reading 'map')` in ProductList.tsx line 47 but only in prod, works fine locally. can you help me track down what's different", "should_trigger": false},
+  {"query": "can you review this PR? it's the new search endpoint. mostly want to know if the pagination logic is right and whether the code reads okay", "should_trigger": false},
+  {"query": "we need CI set up for this repo. It's a fresh next.js project, nothing configured yet. github actions, run the tests on PRs, deploy to vercel on main", "should_trigger": false},
+  {"query": "add a confirmation email that goes out after someone signs up. use our existing resend setup, template should match the password reset one", "should_trigger": false},
+  {"query": "this UserService class is 800 lines and does way too much. can you break it up into something more sensible? no behaviour changes, just structure", "should_trigger": false},
+  {"query": "our postgres queries got slow after we hit about 2M rows in the events table. can you look at the query plans and figure out what indexes we're missing", "should_trigger": false},
+  {"query": "write unit tests for the discount calculation in lib/pricing.ts. It currently has none and it's the most business-critical bit of the codebase", "should_trigger": false},
+  {"query": "explain how the auth middleware in this repo works, i just joined the team and i'm trying to understand the request lifecycle before i touch anything", "should_trigger": false},
+  {"query": "the staging deploy failed about an hour ago, build step exits 1 with no useful output. can you dig into the logs and work out why it's broken", "should_trigger": false}
+]

@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "4999b9f80438",
+  "expectations": [
+    {
+      "text": "States that a written agreement or reminder is not enforcement",
+      "passed": true,
+      "evidence": "\"All three are rung zero on Shingo's ladder \u2014 they rely on someone remembering at the exact moment they're rushing. ~50% compliance is roughly what rung zero pays.\""
+    },
+    {
+      "text": "Recommends a pre-commit hook to run the formatter automatically",
+      "passed": true,
+      "evidence": "Shows `.pre-commit-config.yaml` with ruff-format hook and ruff args: [--fix]"
+    },
+    {
+      "text": "Notes that pre-commit is bypassable with --no-verify and must be backed by a CI check",
+      "passed": true,
+      "evidence": "\"The hook is for speed; CI is the authority \u2014 `--no-verify` exists.\""
+    },
+    {
+      "text": "Recommends a type check as a required CI check",
+      "passed": true,
+      "evidence": "Shows `.github/workflows/gates.yml` with `mypy --strict $CHANGED` as a CI check"
+    },
+    {
+      "text": "Recommends baselining or ratcheting rather than enforcing across the whole repo at once",
+      "passed": true,
+      "evidence": "\"Gate **changed files only**, so the count can only go down\" with `git diff --name-only origin/${{ github.base_ref }}...HEAD`"
+    },
+    {
+      "text": "Notes that branch protection is what makes a CI check actually required",
+      "passed": true,
+      "evidence": "\"Neither of the above is a device until **branch protection** marks both jobs required\" with `gh api` command"
+    },
+    {
+      "text": "Recommends the failure message tell the developer how to fix it",
+      "passed": true,
+      "evidence": "\"Fix: add annotations to the lines flagged above, or run 'mypy --strict <file>' locally.\""
+    },
+    {
+      "text": "Does not primarily recommend rewriting CONTRIBUTING.md, more reminders, or more discipline",
+      "passed": true,
+      "evidence": "\"Then delete the rule from CONTRIBUTING.md and replace it with one line pointing at the workflow file.\""
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

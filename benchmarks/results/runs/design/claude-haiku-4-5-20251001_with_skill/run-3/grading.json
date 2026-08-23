@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "type Subscription = | { status: \"trialing\"; trialEndDate: Date } | { status: \"active\"; renewalDate: Date } | ..."
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "Each union variant defined with only its own fields; states 'Invalid states are now unrepresentable'"
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": false,
+      "evidence": "No exhaustiveness check mechanism mentioned or shown"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": false,
+      "evidence": "No branded ID types introduced; suggests enum for CancelReason (a value enum, not an ID type)"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": false,
+      "evidence": "Shows one example function (retryPayment) but explicitly states: '**What's possible but not prevented:** transitions between states. The type doesn't prevent jumping from `trialing` to `canceled`'"
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "'Enumerating misuse' lists 4 misuses; 'The design' section states 'Invalid states are now unrepresentable' and 'Attempting to access `subscription.retryCount` on a trialing subscription is a compile error'"
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "Primary recommendation is discriminated unions"
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "total": 7,
+    "pass_rate": 0.5714
+  }
+}

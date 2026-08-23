@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "4999b9f80438",
+  "expectations": [
+    {
+      "text": "States that a written agreement or reminder is not enforcement",
+      "passed": true,
+      "evidence": "CONTRIBUTING.md, Slack pins, and standup mentions are all the same device \u2014 a human has to remember and choose to comply... that's rung 0 ('not a poka-yoke,' it's training)"
+    },
+    {
+      "text": "Recommends a pre-commit hook to run the formatter automatically",
+      "passed": true,
+      "evidence": "Pre-commit hook | seconds | yes | auto-run the formatter, fail fast on missing types"
+    },
+    {
+      "text": "Notes that pre-commit is bypassable with --no-verify and must be backed by a CI check",
+      "passed": true,
+      "evidence": "Never rely on the pre-commit hook alone. People under deadline pressure use --no-verify. The hook is for speed/local feedback; the CI check + branch protection is what actually blocks a merge"
+    },
+    {
+      "text": "Recommends a type check as a required CI check",
+      "passed": true,
+      "evidence": "CI required check | minutes | no, with branch protection"
+    },
+    {
+      "text": "Recommends baselining or ratcheting rather than enforcing across the whole repo at once",
+      "passed": true,
+      "evidence": "enforce the formatter/types only on *changed lines* (or a baseline of existing violations that can only shrink)"
+    },
+    {
+      "text": "Notes that branch protection is what makes a CI check actually required",
+      "passed": true,
+      "evidence": "the CI check + branch protection is what actually blocks a merge"
+    },
+    {
+      "text": "Recommends the failure message tell the developer how to fix it",
+      "passed": true,
+      "evidence": "line 42: missing type annotation, run `mypy path/file.py` to check locally gets fixed"
+    },
+    {
+      "text": "Does not primarily recommend rewriting CONTRIBUTING.md, more reminders, or more discipline",
+      "passed": true,
+      "evidence": "You need the rule to be enforced by something that runs automatically, not recalled"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

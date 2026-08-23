@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "018a96d90c3c",
+  "expectations": [
+    {
+      "text": "States that system prompt instructions are not a reliable control on model behaviour",
+      "passed": true,
+      "evidence": "instructions are the *least* reliable layer you have \u2014 they're a request to a component with a non-zero error rate, not a constraint on it"
+    },
+    {
+      "text": "Recommends structured output against a schema rather than extracting values from prose",
+      "passed": true,
+      "evidence": "Use structured/constrained output for the extraction (schema: `amount: float`, `reason: enum|string`, `order_id: string`)"
+    },
+    {
+      "text": "Recommends validating the refund amount server-side against the actual order",
+      "passed": true,
+      "evidence": "Before calling the refund API, validate it server-side against the actual order: `amount <= order.amount_paid - order.already_refunded`"
+    },
+    {
+      "text": "Recommends a required idempotency key on the refund call",
+      "passed": true,
+      "evidence": "Generate an idempotency key from the order ID (+ maybe a refund-request ID) and pass it to the refund API/DB call"
+    },
+    {
+      "text": "Recommends a database constraint or equivalent so a duplicate refund is rejected rather than merely avoided",
+      "passed": true,
+      "evidence": "backed by a unique constraint. Second call with the same key is a no-op or returns the original result, structurally"
+    },
+    {
+      "text": "Recommends human confirmation or an approval gate for the irreversible refund action",
+      "passed": true,
+      "evidence": "require a confirmation step naming the exact order and amount before the refund fires"
+    },
+    {
+      "text": "Identifies prompt injection risk from the customer-supplied message reaching a privileged action",
+      "passed": false,
+      "evidence": "No explicit identification of prompt injection as a risk"
+    },
+    {
+      "text": "Recommends bounds or caps on the refund amount",
+      "passed": true,
+      "evidence": "validate it server-side against the actual order: `amount <= order.amount_paid - order.already_refunded`"
+    },
+    {
+      "text": "Does not primarily recommend changes to the prompt wording",
+      "passed": true,
+      "evidence": "Focuses on structural output, validation, and gates rather than prompt changes"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 9,
+    "pass_rate": 0.8889
+  }
+}

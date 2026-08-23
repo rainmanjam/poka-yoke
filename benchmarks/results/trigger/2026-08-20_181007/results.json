@@ -1,0 +1,840 @@
+{
+  "exit_reason": "max_iterations (3)",
+  "original_description": "Mistake-proofing for software \u2014 Shigeo Shingo's poka-yoke (poke yoke, mistake-proofing, error-proofing) method applied to code, process, and AI agents. Use this skill whenever someone wants to make a mistake impossible rather than merely caught: designing an API or schema so it cannot be misused, auditing code for footguns and easy-to-misuse signatures, making invalid states unrepresentable, installing pre-commit/CI/lint/database guardrails, hardening a repo against agent-written mistakes, or turning a bug, outage, or postmortem into a device that prevents that whole class of error from recurring. Trigger it on phrases like \"poka-yoke\", \"poke yoke\", \"mistake-proof\", \"error-proof\", \"foolproof this\", \"make it impossible to\", \"footgun\", \"easy to misuse\", \"make invalid states unrepresentable\", \"guardrails\", \"prevent this from happening again\", \"how do we stop someone doing X by accident\", and on incident retros or hardening work even when none of those words appear.",
+  "best_description": "Mistake-proofing for software \u2014 Shigeo Shingo's poka-yoke (poke yoke, mistake-proofing, error-proofing) method applied to code, process, and AI agents. Use this skill whenever someone wants to make a mistake impossible rather than merely caught: designing an API or schema so it cannot be misused, auditing code for footguns and easy-to-misuse signatures, making invalid states unrepresentable, installing pre-commit/CI/lint/database guardrails, hardening a repo against agent-written mistakes, or turning a bug, outage, or postmortem into a device that prevents that whole class of error from recurring. Trigger it on phrases like \"poka-yoke\", \"poke yoke\", \"mistake-proof\", \"error-proof\", \"foolproof this\", \"make it impossible to\", \"footgun\", \"easy to misuse\", \"make invalid states unrepresentable\", \"guardrails\", \"prevent this from happening again\", \"how do we stop someone doing X by accident\", and on incident retros or hardening work even when none of those words appear.",
+  "best_score": "4/8",
+  "best_train_score": "6/12",
+  "best_test_score": "4/8",
+  "final_description": "Use when documentation, instructions, or agreements aren't being followed and the user wants mechanical enforcement instead. Key patterns: \"CLAUDE.md says X but it still does Y\", \"we agreed to X but people don't\", \"had another incident where someone did X\", \"designing this so you can't accidentally X\", \"paranoid we've missed a filter somewhere\". Applies to: API/SDK signatures that prevent caller mistakes, state machines where invalid transitions are unrepresentable, pre-commit/CI hooks that block bad commits, agent guardrails via hooks, multi-tenant query scoping, prod-vs-staging protection. The core signal is wanting a structural fix rather than more documentation \u2014 making the wrong thing impossible, not just discouraged. Also triggers on: poka-yoke, mistake-proof, error-proof, footgun, guardrails, \"make invalid states unrepresentable\".",
+  "iterations_run": 3,
+  "holdout": 0.4,
+  "train_size": 12,
+  "test_size": 8,
+  "history": [
+    {
+      "iteration": 1,
+      "description": "Mistake-proofing for software \u2014 Shigeo Shingo's poka-yoke (poke yoke, mistake-proofing, error-proofing) method applied to code, process, and AI agents. Use this skill whenever someone wants to make a mistake impossible rather than merely caught: designing an API or schema so it cannot be misused, auditing code for footguns and easy-to-misuse signatures, making invalid states unrepresentable, installing pre-commit/CI/lint/database guardrails, hardening a repo against agent-written mistakes, or turning a bug, outage, or postmortem into a device that prevents that whole class of error from recurring. Trigger it on phrases like \"poka-yoke\", \"poke yoke\", \"mistake-proof\", \"error-proof\", \"foolproof this\", \"make it impossible to\", \"footgun\", \"easy to misuse\", \"make invalid states unrepresentable\", \"guardrails\", \"prevent this from happening again\", \"how do we stop someone doing X by accident\", and on incident retros or hardening work even when none of those words appear.",
+      "train_passed": 6,
+      "train_failed": 6,
+      "train_total": 12,
+      "train_results": [
+        {
+          "query": "claude keeps editing files in src/generated/ even though our CLAUDE.md says not to, in caps. what am i doing wrong",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "the team agreed to run the formatter before committing and half of them still don't. i've asked twice in standup. what do i do",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "designing a state machine for order status \u2014 pending, paid, shipped, refunded, cancelled. how do i model this in typescript so you can't accidentally refund something that was never paid",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "we're multi-tenant and i'm paranoid we've missed a tenant filter somewhere. is there a way to make it structurally impossible to write a query that isn't scoped, rather than me grepping for where clauses forever",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "ok so we just had our second incident this quarter where someone ran a script against prod that was meant for staging. both times it was a different person. i don't want to just write another runbook page nobody reads \u2014 how do i actually stop this from being possible",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "im about to write the public API for our billing SDK, the one external customers will integrate against. functions for charge, refund, subscribe, cancel. what should the signatures look like so people don't screw it up in ways that cost them money",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "getting `TypeError: Cannot read properties of undefined (reading 'map')` in ProductList.tsx line 47 but only in prod, works fine locally. can you help me track down what's different",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "explain how the auth middleware in this repo works, i just joined the team and i'm trying to understand the request lifecycle before i touch anything",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "write unit tests for the discount calculation in lib/pricing.ts \u2014 it currently has none and it's the most business-critical bit of the codebase",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "the test suite in packages/api is taking 11 minutes on CI and it's killing our iteration speed. can you figure out which specs are slow and see if any of them can be parallelised or mocked out",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "our postgres queries got slow after we hit about 2M rows in the events table. can you look at the query plans and figure out what indexes we're missing",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "the staging deploy failed about an hour ago, build step exits 1 with no useful output. can you dig into the logs and work out why it's broken",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        }
+      ],
+      "test_passed": 4,
+      "test_failed": 4,
+      "test_total": 8,
+      "test_results": [
+        {
+          "query": "we shipped a migration on friday that dropped a column and the deploy took the api down for 20 mins because old pods were still reading it. want to make sure that specific shape of thing can't happen again",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "can you look at src/payments/transfer.ts and tell me what's easy to get wrong in there? it's been reviewed twice but i have a bad feeling about it",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "our support team keeps getting tickets from users who deleted a project by accident. currently there's a confirm dialog but clearly it isn't working. what would actually help",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "our analytics numbers were wrong for like 3 weeks and nobody caught it because the pipeline was green the whole time. the join silently returned nulls and we coalesced to zero",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "we need CI set up for this repo \u2014 it's a fresh next.js project, nothing configured yet. github actions, run the tests on PRs, deploy to vercel on main",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "this UserService class is 800 lines and does way too much. can you break it up into something more sensible? no behaviour changes, just structure",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "can you review this PR? it's the new search endpoint. mostly want to know if the pagination logic is right and whether the code reads okay",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "add a confirmation email that goes out after someone signs up. use our existing resend setup, template should match the password reset one",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        }
+      ],
+      "passed": 6,
+      "failed": 6,
+      "total": 12,
+      "results": [
+        {
+          "query": "claude keeps editing files in src/generated/ even though our CLAUDE.md says not to, in caps. what am i doing wrong",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "the team agreed to run the formatter before committing and half of them still don't. i've asked twice in standup. what do i do",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "designing a state machine for order status \u2014 pending, paid, shipped, refunded, cancelled. how do i model this in typescript so you can't accidentally refund something that was never paid",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "we're multi-tenant and i'm paranoid we've missed a tenant filter somewhere. is there a way to make it structurally impossible to write a query that isn't scoped, rather than me grepping for where clauses forever",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "ok so we just had our second incident this quarter where someone ran a script against prod that was meant for staging. both times it was a different person. i don't want to just write another runbook page nobody reads \u2014 how do i actually stop this from being possible",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "im about to write the public API for our billing SDK, the one external customers will integrate against. functions for charge, refund, subscribe, cancel. what should the signatures look like so people don't screw it up in ways that cost them money",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "getting `TypeError: Cannot read properties of undefined (reading 'map')` in ProductList.tsx line 47 but only in prod, works fine locally. can you help me track down what's different",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "explain how the auth middleware in this repo works, i just joined the team and i'm trying to understand the request lifecycle before i touch anything",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "write unit tests for the discount calculation in lib/pricing.ts \u2014 it currently has none and it's the most business-critical bit of the codebase",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "the test suite in packages/api is taking 11 minutes on CI and it's killing our iteration speed. can you figure out which specs are slow and see if any of them can be parallelised or mocked out",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "our postgres queries got slow after we hit about 2M rows in the events table. can you look at the query plans and figure out what indexes we're missing",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "the staging deploy failed about an hour ago, build step exits 1 with no useful output. can you dig into the logs and work out why it's broken",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "description": "Use this skill when someone wants to make a mistake impossible through design, not documentation. Trigger on: API/schema design questions asking how to prevent misuse (\"so people can't screw it up\", \"so you can't accidentally X\"); state machines or type design where invalid states should be unrepresentable; process compliance failures where instructions, agreements, or docs aren't being followed (\"we said X but people still do Y\", \"CLAUDE.md says X but it keeps doing Y\"); repeated incidents or near-misses asking how to prevent recurrence structurally; multi-tenant/authz concerns about missing filters; wanting mechanical enforcement over human memory. Core signal: frustration that telling people (or agents) not to do something isn't working, and desire for a structural fix. Also trigger on explicit terms: poka-yoke, mistake-proof, error-proof, footgun, guardrails.",
+      "train_passed": 6,
+      "train_failed": 6,
+      "train_total": 12,
+      "train_results": [
+        {
+          "query": "claude keeps editing files in src/generated/ even though our CLAUDE.md says not to, in caps. what am i doing wrong",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "the team agreed to run the formatter before committing and half of them still don't. i've asked twice in standup. what do i do",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "designing a state machine for order status \u2014 pending, paid, shipped, refunded, cancelled. how do i model this in typescript so you can't accidentally refund something that was never paid",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "we're multi-tenant and i'm paranoid we've missed a tenant filter somewhere. is there a way to make it structurally impossible to write a query that isn't scoped, rather than me grepping for where clauses forever",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "ok so we just had our second incident this quarter where someone ran a script against prod that was meant for staging. both times it was a different person. i don't want to just write another runbook page nobody reads \u2014 how do i actually stop this from being possible",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "im about to write the public API for our billing SDK, the one external customers will integrate against. functions for charge, refund, subscribe, cancel. what should the signatures look like so people don't screw it up in ways that cost them money",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "getting `TypeError: Cannot read properties of undefined (reading 'map')` in ProductList.tsx line 47 but only in prod, works fine locally. can you help me track down what's different",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "explain how the auth middleware in this repo works, i just joined the team and i'm trying to understand the request lifecycle before i touch anything",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "write unit tests for the discount calculation in lib/pricing.ts \u2014 it currently has none and it's the most business-critical bit of the codebase",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "the test suite in packages/api is taking 11 minutes on CI and it's killing our iteration speed. can you figure out which specs are slow and see if any of them can be parallelised or mocked out",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "our postgres queries got slow after we hit about 2M rows in the events table. can you look at the query plans and figure out what indexes we're missing",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "the staging deploy failed about an hour ago, build step exits 1 with no useful output. can you dig into the logs and work out why it's broken",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        }
+      ],
+      "test_passed": 4,
+      "test_failed": 4,
+      "test_total": 8,
+      "test_results": [
+        {
+          "query": "we shipped a migration on friday that dropped a column and the deploy took the api down for 20 mins because old pods were still reading it. want to make sure that specific shape of thing can't happen again",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "can you look at src/payments/transfer.ts and tell me what's easy to get wrong in there? it's been reviewed twice but i have a bad feeling about it",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "our support team keeps getting tickets from users who deleted a project by accident. currently there's a confirm dialog but clearly it isn't working. what would actually help",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "we need CI set up for this repo \u2014 it's a fresh next.js project, nothing configured yet. github actions, run the tests on PRs, deploy to vercel on main",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "our analytics numbers were wrong for like 3 weeks and nobody caught it because the pipeline was green the whole time. the join silently returned nulls and we coalesced to zero",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "this UserService class is 800 lines and does way too much. can you break it up into something more sensible? no behaviour changes, just structure",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "can you review this PR? it's the new search endpoint. mostly want to know if the pagination logic is right and whether the code reads okay",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "add a confirmation email that goes out after someone signs up. use our existing resend setup, template should match the password reset one",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        }
+      ],
+      "passed": 6,
+      "failed": 6,
+      "total": 12,
+      "results": [
+        {
+          "query": "claude keeps editing files in src/generated/ even though our CLAUDE.md says not to, in caps. what am i doing wrong",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "the team agreed to run the formatter before committing and half of them still don't. i've asked twice in standup. what do i do",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "designing a state machine for order status \u2014 pending, paid, shipped, refunded, cancelled. how do i model this in typescript so you can't accidentally refund something that was never paid",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "we're multi-tenant and i'm paranoid we've missed a tenant filter somewhere. is there a way to make it structurally impossible to write a query that isn't scoped, rather than me grepping for where clauses forever",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "ok so we just had our second incident this quarter where someone ran a script against prod that was meant for staging. both times it was a different person. i don't want to just write another runbook page nobody reads \u2014 how do i actually stop this from being possible",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "im about to write the public API for our billing SDK, the one external customers will integrate against. functions for charge, refund, subscribe, cancel. what should the signatures look like so people don't screw it up in ways that cost them money",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "getting `TypeError: Cannot read properties of undefined (reading 'map')` in ProductList.tsx line 47 but only in prod, works fine locally. can you help me track down what's different",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "explain how the auth middleware in this repo works, i just joined the team and i'm trying to understand the request lifecycle before i touch anything",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "write unit tests for the discount calculation in lib/pricing.ts \u2014 it currently has none and it's the most business-critical bit of the codebase",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "the test suite in packages/api is taking 11 minutes on CI and it's killing our iteration speed. can you figure out which specs are slow and see if any of them can be parallelised or mocked out",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "our postgres queries got slow after we hit about 2M rows in the events table. can you look at the query plans and figure out what indexes we're missing",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "the staging deploy failed about an hour ago, build step exits 1 with no useful output. can you dig into the logs and work out why it's broken",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "description": "Use when documentation, instructions, or agreements aren't being followed and the user wants mechanical enforcement instead. Key patterns: \"CLAUDE.md says X but it still does Y\", \"we agreed to X but people don't\", \"had another incident where someone did X\", \"designing this so you can't accidentally X\", \"paranoid we've missed a filter somewhere\". Applies to: API/SDK signatures that prevent caller mistakes, state machines where invalid transitions are unrepresentable, pre-commit/CI hooks that block bad commits, agent guardrails via hooks, multi-tenant query scoping, prod-vs-staging protection. The core signal is wanting a structural fix rather than more documentation \u2014 making the wrong thing impossible, not just discouraged. Also triggers on: poka-yoke, mistake-proof, error-proof, footgun, guardrails, \"make invalid states unrepresentable\".",
+      "train_passed": 6,
+      "train_failed": 6,
+      "train_total": 12,
+      "train_results": [
+        {
+          "query": "claude keeps editing files in src/generated/ even though our CLAUDE.md says not to, in caps. what am i doing wrong",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "the team agreed to run the formatter before committing and half of them still don't. i've asked twice in standup. what do i do",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "we're multi-tenant and i'm paranoid we've missed a tenant filter somewhere. is there a way to make it structurally impossible to write a query that isn't scoped, rather than me grepping for where clauses forever",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "designing a state machine for order status \u2014 pending, paid, shipped, refunded, cancelled. how do i model this in typescript so you can't accidentally refund something that was never paid",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "ok so we just had our second incident this quarter where someone ran a script against prod that was meant for staging. both times it was a different person. i don't want to just write another runbook page nobody reads \u2014 how do i actually stop this from being possible",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "im about to write the public API for our billing SDK, the one external customers will integrate against. functions for charge, refund, subscribe, cancel. what should the signatures look like so people don't screw it up in ways that cost them money",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "getting `TypeError: Cannot read properties of undefined (reading 'map')` in ProductList.tsx line 47 but only in prod, works fine locally. can you help me track down what's different",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "write unit tests for the discount calculation in lib/pricing.ts \u2014 it currently has none and it's the most business-critical bit of the codebase",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "explain how the auth middleware in this repo works, i just joined the team and i'm trying to understand the request lifecycle before i touch anything",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "the test suite in packages/api is taking 11 minutes on CI and it's killing our iteration speed. can you figure out which specs are slow and see if any of them can be parallelised or mocked out",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "our postgres queries got slow after we hit about 2M rows in the events table. can you look at the query plans and figure out what indexes we're missing",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "the staging deploy failed about an hour ago, build step exits 1 with no useful output. can you dig into the logs and work out why it's broken",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        }
+      ],
+      "test_passed": 4,
+      "test_failed": 4,
+      "test_total": 8,
+      "test_results": [
+        {
+          "query": "we shipped a migration on friday that dropped a column and the deploy took the api down for 20 mins because old pods were still reading it. want to make sure that specific shape of thing can't happen again",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "can you look at src/payments/transfer.ts and tell me what's easy to get wrong in there? it's been reviewed twice but i have a bad feeling about it",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "our support team keeps getting tickets from users who deleted a project by accident. currently there's a confirm dialog but clearly it isn't working. what would actually help",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "our analytics numbers were wrong for like 3 weeks and nobody caught it because the pipeline was green the whole time. the join silently returned nulls and we coalesced to zero",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "we need CI set up for this repo \u2014 it's a fresh next.js project, nothing configured yet. github actions, run the tests on PRs, deploy to vercel on main",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "this UserService class is 800 lines and does way too much. can you break it up into something more sensible? no behaviour changes, just structure",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "can you review this PR? it's the new search endpoint. mostly want to know if the pagination logic is right and whether the code reads okay",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "add a confirmation email that goes out after someone signs up. use our existing resend setup, template should match the password reset one",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        }
+      ],
+      "passed": 6,
+      "failed": 6,
+      "total": 12,
+      "results": [
+        {
+          "query": "claude keeps editing files in src/generated/ even though our CLAUDE.md says not to, in caps. what am i doing wrong",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "the team agreed to run the formatter before committing and half of them still don't. i've asked twice in standup. what do i do",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "we're multi-tenant and i'm paranoid we've missed a tenant filter somewhere. is there a way to make it structurally impossible to write a query that isn't scoped, rather than me grepping for where clauses forever",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "designing a state machine for order status \u2014 pending, paid, shipped, refunded, cancelled. how do i model this in typescript so you can't accidentally refund something that was never paid",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "ok so we just had our second incident this quarter where someone ran a script against prod that was meant for staging. both times it was a different person. i don't want to just write another runbook page nobody reads \u2014 how do i actually stop this from being possible",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "im about to write the public API for our billing SDK, the one external customers will integrate against. functions for charge, refund, subscribe, cancel. what should the signatures look like so people don't screw it up in ways that cost them money",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "getting `TypeError: Cannot read properties of undefined (reading 'map')` in ProductList.tsx line 47 but only in prod, works fine locally. can you help me track down what's different",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "write unit tests for the discount calculation in lib/pricing.ts \u2014 it currently has none and it's the most business-critical bit of the codebase",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "explain how the auth middleware in this repo works, i just joined the team and i'm trying to understand the request lifecycle before i touch anything",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "the test suite in packages/api is taking 11 minutes on CI and it's killing our iteration speed. can you figure out which specs are slow and see if any of them can be parallelised or mocked out",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "our postgres queries got slow after we hit about 2M rows in the events table. can you look at the query plans and figure out what indexes we're missing",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "the staging deploy failed about an hour ago, build step exits 1 with no useful output. can you dig into the logs and work out why it's broken",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        }
+      ]
+    }
+  ]
+}

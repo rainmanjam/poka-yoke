@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": true,
+      "evidence": "\"If the migration lands before the last old pod drains, every request hitting those three paths errors until rollout finishes.\""
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "\"PR A (today, safe): code stops reading legacy_email... PR B (Tuesday): the DROP, after PR A has baked long enough.\""
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": true,
+      "evidence": "\"Nothing restores it. Not git revert, not a redeploy. The only path back is a point-in-time restore of the whole database.\""
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": true,
+      "evidence": "\"Rolling back PR A is two minutes and any one person can do it. Recovering from a bad DROP is a multi-hour lossy restore needing someone with prod credentials.\""
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "\"Recovering from a bad DROP is... on a Friday evening.\""
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": true,
+      "evidence": "\"a CI check that fails when a migration containing DROP or a destructive ALTER lands in the same diff as application code.\""
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "\"Short answer: merge the code change, hold the DROP.\""
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "\"The code change (stop reading the column) is fully reversible... The DROP is... belongs in its own deploy.\""
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

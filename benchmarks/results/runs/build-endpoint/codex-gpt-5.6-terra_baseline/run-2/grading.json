@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "9b2ce0ce8a1c",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Prisma schema with composite FK, SQL migration, complete TypeScript handler with transaction, error handling, and export"
+    },
+    {
+      "text": "Requires an idempotency key as a parameter rather than making it optional",
+      "passed": true,
+      "evidence": "Throws 400: 'A valid Idempotency-Key header of at most 200 characters is required' if missing or oversized"
+    },
+    {
+      "text": "Backs idempotency with a database unique constraint, not application logic alone",
+      "passed": true,
+      "evidence": "Schema: 'idempotencyKey String? @unique'; Migration: 'CREATE UNIQUE INDEX \"Refund_idempotencyKey_key\"'"
+    },
+    {
+      "text": "Uses distinct types for the identifiers rather than bare strings for both order and refund ids",
+      "passed": false,
+      "evidence": "Both Order.id and Refund.id are 'String'; TypeScript function treats both as bare string types with no distinction"
+    },
+    {
+      "text": "Handles money as integer minor units rather than a float",
+      "passed": true,
+      "evidence": "Schema: 'amountCents Int'; validation: '!Number.isSafeInteger(amountCents)'"
+    },
+    {
+      "text": "Validates the refund amount server-side against the order rather than trusting the caller",
+      "passed": true,
+      "evidence": "Queries prior refunds with aggregate, sums amountCents, checks 'refundedCents + input.amountCents > order.totalCents'"
+    },
+    {
+      "text": "Scopes the write so one tenant or user cannot refund another's order",
+      "passed": true,
+      "evidence": "Composite FK on (orderId, tenantId); order query: 'where: { id: input.orderId, tenantId }'"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": false,
+      "evidence": "Closing describes mechanisms ('scopes lookup', 'records pending', 'uses idempotency') not prevented misuses"
+    },
+    {
+      "text": "Names at least one thing it deliberately left possible and why",
+      "passed": false,
+      "evidence": "No statement explaining any deliberately-allowed behavior"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 9,
+    "pass_rate": 0.6667
+  }
+}

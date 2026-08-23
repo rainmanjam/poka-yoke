@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": true,
+      "evidence": "Swappable IDs and adjacent booleans... `transfer(dst, src, amt)` compiles"
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "Retry with no idempotency key \u2014 duplicate charges... A timeout is precisely the case where the charge *did* succeed and the response was lost; the recursion charges again."
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": true,
+      "evidence": "Then `catch` returns `null`, which every caller here ignores, so success and failure are indistinguishable"
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": true,
+      "evidence": "Money as float... `Account.balance: number` + no currency comparison means a USD\u2192EUR transfer moves nominal units and corrupts both balances"
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "the `$executeRawUnsafe` interpolation (line 86, injection surface *and* a second predicate that can drift from the first)"
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "Stringly-typed status, non-exhaustive switch... `\"cancelled\"` (British spelling) writes the DB, matches no case, falls through with no default"
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": true,
+      "evidence": "No signature check, `JSON.parse` into `any`, then `chargeCustomer` with attacker-chosen customer and amount"
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "\"Call it with no argument\", \"Call `transfer(dst, src, amt)`\", \"Anyone who can reach the endpoint POSTs\""
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "Ranks `purgeCanceledAccounts` deletion first, then webhook/transfer/retry money issues, then status enum"
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": true,
+      "evidence": "Code examples for `maxRows` cap, Money type, `stripe.webhooks.constructEvent`, `updateMany` with `gte` guard, unique constraints, `assertNever`"
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "Nothing was changed"
+    }
+  ],
+  "summary": {
+    "passed": 11,
+    "total": 11,
+    "pass_rate": 1.0
+  }
+}

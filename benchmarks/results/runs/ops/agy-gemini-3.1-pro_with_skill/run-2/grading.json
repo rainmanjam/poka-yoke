@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": true,
+      "evidence": "During the deploy, the old code is still running against the new database schema. The old code will try to read the dropped `legacy_email` column and crash."
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "Instead of one PR, we must split this into two separate deployments / This follows the final step of the \"expand and contract\" pattern."
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": true,
+      "evidence": "Dropping the `legacy_email` column is irreversible. Reverting the code will not put the column back. Restoring it requires restoring from a database backup, which takes time and loses any data written since the backup."
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": true,
+      "evidence": "Rollback is not a simple git revert\u2014it requires a database restore, which is slow and requires people who might be offline."
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "It's Friday afternoon. Rollback is not a simple git revert\u2014it requires a database restore, which is slow and requires people who might be offline."
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": false,
+      "evidence": "No CI gate recommendation present in response"
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "**This PR will cause an outage if merged and deployed as-is.** Co-deploying a destructive schema change (dropping a column) with the code that stops depending on it is a guaranteed outage, not a risk."
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "### PR 1: The Reversible Code Change / ### PR 2: The Irreversible Schema Change (Contract)"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

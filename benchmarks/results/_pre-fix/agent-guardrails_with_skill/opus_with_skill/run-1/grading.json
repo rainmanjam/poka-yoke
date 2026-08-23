@@ -1,0 +1,49 @@
+{
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "\"an instruction. On Shingo's regulatory ladder that's **rung zero** \u2014 training, not a device. Training degrades, and 1-in-10 is exactly what degradation looks like. Rewriting the line a third time, in bold, moves you from rung zero to rung zero.\""
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "\"Nothing is wrong with your wording\" followed by redirect to installing devices rather than revising instructions"
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": false,
+      "evidence": "Mentions \"Bash(git push --force:*)\" deny and \"Edit(./src/generated/**)\" deny conceptually, but does not show JSON structure or concrete settings.json syntax"
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": false,
+      "evidence": "Discusses that \"conditional hooks need that case\" and mentions \"untested hooks fail open,\" but does not explicitly recommend PreToolUse hook"
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": true,
+      "evidence": "\"a bare \\\"denied\\\" reliably produces a creative workaround that's worse than the original command. So the message *is* the device.\" and asks what the agent should do instead"
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": false,
+      "evidence": "No recommendation to verify or test that the deny rules actually fire"
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": true,
+      "evidence": "\"committed `.claude/settings.json`\" and \"I'd propose: committed `.claude/settings.json`\""
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": true,
+      "evidence": "Lists compaction, subagents, and local pressure as mechanisms for failure; notes that caps/repetition don't change what a line is"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "total": 8,
+    "pass_rate": 0.625
+  }
+}

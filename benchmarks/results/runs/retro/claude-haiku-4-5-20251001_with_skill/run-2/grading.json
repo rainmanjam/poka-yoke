@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "1af6b213502f",
+  "expectations": [
+    {
+      "text": "States plainly that the recent-charge lookup is not sufficient",
+      "passed": true,
+      "evidence": "Your current fix is **rung 2 (warning)**...you need **rung 1 (control)**"
+    },
+    {
+      "text": "Identifies the lookup as a check-then-act race rather than a device",
+      "passed": true,
+      "evidence": "with a fatal TOCTOU race:"
+    },
+    {
+      "text": "Recommends a required idempotency key on the charge path",
+      "passed": true,
+      "evidence": "**Make idempotency keys required** in the `charge()` signature (or add a newtype wrapper that requires them)"
+    },
+    {
+      "text": "Recommends a database unique constraint backing the idempotency key",
+      "passed": true,
+      "evidence": "**Add a unique DB constraint** on `(order_id, idempotency_key)` so the database itself rejects duplicates"
+    },
+    {
+      "text": "Separates the defect from the mistake from the underlying system hazard",
+      "passed": true,
+      "evidence": "**Defect**: 340 customers charged twice / **Mistake**: retry path called charge() again without idempotency key / **Hazard**: charge() accepts optional idempotency key"
+    },
+    {
+      "text": "Locates the hazard as a system property rather than as a worker bug or human error",
+      "passed": true,
+      "evidence": "**This is not one bug. It is a system design that permits a class of bugs.**"
+    },
+    {
+      "text": "Sweeps for other non-idempotent side effects reachable from a retry",
+      "passed": true,
+      "evidence": "Every other service calling `charge()` (emails, webhooks, ledger updates, other Stripe handlers, reconciliation jobs)"
+    },
+    {
+      "text": "Treats 'second time this happened' as evidence for pushing to a Control-rung device",
+      "passed": true,
+      "evidence": "For an incident that cost real money and recurred, you need **rung 1 (control)**"
+    },
+    {
+      "text": "Attributes cause to the system, not to any person",
+      "passed": true,
+      "evidence": "Analysis attributes to system design (optional idempotency key parameter, lack of constraint) without blaming any person"
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

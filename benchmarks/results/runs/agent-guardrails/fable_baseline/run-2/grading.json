@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "5b62450c21d2",
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "Capitals and repetition don't change the failure rate because the failure isn't 'didn't read it' \u2014 it's 'read it, then lost it under 80k tokens'"
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "stop trying to write a better instruction and put a device in the path that physically can't be skipped"
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": true,
+      "evidence": "Shows deny rules with Edit(src/generated/**), Write(src/generated/**), Bash(git push --force*)"
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": true,
+      "evidence": "**2. A PreToolUse hook** that parses the actual command... exit 2 on any Bash input matching"
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": false,
+      "evidence": "Response mentions 'exits 2 with a message' but never explains what the message should contain or show an example of saying what to do instead"
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": true,
+      "evidence": "break it on purpose. Ask Claude to 'add a field to `src/generated/types.ts`'... and watch each layer go red"
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": false,
+      "evidence": "Shows `.claude/settings.json` but does not explicitly recommend committing it to protect the whole team"
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": true,
+      "evidence": "Capitals and repetition don't change the failure rate because the failure isn't 'didn't read it'"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

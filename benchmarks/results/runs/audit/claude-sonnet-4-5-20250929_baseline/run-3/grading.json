@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": true,
+      "evidence": "**Swappable args** (L17): Both strings, easy to reverse \u2192 money flows backward."
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "**Double-charge on retry** (L56-57): Retries on ANY error, but if Stripe charged successfully and only the API response timed out, you charge twice."
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": true,
+      "evidence": "**Null on error** (L59): Returns `null` instead of throwing. Caller assumes success \u2192 no charge recorded."
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": true,
+      "evidence": "**Float money** (L12, L63): `balance: number` \u2192 0.1 + 0.2 = 0.30000000000000004... *Fix: Store cents as integers*"
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "**SQL injection in purge** (L86-88): String interpolation in raw SQL."
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "**Unbounded status** (L67-77): Accepts any string. Typo `\"activ\"` \u2192 features never enabled \u2014 flags the unbounded/non-exhaustive status handling and proposes a union type"
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": true,
+      "evidence": "**Webhook forgery** (L93-99): No signature verification. Attacker sends `{\"type\":\"invoice.paid\", ...}` \u2192 you charge them \u2014 treats the parsed webhook body as unvalidated external input"
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "Findings are framed as code/actions ('Calling `purgeCanceledAccounts()` with no args deletes EVERY canceled account', 'easy to reverse') with no characterization of the developer"
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "'\u2605 **CRITICAL \u2014 Money Loss/Theft**' and '\u2605 **CRITICAL \u2014 Data Destruction**' sections precede '\u2605 **MEDIUM \u2014 Silent Failures**'; \"I'd block the deploy until #1-6 are fixed\""
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": true,
+      "evidence": "Each item has a specific fix: '*Fix: `stripe.webhooks.constructEvent(body, sig, secret)`*', '*Fix: Wrap in `db.$transaction()`*', '*Fix: Branded types or object param `{from, to, amount}`*'"
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "Response is analysis-only text; no file modifications described or implied"
+    }
+  ],
+  "summary": {
+    "passed": 11,
+    "total": 11,
+    "pass_rate": 1.0
+  }
+}

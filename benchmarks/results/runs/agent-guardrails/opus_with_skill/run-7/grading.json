@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "5b62450c21d2",
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "\"Caps and repetition don't change the *rung* \u2014 a line in CLAUDE.md is training, and training degrades under long contexts, compaction, and subagents that never read the file.\""
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "\"Writing it twice in caps is the signal to stop editing the file and install a device.\" with concrete device recommendations"
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": true,
+      "evidence": "Provides JSON block with Edit, Write, and Bash deny entries with comments"
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": true,
+      "evidence": "\"Both leftovers are conditional, so they need a `PreToolUse` hook that inspects the call.\" with hook code provided"
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": true,
+      "evidence": "\"A bare \"denied\" makes the agent invent a workaround \u2014 often worse than the original command. The message is the one place prose legitimately belongs\" with examples in hook rules"
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": true,
+      "evidence": "\"Run all four:\" followed by verification commands; transparently notes \"I couldn't run the hook test here... so the verification commands below are yours to run\""
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": true,
+      "evidence": "\"`.claude/settings.json`, **committed** \u2014 in `settings.local.json` it protects one machine, which is the same failure as documenting it.\""
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": true,
+      "evidence": "\"Caps and repetition don't change the *rung*... \"Maybe one time in ten\" is the expected yield of rung-zero controls, not a sign you phrased it badly.\""
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

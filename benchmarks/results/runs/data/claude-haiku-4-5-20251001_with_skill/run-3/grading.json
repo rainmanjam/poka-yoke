@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "\"Your test catches one specific failure mode (empty table), but the hazard that broke your dashboard is deeper and still available\""
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "\"A join to the renamed column returned nulls; a `COALESCE(null_column, 0)` masked it as a zero value\""
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": true,
+      "evidence": "\"Does it agree? (reconciliation) \u2014 \u2717 no check that warehouse total matches source system\" and \"Reconciliation: compare warehouse total to source\""
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": false,
+      "evidence": "Discusses Control vs Warning/Detection rungs conceptually but does not explicitly recommend assertions run before publication to prevent bad data reaching the dashboard"
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "\"Data contract from upstream \u2014 Upstream changes = loud failure\" and \"Schema validation before coalesce \u2014 Missing/renamed columns fail the pipeline\""
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "\"Null-rate assertion on revenue\" and \"Volume baseline + alert\" listed in proposed devices"
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": false,
+      "evidence": "Does not frame the three-week undetected failure as its own detection gap requiring a device"
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": false,
+      "evidence": "No explicit comparison between silent failures and failed pipelines"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "total": 8,
+    "pass_rate": 0.625
+  }
+}

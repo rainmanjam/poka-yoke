@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": true,
+      "evidence": "\"Reversed args, `transfer(a, a, n)`, or negative amount. Device: single typed arg, branded `AccountId`, positive `Money`, reject `from === to`\""
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "\"Stripe succeeds, response times out, `retry` fires again \u2192 two charges. Device: mandatory `idempotencyKey` passed to Stripe; remove the catch\""
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": true,
+      "evidence": "\"And the `catch` returns `null`, so callers retry *on top of that*. Silent\" and \"Set aside: `return null` hides every failure (:59)\""
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": true,
+      "evidence": "\"Also `amountCents: number` accepts `19.99` (dollars) with no complaint. Device: Options object, `Cents` branded integer type validated at the boundary\""
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "\"raw interpolated SQL, no transaction, returns a happy count. Device: required `{ canceledBefore, dryRun }` object, reject cutoffs inside the retention window, `deleteMany` instead of `$executeRawUnsafe`\""
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "\"typo'd/unknown status updates the row, falls through the switch, features stay enabled forever. Union type + exhaustive switch\""
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": true,
+      "evidence": "\"Anyone who can reach the URL POSTs... No signature check. Device: `stripe.webhooks.constructEvent` before parsing\""
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "\"Call `purgeCanceledAccounts()` with no arg\", \"Stripe succeeds, response times out, `retry` fires again\", \"Anyone who can reach the URL POSTs\" \u2014 all actions"
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "\"Top three (purge, double-charge, unverified webhook) are money-moving and silent\"; remaining items ranked lower in severity"
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": true,
+      "evidence": "Each finding specifies concrete device: \"required `{ canceledBefore, dryRun }` object\", \"mandatory `idempotencyKey`\", \"`stripe.webhooks.constructEvent`\""
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "\"Per the audit skill I haven't edited anything; say which you want applied and I'll do it\""
+    }
+  ],
+  "summary": {
+    "passed": 11,
+    "total": 11,
+    "pass_rate": 1.0
+  }
+}

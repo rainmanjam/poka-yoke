@@ -1,0 +1,60 @@
+{
+  "assertions_sha": "bcf79cb43709",
+  "expectations": [
+    {
+      "text": "Flags the nested comments and attachments resolvers as unscoped by tenant",
+      "passed": true,
+      "evidence": "Finding #4: 'Document.comments and Document.attachments \u2014 Nested resolvers unscoped'"
+    },
+    {
+      "text": "Flags updateDocument for scoping on id alone without a tenant constraint",
+      "passed": true,
+      "evidence": "Finding #2: 'Update only checks where: { id: documentId }. No tenant in the WHERE clause.'"
+    },
+    {
+      "text": "Flags exportWorkspace taking tenantId from the client-controlled request body",
+      "passed": true,
+      "evidence": "Finding #1: 'Tenant ID comes from req.body (line 53), not the session'"
+    },
+    {
+      "text": "Flags searchDocuments as returning rows across all tenants",
+      "passed": true,
+      "evidence": "Finding #3: 'Raw query with no WHERE ... tenantId = ? filter'"
+    },
+    {
+      "text": "Flags adminListDocuments as checking authentication but not authorization or tenant",
+      "passed": true,
+      "evidence": "Bonus finding: 'with only an auth check (is userId present), not an authz check'"
+    },
+    {
+      "text": "Enumerates all the affected sites rather than fixing only the first one found",
+      "passed": true,
+      "evidence": "Lists 4 main findings plus bonus (5 total sites affected)"
+    },
+    {
+      "text": "Recommends a structural device (scoped repository, row-level security, or equivalent) rather than only adding where-clauses site by site",
+      "passed": true,
+      "evidence": "'Row-Level Security in the database would reach Control rung for all of these at once' and 'Scoped repositories as a backup'"
+    },
+    {
+      "text": "Recommends a cross-tenant test that attempts tenant A operations against tenant B resources",
+      "passed": true,
+      "evidence": "'two-tenant test that checks every endpoint from tenant A against tenant B's resources and asserts 404'"
+    },
+    {
+      "text": "Identifies the raw interpolation of tenantId into $queryRawUnsafe as an injection hazard distinct in kind from the tenant-scoping bug",
+      "passed": false,
+      "evidence": "Mentions both 'Tenant ID comes from req.body' and 'Combined with string interpolation in the SQL' but presents them as one combined vulnerability in Finding #1 rather than identifying the injection as a distinct vulnerability type"
+    },
+    {
+      "text": "Does not conclude the main query paths being scoped means the service is safe",
+      "passed": true,
+      "evidence": "Acknowledges safe paths but states 'Row-Level Security in the database would reach Control rung for all of these at once' \u2014 does not conclude safety"
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 10,
+    "pass_rate": 0.9
+  }
+}

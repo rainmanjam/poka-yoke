@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "\"Short answer: no \u2014 and the test you added would have passed every day of those three weeks.\""
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "\"COALESCE(x, 0) converts 'I don't know this value' into 'this value is zero' \u2014 a silent failure\""
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": true,
+      "evidence": "\"Reconciliation to source of truth \u2014 daily total vs. billing/ledger, tolerance \u00b1X%, blocks publication on mismatch\""
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": true,
+      "evidence": "\"stage, test, promote on pass\" and \"A test that emails after the dashboard refreshes still lets finance find it first.\""
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "\"Data contract on the upstream table \u2014 schema pinned, ingest fails on a renamed column\""
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "\"Join match-rate assertion \u2014 count(matched)/count(left) >= 0.99, fails the build\" and \"Volume against same-weekday history (floor and ceiling)\""
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": true,
+      "evidence": "\"Why nothing caught it\" section explicitly frames as missing detection; \"Class sweep (the step that gets skipped)\" addresses systematic gap"
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": false,
+      "evidence": "Shows that \"The data was perfectly well-shaped and wrong\" and \"only reconciliation catches a logic error the data still looks healthy after\" but does not explicitly compare danger to failed pipeline scenario"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

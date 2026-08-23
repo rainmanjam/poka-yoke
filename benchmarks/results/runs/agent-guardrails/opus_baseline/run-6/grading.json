@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "5b62450c21d2",
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "CLAUDE.md is **rung zero** on your own ladder \u2014 training, not a device"
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "Moves to deny rules and hooks; does not suggest rewording"
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": true,
+      "evidence": "Provides JSON with four specific deny patterns for Edit/Write/Bash"
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": true,
+      "evidence": "Copy it to `.claude/hooks/` in the target repo and wire it...then add a generated-files rule to `RULES`"
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": true,
+      "evidence": "Example message provided: Edit the source schema and run `make generate`"
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": true,
+      "evidence": "Prove it fires. Run `git push --force`...then `git push --force-with-lease`...An untested hook fails open more often than you'd think"
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": true,
+      "evidence": "Commit it. `.claude/settings.json`, not `settings.local.json` \u2014 a rule that lives on one machine has the same failure mode as documenting it"
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": true,
+      "evidence": "Caps and repetition don't change the rung; they just make a rule *feel* enforced. One-in-ten is the expected failure rate of a remembered rule"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

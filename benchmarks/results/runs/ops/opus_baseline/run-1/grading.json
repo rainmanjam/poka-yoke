@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": true,
+      "evidence": "\"For a few minutes old pods run against the new schema and every query touching legacy_email errors.\""
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "\"The code change (stop reading the column) is fully reversible and safe to ship anytime. The DROP is the contract step and belongs in its own deploy.\""
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": true,
+      "evidence": "\"DROP COLUMN destroys the values... The restore path is a PITR/snapshot restore into a scratch DB plus a backfill join \u2014 hours, several people.\""
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": true,
+      "evidence": "\"Code-only revert: minutes, one person. Post-drop recovery: hours, multiple people, on a Saturday.\""
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "\"Post-drop recovery: hours, multiple people, on a Saturday.\""
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": true,
+      "evidence": "\"Want me to write the CI guard that blocks a destructive ALTER/DROP from landing in the same PR as application code?\""
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "\"Short answer: merge the code half today, don't drop the column today.\""
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "\"The code change (stop reading the column) is fully reversible and safe to ship anytime. The DROP is the contract step and belongs in its own deploy.\""
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

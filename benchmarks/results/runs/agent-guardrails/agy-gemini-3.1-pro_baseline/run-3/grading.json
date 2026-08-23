@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "5b62450c21d2",
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "AI agents, like humans, suffer from context degradation and probabilistic adherence to prose."
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "you are relying on instructions (training) rather than devices (poka-yokes) to prevent unwanted behaviors"
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": false,
+      "evidence": "No mention of settings.json; instead discusses git hooks and file permissions."
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": false,
+      "evidence": "Discusses git pre-commit and pre-push hooks, not Claude Code PreToolUse hooks."
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": false,
+      "evidence": "Message shown ('ERROR: Force push detected and blocked') only refuses; does not guide to alternatives."
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": true,
+      "evidence": "Verification Plan section explicitly recommends testing: 'Attempt to run git push --force on a test branch and verify the hook intercepts.'"
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": false,
+      "evidence": "Shows local .git/hooks but does not mention committing hooks to version control for team use."
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": true,
+      "evidence": "Shouting in all-caps just competes for a truncated attention budget."
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "total": 8,
+    "pass_rate": 0.5
+  }
+}

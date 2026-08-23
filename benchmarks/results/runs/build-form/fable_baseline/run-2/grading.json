@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "31eb11dca414",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Includes types.ts, useSelection.ts, api.ts, BulkActionsBar.tsx with TypedConfirm subcomponent, DocumentsTable.tsx with full implementations"
+    },
+    {
+      "text": "Produces actual working component code rather than only a list of recommendations",
+      "passed": true,
+      "evidence": "All code is executable React/TypeScript, not pseudocode or recommendations"
+    },
+    {
+      "text": "Makes the destructive action recoverable rather than relying on a confirmation dialog alone",
+      "passed": true,
+      "evidence": "Soft-delete endpoint, undo toast with undoToken-based undo call: await documentsApi.undo(result.undoToken)"
+    },
+    {
+      "text": "Shows the count of affected items before the action is taken",
+      "passed": true,
+      "evidence": "All {fmt(p.count)} matching documents selected; Archive {fmt(p.count)}; Delete {fmt(p.count)}"
+    },
+    {
+      "text": "Distinguishes select-all-on-page from select-all-matching rather than conflating them",
+      "passed": true,
+      "evidence": "Selection has 'ids' vs 'all' modes; selectAllMatching explicitly defined; UI shows 'Select all {totalMatching} matching' only when page is all-selected and more exist"
+    },
+    {
+      "text": "Separates the destructive action from the benign one visually or spatially",
+      "passed": true,
+      "evidence": "Visual divider <span aria-hidden className=\"mx-1 h-5 w-px bg-blue-200\" />; archive blue styling, delete red styling (border-red-300, text-red-700)"
+    },
+    {
+      "text": "Does not make the destructive action the default focus or primary button",
+      "passed": true,
+      "evidence": "Archive button first; Delete button secondary with red styling; autoFocus only on TypedConfirm input when confirmation needed"
+    },
+    {
+      "text": "Notes that the server must enforce the rules, not just the UI",
+      "passed": true,
+      "evidence": "Server contract section: bulk endpoints must be soft, honour Idempotency-Key, resolve {mode:'all'} with same filter semantics as pagination"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Closes with 'What this makes impossible, and at which rung' followed by explicit list: stale selection after filter change, double-submit, reflexive delete of thousands, misreading scale"
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

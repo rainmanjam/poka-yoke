@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "5b62450c21d2",
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "\"The prose is the wrong instrument.\" \"A control that holds 9 times in 10 against an irreversible action isn't a 90% control \u2014 it's a broken one that looks like it works.\""
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "\"Then delete `src/generated/` from CLAUDE.md. Leaving it there teaches you the rule is enforced by prose.\""
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": true,
+      "evidence": "Provides exact jsonc config: `\"Bash(git push --force:*)\",\" Bash(git push -f:*)\",\" Edit(./src/generated/**)\",\" Write(./src/generated/**)\"` in permissions.deny array"
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": true,
+      "evidence": "\"Force-push needs a regex hook; the lookahead matters\" with regex pattern and hook setup showing PreToolUse matcher"
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": true,
+      "evidence": "\"A bare denial produces a creative workaround, often worse.\" Shows message: \"Change the schema/template it's generated from, then run `npm run codegen`.\""
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": true,
+      "evidence": "\"Prove it fires\" test table with 6 rows; \"A device that's never gone red is a rumour.\""
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": true,
+      "evidence": "\"Committed, not `settings.local.json` \u2014 a rule on one machine is the same failure as documenting it.\""
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": true,
+      "evidence": "\"It degrades under compaction (long sessions drop it), under subagents (they never read it), and under caps-lock salience decay.\""
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

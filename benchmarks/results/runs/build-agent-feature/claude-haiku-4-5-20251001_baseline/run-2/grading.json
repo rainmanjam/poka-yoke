@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "3ef52a8f1e5d",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Defines types, router class, and includes `save_to_ticketing_system()` function that constructs a ticket dict with team and routing_reason, then calls it in the main loop"
+    },
+    {
+      "text": "Uses structured output against a schema rather than parsing the model's prose",
+      "passed": true,
+      "evidence": "Uses tool_use with explicit schema for route_support_email tool; extracts structured output from `block.input`"
+    },
+    {
+      "text": "Constrains the classification to a closed set the code enforces, not just the prompt",
+      "passed": true,
+      "evidence": "Schema has `\"enum\": [\"billing\", \"technical\", \"account\"]` and RoutingResult uses `Literal[\"billing\", \"technical\", \"account\"]`"
+    },
+    {
+      "text": "Handles the case where the model returns something outside the allowed set",
+      "passed": false,
+      "evidence": "No explicit validation beyond schema constraint. Uses dataclass (which performs no runtime validation) instead of Pydantic. If invalid data somehow reaches code, it would be silently assigned without detection."
+    },
+    {
+      "text": "Has a deterministic fallback or explicit failure path rather than a silent default",
+      "passed": true,
+      "evidence": "`raise ValueError(\"Claude did not return a routing decision\")` when no tool_use block is found"
+    },
+    {
+      "text": "Treats the customer email as untrusted text that could carry instructions",
+      "passed": false,
+      "evidence": "Email fields directly interpolated into prompt: `f\"From: {email.from_address}\\nSubject: {email.subject}\\n\\nBody:\\n{email.body}\"`. No escaping or mitigation; vulnerable to prompt injection attacks via email content."
+    },
+    {
+      "text": "Bounds cost or retries in code rather than requesting it in the prompt",
+      "passed": true,
+      "evidence": "Sets `max_tokens=256` and `temperature=0` in code to bound cost and ensure determinism"
+    },
+    {
+      "text": "Closes by naming which failures the design makes impossible",
+      "passed": false,
+      "evidence": "Ends with design choices and production recommendations, but never explicitly states what failure modes are now impossible"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "total": 8,
+    "pass_rate": 0.625
+  }
+}

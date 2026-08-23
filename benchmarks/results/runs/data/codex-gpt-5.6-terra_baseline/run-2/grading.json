@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "No. A non-empty revenue table only catches total pipeline failure; it will pass when every join misses"
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "revenue is silently converted to zero; No blanket zeroing: preserve `NULL` as 'unknown/broken'"
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": true,
+      "evidence": "Reconciliation: compare dashboard revenue with an independent source of truth (billing/ledger)"
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": true,
+      "evidence": "Add controls that fail closed before `COALESCE` masks the problem\u2014timing before masking, benefit of preventing silent failure"
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "Schema contract: assert the upstream column exists, has the expected type, and alert on added/removed/renamed fields"
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "Specific SQL with joined_rows > 0, match rate >= 0.99, null check; freshness and volume checks"
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": true,
+      "evidence": "Alert routing and ownership: page or notify the data owner when these checks fail\u2014don't rely on someone noticing a chart"
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": false,
+      "evidence": "Does not explain the danger or contrast; assumes failure is preferable but doesn't articulate why"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

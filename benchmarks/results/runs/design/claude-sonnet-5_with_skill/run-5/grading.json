@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "export type Subscription = | (SubscriptionBase & { status: \"trialing\"; trialEndsAt: Date; }) | ... \u2014 discriminated on status"
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "Each status branch has only its relevant fields; canceled only has cancelReason and voluntary"
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": true,
+      "evidence": "assertNever function with default: return assertNever(sub) in the switch"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": true,
+      "evidence": "type SubscriptionId = Brand<string, \"SubscriptionId\">; type CustomerId = Brand<string, \"CustomerId\">;"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": false,
+      "evidence": "States 'this type says nothing about which transitions are legal' and provides only a TODO placeholder with no implementation"
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Insight section explicitly names: retryCount inaccessible until narrowed to past_due, assertNever catches new statuses, ID swaps become compile errors"
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "Misuse enumeration first item rejects the flat optional-fields approach"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 7,
+    "pass_rate": 0.8571
+  }
+}

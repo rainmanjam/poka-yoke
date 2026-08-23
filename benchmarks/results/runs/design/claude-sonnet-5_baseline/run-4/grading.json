@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "`type Subscription = | TrialingSubscription | ActiveSubscription | PastDueSubscription | CanceledSubscription` with `status` literals"
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "Each interface has only its relevant fields; CanceledSubscription nests another discriminated union for voluntary vs involuntary"
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": true,
+      "evidence": "`function assertNever(x: never): never` in default arm of `nextActionFor` switch"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": true,
+      "evidence": "`type SubscriptionId = string & { readonly __brand: \"SubscriptionId\" }`"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": false,
+      "evidence": "Explicitly states 'Left possible on purpose' and defers to boundary parsing; no transition function provided"
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Lists 'Bag-of-optionals trap', 'Swap risk', 'Exhaustiveness', and 'voluntary: boolean + free-text reason: string' preventing mismatches"
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "Opens with enumeration of bag-of-optionals trap, recommends discriminated union as solution"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 7,
+    "pass_rate": 0.8571
+  }
+}

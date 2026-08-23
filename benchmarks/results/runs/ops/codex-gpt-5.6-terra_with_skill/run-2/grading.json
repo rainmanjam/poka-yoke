@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": true,
+      "evidence": "During rollout, an old worker, canary, queued job, or rollback may still read the column and fail"
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "Split it: deploy the code that no longer reads `legacy_email` while retaining the column; verify every production version/job is clear, then drop it in a later, explicitly approved migration"
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": true,
+      "evidence": "The irreversible step is `DROP legacy_email`; only a proven backup/PITR restore can recover it, and none is stated"
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": false,
+      "evidence": "Mentions 'fast rollback' for the code phase and 'column drop is not made safe' but does not explicitly state what rollback requires for the schema drop (e.g., that it requires restore and cannot be done via code redeployment)"
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "Friday is fine only if the reversible deploy has an on-call owner and a fast rollback"
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": true,
+      "evidence": "require a mechanical 'no remaining reads' check plus an explicit destructive-migration gate"
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "A column drop is not made safe by green CI or a small diff"
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "deploy the code [reversible] vs drop it in a later migration [irreversible]"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

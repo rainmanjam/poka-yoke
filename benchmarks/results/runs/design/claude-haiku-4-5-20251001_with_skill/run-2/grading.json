@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "type Subscription = | { status: 'trialing'; trialEndDate: Date } | { status: 'active'; renewalDate: Date } | ..."
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "'you literally cannot write `{ status: 'trialing', retryCount: 5 }`'"
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": false,
+      "evidence": "Describes exhaustiveness requirement ('a switch over `sub.status` requires a case for every variant') but does not show assertNever, never arm, or lint rule implementation"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": false,
+      "evidence": "No branded types introduced; mentions enum for CancelReason but that is not an ID type"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": false,
+      "evidence": "No transition function or state-change constraints mentioned"
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "'Why this fixes your hazards' section: '\u2713 **Impossible combinations gone**', '\u2713 **Required fields enforced**', '\u2713 **Exhaustiveness at build time**', '\u2713 **No unsafe field access**'"
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "Primary recommendation is discriminated unions"
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "total": 7,
+    "pass_rate": 0.5714
+  }
+}

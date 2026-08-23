@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "1af6b213502f",
+  "expectations": [
+    {
+      "text": "States plainly that the recent-charge lookup is not sufficient",
+      "passed": true,
+      "evidence": "\"No, that check is not enough.\""
+    },
+    {
+      "text": "Identifies the lookup as a check-then-act race rather than a device",
+      "passed": true,
+      "evidence": "\"**Race condition** \u2014 both workers check simultaneously, both see no recent charge, both charge\" \u2014 names the check-then-act window explicitly"
+    },
+    {
+      "text": "Recommends a required idempotency key on the charge path",
+      "passed": true,
+      "evidence": "\"const idempotencyKey = `order_${orderId}_charge_${attemptId}`; await stripe.charges.create(..., { idempotencyKey })\" plus \"Pass idempotency key to all mutating calls\""
+    },
+    {
+      "text": "Recommends a database unique constraint backing the idempotency key",
+      "passed": true,
+      "evidence": "\"**Database** | Unique constraint on `(order_id, charge_attempt)`\""
+    },
+    {
+      "text": "Separates the defect from the mistake from the underlying system hazard",
+      "passed": false,
+      "evidence": "No distinction drawn between the double charge (defect), the redelivered message (mistake/error occurrence), and the non-idempotent charge path (hazard); it moves from 'check is insufficient' straight to fix recommendations"
+    },
+    {
+      "text": "Locates the hazard as a system property rather than as a worker bug or human error",
+      "passed": true,
+      "evidence": "\"This is an **idempotency** problem, not a deduplication problem. The fix should make retries *safe by design*\" \u2014 frames it as a property of the charge path, not a worker mistake"
+    },
+    {
+      "text": "Sweeps for other non-idempotent side effects reachable from a retry",
+      "passed": false,
+      "evidence": "Only the charge call is considered; no mention of receipts/emails, webhooks, ledger writes, or other retry-reachable side effects. 'Pass idempotency key to all mutating calls' is a Stripe-scoped instruction, not a sweep"
+    },
+    {
+      "text": "Treats 'second time this happened' as evidence for pushing to a Control-rung device",
+      "passed": false,
+      "evidence": "The recurrence the user flagged is never mentioned or used as an argument for a stronger control"
+    },
+    {
+      "text": "Attributes cause to the system, not to any person",
+      "passed": true,
+      "evidence": "Cause is assigned throughout to design ('not try to detect them after the fact', 'the idempotency key must be generated *before* the message enters the queue'); no person or team is blamed"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 9,
+    "pass_rate": 0.6667
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "assertions_sha": "bcf79cb43709",
+  "expectations": [
+    {
+      "text": "Flags the nested comments and attachments resolvers as unscoped by tenant",
+      "passed": true,
+      "evidence": "Document.comments and Document.attachments filter by documentId only. That's safe only if the parent was always obtained through getDocument"
+    },
+    {
+      "text": "Flags updateDocument for scoping on id alone without a tenant constraint",
+      "passed": true,
+      "evidence": "where: { id: documentId } with no tenantId. Tenant A can overwrite the title/body of any document whose ID they know"
+    },
+    {
+      "text": "Flags exportWorkspace taking tenantId from the client-controlled request body",
+      "passed": true,
+      "evidence": "tenantId comes from req.body, not the session \u2014 client-controlled, so it's a one-line dump"
+    },
+    {
+      "text": "Flags searchDocuments as returning rows across all tenants",
+      "passed": true,
+      "evidence": "session is accepted and never used. Full-text search runs across every tenant's documents"
+    },
+    {
+      "text": "Flags adminListDocuments as checking authentication but not authorization or tenant",
+      "passed": true,
+      "evidence": "Only checks the user is authenticated (not that they're an admin), then returns the 200 most recent documents across all tenants"
+    },
+    {
+      "text": "Enumerates all the affected sites rather than fixing only the first one found",
+      "passed": true,
+      "evidence": "Lists 1-5 as problems (updateDocument, exportWorkspace, searchDocuments, adminListDocuments, nested resolvers), item 6 notes getDocument is fine"
+    },
+    {
+      "text": "Recommends a structural device (scoped repository, row-level security, or equivalent) rather than only adding where-clauses site by site",
+      "passed": true,
+      "evidence": "Postgres RLS with FORCE ROW LEVEL SECURITY and app.tenant_id set per-transaction... A TenantDb constructed only from a session, with the raw db lint-banned"
+    },
+    {
+      "text": "Recommends a cross-tenant test that attempts tenant A operations against tenant B resources",
+      "passed": true,
+      "evidence": "The two-tenant test: table-drive every operation from tenant A against tenant B's IDs, assert 404 (not 403)"
+    },
+    {
+      "text": "Identifies the raw interpolation of tenantId into $queryRawUnsafe as an injection hazard distinct in kind from the tenant-scoping bug",
+      "passed": true,
+      "evidence": "And it's string-interpolated into $queryRawUnsafe, so '; DROP ... works too. Two breaches in one function"
+    },
+    {
+      "text": "Does not conclude the main query paths being scoped means the service is safe",
+      "passed": true,
+      "evidence": "the obvious path is scoped, which is why a spot check says 'we're ok.' [implicit criticism]. Why per-site fixes aren't enough"
+    }
+  ],
+  "summary": {
+    "passed": 10,
+    "total": 10,
+    "pass_rate": 1.0
+  }
+}

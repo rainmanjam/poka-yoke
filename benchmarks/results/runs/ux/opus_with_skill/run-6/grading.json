@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "82f963d241f9",
+  "expectations": [
+    {
+      "text": "Pushes back on the 'are you sure?' modal as the primary fix",
+      "passed": true,
+      "evidence": "no, not as the fix... A modal doesn't change that \u2014 it just adds a step in front of the same cliff"
+    },
+    {
+      "text": "Explains habituation or click-through blindness as why frequent dialogs stop working",
+      "passed": true,
+      "evidence": "a dialog users meet routinely stops being a decision point and starts being a reflex"
+    },
+    {
+      "text": "Recommends reversibility (soft delete with a retention window) as the strongest option",
+      "passed": true,
+      "evidence": "Soft-delete + a trash with retention, and an \"Undo\" toast on the action. That's rung 1 (*Control*)"
+    },
+    {
+      "text": "Recommends grace-period undo as a strong low-friction option",
+      "passed": true,
+      "evidence": "and an \"Undo\" toast on the action"
+    },
+    {
+      "text": "Recommends type-the-workspace-name confirmation for the irreversible case",
+      "passed": true,
+      "evidence": "Emptying trash early is the irreversible one; that's where \"type `acme-prod` to confirm\" earns its friction"
+    },
+    {
+      "text": "If a dialog is retained, requires it to name the workspace and the scale of what is lost",
+      "passed": true,
+      "evidence": "Delete **acme-prod** \u2014 47 projects, 12 members. Recoverable for 30 days."
+    },
+    {
+      "text": "Notes that the server must enforce the deletion rules, not just the UI",
+      "passed": true,
+      "evidence": "make the delete endpoint idempotent... permission is *enforced server-side*, not just hidden in the UI"
+    },
+    {
+      "text": "Gives an explicit preference order rather than an undifferentiated list of ideas",
+      "passed": false,
+      "evidence": "Presents soft-delete as primary with supporting pieces and conditional ('if you keep a dialog'), not as explicit ranked preference order"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

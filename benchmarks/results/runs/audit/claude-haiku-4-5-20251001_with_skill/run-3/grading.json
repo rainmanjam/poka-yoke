@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": true,
+      "evidence": "Finding #1: 'Both parameters are `string`, nothing stops `transfer(\"alice\", \"bob\", 100)` from being `transfer(\"bob\", \"alice\", 100)`'"
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "Finding #2: 'Stripe times out; the catch block retries; the timeout was the success case and the second charge goes through. Customer charged twice. Silent'"
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": false,
+      "evidence": "Finding #2 mentions 'the catch block retries' but does not explicitly identify the catch block returning null as swallowing the error. No dedicated finding addresses this."
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": true,
+      "evidence": "Finding #6: 'JavaScript stores this as `16.991499999999998` due to floating-point rounding...Silent data corruption in money fields'"
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "Finding #4: 'Pass a malicious `olderThan` date...The OR clause breaks out of the WHERE condition. The entire accounts table is deleted'"
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "Finding #7: 'The switch matches neither \"active\" nor \"canceled\"...Subscription status changes, but features remain in wrong state. Silent'"
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": true,
+      "evidence": "Finding #3: 'A `JSON.parse(body)` of untrusted input proceeds directly to a money operation' with no schema validation"
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "Findings framed as: 'Call `transfer(...)`', 'Stripe times out', 'A webhook arrives with', 'Pass a malicious date' \u2014 all actions, not qualities"
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "Summary states 'All seven findings are **high-priority**: blast radius is money movement or unguarded deletion' with findings ordered money-movement/deletion first (1-6) before logic issues (7)"
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": true,
+      "evidence": "Each finding includes specific device with code: branded IDs, idempotency key signature, schema validation, parameterized query, required parameter, integer-based money, exhaustive enum"
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "Response is analysis only; no file modifications"
+    }
+  ],
+  "summary": {
+    "passed": 10,
+    "total": 11,
+    "pass_rate": 0.9091
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": true,
+      "evidence": "\"`transfer(from, to)` \u2014 Swappable IDs (C1)... Call `transfer(destinationId, sourceId, amount)` \u2014 compiles, passes review, sends money backwards... Both values are strings.\""
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "\"`chargeCustomer()` \u2014 No idempotency key (M2)... Network blip on first call, retry fires, both succeed. Customer charged twice.\""
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": true,
+      "evidence": "\"`chargeCustomer()` \u2014 Swallowed error returns null (X1)... Charge fails, function returns `null`, caller doesn't check, order marked paid anyway.\""
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": false,
+      "evidence": "No mention of float/number representation of money or minor units; `applyDiscount` is only noted as 'swappable numbers... local math helper, low blast'"
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": false,
+      "evidence": "Finding 4 covers only the dangerous `olderThan` default ('Default deletes everything'); no mention of raw SQL interpolation or injection"
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "\"`updateSubscription()` \u2014 Non-exhaustive switch (F1)... Switch silently falls through.\""
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": true,
+      "evidence": "\"`handleWebhook()` \u2014 Unvalidated JSON (C7)... `JSON.parse` throws or fields are missing. Also: no signature verification.\""
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "Every finding's 'Mistake' line is an action, e.g. \"Call `purgeCanceledAccounts()` with no argument\" and \"Someone adds `\"past_due\"`... status\""
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "Money/irreversible findings lead ('Blast: money loss', 'data loss'); cosmetic items pushed to 'Set aside (3)' and verdict names the two incident-grade ones"
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": true,
+      "evidence": "Each has a Device, e.g. \"Atomic update with condition: `UPDATE ... SET balance = balance - $1 WHERE balance >= $1 RETURNING *`\" and branded types / db.$transaction code"
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "Response is analysis only and ends by asking \"Want me to write the fixes...?\" \u2014 no file modifications shown"
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 11,
+    "pass_rate": 0.8182
+  }
+}

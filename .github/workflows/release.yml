@@ -1,0 +1,104 @@
+# Turns the release checklist into a device.
+#
+# RELEASING.md used to be a list of commands someone had to remember to run in the right
+# order, which is rung zero by this project's own argument. The ordering that actually
+# matters is now enforced by job dependencies rather than by a numbered heading: nothing is
+# announced until the full validation suite has passed on the tagged commit.
+#
+# Push a tag; everything else follows or nothing does.
+
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+jobs:
+  # poka-yoke: blocks a tag that disagrees with the version it would publish [control]
+  #
+  # `git tag v0.2.0` on a tree whose plugin.json still says 0.1.0 would ship 0.1.0 under a
+  # 0.2.0 announcement. Every runtime installs from the git ref, so a wrong tag is what
+  # people get, and a tag that has been pushed should not be moved. Cheaper to refuse it.
+  guard:
+    name: tag agrees with the tree
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.check.outputs.version }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          fetch-depth: 0        # need main's history to prove the tag is on it
+
+      - id: check
+        name: Tag, manifest and changelog all name the same version
+        run: |
+          set -euo pipefail
+          TAG="${GITHUB_REF_NAME#v}"
+          SRC=$(jq -r .version plugins/poka-yoke/.claude-plugin/plugin.json)
+          echo "tag=$TAG  plugin.json=$SRC"
+
+          if [ "$TAG" != "$SRC" ]; then
+            echo "::error::tag is v$TAG but plugins/poka-yoke/.claude-plugin/plugin.json says $SRC"
+            exit 1
+          fi
+          if ! grep -q "^## \[$SRC\]" CHANGELOG.md; then
+            echo "::error::CHANGELOG.md has no '## [$SRC]' section, releasing without notes"
+            exit 1
+          fi
+          if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+            echo "::error::this tag is not an ancestor of main, release from main"
+            exit 1
+          fi
+          echo "version=$SRC" >> "$GITHUB_OUTPUT"
+
+  # Every check that guards a pull request also guards a release, by calling the same
+  # workflow rather than restating it. A second copy would eventually pass where this fails.
+  verify:
+    name: full validation suite
+    needs: guard
+    uses: ./.github/workflows/validate.yml
+
+  github-release:
+    name: cut the GitHub release
+    needs: [guard, verify]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          fetch-depth: 0
+
+      - name: Extract this version's changelog section
+        env:
+          V: ${{ needs.guard.outputs.version }}
+        run: |
+          awk -v v="## [$V]" '
+            index($0, v) == 1 { on = 1; next }
+            on && /^## \[/     { exit }
+            on                 { print }
+          ' CHANGELOG.md > notes.md
+          # An empty notes file would publish a release with no description at all.
+          if [ ! -s notes.md ]; then
+            echo "::error::no changelog body found for $V"
+            exit 1
+          fi
+          cat notes.md
+
+      - name: Create the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Nothing is attached: every runtime installs from the git ref, so the tag is
+          # the artefact. This job previously ran `uv build` and attached `dist/*`, left
+          # over from when a package was published, and since packaging was removed it
+          # would have failed here, after the tag was already pushed, leaving a tag with
+          # no release. actionlint passed throughout: the workflow was valid, just
+          # impossible to satisfy.
+          gh release create "$GITHUB_REF_NAME" \
+            --title "$GITHUB_REF_NAME" \
+            --notes-file notes.md \
+            --verify-tag

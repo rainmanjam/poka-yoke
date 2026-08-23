@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "4999b9f80438",
+  "expectations": [
+    {
+      "text": "States that a written agreement or reminder is not enforcement",
+      "passed": true,
+      "evidence": "\"Training (docs, Slack, standups) degrades... developers have to remember to run the formatter\u2014and memory is the weakest part of any system\""
+    },
+    {
+      "text": "Recommends a pre-commit hook to run the formatter automatically",
+      "passed": true,
+      "evidence": "\"Pre-commit hook (catches it before the branch exists)... Runs formatter + type checker on staged files\""
+    },
+    {
+      "text": "Notes that pre-commit is bypassable with --no-verify and must be backed by a CI check",
+      "passed": false,
+      "evidence": "Mentions CI catches what slips through but does not explain the --no-verify bypass mechanism"
+    },
+    {
+      "text": "Recommends a type check as a required CI check",
+      "passed": false,
+      "evidence": "Type checker is relegated to pre-commit layer; CI block description focuses on formatting/linting without explicitly requiring type checking"
+    },
+    {
+      "text": "Recommends baselining or ratcheting rather than enforcing across the whole repo at once",
+      "passed": false,
+      "evidence": "Not mentioned"
+    },
+    {
+      "text": "Notes that branch protection is what makes a CI check actually required",
+      "passed": false,
+      "evidence": "Not mentioned"
+    },
+    {
+      "text": "Recommends the failure message tell the developer how to fix it",
+      "passed": false,
+      "evidence": "Not mentioned"
+    },
+    {
+      "text": "Does not primarily recommend rewriting CONTRIBUTING.md, more reminders, or more discipline",
+      "passed": true,
+      "evidence": "\"They didn't fail because they're careless\u2014they failed because you asked them to remember\"; focuses on devices, not discipline"
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "total": 8,
+    "pass_rate": 0.375
+  }
+}

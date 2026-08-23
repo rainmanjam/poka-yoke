@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": true,
+      "evidence": "Finding 2: fromAccount/toAccount adjacent same-typed strings, so transfer(dst, src, amt) compiles and runs"
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "Finding 3: no idempotency key, so on a Stripe timeout the second charge is guaranteed, not possible"
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": true,
+      "evidence": "Finding 3: catch { return null } collapses 'declined' and 'timed out after the card was charged' into one falsy value"
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": true,
+      "evidence": "Finding 7: Units are ambiguous \u2014 `balance: number` vs `amountCents`. Mixing them is a silent 100\u00d7."
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": false,
+      "evidence": "Finding 4 describes the default argument issue and count reporting problem but does not explicitly flag the SQL interpolation risk."
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "Finding 5: updateSubscription (line 67) \u2014 status: string writes \"cancelled\" to the DB happily, then the switch falls through with no `default`"
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": true,
+      "evidence": "Finding 1: handleWebhook (line 93) \u2014 unauthenticated money movement... event.data.customer and event.data.amount are attacker-controlled and flow straight into chargeCustomer"
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": false,
+      "evidence": "Mixed framing: some findings describe outcomes ('debits before it knows') or scenarios ('A caller reading if (!charge) retry()') rather than consistently naming actionable mistakes. Not all findings frame as 'if you do X'."
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "Ship-blockers section lists critical money/security issues (webhook, transfer, chargeCustomer). Also real section lists secondary issues. Overall ranking prioritizes blast radius."
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": false,
+      "evidence": "Some findings have concrete devices (Finding 1: verify signature \u2192 schema-parse \u2192 dedupe), but others are less detailed. Finding 6 and 7 lack fully developed device proposals."
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "Response provides audit inline without modifying files."
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 11,
+    "pass_rate": 0.7273
+  }
+}

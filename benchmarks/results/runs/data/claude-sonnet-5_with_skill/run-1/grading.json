@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "\"No.** A non-empty check doesn't touch the actual failure mode... It would have passed every single day of the outage.\""
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "\"**Hazard**: `COALESCE(revenue, 0)` makes 'no match' and 'zero revenue' indistinguishable.\""
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": true,
+      "evidence": "\"**Detection** \u2014 a **reconciliation** check: warehouse revenue total vs. the source system's total, within tolerance, daily.\""
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": true,
+      "evidence": "\"assert join match-rate... and block promotion to the published table if it isn't.\""
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "\"a data contract on the upstream table so a column rename breaks loudly (or quarantines) instead of silently producing nulls\""
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "\"assert join match-rate (e.g. `null_rate` on `revenue` pre-coalesce) is ~0\""
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": false,
+      "evidence": "Response describes the 3-week incident but does not frame the detection lag itself as a separate gap needing its own device."
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": false,
+      "evidence": "Response does not compare silent failure to loud pipeline failure or explain the relative danger."
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

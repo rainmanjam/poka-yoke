@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "5b62450c21d2",
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": false,
+      "evidence": "Suggests problem is 'context noise' and 'presentation'; recommends better formatting/structure as solution, implying instructions can work with better wording"
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": false,
+      "evidence": "Entire response is about rewording CLAUDE.md; ends with 'Try this structure:' for reformatted CLAUDE.md sections"
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": false,
+      "evidence": "No mention of settings.json; focuses entirely on CLAUDE.md formatting"
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": false,
+      "evidence": "No mention of PreToolUse, git hooks, or any enforcement device"
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": false,
+      "evidence": "Applies principle to CLAUDE.md instructions rather than enforcement device messages; does not explain the design principle"
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": false,
+      "evidence": "No verification or testing recommendation present"
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": false,
+      "evidence": "Recommends personal CLAUDE.md edits; no mention of team-wide enforcement or version control"
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": false,
+      "evidence": "Attributes caps failure to 'blending into noise' and suggests better formatting/structure solves it, not explaining fundamental instruction degradation"
+    }
+  ],
+  "summary": {
+    "passed": 0,
+    "total": 8,
+    "pass_rate": 0.0
+  }
+}

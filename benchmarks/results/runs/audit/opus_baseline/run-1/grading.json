@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": false,
+      "evidence": "Mentions transfer destroying money on bad destination but doesn't explicitly flag the swappable string parameter issue. Other findings mention stringly-typed issues but this specific one isn't highlighted."
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "chargeCustomer (:44) \u2014 retry + catch { return null }. A timeout is indistinguishable from a decline, and the charge may already have succeeded \u2014 so the retry charges again"
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": true,
+      "evidence": "and the `null` erases which happened"
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": false,
+      "evidence": "Response does not explicitly flag this issue. Set-aside mentions stringly-typed issues but not float money."
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": false,
+      "evidence": "Mentions the function's default-argument issue but not the SQL interpolation risk in $executeRawUnsafe."
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "updateSubscription(id, \"cancelled\") (:67)** \u2014 British spelling writes to the DB, falls through a `default`-less switch"
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": true,
+      "evidence": "handleWebhook (:93) \u2014 no signature verification. `JSON.parse(body)` feeds `event.data.customer` and `event.data.amount` straight into a charge"
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": false,
+      "evidence": "Uses outcome-focused phrasing like 'destroys money' and 'falls through' rather than consistently framing mistakes as actionable (e.g., 'call with this', 'pass this argument'). Some findings like 'no-arg call deletes everything' are action-framed but not all."
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "Ranked by blast radius \u00d7 ease, with handleWebhook, purgeCanceledAccounts, and transfer at top; cosmetic issues like swappable arguments at bottom."
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": false,
+      "evidence": "Some devices are concrete (e.g., 'Make olderThan required, deleteMany by IDs counted, inside $transaction with maxRows') but others are vague (e.g., handleWebhook is only 'webhook signature verification' without specifics)."
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "Response explicitly states 'Ask for write approved' and keeps findings in-conversation."
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 11,
+    "pass_rate": 0.5455
+  }
+}

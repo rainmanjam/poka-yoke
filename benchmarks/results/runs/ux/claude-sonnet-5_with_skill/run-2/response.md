@@ -1,0 +1,5 @@
+A plain "are you sure?" modal is rung 0 on the poka-yoke ladder — it doesn't state a fact, it asks about resolve, and after the third time someone sees it they click through on reflex without reading. It won't actually stop the accidental deletes you're trying to fix.
+
+Better: make the delete **reversible** instead — soft-delete into a trash/archive with a restore option for ~30 days, shown via a "Workspace deleted — Undo" toast on the action itself. That eliminates the panic emails entirely because the mistake has no permanent consequence, and it adds zero friction to intentional deletes. If you still want a synchronous gate for the truly final purge (e.g., emptying trash), use type-to-confirm the workspace name — proportional to an irreversible action — rather than a modal.
+
+Want me to sketch the soft-delete + undo-toast flow for your stack?

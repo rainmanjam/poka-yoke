@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "checking that the table isn't empty is **not enough**. Because your pipeline coalesced the nulls to `0`, the resulting table was full of rows with `0` revenue. An \"is not empty\" check will look at this broken table and pass it"
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "Because your pipeline coalesced the nulls to `0`, the resulting table was full of rows with `0` revenue"
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": false,
+      "evidence": "Recommends schema contracts, removing coalesce, and aggregate thresholds, but does not recommend validating dashboard numbers against actual source data"
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": false,
+      "evidence": "Discusses pipeline failing early and blocking steps, but does not explicitly recommend assertions blocking publication to prevent bad data reaching the dashboard"
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "Add a schema test on the upstream source table to assert the required column exists and has the correct type. If the column is renamed, the pipeline stops immediately"
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "Add an aggregate threshold check (e.g., `SUM(revenue) > [Historical Minimum]`) or check that known-good dimensions (like key regions or customer segments) have non-zero revenue"
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": false,
+      "evidence": "No mention of the three-week detection window or why it went unnoticed until finance noticed"
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": false,
+      "evidence": "Discusses failing loudly and dangers of coalescing, but does not explain the comparative danger of silent errors vs. observable failures"
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "total": 8,
+    "pass_rate": 0.5
+  }
+}

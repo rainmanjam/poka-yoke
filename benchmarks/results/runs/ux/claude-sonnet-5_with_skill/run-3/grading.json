@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "82f963d241f9",
+  "expectations": [
+    {
+      "text": "Pushes back on the 'are you sure?' modal as the primary fix",
+      "passed": true,
+      "evidence": "it's the weakest device on the ladder; it'll probably won't hold; A generic confirm dialog is rung 0 in practice"
+    },
+    {
+      "text": "Explains habituation or click-through blindness as why frequent dialogs stop working",
+      "passed": true,
+      "evidence": "people click through on reflex once they've seen it a few times; It stops nobody who's already committed to the click"
+    },
+    {
+      "text": "Recommends reversibility (soft delete with a retention window) as the strongest option",
+      "passed": true,
+      "evidence": "Make it reversible \u2014 soft-delete with a retention window (e.g., 30 days); listed as #1 'in order of strength'"
+    },
+    {
+      "text": "Recommends grace-period undo as a strong low-friction option",
+      "passed": true,
+      "evidence": "Grace-period undo \u2014 delete immediately, show 'Workspace deleted. Undo' for ~10s; listed as #2"
+    },
+    {
+      "text": "Recommends type-the-workspace-name confirmation for the irreversible case",
+      "passed": false,
+      "evidence": "Only recommends consequence-naming dialog ('Delete 'Acme Marketing' \u2014 4 members, 218 documents?'), not type-to-confirm"
+    },
+    {
+      "text": "If a dialog is retained, requires it to name the workspace and the scale of what is lost",
+      "passed": true,
+      "evidence": "make it name the specific consequence ('Delete 'Acme Marketing' \u2014 4 members, 218 documents?')"
+    },
+    {
+      "text": "Notes that the server must enforce the deletion rules, not just the UI",
+      "passed": false,
+      "evidence": "No mention of server-side enforcement principle"
+    },
+    {
+      "text": "Gives an explicit preference order rather than an undifferentiated list of ideas",
+      "passed": true,
+      "evidence": "What actually closes this (in order of strength): 1. Make it reversible 2. Grace-period undo 3. If you still want a dialog..."
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

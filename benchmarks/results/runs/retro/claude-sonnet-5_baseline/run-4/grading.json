@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "1af6b213502f",
+  "expectations": [
+    {
+      "text": "States plainly that the recent-charge lookup is not sufficient",
+      "passed": true,
+      "evidence": "\"Short answer: no, that guard is not enough. It changes the shape of the bug, it doesn't close the hazard\""
+    },
+    {
+      "text": "Identifies the lookup as a check-then-act race rather than a device",
+      "passed": true,
+      "evidence": "\"TOCTOU race. Redelivery under a timeout is exactly the condition that produces two workers (or two rapid attempts) racing: both read 'no recent matching charge,' both proceed, both charge. The check and the charge aren't atomic\""
+    },
+    {
+      "text": "Recommends a required idempotency key on the charge path",
+      "passed": true,
+      "evidence": "\"pass a stable Idempotency-Key (order/invoice ID, not a timestamp) on every Stripe charge call\""
+    },
+    {
+      "text": "Recommends a database unique constraint backing the idempotency key",
+      "passed": true,
+      "evidence": "\"unique DB constraint on (order_id) or (idempotency_key) in your own charges table\""
+    },
+    {
+      "text": "Separates the defect from the mistake from the underlying system hazard",
+      "passed": true,
+      "evidence": "Explicitly lists: Defect (340 charged twice), Mistake (redelivery), Hazard (no enforced idempotency)"
+    },
+    {
+      "text": "Locates the hazard as a system property rather than as a worker bug or human error",
+      "passed": true,
+      "evidence": "\"the charge path has no enforced idempotency \u2014 nothing (API contract, DB constraint, or type) makes it impossible\""
+    },
+    {
+      "text": "Sweeps for other non-idempotent side effects reachable from a retry",
+      "passed": true,
+      "evidence": "\"Class sweep (do before closing this out): any other consumer on that same at-least-once queue with a non-idempotent side effect \u2014 refund issuance, customer emails/webhooks, ledger postings, inventory decrements\""
+    },
+    {
+      "text": "Treats 'second time this happened' as evidence for pushing to a Control-rung device",
+      "passed": true,
+      "evidence": "\"Why this is the second time: if the first incident's fix was also a check/detection-style patch rather than a structural constraint, that's the pattern \u2014 fixes are landing at the mistake level... The hazard survives and resurfaces\""
+    },
+    {
+      "text": "Attributes cause to the system, not to any person",
+      "passed": true,
+      "evidence": "\"the charge path has no enforced idempotency\" \u2014 system design issue, not worker or human failure"
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

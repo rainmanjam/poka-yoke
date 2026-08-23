@@ -1,0 +1,60 @@
+{
+  "assertions_sha": "bcf79cb43709",
+  "expectations": [
+    {
+      "text": "Flags the nested comments and attachments resolvers as unscoped by tenant",
+      "passed": true,
+      "evidence": "\"Nested resolvers inherit nothing \u2014 Read leak via association\": \"Document.comments / attachments / author filter only by parent.id\""
+    },
+    {
+      "text": "Flags updateDocument for scoping on id alone without a tenant constraint",
+      "passed": true,
+      "evidence": "\"Unscoped update \u2014 Cross-tenant write\": \"where: { id } lets tenant A overwrite any document whose ID they know or guess\""
+    },
+    {
+      "text": "Flags exportWorkspace taking tenantId from the client-controlled request body",
+      "passed": true,
+      "evidence": "\"exportWorkspace reads tenantId from req.body, not the session. Any authenticated user posts {\"tenantId\": \"<victim>\"}\""
+    },
+    {
+      "text": "Flags searchDocuments as returning rows across all tenants",
+      "passed": true,
+      "evidence": "\"Full-text search has no tenant_id predicate. Any user can enumerate other tenants' titles by searching common words.\""
+    },
+    {
+      "text": "Flags adminListDocuments as checking authentication but not authorization or tenant",
+      "passed": true,
+      "evidence": "\"adminListDocuments checks *authenticated*, not *admin*, and then lists the latest 200 documents across every tenant\""
+    },
+    {
+      "text": "Enumerates all the affected sites rather than fixing only the first one found",
+      "passed": true,
+      "evidence": "Five ranked findings covering export, update, admin query, search, and nested resolvers; states \"Six of the nine operations in this file are unscoped\""
+    },
+    {
+      "text": "Recommends a structural device (scoped repository, row-level security, or equivalent) rather than only adding where-clauses site by site",
+      "passed": true,
+      "evidence": "\"The device for the whole class\": proposes TenantDb class pattern, lint-ban on db import, and \"If Postgres: ENABLE + FORCE ROW LEVEL SECURITY\""
+    },
+    {
+      "text": "Recommends a cross-tenant test that attempts tenant A operations against tenant B resources",
+      "passed": true,
+      "evidence": "\"add the two-tenant test (every op from A against B's IDs \u2192 404)\""
+    },
+    {
+      "text": "Identifies the raw interpolation of tenantId into $queryRawUnsafe as an injection hazard distinct in kind from the tenant-scoping bug",
+      "passed": true,
+      "evidence": "\"Also: $queryRawUnsafe with string interpolation is SQL injection; tenantId: \\\"' OR 1=1 --\\\" dumps every tenant at once\""
+    },
+    {
+      "text": "Does not conclude the main query paths being scoped means the service is safe",
+      "passed": true,
+      "evidence": "\"Short answer: **no, you're not ok.** The two primary paths are scoped correctly, and that's exactly the problem \u2014 they're the paths that get looked at. Six of the nine operations in this file are unscoped.\""
+    }
+  ],
+  "summary": {
+    "passed": 10,
+    "total": 10,
+    "pass_rate": 1.0
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": true,
+      "evidence": "During the rollout window, the old code will run against the new schema. Since the column will be dropped, the old code instances will crash when they try to read `legacy_email`."
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "We can ship the code updates that stop reading the column first, and then drop the column in a separate deploy. / outlines how to split this PR into a safe two-step deployment using the Expand/Contract pattern."
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": true,
+      "evidence": "Dropping the `legacy_email` column is irreversible. The only way to restore it if something goes wrong is to restore a database backup/snapshot."
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": true,
+      "evidence": "Rolling back a code deploy takes minutes, but rolling back a dropped column requires a database restore, which takes significantly longer and risks data loss."
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "Because it is Friday afternoon, team availability is likely low."
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": false,
+      "evidence": "No CI gate recommendation present in response"
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "You should not merge or deploy the PR as it is currently written. Co-deploying a destructive schema change with the code that depends on it is an outage waiting to happen."
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "We can ship the code updates that stop reading the column first, and then drop the column in a separate deploy."
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

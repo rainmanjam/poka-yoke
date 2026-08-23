@@ -1,0 +1,49 @@
+{
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": false,
+      "evidence": "States consequences ('breaks rolling rollback', 'can't roll back the schema') but never explicitly identifies the mechanism of old code running against new schema during rollout"
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "\"Split the work instead:\" followed by code deploy now and \"Drop the column Monday morning\""
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": false,
+      "evidence": "Uses 'irreversible schema change' but never addresses the backup/restore condition"
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": true,
+      "evidence": "\"If anything breaks, you can roll back the *code* immediately (already live) and keep the *schema* until you fix the reader\""
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": false,
+      "evidence": "\"Friday afternoon is the worst time window\" addresses pattern risk, not operational availability or on-call response"
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": false,
+      "evidence": "No mention of CI gates or automation"
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "\"**Not recommended.**\" and \"Split the work instead\""
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "\"The code changes are the small, safe part. The schema change is what's risky on Friday\""
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "total": 8,
+    "pass_rate": 0.5
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "31eb11dca414",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Full DocumentsTable component with state management, API client functions, helper utilities, and all UI subcomponents (BulkActionsBar, ConfirmationDialog)"
+    },
+    {
+      "text": "Produces actual working component code rather than only a list of recommendations",
+      "passed": true,
+      "evidence": "Complete, runnable React component with hooks, event handlers, and mutation logic"
+    },
+    {
+      "text": "Makes the destructive action recoverable rather than relying on a confirmation dialog alone",
+      "passed": true,
+      "evidence": "Delete is soft-delete with 30-day trash recovery; undo state shows 'Move to Trash' with explicit undo button. Goes beyond confirmation dialog to actual recovery mechanism"
+    },
+    {
+      "text": "Shows the count of affected items before the action is taken",
+      "passed": true,
+      "evidence": "Confirmation dialog displays '<strong>{formatCount(count)} documents</strong>' and button text includes count: 'Move ${formatCount(count)} to Trash'"
+    },
+    {
+      "text": "Distinguishes select-all-on-page from select-all-matching rather than conflating them",
+      "passed": true,
+      "evidence": "Discriminated union: ExplicitSelection (ids Set) vs AllMatchingSelection (selectionToken + excludedIds). Explicit 'Select all {totalMatching} matching documents' button as separate action"
+    },
+    {
+      "text": "Separates the destructive action from the benign one visually or spatially",
+      "passed": true,
+      "evidence": "Archive button: bg-slate-900, Delete button: bg-red-600. Color-coded distinction in same bar"
+    },
+    {
+      "text": "Does not make the destructive action the default focus or primary button",
+      "passed": true,
+      "evidence": "Archive button appears first in BulkActionsBar, Delete second. Neither button in dialog has autoFocus attribute"
+    },
+    {
+      "text": "Notes that the server must enforce the rules, not just the UI",
+      "passed": true,
+      "evidence": "'The server must still authorize the bulk endpoint and bind the idempotency key to the mutation payload'"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": false,
+      "evidence": "Response ends with server enforcement note but does not enumerate prevented misuse scenarios"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 9,
+    "pass_rate": 0.8889
+  }
+}

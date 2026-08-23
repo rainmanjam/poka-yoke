@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "4999b9f80438",
+  "expectations": [
+    {
+      "text": "States that a written agreement or reminder is not enforcement",
+      "passed": true,
+      "evidence": "\"You've done four rounds of training. Training degrades... A fifth round will land at the same place\""
+    },
+    {
+      "text": "Recommends a pre-commit hook to run the formatter automatically",
+      "passed": true,
+      "evidence": "\"A pre-commit hook that *rewrites* the file (Black/Ruff-format, Prettier) means the mistake becomes impossible rather than caught\""
+    },
+    {
+      "text": "Notes that pre-commit is bypassable with --no-verify and must be backed by a CI check",
+      "passed": true,
+      "evidence": "\"`--no-verify` exists and people under deadline use it, so the hook is for speed and CI is for authority\""
+    },
+    {
+      "text": "Recommends a type check as a required CI check",
+      "passed": false,
+      "evidence": "Discusses type ratcheting and enforcement but does not explicitly call it a \"required CI check\"; only says \"enforce on changed files only\" without the word 'required'"
+    },
+    {
+      "text": "Recommends baselining or ratcheting rather than enforcing across the whole repo at once",
+      "passed": true,
+      "evidence": "\"Enforce on **changed files only**, or generate a baseline and fail only on *new* violations\""
+    },
+    {
+      "text": "Notes that branch protection is what makes a CI check actually required",
+      "passed": true,
+      "evidence": "\"With branch protection on, this is what actually ends the conversation\""
+    },
+    {
+      "text": "Recommends the failure message tell the developer how to fix it",
+      "passed": true,
+      "evidence": "\"`run 'make fmt' and commit` beats `error: E501`. This is the one place prose belongs in a device\""
+    },
+    {
+      "text": "Does not primarily recommend rewriting CONTRIBUTING.md, more reminders, or more discipline",
+      "passed": true,
+      "evidence": "\"Then delete the CONTRIBUTING.md paragraph, or rewrite it as 'CI enforces this; here's how to run it locally'\""
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "82f963d241f9",
+  "expectations": [
+    {
+      "text": "Pushes back on the 'are you sure?' modal as the primary fix",
+      "passed": true,
+      "evidence": "\"Not really \u2014 an 'are you sure?' modal is the weakest device on the ladder for this problem\""
+    },
+    {
+      "text": "Explains habituation or click-through blindness as why frequent dialogs stop working",
+      "passed": true,
+      "evidence": "\"People who habitually click through dialogs (which is most people, most of the time) will click through this one too.\""
+    },
+    {
+      "text": "Recommends reversibility (soft delete with a retention window) as the strongest option",
+      "passed": true,
+      "evidence": "\"Soft-delete with a grace period (strongest fix) \u2014 deleting marks the workspace for purge in ~30 days\""
+    },
+    {
+      "text": "Recommends grace-period undo as a strong low-friction option",
+      "passed": true,
+      "evidence": "\"Grace-period undo toast \u2014 'Workspace deleted. Undo' for ~10 seconds, no friction on the happy path.\""
+    },
+    {
+      "text": "Recommends type-the-workspace-name confirmation for the irreversible case",
+      "passed": true,
+      "evidence": "\"type-to-confirm (workspace name) rather than 'Are you sure?'\""
+    },
+    {
+      "text": "If a dialog is retained, requires it to name the workspace and the scale of what is lost",
+      "passed": false,
+      "evidence": "Mentions type-to-confirm but does not specify what a retained dialog should display about workspace name or loss scale"
+    },
+    {
+      "text": "Notes that the server must enforce the deletion rules, not just the UI",
+      "passed": false,
+      "evidence": "Discusses backend changes needed but does not explicitly note server-side enforcement requirement"
+    },
+    {
+      "text": "Gives an explicit preference order rather than an undifferentiated list of ideas",
+      "passed": true,
+      "evidence": "\"1. Soft-delete with a grace period (strongest fix)\" with numbered ranking"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

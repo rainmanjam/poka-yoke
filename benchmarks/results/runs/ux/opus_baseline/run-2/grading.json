@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "82f963d241f9",
+  "expectations": [
+    {
+      "text": "Pushes back on the 'are you sure?' modal as the primary fix",
+      "passed": true,
+      "evidence": "Honest answer: **a modal alone won't fix it.** It's the weakest device on the ladder for exactly this failure mode"
+    },
+    {
+      "text": "Explains habituation or click-through blindness as why frequent dialogs stop working",
+      "passed": true,
+      "evidence": "they develop click-through blindness and press Confirm with the same reflex as OK"
+    },
+    {
+      "text": "Recommends reversibility (soft delete with a retention window) as the strongest option",
+      "passed": true,
+      "evidence": "1. **Soft-delete + retention window** \u2014 the real fix. Mark deleted, hide from UI, purge after N days"
+    },
+    {
+      "text": "Recommends grace-period undo as a strong low-friction option",
+      "passed": true,
+      "evidence": "2. **Grace-period undo** \u2014 \"Workspace deleted. Undo\" toast for ~10s. Zero friction on the happy path"
+    },
+    {
+      "text": "Recommends type-the-workspace-name confirmation for the irreversible case",
+      "passed": true,
+      "evidence": "3. **Type-to-confirm** the workspace name \u2014 GitHub's repo-delete pattern. Can't be done reflexively"
+    },
+    {
+      "text": "If a dialog is retained, requires it to name the workspace and the scale of what is lost",
+      "passed": true,
+      "evidence": "A dialog stating the **specific consequence** \u2014 \"Delete `acme-prod`, 14 projects, 1,204 files?\""
+    },
+    {
+      "text": "Notes that the server must enforce the deletion rules, not just the UI",
+      "passed": false,
+      "evidence": "No explicit statement about server-side enforcement principle; only mentions backend as a cost/implementation detail"
+    },
+    {
+      "text": "Gives an explicit preference order rather than an undifferentiated list of ideas",
+      "passed": true,
+      "evidence": "1. Soft-delete + retention, 2. Grace-period undo, 3. Type-to-confirm, 4. Dialog with specifics"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

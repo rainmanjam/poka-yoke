@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "A test asserting that the 'revenue table isn't empty' is **not enough**"
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "Because those nulls were being coalesced to `0`, the data appeared correctly shaped but the numbers were just anomalously low"
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": true,
+      "evidence": "Compare the total revenue sum in the warehouse against the source system's total"
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": true,
+      "evidence": "Build to a staging table, run these tests on staging, and only promote to the final revenue table if they pass"
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "Declare the expected schema, types, and nullability explicitly on ingest... should fail loudly on the missing expected column"
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "Check that the sum of revenue or the number of non-zero revenue rows matches historical expectations"
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": false,
+      "evidence": "The three-week timeframe is mentioned in the problem statement but never addressed in Response A as a gap requiring remediation"
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": false,
+      "evidence": "States 'silence is the defect' but does not explain the consequences\u2014e.g., that a failed pipeline alerts immediately while silent corruption enables bad business decisions"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

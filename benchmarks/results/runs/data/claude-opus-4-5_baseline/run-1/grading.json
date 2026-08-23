@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "\"No \u2014 that test wouldn't have caught this bug. The table wasn't empty; it was full of coalesced zeros.\""
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "\"**Silent coercion** \u2014 `COALESCE(x, 0)` masked nulls as plausible values\""
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": true,
+      "evidence": "\"Reconciliation: compare sum to upstream source of truth | Yes \u2014 catches drift\""
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": false,
+      "evidence": "Says \"Add to your pipeline tests\" and \"assert expected columns exist before join\" (ordering within the job), but never states that assertions must gate publication/blocking bad data from reaching the dashboard \u2014 no mention of failing the run before publishing, staging/swap, or circuit-breaking the load."
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "\"Schema contract test: assert expected columns exist before join | Yes \u2014 fails fast on rename\" and \"The schema contract is the real fix\""
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "\"Null rate assertion: revenue column null% < 1%\" and \"Row count bounds: expect 10k\u201350k rows, not just >0\""
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": true,
+      "evidence": "\"**No anomaly detection** \u2014 3 weeks of 'low but okay' didn't trigger anything\" \u2014 listed as its own failure with detection controls (statistical bound, reconciliation) proposed"
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": false,
+      "evidence": "Notes zeros looked \"plausible\" and that \"'Not empty' catches complete outages, not partial data corruption,\" but never explains why silent wrongness is more dangerous than an outright failure \u2014 no reasoning about a loud failure being safer/self-announcing versus wrong numbers being trusted and acted on."
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

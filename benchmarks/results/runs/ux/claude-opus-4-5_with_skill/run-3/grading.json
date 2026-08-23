@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "82f963d241f9",
+  "expectations": [
+    {
+      "text": "Pushes back on the 'are you sure?' modal as the primary fix",
+      "passed": true,
+      "evidence": "\"an 'are you sure?' modal is the weakest poka-yoke for this problem \u2014 it will become click-through muscle memory within a week\""
+    },
+    {
+      "text": "Explains habituation or click-through blindness as why frequent dialogs stop working",
+      "passed": true,
+      "evidence": "\"users develop *click-through blindness* and dismiss it reflexively\" and \"'Are you sure?' becomes invisible\""
+    },
+    {
+      "text": "Recommends reversibility (soft delete with a retention window) as the strongest option",
+      "passed": true,
+      "evidence": "\"**Implement soft-delete + a 30-day trash retention.**\" ranked #1 in the table"
+    },
+    {
+      "text": "Recommends grace-period undo as a strong low-friction option",
+      "passed": true,
+      "evidence": "\"**Grace-period undo** | 'Workspace deleted. [Undo]' toast for 10s. No friction on happy path\" \u2014 ranked #2 and named the next best thing"
+    },
+    {
+      "text": "Recommends type-the-workspace-name confirmation for the irreversible case",
+      "passed": true,
+      "evidence": "\"**Type-to-confirm** | Requires typing the workspace name \u2014 can't be done reflexively. GitHub uses this for repo deletion.\""
+    },
+    {
+      "text": "If a dialog is retained, requires it to name the workspace and the scale of what is lost",
+      "passed": true,
+      "evidence": "\"Only works if it names the *exact* thing and count being destroyed.\""
+    },
+    {
+      "text": "Notes that the server must enforce the deletion rules, not just the UI",
+      "passed": false,
+      "evidence": "No mention of server-side or API-level enforcement anywhere; all devices described as UI/frontend measures (\"it's a frontend-only change\")"
+    },
+    {
+      "text": "Gives an explicit preference order rather than an undifferentiated list of ideas",
+      "passed": true,
+      "evidence": "Ranked table \"| Rank | Device | Why it works |\" with 1\u20134 plus \"## My recommendation\" and an explicit fallback order"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

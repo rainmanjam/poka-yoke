@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "9b2ce0ce8a1c",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Provides Prisma schema, SQL migration, and handler function; references undefined `order.stripeChargeId` field that must be added separately, but acknowledges this in closing note"
+    },
+    {
+      "text": "Requires an idempotency key as a parameter rather than making it optional",
+      "passed": false,
+      "evidence": "RefundRequest interface has no idempotencyKey field; handler derives it internally: `const idempotencyKey = crypto.createHash('sha256').update(...).digest('hex')`"
+    },
+    {
+      "text": "Backs idempotency with a database unique constraint, not application logic alone",
+      "passed": false,
+      "evidence": "Checks idempotency via app query `prisma.refund.findFirst({where: {orderId, amountCents, reason, ...}})` only; schema lacks `@@unique([orderId, amountCents, reason])` or similar constraint"
+    },
+    {
+      "text": "Uses distinct types for the identifiers rather than bare strings for both order and refund ids",
+      "passed": false,
+      "evidence": "Both orderId and id are declared as bare `String` in schema and handler; no branded types or newtype pattern used"
+    },
+    {
+      "text": "Handles money as integer minor units rather than a float",
+      "passed": true,
+      "evidence": "amountCents declared as `Int` in schema; passed to Stripe as integer with no float arithmetic"
+    },
+    {
+      "text": "Validates the refund amount server-side against the order rather than trusting the caller",
+      "passed": true,
+      "evidence": "`if (alreadyRefunded + amountCents > order.totalCents) { throw new Error(...) }` validates aggregate refunds before Stripe call"
+    },
+    {
+      "text": "Scopes the write so one tenant or user cannot refund another's order",
+      "passed": true,
+      "evidence": "`if (order.tenantId !== tenantId) { throw new Error('Unauthorized...') }` verifies tenant ownership before creating refund"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": false,
+      "evidence": "Closes with 'Key design decisions' discussing controls used, but does not explicitly state which misuses are made impossible (e.g., 'this design makes X impossible')"
+    },
+    {
+      "text": "Names at least one thing it deliberately left possible and why",
+      "passed": false,
+      "evidence": "Closing says 'Add stripeChargeId to your Order model' but does not name something deliberately left possible; does not explain reasoning for design choices left to caller"
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "total": 9,
+    "pass_rate": 0.4444
+  }
+}

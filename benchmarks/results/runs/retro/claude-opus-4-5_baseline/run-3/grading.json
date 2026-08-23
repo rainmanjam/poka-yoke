@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "1af6b213502f",
+  "expectations": [
+    {
+      "text": "States plainly that the recent-charge lookup is not sufficient",
+      "passed": true,
+      "evidence": "\"That fix has a race condition and isn't precise enough.\""
+    },
+    {
+      "text": "Identifies the lookup as a check-then-act race rather than a device",
+      "passed": true,
+      "evidence": "\"**Race window**: Check-then-charge isn't atomic \u2014 parallel workers can both pass the check\""
+    },
+    {
+      "text": "Recommends a required idempotency key on the charge path",
+      "passed": true,
+      "evidence": "\"idempotency_key=idempotency_key,  # Stripe dedupes on this\" derived from order/payment id"
+    },
+    {
+      "text": "Recommends a database unique constraint backing the idempotency key",
+      "passed": false,
+      "evidence": "No unique constraint mentioned; only \"Store payment state (`pending \u2192 charging \u2192 charged`)\" and an outbox \u2014 no DB uniqueness on the key"
+    },
+    {
+      "text": "Separates the defect from the mistake from the underlying system hazard",
+      "passed": false,
+      "evidence": "Discusses the failed fix and the idempotency solution, but never distinguishes the defect (duplicate charges) from the mistake (charging twice) from the hazard (retryable non-idempotent side effect) as separate layers"
+    },
+    {
+      "text": "Locates the hazard as a system property rather than as a worker bug or human error",
+      "passed": false,
+      "evidence": "Frames it as \"a textbook idempotency problem\" with fixes at the call site/queue config; no statement that the hazard is a property of the at-least-once delivery system itself"
+    },
+    {
+      "text": "Sweeps for other non-idempotent side effects reachable from a retry",
+      "passed": false,
+      "evidence": "No search for other retry-exposed side effects (emails, refunds, ledger writes, webhooks); ends with an offer to \"audit your payment worker code to identify where to add the idempotency key\""
+    },
+    {
+      "text": "Treats 'second time this happened' as evidence for pushing to a Control-rung device",
+      "passed": false,
+      "evidence": "The recurrence is never mentioned or used as an argument; \"second time\" is not acknowledged anywhere in the response"
+    },
+    {
+      "text": "Attributes cause to the system, not to any person",
+      "passed": true,
+      "evidence": "Cause is placed in the check-then-charge sequence and queue redelivery \u2014 \"Check-then-charge isn't atomic\"; no person blamed"
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "total": 9,
+    "pass_rate": 0.4444
+  }
+}

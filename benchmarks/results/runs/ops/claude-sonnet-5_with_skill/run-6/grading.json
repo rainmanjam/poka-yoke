@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": true,
+      "evidence": "\"While this rolls out, old instances (and anything else that reads that column \u2014 replication, an analytics job, a downstream service) can still be running against the schema after it's dropped\""
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "\"Split this into expand/contract: Deploy 1 (today, if you want): update the three call sites... Deploy 2 (separately): drop the column\""
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": true,
+      "evidence": "\"once it drops, `legacy_email` data is gone... Unless you have a recent backup or snapshot you could restore from\""
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": false,
+      "evidence": "Explains rollback for the code part (\"two-minute revert\") but only asks about restore path without explicitly stating what rollback for the DROP entails."
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "\"This isn't superstition about Fridays \u2014 it's about recovery speed... Monday morning, when someone's actually watching and can act fast\""
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": true,
+      "evidence": "\"worth a CI gate that blocks any `DROP`/`ALTER...DROP` in a migration unless the PR carries an explicit destructive-change approval label\""
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "\"don't merge this as one PR on the strength of green CI\""
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "\"This is reversible \u2014 the column still exists, so rolling back the deploy is enough\" vs. \"The `DROP` is the part I'd hold until Monday morning\""
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

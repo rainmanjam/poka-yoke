@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": true,
+      "evidence": "\"fromAccount`/`toAccount` are adjacent same-typed strings \u2014 a caller can swap them and it still compiles and runs\""
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "\"a charge that actually succeeded but timed out on the response gets charged twice. Separately, Stripe redelivers webhooks at-least-once \u2014 handleWebhook has no event-ID dedup, so a redelivered invoice.paid charges the customer again\""
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": true,
+      "evidence": "\"catch (e) never inspects or logs e; on non-retry it just return null\""
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": false,
+      "evidence": "Set-aside mentions \"applyDiscount doing float arithmetic\" but does not flag the architectural issue of balance/amount being held as JS numbers throughout the file"
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "\"The actual delete goes through $executeRawUnsafe with a string-interpolated timestamp\""
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": true,
+      "evidence": "\"Any other real Stripe status (past_due, trialing, paused, unpaid, \u2026) updates the DB but silently does nothing to features\""
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": true,
+      "evidence": "\"JSON.parse(body) and acts on event.type/event.data directly\""
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "\"an engineer calling this expecting clean up stale canceled accounts instead purges the whole cohort\""
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": true,
+      "evidence": "Findings ranked: #1-2 webhook/charges (money), #3 transfer (money/data), #4 purge (irreversible), #5 subscription (inconsistency)"
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": true,
+      "evidence": "\"stripe.webhooks.constructEvent\", \"pass a required idempotency key\", \"brand the account ID types\", \"require olderThan (no default)\", \"exhaustive switch with assertNever\""
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "No file modifications made; analysis only"
+    }
+  ],
+  "summary": {
+    "passed": 10,
+    "total": 11,
+    "pass_rate": 0.9091
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "82f963d241f9",
+  "expectations": [
+    {
+      "text": "Pushes back on the 'are you sure?' modal as the primary fix",
+      "passed": true,
+      "evidence": "\"Not with just a modal, no. A confirmation dialog sits at rung 2 (warning), but the poka-yoke UX skill shows this is the weakest choice\""
+    },
+    {
+      "text": "Explains habituation or click-through blindness as why frequent dialogs stop working",
+      "passed": true,
+      "evidence": "\"A confirmation dialog a user sees fifty times a day stops being a decision point. They develop click-through blindness and press 'Confirm' with the same reflex they press 'OK'\""
+    },
+    {
+      "text": "Recommends reversibility (soft delete with a retention window) as the strongest option",
+      "passed": true,
+      "evidence": "Listed #1: \"Make it reversible. Soft-delete with a trash/retention period\""
+    },
+    {
+      "text": "Recommends grace-period undo as a strong low-friction option",
+      "passed": true,
+      "evidence": "Listed #2: \"Grace-period undo. Delete immediately, show 'Deleted. Undo' toast for 30 seconds\""
+    },
+    {
+      "text": "Recommends type-the-workspace-name confirmation for the irreversible case",
+      "passed": true,
+      "evidence": "Listed #3: \"Type-to-confirm. 'Type 'workspace-name' to confirm'\""
+    },
+    {
+      "text": "If a dialog is retained, requires it to name the workspace and the scale of what is lost",
+      "passed": true,
+      "evidence": "\"Confirmation dialog naming the exact consequence. 'Delete workspace 'acme-corp' and 3,400 files permanently?'\""
+    },
+    {
+      "text": "Notes that the server must enforce the deletion rules, not just the UI",
+      "passed": false,
+      "evidence": "No mention of server-side enforcement"
+    },
+    {
+      "text": "Gives an explicit preference order rather than an undifferentiated list of ideas",
+      "passed": true,
+      "evidence": "Clear 1-2-3-4 numbered ranking with specific hierarchy"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

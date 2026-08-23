@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "31eb11dca414",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Full code for selection.ts, api.ts, useSelection.ts, BulkActionsBar.tsx, DocumentsTable.tsx with all types and logic"
+    },
+    {
+      "text": "Produces actual working component code rather than only a list of recommendations",
+      "passed": true,
+      "evidence": "Complete React functional components with state management and event handlers\u2014not recommendations or sketches"
+    },
+    {
+      "text": "Makes the destructive action recoverable rather than relying on a confirmation dialog alone",
+      "passed": true,
+      "evidence": "Soft-delete to Trash; useRestoreBatch() mutation; toast includes 'undo: () => restore.mutate(batchId)' callback; message: 'They'll be kept for 30 days'"
+    },
+    {
+      "text": "Shows the count of affected items before the action is taken",
+      "passed": true,
+      "evidence": "BulkActionsBar displays scope with count at top aria-live; DeleteConfirmDialog heading shows 'Move {count.toLocaleString()} {...} to Trash?'"
+    },
+    {
+      "text": "Distinguishes select-all-on-page from select-all-matching rather than conflating them",
+      "passed": true,
+      "evidence": "Selection discriminated union with kind:'explicit' vs kind:'query'; comment: 'The two are distinct variants, so every consumer has to say which one it handles'; selectPage and selectAllMatching create different types"
+    },
+    {
+      "text": "Separates the destructive action from the benign one visually or spatially",
+      "passed": true,
+      "evidence": "Archive: border border-slate-300 bg-white; Delete: text-red-700 hover:bg-red-50; visual separator span mx-2 h-5 w-px bg-slate-200"
+    },
+    {
+      "text": "Does not make the destructive action the default focus or primary button",
+      "passed": true,
+      "evidence": "Archive is primary-styled (white with border, comes first); Delete is text-only tertiary; Cancel button in dialog has autoFocus, not the destructive Confirm"
+    },
+    {
+      "text": "Notes that the server must enforce the rules, not just the UI",
+      "passed": true,
+      "evidence": "Closing note: 'only the server can make it atomic...should reject when count \u2260 expected'; 'idempotency key should be a unique index on the backend'; 'endpoints must enforce authorization themselves'"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Closing section is a table with Mistake|Device columns listing: ambiguous select-all, stale filter selection, wrong archive target, wrong delete target, count drift, double-click, mis-click, empty selection; ends with 'Left possible on purpose'"
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

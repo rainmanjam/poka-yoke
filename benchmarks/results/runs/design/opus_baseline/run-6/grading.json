@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "export type Subscription = Trialing | Active | PastDue | Canceled; each interface has readonly status: 'trialing' etc."
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "Canceled carries only status, canceledAt, accessEndsAt, cancellation; Trialing carries only status, trialEndsAt, hasPaymentMethod \u2014 no overlap"
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": true,
+      "evidence": "export function assertNever(x: never): never... with default: return assertNever(sub) in switch statements"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": true,
+      "evidence": "type Brand<T, B>; SubscriptionId, CustomerId, RetryCount all branded. Does not include PlanId but does not use bare strings for any IDs present"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": true,
+      "evidence": "Discriminated union constrains state changes; explicitly defers transition logic to user via LEGAL_TRANSITIONS structure"
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": false,
+      "evidence": "Section 'What I left possible on purpose' names constraints NOT prevented (ordering invariants); does not explicitly enumerate which misuses ARE made impossible"
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "Insight: 'A record with four optional field groups advertises 2^4 = 16 states; only 4 exist.' Recommends discriminated union over optional fields"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 7,
+    "pass_rate": 0.8571
+  }
+}

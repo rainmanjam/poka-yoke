@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "31eb11dca414",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "DocumentsTable, BulkActionsBar, TableRow, Toast, DeleteConfirmDialog, and Demo component all provided with full implementation and mock data"
+    },
+    {
+      "text": "Produces actual working component code rather than only a list of recommendations",
+      "passed": true,
+      "evidence": "Entire response is working TypeScript/React code with no recommendation sections"
+    },
+    {
+      "text": "Makes the destructive action recoverable rather than relying on a confirmation dialog alone",
+      "passed": true,
+      "evidence": "Archive includes undo toast: `onShowToast(..., { label: 'Undo', callback: ... })`. Delete uses type-to-confirm dialog. Archive described as 'soft-delete and can be undone'"
+    },
+    {
+      "text": "Shows the count of affected items before the action is taken",
+      "passed": true,
+      "evidence": "BulkActionsBar displays `{count}` with text 'document selected', and DeleteConfirmDialog shows 'Permanently delete {count} document{count !== 1 ? 's' : ''}?'"
+    },
+    {
+      "text": "Distinguishes select-all-on-page from select-all-matching rather than conflating them",
+      "passed": true,
+      "evidence": "Bulkbar shows: 'document selected {totalMatching > 50 && ` (${totalMatching} total matching)`}' \u2014 displays both page selection count and total matching count separately"
+    },
+    {
+      "text": "Separates the destructive action from the benign one visually or spatially",
+      "passed": true,
+      "evidence": "Archive: 'text-gray-700 bg-white border border-gray-300'. Delete: 'text-red-700 bg-red-50 border border-red-200' \u2014 distinct colors and styling"
+    },
+    {
+      "text": "Does not make the destructive action the default focus or primary button",
+      "passed": true,
+      "evidence": "Archive appears first in button order; Delete uses red styling but equivalent weight. No autofocus on Delete"
+    },
+    {
+      "text": "Notes that the server must enforce the rules, not just the UI",
+      "passed": false,
+      "evidence": "No explicit statement about server-side enforcement of authorization or validation rules"
+    },
+    {
+      "text": "Closes by naming which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Design rationale closes by listing prevented misuses: 'prevents reflexive confirmation', 'impossible to dismiss the dialog blindly', 'preventing double-deletion if user refreshes mid-flight', 'preventing accidental bulk deletion, double-submission, and losing data'"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 9,
+    "pass_rate": 0.8889
+  }
+}

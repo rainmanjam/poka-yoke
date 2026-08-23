@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "1af6b213502f",
+  "expectations": [
+    {
+      "text": "States plainly that the recent-charge lookup is not sufficient",
+      "passed": true,
+      "evidence": "\"**No. This is rung 0 (not a poka-yoke) wearing a rung 2 costume.**\" and \"Your fix \u2014 is it enough?\" answered directly"
+    },
+    {
+      "text": "Identifies the lookup as a check-then-act race rather than a device",
+      "passed": true,
+      "evidence": "\"hazard **M5: Check-then-act race**... Between `SELECT` and `INSERT`, another worker can slip through\" plus \"Race condition | Check runs, second worker checks, both see no charge, both charge\""
+    },
+    {
+      "text": "Recommends a required idempotency key on the charge path",
+      "passed": true,
+      "evidence": "\"**Make idempotency key required** in the charge function signature \u2014 not optional, not defaulted\""
+    },
+    {
+      "text": "Recommends a database unique constraint backing the idempotency key",
+      "passed": true,
+      "evidence": "\"**Add `UNIQUE(order_id)` or `UNIQUE(customer_id, idempotency_key)`** to your charges table\""
+    },
+    {
+      "text": "Separates the defect from the mistake from the underlying system hazard",
+      "passed": true,
+      "evidence": "\"**Defect**: 340 customers were double-charged... **Mistake**: The retry path called `charge()` again without deduplication. **Hazard**: The charge operation accepts a retry without an idempotency key backed by a unique constraint.\""
+    },
+    {
+      "text": "Locates the hazard as a system property rather than as a worker bug or human error",
+      "passed": true,
+      "evidence": "\"the terminal answer is: **the system has no control-rung device preventing duplicate charges.** The charge path accepts retries without requiring proof they're safe.\""
+    },
+    {
+      "text": "Sweeps for other non-idempotent side effects reachable from a retry",
+      "passed": true,
+      "evidence": "\"Class sweep \u2014 where else is this mistake available?... Email sends from a queue? Webhook dispatches? Inventory adjustments? Refund processing? Notification pushes?\""
+    },
+    {
+      "text": "Treats 'second time this happened' as evidence for pushing to a Control-rung device",
+      "passed": false,
+      "evidence": "The response never mentions the recurrence at all \u2014 no reference to \"second time\" or repeat incidents as justification for escalating to a Control-rung device; the Control recommendation is argued solely from the race/identity flaws"
+    },
+    {
+      "text": "Attributes cause to the system, not to any person",
+      "passed": true,
+      "evidence": "\"your queue did exactly what it's supposed to do\"; cause framed as \"No idempotency key was passed\" and \"No unique constraint\" \u2014 no person blamed anywhere"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 9,
+    "pass_rate": 0.8889
+  }
+}

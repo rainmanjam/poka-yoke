@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "1af6b213502f",
+  "expectations": [
+    {
+      "text": "States plainly that the recent-charge lookup is not sufficient",
+      "passed": true,
+      "evidence": "No, it's not enough. What you shipped is a rung-2 **warning** dressed as a fix, and it's a *leaky* one"
+    },
+    {
+      "text": "Identifies the lookup as a check-then-act race rather than a device",
+      "passed": true,
+      "evidence": "TOCTOU race... both workers can run the check before either has written a charge record. The check-then-act gap is unguarded"
+    },
+    {
+      "text": "Recommends a required idempotency key on the charge path",
+      "passed": true,
+      "evidence": "Pass a **Stripe idempotency key** derived from a stable identifier... on every `charge()` call"
+    },
+    {
+      "text": "Recommends a database unique constraint backing the idempotency key",
+      "passed": true,
+      "evidence": "Add a **unique constraint** on your own ledger table, e.g. `UNIQUE(order_id)` or `UNIQUE(idempotency_key)`"
+    },
+    {
+      "text": "Separates the defect from the mistake from the underlying system hazard",
+      "passed": true,
+      "evidence": "**Defect**: 340 customers double-charged. **Mistake**: the queue redelivered... **Hazard**: the charge path has no stable identity"
+    },
+    {
+      "text": "Locates the hazard as a system property rather than as a worker bug or human error",
+      "passed": true,
+      "evidence": "the charge path has no stable identity \u2014 nothing ties this specific payment attempt to have I already done this in a way the system enforces"
+    },
+    {
+      "text": "Sweeps for other non-idempotent side effects reachable from a retry",
+      "passed": true,
+      "evidence": "Every other consumer of that queue with a side effect has the same exposure: email/receipt, webhook, ledger, inventory"
+    },
+    {
+      "text": "Treats 'second time this happened' as evidence for pushing to a Control-rung device",
+      "passed": true,
+      "evidence": "described as 'the second time,' which is the strongest signal in the skill to push for the top rung rather than settle"
+    },
+    {
+      "text": "Attributes cause to the system, not to any person",
+      "passed": true,
+      "evidence": "**Defect**: 340 customers double-charged. **Mistake**: the queue redelivered... (no attribution to person)"
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": false,
+      "evidence": "Discusses consequences ('rollback is restore') but does not explicitly identify the window where old pods still running old code hit DB after column is gone. Response discusses 'requests in flight fail' only indirectly via rollback implications."
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "\"This is the textbook expand/contract case... merge just the code changes... Separately, next week... run the DROP COLUMN as its own deploy\""
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": true,
+      "evidence": "\"Unless you have a tested PITR/backup restore, the answer is 'nothing' \u2014 once it's gone, getting legacy_email back means a database restore, not a revert.\""
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": true,
+      "evidence": "\"your rollback is 'restore the column from backup,' not 'redeploy the previous commit.' That's a much slower, riskier recovery path\""
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "\"Even a small, well-tested change deployed Friday afternoon means any restore work lands in a thinner-staffed window.\""
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": true,
+      "evidence": "\"I can help... draft the CI guard... that blocks DROP/destructive ALTER from landing alongside application code\""
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "\"No \u2014 hold off on merging this as a single change\" and \"Green CI here doesn't cover this risk\""
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "\"the three code call-sites reading legacy_email are the reversible part; the DROP COLUMN is the irreversible part\""
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

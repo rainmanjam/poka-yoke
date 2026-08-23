@@ -1,0 +1,60 @@
+{
+  "assertions_sha": "bcf79cb43709",
+  "expectations": [
+    {
+      "text": "Flags the nested comments and attachments resolvers as unscoped by tenant",
+      "passed": true,
+      "evidence": "Section 5 \"Nested resolvers inherit nothing \u2014 Latent leak\": \"Add any resolver that returns a Document parent without tenant scoping\""
+    },
+    {
+      "text": "Flags updateDocument for scoping on id alone without a tenant constraint",
+      "passed": true,
+      "evidence": "Section 2 \"Unscoped update \u2014 Authz bypass (write)\": \"Call updateDocument(sessionA, idOfTenantBDoc, patch). Nothing stops it.\""
+    },
+    {
+      "text": "Flags exportWorkspace taking tenantId from the client-controlled request body",
+      "passed": true,
+      "evidence": "Section 1 \"Tenant ID taken from the client \u2014 Authz bypass / trivial\": \"Send { \\\"tenantId\\\": \\\"<someone else's>\\\" }\""
+    },
+    {
+      "text": "Flags searchDocuments as returning rows across all tenants",
+      "passed": true,
+      "evidence": "Section 3 \"Search has no tenant predicate \u2014 Authz bypass (read)\": \"Search for a word. Results come from every tenant's documents\""
+    },
+    {
+      "text": "Flags adminListDocuments as checking authentication but not authorization or tenant",
+      "passed": true,
+      "evidence": "Section 4 \"\\\"Admin\\\" checks authentication, not authorization, and is global\": \"userId being truthy is the only check; there is no role, and no tenant\""
+    },
+    {
+      "text": "Enumerates all the affected sites rather than fixing only the first one found",
+      "passed": true,
+      "evidence": "Seven sections covering export, updateDocument, search, admin, nested resolvers, root cause (raw db import), and testing"
+    },
+    {
+      "text": "Recommends a structural device (scoped repository, row-level security, or equivalent) rather than only adding where-clauses site by site",
+      "passed": true,
+      "evidence": "Section 6 proposes \"a TenantDb constructed only from a Session\" and \"Postgres RLS with FORCE ROW LEVEL SECURITY behind it\""
+    },
+    {
+      "text": "Recommends a cross-tenant test that attempts tenant A operations against tenant B resources",
+      "passed": true,
+      "evidence": "Section 7 \"Nothing proves any of this \u2014 Detection missing\": \"create A and B, run *every* export in this file as A against B's IDs, assert 404\""
+    },
+    {
+      "text": "Identifies the raw interpolation of tenantId into $queryRawUnsafe as an injection hazard distinct in kind from the tenant-scoping bug",
+      "passed": true,
+      "evidence": "Section 1: \"Bonus: $queryRawUnsafe with string interpolation means tenantId is also a SQL injection vector \u2014 ' OR 1=1 -- exports every tenant at once\""
+    },
+    {
+      "text": "Does not conclude the main query paths being scoped means the service is safe",
+      "passed": true,
+      "evidence": "\"Short answer: **no, you are not OK.**\" and \"The main query paths are scoped correctly, and that is exactly what makes the rest dangerous \u2014 they look like the pattern, and five other paths don't follow it\""
+    }
+  ],
+  "summary": {
+    "passed": 10,
+    "total": 10,
+    "pass_rate": 1.0
+  }
+}

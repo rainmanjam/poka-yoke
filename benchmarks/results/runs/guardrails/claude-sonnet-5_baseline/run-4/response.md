@@ -1,0 +1,3 @@
+Reminders don't scale — you've already proven that. The fix is a device, not more messaging: add a pre-commit hook that auto-runs the formatter (so it's fixed before it's even committed) and a CI check that fails the build on missing type annotations, blocking merge rather than asking reviewers to catch it. The tradeoff is upfront setup cost and some initial friction as people's existing branches get flagged, but it's the only version of this that doesn't depend on anyone remembering anything.
+
+If you want, I can look at what CI/pre-commit setup you already have in this repo and wire in the specific formatter + type checks — just say which language/tools you're using.

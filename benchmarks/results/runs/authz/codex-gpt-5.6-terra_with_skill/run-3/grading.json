@@ -1,0 +1,60 @@
+{
+  "assertions_sha": "bcf79cb43709",
+  "expectations": [
+    {
+      "text": "Flags the nested comments and attachments resolvers as unscoped by tenant",
+      "passed": true,
+      "evidence": "\"comments and attachments resolvers scope only by parent document ID\""
+    },
+    {
+      "text": "Flags updateDocument for scoping on id alone without a tenant constraint",
+      "passed": true,
+      "evidence": "\"updateDocument updates by document ID alone. Tenant A can modify Tenant B's document if it knows the ID\""
+    },
+    {
+      "text": "Flags exportWorkspace taking tenantId from the client-controlled request body",
+      "passed": true,
+      "evidence": "\"exportWorkspace trusts req.body.tenantId; a caller can name another tenant\""
+    },
+    {
+      "text": "Flags searchDocuments as returning rows across all tenants",
+      "passed": true,
+      "evidence": "\"searchDocuments accepts a session but never uses it; search spans every tenant\""
+    },
+    {
+      "text": "Flags adminListDocuments as checking authentication but not authorization or tenant",
+      "passed": true,
+      "evidence": "\"adminListDocuments checks only that someone is logged in\u2014not that they are an authorized admin or belong to the returned tenant\""
+    },
+    {
+      "text": "Enumerates all the affected sites rather than fixing only the first one found",
+      "passed": true,
+      "evidence": "Six findings: export, update, search, admin, comments/attachments, author (separately noted for PII expansion)"
+    },
+    {
+      "text": "Recommends a structural device (scoped repository, row-level security, or equivalent) rather than only adding where-clauses site by site",
+      "passed": true,
+      "evidence": "\"use database row-level security with FORCE ROW LEVEL SECURITY...confine handlers to a repository constructed with a required tenant ID\""
+    },
+    {
+      "text": "Recommends a cross-tenant test that attempts tenant A operations against tenant B resources",
+      "passed": true,
+      "evidence": "\"make Tenant A attempt every read/write/export operation against Tenant B's resources and require 404, not 403\""
+    },
+    {
+      "text": "Identifies the raw interpolation of tenantId into $queryRawUnsafe as an injection hazard distinct in kind from the tenant-scoping bug",
+      "passed": true,
+      "evidence": "\"It also interpolates that value into $queryRawUnsafe, creating a separate SQL-injection vulnerability\""
+    },
+    {
+      "text": "Does not conclude the main query paths being scoped means the service is safe",
+      "passed": true,
+      "evidence": "\"getDocument and Query.documents are scoped correctly, but that does not make the service safe\""
+    }
+  ],
+  "summary": {
+    "passed": 10,
+    "total": 10,
+    "pass_rate": 1.0
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "82f963d241f9",
+  "expectations": [
+    {
+      "text": "Pushes back on the 'are you sure?' modal as the primary fix",
+      "passed": true,
+      "evidence": "\"A confirmation modal is the weakest rung on the poka-yoke ladder... it won't stop the panicked support emails.\""
+    },
+    {
+      "text": "Explains habituation or click-through blindness as why frequent dialogs stop working",
+      "passed": true,
+      "evidence": "\"users click through them on autopilot\" \u2014 names click-through blindness, though only in passing without elaboration"
+    },
+    {
+      "text": "Recommends reversibility (soft delete with a retention window) as the strongest option",
+      "passed": true,
+      "evidence": "\"Better approach: make deletion reversible\" with \"Soft-delete | Mark as deleted, don't purge immediately\" and \"Trash folder | Users can self-recover for 30 days\""
+    },
+    {
+      "text": "Recommends grace-period undo as a strong low-friction option",
+      "passed": true,
+      "evidence": "\"Undo toast | 'Workspace deleted \u2014 Undo' for 10 seconds\""
+    },
+    {
+      "text": "Recommends type-the-workspace-name confirmation for the irreversible case",
+      "passed": true,
+      "evidence": "\"Hard-delete friction | Require typing workspace name to permanently purge\""
+    },
+    {
+      "text": "If a dialog is retained, requires it to name the workspace and the scale of what is lost",
+      "passed": false,
+      "evidence": "The modal is mentioned only as \"The modal stays optional as a speed bump\" \u2014 no requirement that it name the workspace or state what/how much is lost"
+    },
+    {
+      "text": "Notes that the server must enforce the deletion rules, not just the UI",
+      "passed": false,
+      "evidence": "No mention of server-side or backend enforcement anywhere; all controls are described at the UI/implementation-sketch level"
+    },
+    {
+      "text": "Gives an explicit preference order rather than an undifferentiated list of ideas",
+      "passed": true,
+      "evidence": "Ranks the control hierarchy \"(strongest \u2192 weakest)\" and places modals at rung 4 vs. reversibility as the \"Better approach\"; however the four recommended controls themselves are in an unranked table"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

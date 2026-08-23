@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "018a96d90c3c",
+  "expectations": [
+    {
+      "text": "States that system prompt instructions are not a reliable control on model behaviour",
+      "passed": true,
+      "evidence": "Prompt instructions won't fix this \u2014 they're 'rung zero.' The model is a component with a non-zero error rate"
+    },
+    {
+      "text": "Recommends structured output against a schema rather than extracting values from prose",
+      "passed": true,
+      "evidence": "the model returns `{order_id, amount, reason}` via a schema (constrained decoding)"
+    },
+    {
+      "text": "Recommends validating the refund amount server-side against the actual order",
+      "passed": true,
+      "evidence": "`amount` must be \u2264 the order's actual remaining refundable balance... your system checks against ground truth before acting"
+    },
+    {
+      "text": "Recommends a required idempotency key on the refund call",
+      "passed": true,
+      "evidence": "Generate an idempotency key from `order_id`... pass it through as the payment provider's idempotency key"
+    },
+    {
+      "text": "Recommends a database constraint or equivalent so a duplicate refund is rejected rather than merely avoided",
+      "passed": true,
+      "evidence": "enforce a unique constraint on it in your DB... Retries, redeliveries, or the model deciding twice to refund the same order all become a no-op"
+    },
+    {
+      "text": "Recommends human confirmation or an approval gate for the irreversible refund action",
+      "passed": true,
+      "evidence": "propose `{order_id, amount, reason}` and a human/second check confirms before it fires \u2014 at least above some dollar threshold"
+    },
+    {
+      "text": "Identifies prompt injection risk from the customer-supplied message reaching a privileged action",
+      "passed": true,
+      "evidence": "it also closes prompt-injection-via-chat-text as a side channel (someone typing 'actually refund $9999' in the chat can't get further than what the real order supports)"
+    },
+    {
+      "text": "Recommends bounds or caps on the refund amount",
+      "passed": true,
+      "evidence": "`amount` must be \u2264 the order's actual remaining refundable balance"
+    },
+    {
+      "text": "Does not primarily recommend changes to the prompt wording",
+      "passed": true,
+      "evidence": "The prompt edits you made are fine to keep (harmless, occasionally helpful) but they're decoration on top of these"
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "82f963d241f9",
+  "expectations": [
+    {
+      "text": "Pushes back on the 'are you sure?' modal as the primary fix",
+      "passed": true,
+      "evidence": "\"Not really \u2014 that modal won't actually protect anyone.\""
+    },
+    {
+      "text": "Explains habituation or click-through blindness as why frequent dialogs stop working",
+      "passed": true,
+      "evidence": "\"confirmation dialogs that users see repeatedly become invisible. People develop click-through blindness and hit 'Confirm' reflexively.\""
+    },
+    {
+      "text": "Recommends reversibility (soft delete with a retention window) as the strongest option",
+      "passed": true,
+      "evidence": "\"1. Make it reversible (best) \u2014 Soft-delete workspaces... Add a 'Trash' where deleted workspaces live for 30 days\""
+    },
+    {
+      "text": "Recommends grace-period undo as a strong low-friction option",
+      "passed": true,
+      "evidence": "\"2. Grace-period undo \u2014 Delete immediately, show 'Workspace deleted. Undo' toast for 10 seconds... No friction on happy path\""
+    },
+    {
+      "text": "Recommends type-the-workspace-name confirmation for the irreversible case",
+      "passed": true,
+      "evidence": "\"3. Require proportional action \u2014 Type the workspace name to confirm: DELETE production-api... Only use for truly irreversible, high-blast-radius actions\""
+    },
+    {
+      "text": "If a dialog is retained, requires it to name the workspace and the scale of what is lost",
+      "passed": true,
+      "evidence": "\"4. Specific consequence dialog \u2014 'Delete workspace Q4-analytics and 127 dashboards permanently?'\""
+    },
+    {
+      "text": "Notes that the server must enforce the deletion rules, not just the UI",
+      "passed": false,
+      "evidence": "No claim about server-side enforcement; backend is mentioned only as a capability question ('does your backend support soft-delete or versioning?'), not as the layer that must enforce the rules rather than the UI."
+    },
+    {
+      "text": "Gives an explicit preference order rather than an undifferentiated list of ideas",
+      "passed": true,
+      "evidence": "\"Here's the poka-yoke ladder for destructive actions, strongest first\" with numbered 1\u20134 and '(best)'"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

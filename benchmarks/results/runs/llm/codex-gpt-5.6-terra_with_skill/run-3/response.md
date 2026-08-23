@@ -1,0 +1,14 @@
+Yes: prompt instructions are not the fix. They’re rung-zero training for a component that will occasionally be wrong.
+
+Treat the LLM as an untrusted proposer; make your refund service the decision-maker.
+
+- **Immediately:** pause autonomous refunds, or limit them to low-risk cases where the backend computes the exact allowed amount and the customer explicitly confirms it. Queue everything else for an agent.
+- **Never trust an extracted amount.** Look up the authenticated customer’s order server-side; use integer minor units (`cents`), its actual currency, and enforce `0 < amount ≤ remaining_refundable_amount` inside the refund transaction. Prefer the service calculating the amount from policy/order state rather than accepting a model-supplied value.
+- **Require an explicit approval gate.** Show “Refund **$24.99** to the original payment method for order **#1234** because **damaged item**?” and require customer or staff confirmation before the write. The model may draft this proposal; it must not authorize it.
+- **Make duplicate refunds impossible.** Require an idempotency key for every refund, persist it, and enforce a database uniqueness constraint plus an atomic transaction/lock on the refund operation. Reuse the same key when retrying the external refund API. Also enforce that total refunded for an order can never exceed its remaining refundable balance—important if legitimate partial refunds are allowed.
+- **Constrain extraction.** Use structured output with `extra=forbid`; refund reasons should be an enum or selected policy code, not unconstrained text. But remember: a schema prevents malformed output, not a plausible wrong amount.
+- **Preserve authorization scope.** The bot should only retrieve orders belonging to the authenticated customer and issue refunds within that customer/support agent’s permissions. Don’t give the model a broad service credential.
+- **Test the device, not just the prompt.** Add production incidents as eval cases, including ambiguous amounts, “refund everything” prompt-injection text, retries/timeouts, and concurrent duplicate requests. Deliberately attempt a second refund and an over-refund; both must be rejected while a valid refund succeeds.
+- **Sweep all refund paths.** Check chat, admin tools, retries, jobs, and old API callers—one protected call site does not prevent the class of incident.
+
+In retro terms: the defects were wrong and duplicate refunds; the hazards are “a model-selected amount reaches a money-moving API” and “the API permits repeated/overlapping refund writes.” The first needs a server-side policy and confirmation gate; the second needs idempotency, uniqueness, and an atomic remaining-balance constraint. Those are control-level safeguards, unlike additional prompt wording.

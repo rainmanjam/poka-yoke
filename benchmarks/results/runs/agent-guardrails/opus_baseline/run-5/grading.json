@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "5b62450c21d2",
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "CLAUDE.md is **training, not enforcement** \u2014 it's text in a context window that gets compacted, out-competed by the immediate task, and never read at all by subagents"
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "The fix is to stop editing the prose and move both rules to the tool boundary"
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": true,
+      "evidence": "Provides full JSON with five specific deny patterns including --force-with-lease"
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": true,
+      "evidence": "Add a `PreToolUse` hook on `Bash` that inspects the full command string with full Python code example"
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": true,
+      "evidence": "Each message above names **what** was blocked, **why** it's irreversible, and **what to do instead**"
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": true,
+      "evidence": "Prove it fires...run the blocked action and confirm both the denial *and* the message, then run the neighbouring legitimate action"
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": true,
+      "evidence": "Committed, not `settings.local.json` \u2014 a rule on one machine is the same failure as a rule in a doc"
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": true,
+      "evidence": "Caps and repetition raise salience slightly; they don't change the category. One-in-ten is roughly what a well-written instruction gets you"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

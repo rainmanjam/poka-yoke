@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "type Subscription = | TrialingSubscription | ActiveSubscription | PastDueSubscription | CanceledSubscription; where each extends SubscriptionBase with status literal"
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "Each interface like TrialingSubscription contains only { status: \"trialing\"; trialEndsAt: Date; }"
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": true,
+      "evidence": "Shows assertNever function with default: return assertNever(sub);"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": true,
+      "evidence": "type Brand<T, B extends string> = T & { readonly __brand: B }; type SubscriptionId = Brand<string, \"SubscriptionId\">;"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": true,
+      "evidence": "type CancelableSubscription = TrialingSubscription | ActiveSubscription | PastDueSubscription; function cancelSubscription(sub: CancelableSubscription, ...) makes canceled\u2192canceled a type error"
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "\"cancel an already-canceled subscription\" is a type error, discusses bag of optionals vs sum type hazard"
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "Entire response avoids optional-bag interface, uses discriminated union with interfaces."
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 7,
+    "pass_rate": 1.0
+  }
+}

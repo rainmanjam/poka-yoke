@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "4999b9f80438",
+  "expectations": [
+    {
+      "text": "States that a written agreement or reminder is not enforcement",
+      "passed": true,
+      "evidence": "\"the rule lives in a place that can only be *remembered*, and remembering is the weakest enforcement mechanism there is\""
+    },
+    {
+      "text": "Recommends a pre-commit hook to run the formatter automatically",
+      "passed": true,
+      "evidence": "\"A pre-commit hook (via `pre-commit`, `husky`/`lint-staged`, or whatever fits your stack) that *reformats and re-stages* the staged files\""
+    },
+    {
+      "text": "Notes that pre-commit is bypassable with --no-verify and must be backed by a CI check",
+      "passed": false,
+      "evidence": "States CI is 'the backstop' implying need for backing, but does not explicitly mention --no-verify bypass mechanism."
+    },
+    {
+      "text": "Recommends a type check as a required CI check",
+      "passed": true,
+      "evidence": "\"A required CI check that runs `<formatter> --check` and your type checker in strict mode...wired into branch protection\""
+    },
+    {
+      "text": "Recommends baselining or ratcheting rather than enforcing across the whole repo at once",
+      "passed": true,
+      "evidence": "\"a ratchet (a script records the current untyped-function count and fails CI if it goes *up*)\""
+    },
+    {
+      "text": "Notes that branch protection is what makes a CI check actually required",
+      "passed": true,
+      "evidence": "\"wired into branch protection so the merge button is disabled while it's red\""
+    },
+    {
+      "text": "Recommends the failure message tell the developer how to fix it",
+      "passed": false,
+      "evidence": "Not mentioned. No discussion of what the failure message should communicate to developers."
+    },
+    {
+      "text": "Does not primarily recommend rewriting CONTRIBUTING.md, more reminders, or more discipline",
+      "passed": true,
+      "evidence": "Primary focus is technical devices. CONTRIBUTING.md changes recommended only after: 'Once the device exists...'"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

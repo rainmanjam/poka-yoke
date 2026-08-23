@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "No. The \"not empty\" test would have passed every one of those three weeks \u2014 the table wasn't empty, it was full of plausible zeros."
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "**2. `COALESCE(x, 0)` turned \"unknown\" into \"zero\".** That's the data equivalent of `except: pass` \u2014 it converts a missing value into a plausible one."
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": true,
+      "evidence": "Device: a **reconciliation test** \u2014 sum of revenue in the mart vs. sum in the source/billing system for the same window, within a tolerance."
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": true,
+      "evidence": "Build to staging \u2192 run tests \u2192 promote only on pass."
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "Device: a **schema contract** on the upstream table \u2014 assert the columns you depend on exist with the types you expect, *before* the model runs."
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "put a **null-rate assertion** on the joined column (e.g. `< 1%`). ... revenue-per-day compared to the same weekday over the prior N weeks, alert on >X% drop."
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": true,
+      "evidence": "Here's the incident as a chain of silences, and what each one needs... **5. Volume drift.** This would have fired on day one as \"revenue is low\" \u2014 the backstop for the failure you haven't thought of yet."
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": false,
+      "evidence": "Response explains that COALESCE creates plausible values and discusses timing of detection, but does not explicitly state why silent-wrong is more dangerous than failed-pipeline as a comparative principle."
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

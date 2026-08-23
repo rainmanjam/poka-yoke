@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": true,
+      "evidence": "if old code briefly runs alongside new, does it handle the missing column gracefully?"
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": false,
+      "evidence": "No mention of expand/contract or staggered deployment pattern"
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": false,
+      "evidence": "Asks 'can you restore the column quickly, or restore from backup?' but does not explicitly state irreversibility"
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": false,
+      "evidence": "Poses questions about rollback ('can you restore quickly') but does not describe rollback mechanics or procedure"
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "Friday afternoon deploys risky if team isn't fully present; asks about on-call coverage tonight/weekend"
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": false,
+      "evidence": "No mention of CI gates or automation to prevent this pattern"
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "Raises flags ('I'd raise'), does not approve; says 'small change + Friday afternoon + recent incidents is a flag'"
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": false,
+      "evidence": "Does not explicitly separate reversible code changes from irreversible schema drop"
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "total": 8,
+    "pass_rate": 0.375
+  }
+}

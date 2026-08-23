@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "\"No \u2014 a not-empty check tests for the wrong failure mode... A row-count assertion would have stayed green the entire time.\""
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "\"`COALESCE(revenue, 0)` papered over the nulls... prevents your pipeline from *hiding* the consequence.\""
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": true,
+      "evidence": "\"**Reconcile revenue against the source system total daily.** This is the one that would have caught it even if you never touch the coalesce.\""
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": true,
+      "evidence": "\"Assert the join-key match rate before the coalesce runs... checked between load and publish so it can block promotion\""
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "\"**A data contract on the upstream column**... so a rename is a breaking-change event they announce, not a silent behavior change.\""
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "\"Assert the join-key match rate before the coalesce runs. Something like 'unmatched rows / total rows < 0.1%'\""
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": false,
+      "evidence": "Response describes the incident timeline but does not identify the detection lag itself as a separate gap requiring its own device."
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": false,
+      "evidence": "Response contrasts 'loud failure' with 'quiet, plausible-looking' but does not explicitly explain why silent wrongness is more dangerous than pipeline failure."
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

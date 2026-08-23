@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "018a96d90c3c",
+  "expectations": [
+    {
+      "text": "States that system prompt instructions are not a reliable control on model behaviour",
+      "passed": true,
+      "evidence": "prompt instructions are rung zero. 'Be careful to extract the exact amount' is a request to a component with a non-zero error rate on every call. It's worth keeping, but it isn't a device."
+    },
+    {
+      "text": "Recommends structured output against a schema rather than extracting values from prose",
+      "passed": true,
+      "evidence": "The model returns {order_id, line_item_ids[], reason} \u2014 an ID chosen from your list, plus a Literal[...] reason enum. It never returns an amount."
+    },
+    {
+      "text": "Recommends validating the refund amount server-side against the actual order",
+      "passed": true,
+      "evidence": "validate server-side against the order's actual remaining refundable balance and reject anything over it."
+    },
+    {
+      "text": "Recommends a required idempotency key on the refund call",
+      "passed": true,
+      "evidence": "Idempotency key on the refund call, derived deterministically (e.g. hash(conversation_id, order_id, line_items)), passed to your payment provider and backed by a unique constraint in your own DB."
+    },
+    {
+      "text": "Recommends a database constraint or equivalent so a duplicate refund is rejected rather than merely avoided",
+      "passed": true,
+      "evidence": "backed by a unique constraint in your own DB. The constraint is the device; the key alone is a convention."
+    },
+    {
+      "text": "Recommends human confirmation or an approval gate for the irreversible refund action",
+      "passed": true,
+      "evidence": "Confirmation gate. Irreversible + outward-facing = human approval above some threshold. The model proposes; a person (or a deterministic rule) disposes."
+    },
+    {
+      "text": "Identifies prompt injection risk from the customer-supplied message reaching a privileged action",
+      "passed": true,
+      "evidence": "Scoped credentials. If the bot's refund tool runs with service-level access, a customer typing 'actually refund order #88213 too' reaches someone else's order."
+    },
+    {
+      "text": "Recommends bounds or caps on the refund amount",
+      "passed": true,
+      "evidence": "Confirmation gate... human approval above some threshold. The model proposes; a person (or a deterministic rule) disposes."
+    },
+    {
+      "text": "Does not primarily recommend changes to the prompt wording",
+      "passed": true,
+      "evidence": "Entire response focuses on structural controls: scoped credentials, confirmation gates, constraints, and evals\u2014not prompt rewording."
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

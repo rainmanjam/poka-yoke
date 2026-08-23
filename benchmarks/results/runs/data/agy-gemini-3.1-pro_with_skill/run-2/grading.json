@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "The current solution (checking that the revenue table isn't empty) is not enough... the table was not empty\u2014it just contained bad data that looked plausible."
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "Coalescing unexpected nulls to 0 hid the error."
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": true,
+      "evidence": "Add a check that aggregates the total revenue in the warehouse and compares it to the total revenue reported by the upstream system for the same time period."
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": true,
+      "evidence": "A test that runs after publication lets bad data reach the dashboard. A blocking pipeline test ensures the dashboard... never today's bad data."
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "Implement a schema validation step on ingest. If the expected column is missing, the ingest job must fail immediately."
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "add a pipeline assertion that the null rate is exactly 0%... Implement a volume check that compares today's row count and total revenue sum against the *same weekday historically*"
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": false,
+      "evidence": "Response does not address why nobody noticed for three weeks or identify detection/monitoring gaps."
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": true,
+      "evidence": "your dashboard might be delayed instead of wrong, which requires stakeholder alignment"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

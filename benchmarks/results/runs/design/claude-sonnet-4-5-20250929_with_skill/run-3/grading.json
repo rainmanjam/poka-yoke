@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "export type Subscription =\n  | { status: 'trialing'; trial_end_date: Date }\n  | { status: 'active'; renewal_date: Date } ..."
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "{ status: 'canceled'; cancellation: Cancellation } \u2014 each arm lists only its own fields; no shared optionals"
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": true,
+      "evidence": "function assertNever(x: never): never { ... }  and  default: return assertNever(sub); // Compile error if a status is missing"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": true,
+      "evidence": "type Brand<T, B> = T & { readonly [brand]: B }; export type SubscriptionId = Brand<string, \"SubscriptionId\">;"
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": false,
+      "evidence": "No transition function is provided; it is explicitly listed under 'What I consciously left possible' \u2014 'nothing prevents going from canceled back to trialing... If that matters, add a transition function' and offered as a follow-up question"
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "Table: '\"trialing with a cancel_reason\" and 60 other nonsense states | Discriminated union \u2014 only 4 states are representable'; also '\"voluntary: true, reason: payment-failed\"' listed with its device"
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "\"The subscription itself - discriminated union, not bag of optionals\" \u2014 optionals are only described as the hazard to avoid"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 7,
+    "pass_rate": 0.8571
+  }
+}

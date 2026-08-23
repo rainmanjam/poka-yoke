@@ -1,0 +1,60 @@
+{
+  "assertions_sha": "bcf79cb43709",
+  "expectations": [
+    {
+      "text": "Flags the nested comments and attachments resolvers as unscoped by tenant",
+      "passed": false,
+      "evidence": "No mention of resolvers; response focuses on general RLS/scoped repository recommendations without analyzing the specific file"
+    },
+    {
+      "text": "Flags updateDocument for scoping on id alone without a tenant constraint",
+      "passed": false,
+      "evidence": "Not mentioned; no specific analysis of vulnerabilities in the file"
+    },
+    {
+      "text": "Flags exportWorkspace taking tenantId from the client-controlled request body",
+      "passed": false,
+      "evidence": "Not mentioned explicitly"
+    },
+    {
+      "text": "Flags searchDocuments as returning rows across all tenants",
+      "passed": false,
+      "evidence": "Not mentioned"
+    },
+    {
+      "text": "Flags adminListDocuments as checking authentication but not authorization or tenant",
+      "passed": false,
+      "evidence": "Not mentioned"
+    },
+    {
+      "text": "Enumerates all the affected sites rather than fixing only the first one found",
+      "passed": false,
+      "evidence": "Provides general recommendations without enumerating specific findings from the file"
+    },
+    {
+      "text": "Recommends a structural device (scoped repository, row-level security, or equivalent) rather than only adding where-clauses site by site",
+      "passed": true,
+      "evidence": "Recommends RLS, scoped repositories with tenant as constructor argument, and parameterized queries as structural approaches"
+    },
+    {
+      "text": "Recommends a cross-tenant test that attempts tenant A operations against tenant B resources",
+      "passed": false,
+      "evidence": "No mention of testing strategy"
+    },
+    {
+      "text": "Identifies the raw interpolation of tenantId into $queryRawUnsafe as an injection hazard distinct in kind from the tenant-scoping bug",
+      "passed": true,
+      "evidence": "States 'Line 59's interpolation is SQL injection *and* a cross-tenant leak in one' and separately recommends parameterized queries with `db.$queryRaw`"
+    },
+    {
+      "text": "Does not conclude the main query paths being scoped means the service is safe",
+      "passed": true,
+      "evidence": "Identifies exportWorkspace, searchDocuments, and adminListDocuments as highest-risk paths despite main paths being scoped"
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "total": 10,
+    "pass_rate": 0.3
+  }
+}

@@ -1,0 +1,23 @@
+[
+  {"query": "audit src/billing/ for anything that's easy to misuse and give me a ranked list of findings, each with the specific mistake someone could make and a concrete fix", "should_trigger": true},
+  {"query": "design the typescript types for our subscription state machine, trialing, active, past due, cancelled, each with different fields, so that illegal combinations won't compile. show me the code", "should_trigger": true},
+  {"query": "set up enforcement so unformatted or untyped code can't get merged. we've agreed to it twice in retro and it still happens. give me the actual config files", "should_trigger": true},
+  {"query": "we double charged 340 customers when the queue redelivered a message. do a proper root cause on this and give me the change that makes the whole class impossible, not just this path", "should_trigger": true},
+  {"query": "redesign our workspace deletion flow so users stop destroying things by accident. we have a confirm dialog already and it isn't working. give me the specific pattern and why", "should_trigger": true},
+  {"query": "review this migration PR that drops legacy_email and updates the three call sites, and tell me whether to ship it and what to change first", "should_trigger": true},
+  {"query": "go through our dbt models and tell me where a silent failure could produce wrong numbers without the pipeline going red, then give me the assertions to add", "should_trigger": true},
+  {"query": "go through src/documents.ts and find every path where one tenant could read or write another tenant's data, then give me a structural fix rather than a where clause per site", "should_trigger": true},
+  {"query": "our support bot calls the refund API with an amount it extracted from chat. harden it so it can't refund the wrong amount or refund twice, and show me the code changes", "should_trigger": true},
+  {"query": "write the settings and hook config that stops the agent force pushing and editing src/generated/, and show me how to verify each one actually blocks", "should_trigger": true},
+
+  {"query": "profile the test suite in packages/api and cut the 11 minute CI time down, parallelise or mock whatever is slowest", "should_trigger": false},
+  {"query": "debug this: `TypeError: Cannot read properties of undefined (reading 'map')` in ProductList.tsx:47, prod only, works locally. find the root cause", "should_trigger": false},
+  {"query": "review this PR for the new search endpoint, check the pagination logic is correct and the code reads well", "should_trigger": false},
+  {"query": "set up github actions for this fresh next.js repo: run tests on PRs, deploy to vercel on main", "should_trigger": false},
+  {"query": "build a confirmation email that goes out after signup using our resend setup, match the password reset template", "should_trigger": false},
+  {"query": "split this 800 line UserService into something sensible, no behaviour changes, structure only", "should_trigger": false},
+  {"query": "our postgres got slow past 2M rows in events. analyse the query plans and add the indexes we're missing", "should_trigger": false},
+  {"query": "write unit tests for the discount calculation in lib/pricing.ts, it has none and it's business critical", "should_trigger": false},
+  {"query": "walk me through how the auth middleware works in this repo, i just joined and want to understand the request lifecycle", "should_trigger": false},
+  {"query": "the staging deploy failed an hour ago, build exits 1 with no useful output. dig through the logs and find why", "should_trigger": false}
+]

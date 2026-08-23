@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "018a96d90c3c",
+  "expectations": [
+    {
+      "text": "States that system prompt instructions are not a reliable control on model behaviour",
+      "passed": true,
+      "evidence": "Two prompt additions won't fix this \u2014 they're rung zero... no wording drives that to zero"
+    },
+    {
+      "text": "Recommends structured output against a schema rather than extracting values from prose",
+      "passed": true,
+      "evidence": "Use the provider's structured-output/tool-calling mode with a strict schema: amount as a `number` with min/max bounds, reason as an `enum`"
+    },
+    {
+      "text": "Recommends validating the refund amount server-side against the actual order",
+      "passed": true,
+      "evidence": "your refund handler must independently look up the order and cap the refund at what's actually refundable (order total minus prior refunds)"
+    },
+    {
+      "text": "Recommends a required idempotency key on the refund call",
+      "passed": true,
+      "evidence": "Generate an idempotency key from the order ID (e.g. `refund:{order_id}`) and pass it to your payment processor's idempotency-key parameter"
+    },
+    {
+      "text": "Recommends a database constraint or equivalent so a duplicate refund is rejected rather than merely avoided",
+      "passed": true,
+      "evidence": "enforce a unique constraint on `(order_id)` or `(order_id, refund_type)` in your own refunds table"
+    },
+    {
+      "text": "Recommends human confirmation or an approval gate for the irreversible refund action",
+      "passed": true,
+      "evidence": "e.g. auto-execute under some dollar threshold, require human confirmation above it"
+    },
+    {
+      "text": "Identifies prompt injection risk from the customer-supplied message reaching a privileged action",
+      "passed": false,
+      "evidence": "No explicit identification of prompt injection as a risk"
+    },
+    {
+      "text": "Recommends bounds or caps on the refund amount",
+      "passed": true,
+      "evidence": "amount as a `number` with min/max bounds, reason as an `enum` of your actual refund reasons"
+    },
+    {
+      "text": "Does not primarily recommend changes to the prompt wording",
+      "passed": true,
+      "evidence": "Focuses on structural solutions and server-side validation rather than prompt changes"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 9,
+    "pass_rate": 0.8889
+  }
+}

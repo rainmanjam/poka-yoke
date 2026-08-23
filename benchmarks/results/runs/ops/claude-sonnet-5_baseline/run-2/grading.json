@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": true,
+      "evidence": "\"if the column drop reaches the DB before every reader is confirmed off it, requests in flight fail\" \u2014 explicitly identifies sequencing of old code still running when drop occurs"
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "\"Deploy 1 (today, Friday-safe): ship just the code changes... Deploy 2 (separate, non-Friday): the DROP COLUMN migration\""
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": true,
+      "evidence": "\"Once it's gone, the only restore path is a database backup/point-in-time-recovery \u2014 and that's a full restore, not a quick fix\""
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": true,
+      "evidence": "For code-only: \"Fully reversible \u2014 a revert PR undoes it in minutes.\" For drop: \"only restore path is a database backup/point-in-time-recovery\""
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "\"That question only matters for deploy 2. Deploy 1 (code-only) is safe for a Friday afternoon since rollback is a normal git revert\" and \"hold the DROP COLUMN for a day with people around\""
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": true,
+      "evidence": "\"a CI check that blocks DROP/destructive ALTER statements from landing in the same PR as application code\""
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "\"No \u2014 split it\" and does not approve the full PR as submitted in its current form"
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "\"the PR bundles a reversible change (removing the three code reads) with an irreversible one (dropping the column)\" and explicitly lists Deploy 1 vs Deploy 2"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

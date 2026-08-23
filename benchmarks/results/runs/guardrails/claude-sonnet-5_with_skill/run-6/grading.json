@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "4999b9f80438",
+  "expectations": [
+    {
+      "text": "States that a written agreement or reminder is not enforcement",
+      "passed": true,
+      "evidence": "everything you did \u2014 CONTRIBUTING.md, the Slack pin, standup mentions \u2014 is rung 0 on the poka-yoke ladder: it relies on someone remembering"
+    },
+    {
+      "text": "Recommends a pre-commit hook to run the formatter automatically",
+      "passed": true,
+      "evidence": "Pre-commit hook (formatter + type check)"
+    },
+    {
+      "text": "Notes that pre-commit is bypassable with --no-verify and must be backed by a CI check",
+      "passed": true,
+      "evidence": "--no-verify exists and people under deadline use it. The pre-commit hook is for fast feedback; the CI check with branch protection is the actual enforcement, because it can't be skipped"
+    },
+    {
+      "text": "Recommends a type check as a required CI check",
+      "passed": true,
+      "evidence": "enforce formatting/types on changed files only (or fail only on new violations), so the count only goes down"
+    },
+    {
+      "text": "Recommends baselining or ratcheting rather than enforcing across the whole repo at once",
+      "passed": true,
+      "evidence": "Baseline first. If you turn strict type-checking on for the whole repo today, you'll get a wall of pre-existing failures and someone will revert the rule"
+    },
+    {
+      "text": "Notes that branch protection is what makes a CI check actually required",
+      "passed": true,
+      "evidence": "the CI check with branch protection is the actual enforcement, because it can't be skipped"
+    },
+    {
+      "text": "Recommends the failure message tell the developer how to fix it",
+      "passed": true,
+      "evidence": "`error: run \\`npm run format\\` \u2014 3 files unformatted` gets fixed in ten seconds"
+    },
+    {
+      "text": "Does not primarily recommend rewriting CONTRIBUTING.md, more reminders, or more discipline",
+      "passed": true,
+      "evidence": "No suggestion for improving documentation or discipline"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

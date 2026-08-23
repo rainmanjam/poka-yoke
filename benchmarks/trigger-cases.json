@@ -1,0 +1,205 @@
+{
+  "_comment": "Routing fixtures. `expect` names the skill that must rank first; positional order used to carry that meaning implicitly, which is a fact nobody can see and everybody can break by inserting a row. kind=negative prompts are ordinary development work that must NOT route to poka-yoke at all.",
+  "cases": [
+    {
+      "prompt": "audit src/billing/ for anything that's easy to misuse and give me a ranked list of findings, each with the specific mistake someone could make and a concrete fix",
+      "expect": "audit",
+      "kind": "positive"
+    },
+    {
+      "prompt": "design the typescript types for our subscription state machine \u2014 trialing, active, past due, cancelled, each with different fields \u2014 so that illegal combinations won't compile. show me the code",
+      "expect": "design",
+      "kind": "positive"
+    },
+    {
+      "prompt": "set up enforcement so unformatted or untyped code can't get merged. we've agreed to it twice in retro and it still happens. give me the actual config files",
+      "expect": "guardrails",
+      "kind": "positive"
+    },
+    {
+      "prompt": "we double charged 340 customers when the queue redelivered a message. do a proper root cause on this and give me the change that makes the whole class impossible, not just this path",
+      "expect": "retro",
+      "kind": "positive"
+    },
+    {
+      "prompt": "redesign our workspace deletion flow so users stop destroying things by accident. we have a confirm dialog already and it isn't working. give me the specific pattern and why",
+      "expect": "ux",
+      "kind": "positive"
+    },
+    {
+      "prompt": "review this migration PR that drops legacy_email and updates the three call sites, and tell me whether to ship it and what to change first",
+      "expect": "ops",
+      "kind": "positive"
+    },
+    {
+      "prompt": "go through our dbt models and tell me where a silent failure could produce wrong numbers without the pipeline going red, then give me the assertions to add",
+      "expect": "data",
+      "kind": "positive"
+    },
+    {
+      "prompt": "go through src/documents.ts and find every path where one tenant could read or write another tenant's data, then give me a structural fix rather than a where clause per site",
+      "expect": "authz",
+      "kind": "positive"
+    },
+    {
+      "prompt": "our support bot calls the refund API with an amount it extracted from chat. harden it so it can't refund the wrong amount or refund twice, and show me the code changes",
+      "expect": "llm",
+      "kind": "positive"
+    },
+    {
+      "prompt": "write the settings and hook config that stops the agent force pushing and editing src/generated/, and show me how to verify each one actually blocks",
+      "expect": "agent-guardrails",
+      "kind": "positive"
+    },
+    {
+      "prompt": "profile the test suite in packages/api and cut the 11 minute CI time down \u2014 parallelise or mock whatever is slowest",
+      "expect": null,
+      "kind": "negative"
+    },
+    {
+      "prompt": "debug this: `TypeError: Cannot read properties of undefined (reading 'map')` in ProductList.tsx:47, prod only, works locally. find the root cause",
+      "expect": null,
+      "kind": "negative"
+    },
+    {
+      "prompt": "review this PR for the new search endpoint \u2014 check the pagination logic is correct and the code reads well",
+      "expect": null,
+      "kind": "negative"
+    },
+    {
+      "prompt": "set up github actions for this fresh next.js repo: run tests on PRs, deploy to vercel on main",
+      "expect": null,
+      "kind": "negative"
+    },
+    {
+      "prompt": "build a confirmation email that goes out after signup using our resend setup, match the password reset template",
+      "expect": null,
+      "kind": "negative"
+    },
+    {
+      "prompt": "split this 800 line UserService into something sensible, no behaviour changes, structure only",
+      "expect": null,
+      "kind": "negative"
+    },
+    {
+      "prompt": "our postgres got slow past 2M rows in events. analyse the query plans and add the indexes we're missing",
+      "expect": null,
+      "kind": "negative"
+    },
+    {
+      "prompt": "write unit tests for the discount calculation in lib/pricing.ts, it has none and it's business critical",
+      "expect": null,
+      "kind": "negative"
+    },
+    {
+      "prompt": "walk me through how the auth middleware works in this repo, i just joined and want to understand the request lifecycle",
+      "expect": null,
+      "kind": "negative"
+    },
+    {
+      "prompt": "the staging deploy failed an hour ago, build exits 1 with no useful output. dig through the logs and find why",
+      "expect": null,
+      "kind": "negative"
+    },
+    {
+      "prompt": "ok so we just had our second incident this quarter where someone ran a script against prod that was meant for staging. both times it was a different person. i don't want to just write another runbook page nobody reads \u2014 how do i actually stop this from being possible",
+      "expect": null,
+      "kind": "conversational"
+    },
+    {
+      "prompt": "im about to write the public API for our billing SDK, the one external customers will integrate against. functions for charge, refund, subscribe, cancel. what should the signatures look like so people don't screw it up in ways that cost them money",
+      "expect": null,
+      "kind": "conversational"
+    },
+    {
+      "prompt": "our support team keeps getting tickets from users who deleted a project by accident. currently there's a confirm dialog but clearly it isn't working. what would actually help",
+      "expect": null,
+      "kind": "conversational"
+    },
+    {
+      "prompt": "can you look at src/payments/transfer.ts and tell me what's easy to get wrong in there? it's been reviewed twice but i have a bad feeling about it",
+      "expect": null,
+      "kind": "conversational"
+    },
+    {
+      "prompt": "we're multi-tenant and i'm paranoid we've missed a tenant filter somewhere. is there a way to make it structurally impossible to write a query that isn't scoped, rather than me grepping for where clauses forever",
+      "expect": null,
+      "kind": "conversational"
+    },
+    {
+      "prompt": "claude keeps editing files in src/generated/ even though our CLAUDE.md says not to, in caps. what am i doing wrong",
+      "expect": null,
+      "kind": "conversational"
+    },
+    {
+      "prompt": "the team agreed to run the formatter before committing and half of them still don't. i've asked twice in standup. what do i do",
+      "expect": null,
+      "kind": "conversational"
+    },
+    {
+      "prompt": "we shipped a migration on friday that dropped a column and the deploy took the api down for 20 mins because old pods were still reading it. want to make sure that specific shape of thing can't happen again",
+      "expect": null,
+      "kind": "conversational"
+    },
+    {
+      "prompt": "our analytics numbers were wrong for like 3 weeks and nobody caught it because the pipeline was green the whole time. the join silently returned nulls and we coalesced to zero",
+      "expect": null,
+      "kind": "conversational"
+    },
+    {
+      "prompt": "designing a state machine for order status \u2014 pending, paid, shipped, refunded, cancelled. how do i model this in typescript so you can't accidentally refund something that was never paid",
+      "expect": null,
+      "kind": "conversational"
+    },
+    {
+      "prompt": "the test suite in packages/api is taking 11 minutes on CI and it's killing our iteration speed. can you figure out which specs are slow and see if any of them can be parallelised or mocked out",
+      "expect": null,
+      "kind": "negative"
+    },
+    {
+      "prompt": "getting `TypeError: Cannot read properties of undefined (reading 'map')` in ProductList.tsx line 47 but only in prod, works fine locally. can you help me track down what's different",
+      "expect": null,
+      "kind": "negative"
+    },
+    {
+      "prompt": "can you review this PR? it's the new search endpoint. mostly want to know if the pagination logic is right and whether the code reads okay",
+      "expect": null,
+      "kind": "negative"
+    },
+    {
+      "prompt": "we need CI set up for this repo \u2014 it's a fresh next.js project, nothing configured yet. github actions, run the tests on PRs, deploy to vercel on main",
+      "expect": null,
+      "kind": "negative"
+    },
+    {
+      "prompt": "add a confirmation email that goes out after someone signs up. use our existing resend setup, template should match the password reset one",
+      "expect": null,
+      "kind": "negative"
+    },
+    {
+      "prompt": "this UserService class is 800 lines and does way too much. can you break it up into something more sensible? no behaviour changes, just structure",
+      "expect": null,
+      "kind": "negative"
+    },
+    {
+      "prompt": "our postgres queries got slow after we hit about 2M rows in the events table. can you look at the query plans and figure out what indexes we're missing",
+      "expect": null,
+      "kind": "negative"
+    },
+    {
+      "prompt": "write unit tests for the discount calculation in lib/pricing.ts \u2014 it currently has none and it's the most business-critical bit of the codebase",
+      "expect": null,
+      "kind": "negative"
+    },
+    {
+      "prompt": "explain how the auth middleware in this repo works, i just joined the team and i'm trying to understand the request lifecycle before i touch anything",
+      "expect": null,
+      "kind": "negative"
+    },
+    {
+      "prompt": "the staging deploy failed about an hour ago, build step exits 1 with no useful output. can you dig into the logs and work out why it's broken",
+      "expect": null,
+      "kind": "negative"
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "3ef52a8f1e5d",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": true,
+      "evidence": "Full code with Email and RoutingResult types, SupportEmailRouter classifier, and if __name__ calling code with examples"
+    },
+    {
+      "text": "Uses structured output against a schema rather than parsing the model's prose",
+      "passed": false,
+      "evidence": "Uses json.loads(response_text); prompt requests 'Respond with ONLY valid JSON' not structured_output schema"
+    },
+    {
+      "text": "Constrains the classification to a closed set the code enforces, not just the prompt",
+      "passed": false,
+      "evidence": "Literal type hint only; assignment team=classification['team'] does not validate or convert at runtime"
+    },
+    {
+      "text": "Handles the case where the model returns something outside the allowed set",
+      "passed": false,
+      "evidence": "No validation; invalid team value from model gets assigned directly to RoutingResult"
+    },
+    {
+      "text": "Has a deterministic fallback or explicit failure path rather than a silent default",
+      "passed": false,
+      "evidence": "Invalid values silently accepted and assigned; Literal is not enforced at runtime, so invalid team propagates silently"
+    },
+    {
+      "text": "Treats the customer email as untrusted text that could carry instructions",
+      "passed": false,
+      "evidence": "Uses f-string: f'From: {email.from_address}\\nSubject: {email.subject}\\n\\nBody:\\n{email.body}' with no escaping"
+    },
+    {
+      "text": "Bounds cost or retries in code rather than requesting it in the prompt",
+      "passed": true,
+      "evidence": "Sets max_tokens=256 as hard limit"
+    },
+    {
+      "text": "Closes by naming which failures the design makes impossible",
+      "passed": false,
+      "evidence": "Closes with suggestions for batching/caching and integration statement, not naming prevented failure modes"
+    }
+  ],
+  "summary": {
+    "passed": 2,
+    "total": 8,
+    "pass_rate": 0.25
+  }
+}

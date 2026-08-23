@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "5b62450c21d2",
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "instructions hold ~90% of the time regardless of caps or repetition \u2014 long contexts, compaction, and subagents that never read the file all erode them"
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "To get to zero you need a device that runs before the tool call, not prose the model is supposed to remember... Then delete the CLAUDE.md lines"
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": true,
+      "evidence": "Shows deny rules for Edit(./src/generated/**), Write(./src/generated/**), Bash(git push --force:*), etc."
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": true,
+      "evidence": "needs a `PreToolUse` hook on `Bash` that scans the command for `src/generated/`"
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": true,
+      "evidence": "A bare refusal produces a workaround... Write it like an error message for a colleague: Blocked: edit to `src/generated/`... edit the schema and re-run codegen instead"
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": true,
+      "evidence": "Prove it fires. Ask Claude to force push and to edit a generated file; confirm the denial and that the message shows"
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": true,
+      "evidence": "`.claude/settings.json` (committed, so it protects every clone, not just yours)"
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": true,
+      "evidence": "long contexts, compaction, and subagents that never read the file all erode them"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

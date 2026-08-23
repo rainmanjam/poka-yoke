@@ -1,0 +1,65 @@
+{
+  "assertions_sha": "a42432deb773",
+  "expectations": [
+    {
+      "text": "Flags that transfer()'s fromAccount and toAccount are both plain strings and can be swapped silently",
+      "passed": false,
+      "evidence": "Mentions race conditions in transfer but not parameter type or swapping vulnerability. No check for same-account transfers mentioned."
+    },
+    {
+      "text": "Flags that chargeCustomer has no idempotency key and its retry path can double-charge",
+      "passed": true,
+      "evidence": "Explicitly states: 'chargeCustomer has an unsafe retry mechanism without an idempotency key'"
+    },
+    {
+      "text": "Flags the catch block that returns null as swallowing the error",
+      "passed": false,
+      "evidence": "Mentions 'silent payment failures' generally but does not identify or flag a specific catch block returning null"
+    },
+    {
+      "text": "Flags money being held as a JS number (float) rather than integer minor units",
+      "passed": true,
+      "evidence": "States: 'applyDiscount uses standard floating point math which can lead to precision errors with currency'"
+    },
+    {
+      "text": "Flags the interpolated raw SQL in purgeCanceledAccounts",
+      "passed": true,
+      "evidence": "Explicitly states: 'purgeCanceledAccounts uses unsafe raw SQL string interpolation'"
+    },
+    {
+      "text": "Flags the non-exhaustive switch over subscription status",
+      "passed": false,
+      "evidence": "Does not mention subscription status, switch statements, or non-exhaustive matching"
+    },
+    {
+      "text": "Flags JSON.parse of the webhook body as unvalidated external input",
+      "passed": false,
+      "evidence": "Addresses webhook signature verification but does not specifically identify JSON.parse as processing unvalidated input"
+    },
+    {
+      "text": "Names the mistake as an action a person can take, not a quality of the developer",
+      "passed": true,
+      "evidence": "Names specific technical decisions: 'uses unsafe raw SQL string interpolation', 'unsafe retry mechanism without an idempotency key', 'uses standard floating point math'"
+    },
+    {
+      "text": "Ranks money-movement or irreversible findings above cosmetic ones",
+      "passed": false,
+      "evidence": "Lists Double Charging as item #2, Floating-Point Errors as item #4. Financial issues not ranked highest."
+    },
+    {
+      "text": "Proposes a concrete device per finding, not just 'add validation'",
+      "passed": false,
+      "evidence": "States 'I have created an implementation plan detailing these issues and the proposed fixes' but the actual fixes are not shown in the response"
+    },
+    {
+      "text": "Did not modify any file outside its outputs directory",
+      "passed": true,
+      "evidence": "Created an artifact (plan_payments_review.md) rather than modifying benchmarks/fixtures/payments.ts"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "total": 11,
+    "pass_rate": 0.4545
+  }
+}

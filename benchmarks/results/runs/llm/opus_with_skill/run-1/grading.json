@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "018a96d90c3c",
+  "expectations": [
+    {
+      "text": "States that system prompt instructions are not a reliable control on model behaviour",
+      "passed": true,
+      "evidence": "Both lines you added to the system prompt are **rung zero**. They're requests to a component with a non-zero error rate on every call"
+    },
+    {
+      "text": "Recommends structured output against a schema rather than extracting values from prose",
+      "passed": true,
+      "evidence": "hand the model the refundable line items with IDs and their real amounts, and have it return *IDs from that list*"
+    },
+    {
+      "text": "Recommends validating the refund amount server-side against the actual order",
+      "passed": true,
+      "evidence": "server-side `amount <= order.refundable_amount` check that rejects"
+    },
+    {
+      "text": "Recommends a required idempotency key on the refund call",
+      "passed": true,
+      "evidence": "Required idempotency key derived from `(order_id, conversation_turn)`, backed by `UNIQUE (order_id, idempotency_key)`"
+    },
+    {
+      "text": "Recommends a database constraint or equivalent so a duplicate refund is rejected rather than merely avoided",
+      "passed": true,
+      "evidence": "`UNIQUE (order_id, idempotency_key)` reserved *in the same transaction as the refund*; Add the backstop too: `CHECK (refunded_total <= captured_total)`"
+    },
+    {
+      "text": "Recommends human confirmation or an approval gate for the irreversible refund action",
+      "passed": true,
+      "evidence": "refunds above a threshold go to a queue where a human sees the order and the amount"
+    },
+    {
+      "text": "Identifies prompt injection risk from the customer-supplied message reaching a privileged action",
+      "passed": true,
+      "evidence": "The input is attacker-controlled. A customer types the chat message that reaches a money-moving tool... Scope the refund credential to that customer's own orders"
+    },
+    {
+      "text": "Recommends bounds or caps on the refund amount",
+      "passed": true,
+      "evidence": "cap it \u2014 per call, and per user per day"
+    },
+    {
+      "text": "Does not primarily recommend changes to the prompt wording",
+      "passed": true,
+      "evidence": "Every real device here sits **outside** the model; focus throughout is on structural controls, not prompt modifications"
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

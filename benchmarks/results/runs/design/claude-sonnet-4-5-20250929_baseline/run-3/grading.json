@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "`export type Subscription = | TrialingSubscription | ActiveSubscription | PastDueSubscription | CanceledSubscription;` with each variant having `status: \"trialing\"` etc."
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "TrialingSubscription has only trialEndDate; CanceledSubscription has only canceledAt/cancelReason/voluntary \u2014 no shared optional fields."
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": false,
+      "evidence": "Only mentions exhaustiveness prose-wise (\"Switch statements force you to handle all cases\"); no assertNever function or never-typed default arm is written."
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": false,
+      "evidence": "`id: string; customerId: string; planId: string;` \u2014 bare strings, no branding."
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": false,
+      "evidence": "No transition function; only \"Want me to implement the state transition functions once you decide on those rules?\""
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "\"**Impossible states prevented**: Can't have `cancelReason` on active subs (compile error)\""
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "Primary recommendation is a discriminated union with no optional fields; no single interface with `trialEndDate?` etc."
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "total": 7,
+    "pass_rate": 0.5714
+  }
+}

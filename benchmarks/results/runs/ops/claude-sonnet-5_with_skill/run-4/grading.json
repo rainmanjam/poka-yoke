@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "0c12fa3099c2",
+  "expectations": [
+    {
+      "text": "Identifies that during the rollout window old code runs against the new schema",
+      "passed": true,
+      "evidence": "\"If the column drops before every old pod/instance has cycled to the new code, any straggler still reading `legacy_email` errors immediately.\""
+    },
+    {
+      "text": "Recommends splitting into separate deploys (expand/contract) rather than shipping the drop with the code",
+      "passed": true,
+      "evidence": "\"don't merge code-removal and column-drop as one Friday-afternoon change. Split them \u2014 ship the read-site removal now... then drop the column as a separate migration\""
+    },
+    {
+      "text": "States that dropping the column is irreversible without a backup or restore",
+      "passed": true,
+      "evidence": "\"Nothing in-database restores it \u2014 only a full snapshot/backup restore, which also rolls back everything else\""
+    },
+    {
+      "text": "Addresses what rollback looks like if the deploy goes wrong",
+      "passed": true,
+      "evidence": "\"Reverting a completed `DROP COLUMN` is a backup restore, likely hours, with fewer people around Friday evening/weekend to run it.\""
+    },
+    {
+      "text": "Addresses the Friday timing in terms of who is available to respond, not as superstition",
+      "passed": true,
+      "evidence": "\"This is the actual 'Friday' question \u2014 not superstition, staffing. Reverting the code deploy is fast. Reverting a completed `DROP COLUMN` is a backup restore, likely hours, with fewer people around\""
+    },
+    {
+      "text": "Recommends a CI gate that blocks destructive DDL from landing alongside application code",
+      "passed": false,
+      "evidence": "No recommendation for a CI gate blocking DDL; mentions only the split strategy and avoiding coupling."
+    },
+    {
+      "text": "Does not approve the merge as-is on the strength of green CI",
+      "passed": true,
+      "evidence": "\"don't merge code-removal and column-drop as one Friday-afternoon change\""
+    },
+    {
+      "text": "Distinguishes the reversible parts of the change from the irreversible part",
+      "passed": true,
+      "evidence": "\"bundles a *reversible* change (removing the three read sites) with an *irreversible* one (the `DROP COLUMN`)\""
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "pass_rate": 0.875
+  }
+}

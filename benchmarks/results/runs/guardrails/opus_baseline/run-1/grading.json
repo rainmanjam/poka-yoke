@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "4999b9f80438",
+  "expectations": [
+    {
+      "text": "States that a written agreement or reminder is not enforcement",
+      "passed": true,
+      "evidence": "CONTRIBUTING.md, Slack message, standup mentions categorized as \"**Zero**\" rung with explicit statement \"You've done the three things that don't work\""
+    },
+    {
+      "text": "Recommends a pre-commit hook to run the formatter automatically",
+      "passed": true,
+      "evidence": "\"**Warning** | Pre-commit hook (`pre-commit`, `husky`). Catches it earlier and more kindly\""
+    },
+    {
+      "text": "Notes that pre-commit is bypassable with --no-verify and must be backed by a CI check",
+      "passed": false,
+      "evidence": "Mentions bypassable with --no-verify (\"it's bypassable with `--no-verify`\") but does not explicitly state it must be backed by CI\u2014only implies through hierarchy ranking"
+    },
+    {
+      "text": "Recommends a type check as a required CI check",
+      "passed": true,
+      "evidence": "\"Type checker in CI with a **ratchet**: current error count is committed to a file, CI fails if the count goes up\""
+    },
+    {
+      "text": "Recommends baselining or ratcheting rather than enforcing across the whole repo at once",
+      "passed": true,
+      "evidence": "\"New code must be typed; nobody has to boil the ocean\""
+    },
+    {
+      "text": "Notes that branch protection is what makes a CI check actually required",
+      "passed": true,
+      "evidence": "\"Branch protection makes it non-mergeable. Formatting becomes physically impossible to skip.\""
+    },
+    {
+      "text": "Recommends the failure message tell the developer how to fix it",
+      "passed": false,
+      "evidence": "No discussion of failure message content or how to guide developers to fix issues"
+    },
+    {
+      "text": "Does not primarily recommend rewriting CONTRIBUTING.md, more reminders, or more discipline",
+      "passed": true,
+      "evidence": "Explicitly categorizes text-based approaches as \"Zero\" rung and pivots to devices instead"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

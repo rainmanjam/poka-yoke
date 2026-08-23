@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "8d8633a66be2",
+  "expectations": [
+    {
+      "text": "States plainly that the not-empty check is insufficient",
+      "passed": true,
+      "evidence": "\"No \u2014 that test would have passed every day during those three weeks. Your data wasn't empty, it was *wrong*.\""
+    },
+    {
+      "text": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+      "passed": true,
+      "evidence": "\"The coalesce made sure every row had a number.\" / \"Your coalesce converted 'broken' into 'believable.'\""
+    },
+    {
+      "text": "Recommends reconciliation against a source of truth, not only shape checks",
+      "passed": false,
+      "evidence": "All proposed checks are internal shape/threshold checks (row count \u00b110% of yesterday, revenue > 0, schema contract). No recommendation to reconcile totals against finance/source-system figures or any independent source of truth."
+    },
+    {
+      "text": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+      "passed": false,
+      "evidence": "No mention of gating publication (e.g., write-audit-publish, staging, blocking the load). The nearest line, \"Forces pipeline to fail visibly,\" is about removing COALESCE, not about ordering assertions before publish."
+    },
+    {
+      "text": "Recommends a data contract or schema check so an upstream rename fails loudly and attributably",
+      "passed": true,
+      "evidence": "\"Schema contract test (assert column exists before join) | Catches rename at deploy time\" and \"Schema registry with breaking-change detection | Upstream can't rename without coordination\""
+    },
+    {
+      "text": "Recommends volume or null-rate assertions rather than only a non-empty check",
+      "passed": true,
+      "evidence": "\"Row count within \u00b110% of yesterday | Data volume anomalies\""
+    },
+    {
+      "text": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+      "passed": true,
+      "evidence": "\"Detection controls only work when the failure mode produces something detectably abnormal\" \u2014 and the table adds dedicated detection-level fixes (volume anomaly, business invariant) aimed at surfacing it rather than waiting for close."
+    },
+    {
+      "text": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+      "passed": true,
+      "evidence": "\"the dashboard would have shown blanks or errors \u2014 ugly, but someone notices day one, not week three\""
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

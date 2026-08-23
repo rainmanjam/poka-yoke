@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "3ef52a8f1e5d",
+  "expectations": [
+    {
+      "text": "Produces complete, self-contained working code for the described task",
+      "passed": false,
+      "evidence": "Defines types and classifier, shows calling code and batch patterns, but no explicit integration with the ticketing system. Task requires 'result goes into a ticketing system as team plus rationale' \u2014 Response A shows only printing the results, not a function that prepares data for storage/transmission to a ticketing system."
+    },
+    {
+      "text": "Uses structured output against a schema rather than parsing the model's prose",
+      "passed": true,
+      "evidence": "Uses tool_use with explicit schema defining team enum and rationale field; extracts from `block.input`"
+    },
+    {
+      "text": "Constrains the classification to a closed set the code enforces, not just the prompt",
+      "passed": true,
+      "evidence": "Schema has `\"enum\": [\"billing\", \"technical\", \"account\"]` and RoutingDecision uses `Literal[\"billing\", \"technical\", \"account\"]`"
+    },
+    {
+      "text": "Handles the case where the model returns something outside the allowed set",
+      "passed": true,
+      "evidence": "RoutingDecision is a Pydantic BaseModel with Literal type constraint; construction will raise ValidationError if enum constraint is violated"
+    },
+    {
+      "text": "Has a deterministic fallback or explicit failure path rather than a silent default",
+      "passed": true,
+      "evidence": "`raise ValueError(\"No routing decision generated\")` when no tool_use block is found"
+    },
+    {
+      "text": "Treats the customer email as untrusted text that could carry instructions",
+      "passed": false,
+      "evidence": "Email fields are directly interpolated into prompt string: `f\"Subject: {email.subject}\\nBody: {email.body}\\nFrom: {email.from_address}\"`. No escaping or special handling; vulnerable to prompt injection via crafted email content."
+    },
+    {
+      "text": "Bounds cost or retries in code rather than requesting it in the prompt",
+      "passed": true,
+      "evidence": "Sets `max_tokens=256` in code to bound output tokens"
+    },
+    {
+      "text": "Closes by naming which failures the design makes impossible",
+      "passed": false,
+      "evidence": "Ends with production recommendations and design rationale, but never explicitly states what failure modes are eliminated (e.g., 'This design makes parsing errors impossible because...')"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "total": 8,
+    "pass_rate": 0.625
+  }
+}

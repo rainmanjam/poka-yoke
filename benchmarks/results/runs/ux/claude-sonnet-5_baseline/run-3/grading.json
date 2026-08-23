@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "82f963d241f9",
+  "expectations": [
+    {
+      "text": "Pushes back on the 'are you sure?' modal as the primary fix",
+      "passed": true,
+      "evidence": "\"a confirm modal is rung-0 theater here\" and \"it protects nobody while adding friction to everyone\""
+    },
+    {
+      "text": "Explains habituation or click-through blindness as why frequent dialogs stop working",
+      "passed": true,
+      "evidence": "\"users... develop click-through blindness on 'Are you sure?' dialogs\""
+    },
+    {
+      "text": "Recommends reversibility (soft delete with a retention window) as the strongest option",
+      "passed": true,
+      "evidence": "\"Soft-delete + grace period (the real fix)... fully restorable for ~30 days, then hard-deleted by a job\""
+    },
+    {
+      "text": "Recommends grace-period undo as a strong low-friction option",
+      "passed": true,
+      "evidence": "\"Immediate undo toast. Delete fires right away... 'Workspace Deleted \u2014 Undo' for ~10s\""
+    },
+    {
+      "text": "Recommends type-the-workspace-name confirmation for the irreversible case",
+      "passed": true,
+      "evidence": "\"use type-to-confirm (type the workspace name/slug) rather than a yes/no modal\""
+    },
+    {
+      "text": "If a dialog is retained, requires it to name the workspace and the scale of what is lost",
+      "passed": false,
+      "evidence": "Does not specify what retained dialogs should display about workspace or loss scale"
+    },
+    {
+      "text": "Notes that the server must enforce the deletion rules, not just the UI",
+      "passed": false,
+      "evidence": "States \"This is a backend change, not a UI change\" but does not explicitly note server-side enforcement requirement"
+    },
+    {
+      "text": "Gives an explicit preference order rather than an undifferentiated list of ideas",
+      "passed": true,
+      "evidence": "\"strongest device first\" with numbered list and \"The confirm-modal instinct usually comes from treating the click as the failure point\""
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

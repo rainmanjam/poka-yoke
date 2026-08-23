@@ -1,0 +1,55 @@
+{
+  "assertions_sha": "1af6b213502f",
+  "expectations": [
+    {
+      "text": "States plainly that the recent-charge lookup is not sufficient",
+      "passed": true,
+      "evidence": "\"the check you added narrows the failure window, it doesn't close it\" and \"'Why the new check isn't the fix'\""
+    },
+    {
+      "text": "Identifies the lookup as a check-then-act race rather than a device",
+      "passed": true,
+      "evidence": "\"TOCTOU race, same as before... The lookup finds nothing, charges again. Redelivery can also happen concurrently (two consumers)\""
+    },
+    {
+      "text": "Recommends a required idempotency key on the charge path",
+      "passed": true,
+      "evidence": "\"A stable idempotency key per logical charge \u2014 derived from the order/invoice ID... Pass it as Stripe's Idempotency-Key header\""
+    },
+    {
+      "text": "Recommends a database unique constraint backing the idempotency key",
+      "passed": true,
+      "evidence": "\"A unique constraint in your own DB on the order/invoice ID for the charges table\""
+    },
+    {
+      "text": "Separates the defect from the mistake from the underlying system hazard",
+      "passed": true,
+      "evidence": "Lists: Defect (340 double-charged), Mistake (redelivered message called charge path), Hazard (charging is not idempotent)"
+    },
+    {
+      "text": "Locates the hazard as a system property rather than as a worker bug or human error",
+      "passed": true,
+      "evidence": "\"charging is not idempotent \u2014 nothing in your system guarantees two charge attempts for the same logical payment can't both succeed\""
+    },
+    {
+      "text": "Sweeps for other non-idempotent side effects reachable from a retry",
+      "passed": true,
+      "evidence": "\"Anything else consuming from that same queue and doing a non-idempotent side effect on redelivery \u2014 sending emails, firing webhooks, writing ledger entries \u2014 has the identical exposure\""
+    },
+    {
+      "text": "Treats 'second time this happened' as evidence for pushing to a Control-rung device",
+      "passed": false,
+      "evidence": "Acknowledges 'second time' and recommends Control-rung, but does not explicitly connect the recurrence as diagnostic evidence for why Control-rung is needed (vs. Detection-rung)"
+    },
+    {
+      "text": "Attributes cause to the system, not to any person",
+      "passed": true,
+      "evidence": "\"charging is not idempotent \u2014 nothing in your system guarantees\" \u2014 system design property"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 9,
+    "pass_rate": 0.8889
+  }
+}

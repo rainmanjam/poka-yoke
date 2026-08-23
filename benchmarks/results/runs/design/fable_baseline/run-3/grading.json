@@ -1,0 +1,45 @@
+{
+  "assertions_sha": "bbbc71b245aa",
+  "expectations": [
+    {
+      "text": "Uses a discriminated union keyed on the status field",
+      "passed": true,
+      "evidence": "export type Subscription = | TrialingSubscription | ActiveSubscription | PastDueSubscription | CanceledSubscription with status literals in each"
+    },
+    {
+      "text": "Each variant carries only its own fields, so e.g. a canceled subscription cannot hold a trial end date",
+      "passed": true,
+      "evidence": "Each interface extends SubscriptionBase then adds only its own fields\u2014trialEndsAt, renewsAt, retryCount+gracePeriodEndsAt, or cancellation respectively"
+    },
+    {
+      "text": "Includes a compiler-enforced exhaustiveness check (assertNever or an equivalent never arm)",
+      "passed": true,
+      "evidence": "function assertNever(x: never) {...} with default: return assertNever(sub) in nextBillingEvent switch"
+    },
+    {
+      "text": "Introduces distinct or branded types rather than bare strings for IDs",
+      "passed": true,
+      "evidence": "type SubscriptionId = string & { readonly __brand: 'SubscriptionId' }; type CustomerId = ...; type PlanId = ..."
+    },
+    {
+      "text": "Provides a single transition function or otherwise constrains how state changes",
+      "passed": false,
+      "evidence": "Mentions 'Illegal transitions (canceled \u2192 trialing) aren't expressed here \u2014 that's a separate transition(sub, event) function' but does not provide it"
+    },
+    {
+      "text": "Explicitly names which misuses the design makes impossible",
+      "passed": true,
+      "evidence": "**What this makes impossible** section explicitly lists: 'Fields from the wrong state', 'Missing required fields', 'Swapping customerId and planId', 'A cancellation that says voluntary but gives involuntary reason', 'Forgetting a status in a switch'"
+    },
+    {
+      "text": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+      "passed": true,
+      "evidence": "Opens: 'a flat {status, trialEndsAt?, retryCount?, ...} claims 2\u2075 = 32 field combinations are legal when only 4 are' then recommends union"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 7,
+    "pass_rate": 0.8571
+  }
+}

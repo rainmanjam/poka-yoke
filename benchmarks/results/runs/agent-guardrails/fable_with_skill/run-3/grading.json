@@ -1,0 +1,50 @@
+{
+  "assertions_sha": "5b62450c21d2",
+  "expectations": [
+    {
+      "text": "States that instructions to a model are not enforcement, regardless of wording or emphasis",
+      "passed": true,
+      "evidence": "Caps and repetition don't change that; one time in ten is exactly what an instruction-only rule looks like."
+    },
+    {
+      "text": "Redirects away from rewording CLAUDE.md as the primary fix",
+      "passed": true,
+      "evidence": "The fix is to move both rules from prose to a device that refuses the call before it runs."
+    },
+    {
+      "text": "Recommends permission deny rules in settings.json with concrete syntax",
+      "passed": true,
+      "evidence": "Provides deny block with Bash(git push --force:*), Bash(git push -f:*), Edit/Write/MultiEdit(./src/generated/**)"
+    },
+    {
+      "text": "Recommends a PreToolUse hook for cases that need logic rather than a pattern match",
+      "passed": true,
+      "evidence": "Deny strings match the **prefix** of a command...slip past. That rule needs a `PreToolUse` hook that inspects the command."
+    },
+    {
+      "text": "Explains that the deny message should say what to do instead, not merely refuse",
+      "passed": true,
+      "evidence": "Every message must say what was blocked, why, and what to do instead."
+    },
+    {
+      "text": "Recommends verifying the device actually fires rather than assuming it works",
+      "passed": true,
+      "evidence": "Section 5 'Prove it fires \u2014 don't skip this': Ask Claude to git push --force and to edit a file in src/generated/, then confirm git push --force-with-lease still works."
+    },
+    {
+      "text": "Recommends committing the rules so they apply to the whole team, not just one machine",
+      "passed": true,
+      "evidence": ".claude/settings.json, committed. A rule in settings.local.json protects one laptop"
+    },
+    {
+      "text": "Explains why repetition and capitals do not make an instruction reliable",
+      "passed": true,
+      "evidence": "Two rules, two mechanisms...rung 1...so it needs logic. No amount of emphasis moves prose up the ladder."
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}
