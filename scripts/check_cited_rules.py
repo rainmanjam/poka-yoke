@@ -200,7 +200,11 @@ def verify_golangci():
         return None, "golangci-lint is not installed"
     r = subprocess.run(["golangci-lint", "linters"], capture_output=True, text=True)
     if r.returncode != 0:
-        return None, "`golangci-lint linters` failed"
+        # Say what it said. "`golangci-lint linters` failed" sent one CI run chasing a
+        # missing install when the real message was a Go version mismatch, printed by the
+        # tool and thrown away here.
+        why = (r.stderr or r.stdout or "").strip().splitlines()
+        return None, f"`golangci-lint linters` failed: {why[0][:120] if why else 'no output'}"
     return set(re.findall(r"^(\w[\w-]*)", r.stdout, re.M)), None
 
 

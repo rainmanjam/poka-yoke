@@ -150,11 +150,15 @@ jobs:
           python-version: "3.12"
 
       - name: The shipped GitHub Actions gate lints clean
-        uses: reviewdog/action-actionlint@dbe5299849118fd6f099ba563d263d770955a64a # v1
-        with:
-          actionlint_flags: plugins/poka-yoke/assets/devices/github-actions/poka-yoke-gates.yml
-          fail_level: any
-          reporter: local
+        run: |
+          set -euo pipefail
+          # actionlint directly rather than through reviewdog: reviewdog annotates a diff,
+          # and a push to main has none, so it exited with "diff command is empty" while
+          # never linting anything. The question here is whether the shipped template is
+          # valid, which needs no diff.
+          bash <(curl -sSfL https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash) 1.7.12
+          ./actionlint -color \
+            plugins/poka-yoke/assets/devices/github-actions/poka-yoke-gates.yml
 
       - name: The shipped pre-commit config is valid
         run: |
@@ -192,9 +196,21 @@ jobs:
           set -euo pipefail
           python3 -m pip install --quiet ruff
           npm install --no-save --silent eslint @typescript-eslint/eslint-plugin eslint-plugin-jest
-          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh \
-            | sh -s -- -b "$(go env GOPATH)/bin" 2>/dev/null || echo "golangci-lint install skipped"
-          echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
+          # `latest` rather than a pinned tag on purpose: golangci-lint refuses to run when
+          # the Go it was built with is older than the toolchain on the box, so a tag pinned
+          # today starts failing the week the runner image moves. The check here is "does
+          # this linter still ship these rules", which wants the current release anyway.
+          #
+          # golangci-lint ships prebuilt binaries and needs no Go toolchain. The previous
+          # version installed to `$(go env GOPATH)/bin` in a job that never ran setup-go, so
+          # the path was empty, the install went nowhere, and `|| echo skipped` swallowed it.
+          # The run then failed two steps later saying the tool was not installed, which is
+          # true but not where the mistake was.
+          mkdir -p "$HOME/.local/bin"
+          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/HEAD/install.sh \
+            | sh -s -- -b "$HOME/.local/bin" latest
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          "$HOME/.local/bin/golangci-lint" version
 
       - name: Every cited rule exists in the linter that owns it
         run: |
