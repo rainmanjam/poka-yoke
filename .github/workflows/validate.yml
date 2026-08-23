@@ -31,7 +31,7 @@ jobs:
       - name: Validate plugin
         run: claude plugin validate plugins/poka-yoke --strict
 
-      # poka-yoke: blocks nine platform manifests drifting apart [control]
+      # poka-yoke: blocks any of the 21 derived files drifting from plugin.json [control]
       #
       # Each manifest stays individually valid while disagreeing with the others: the same
       # shape as the marketplace rename that broke the documented install command. The

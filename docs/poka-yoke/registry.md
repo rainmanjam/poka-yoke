@@ -21,7 +21,7 @@ device that has never fired because it is doing its job.
 | `.github/workflows/validate.yml:138` | blocks shipping a device template that does not work | Control |
 | `.github/workflows/validate.yml:173` | blocks a skill recommending a linter rule that does not exist | Control |
 | `.github/workflows/validate.yml:221` | blocks a release whose documented install command does not work | Control |
-| `.github/workflows/validate.yml:34` | blocks nine platform manifests drifting apart | Control |
+| `.github/workflows/validate.yml:34` | blocks any of the 21 derived files drifting from plugin.json | Control |
 | `.github/workflows/validate.yml:64` | blocks a device registry that has drifted from the code | Control |
 | `.github/workflows/validate.yml:78` | blocks a skill with no name/description or over the size budget | Control |
 | `benchmarks/run.py:155` | recovers the answer from the conversation directory, so work delivered as an unlinked artifact cannot be graded as silence | Detection |
@@ -34,4 +34,6 @@ device that has never fired because it is doing its job.
 | `benchmarks/run.py:724` | names any column short of the full suite, so a smaller scenario set cannot pass as a comparable one | Warning |
 | `benchmarks/run.py:906` | warns when an aggregate drops models or scenarios, so a partial result cannot quietly replace a full one | Warning |
 | `plugins/poka-yoke/assets/devices/claude-hooks/guard_dangerous_commands.py:88` | blocks irreversible agent actions before they execute | Control |
+| `plugins/poka-yoke/assets/devices/github-actions/poka-yoke-gates.yml:3` | refuses to merge a change that fails a gate, once the jobs are marked required | Control |
+| `plugins/poka-yoke/assets/devices/pre-commit/.pre-commit-config.yaml:3` | stops a mistake reaching a commit, at the cost of being bypassable | Warning |
 | `plugins/poka-yoke/scripts/detect_hazards.py:513` | an empty scan reports itself instead of looking like a clean bill of health | Control |

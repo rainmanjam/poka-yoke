@@ -10,7 +10,9 @@ python3 benchmarks/run.py --scenarios ux llm --runs 2  # a couple of modes
 python3 benchmarks/run.py --aggregate-only             # re-aggregate existing results
 ```
 
-Requires the `claude` CLI on your PATH and Python 3.9+. Nothing else. The sweep is resumable: a run with an existing `response.md` is skipped, so an interrupted sweep continues rather than
+Requires Python 3.9+ and the `claude` CLI on your PATH. Reproducing the Codex and
+Antigravity columns also needs the `codex` and `agy` CLIs, signed in; without them those two
+models are simply absent from the matrix and the other four still run. The sweep is resumable: a run with an existing `response.md` is skipped, so an interrupted sweep continues rather than
 starting over.
 
 A full sweep of the four Claude models from nothing is 416 calls, above the default `--max-calls` ceiling of 400, so the
@@ -141,7 +143,7 @@ Run `python3 benchmarks/run.py --preflight` any time to audit stored data, and
 ## Known limitations
 
 - **Grading is by a model, not a human.** Consistent, but it inherits that model's judgment.
-  Every graded model is a Claude model, and the default grader is one of them, Haiku 4.5 is
+  Four of the six graded runtimes are Claude models and the default grader is one of them, Haiku 4.5 is
   graded by itself.
 - **Assertions were written by the same author as the skill.** They encode a view of what a
   good answer looks like. They were written before the runs, not fitted to them, but that is

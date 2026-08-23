@@ -51,7 +51,9 @@ Skills are behaviour-shaping content, not prose. Two constraints are enforced in
 - **Descriptions compete for a truncated budget.** Claude Code shortens skill descriptions
   to fit a listing that contains every installed skill. On a machine with hundreds of them,
   a long description loses its tail, and trigger phrases at the end are exactly what gets
-  cut. Put concrete domain nouns and quoted user phrasing in the first ~160 characters.
+  cut. Put concrete domain nouns and quoted user phrasing early. The exact cut-off is not
+  published and nothing here measures it, so treat the front of the description as the part
+  that survives and do not rely on a specific number.
   `tests/test_skill_listing.py` enforces the budget.
 - **A skill body over 500 lines belongs in `references/`.** Progressive disclosure is the
   point: metadata always loads, the body loads on trigger, references load on demand.

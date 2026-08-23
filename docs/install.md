@@ -201,7 +201,7 @@ So the platform surface is generated and checked rather than remembered:
 
 | Device | What it blocks |
 |---|---|
-| `scripts/sync_platform_manifests.py --check` | any of the 11 derived files drifting from `plugin.json` |
+| `scripts/sync_platform_manifests.py --check` | any of the 21 derived files drifting from `plugin.json` |
 | `tests/test_portability.py` | a runtime-specific path variable, a script path that is absolute or does not resolve, a dispatcher that only works when installed, a manifest naming a skills directory that does not exist, a cross-document link pointing at a heading that no longer exists |
 | CI `install` job | the documented install command not working |
 

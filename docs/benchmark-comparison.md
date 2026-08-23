@@ -80,7 +80,7 @@ Three differences, all of which make this benchmark's target easier:
 3. **Scale.** 13 scenarios against 87 tasks; 6 runtimes against 25 configurations.
 
 Where this benchmark is *stronger* than the typical published skill comparison, though not
-than SkillsBench, is method: **grading is blind**, cells hold 2-7 runs, the reported spread is
+than SkillsBench, is method: **grading is blind**, cells hold 1-7 runs, the reported spread is
 labelled `sd` across scenarios rather than passed off as a confidence interval, every run is
 committed with a hash of the prompt it answered, and the harness ships so the numbers can be
 re-derived.

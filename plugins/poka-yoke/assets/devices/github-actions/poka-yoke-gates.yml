@@ -1,5 +1,7 @@
 # Poka-yoke CI gates.
 #
+# poka-yoke: refuses to merge a change that fails a gate, once the jobs are marked required [control]
+#
 # This is where enforcement actually lives. Pre-commit hooks are bypassable; a required
 # check with branch protection is not. Every job here should also be marked "Required" in
 # branch protection settings, without that, this workflow is advisory and the whole device

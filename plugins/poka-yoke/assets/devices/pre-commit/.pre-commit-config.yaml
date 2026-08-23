@@ -1,5 +1,7 @@
 # Poka-yoke pre-commit devices.
 #
+# poka-yoke: stops a mistake reaching a commit, at the cost of being bypassable [warning]
+#
 # Adapt to the repo's actual stack before installing: an unused hook is friction with no
 # protection. Keep the whole run under ~5 seconds; slower than that and people use
 # --no-verify, which turns every hook here into decoration.

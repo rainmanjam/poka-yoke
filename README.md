@@ -26,7 +26,7 @@
 
 [![skills](https://img.shields.io/badge/skills-11-8250df)](#whats-inside)
 [![dependencies](https://img.shields.io/badge/dependencies-zero-2ea043)](#requirements)
-[![devices](https://img.shields.io/badge/devices%20in%20CI-24-0969da)](docs/poka-yoke/registry.md)
+[![devices](https://img.shields.io/badge/devices%20in%20CI-26-0969da)](docs/poka-yoke/registry.md)
 [![license](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 <p align="center">
@@ -259,8 +259,9 @@ How the field has responded, and what it costs:
 
 A hook is shipped for the middle option, `assets/devices/claude-hooks/suggest_poka_yoke.py`.
 It matches the prompt against each mode's vocabulary and injects an instruction naming that
-skill. Tested: routes all ten modes correctly and stays silent on unrelated prompts: one
-match and one near-miss per mode, in `tests/test_detector.py`. It is
+skill. Tested: one matching prompt per mode routes correctly, and a shared set of four
+unrelated prompts routes to nothing, in `tests/test_detector.py`. That is a near-miss for the
+router, not one per mode. It is
 **Warning rung, not Control**: the injected instruction is still an instruction, and our own
 conclusion after living with it is that for anything important you invoke explicitly anyway.
 
@@ -279,9 +280,10 @@ competent rather than a missing capability.
 Thirteen scenarios run against four Claude models under two configurations, **445 runs,
 blind-graded** against pre-written assertions. Two non-Claude runtimes add 146 more, reported
 [separately below](#does-it-work-outside-claude-code); every figure in this section is the
-Claude matrix alone. Every scenario but `design` is a message in
-which the user has **already applied or proposed a fix that is insufficient**, so agreeing
-with them scores badly. This measures pushback, not recall.
+Claude matrix alone. Nine of the thirteen scenarios are a message in which the user has **already applied or
+proposed a fix that is insufficient**, so agreeing with them scores badly. The other four,
+`design` and the three `build-*` prompts, are greenfield: nobody has raised a concern, and
+they measure what the model reaches for unprompted. This measures pushback, not recall.
 
 | Model | Baseline | With skill | Delta | 95% CI on the delta | Time |
 |---|---|---|---|---|---|

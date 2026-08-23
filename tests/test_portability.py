@@ -257,6 +257,30 @@ class TestBadgesMatchTheSupportTiers(unittest.TestCase):
                 f"badge says {product} is benchmarked, but benchmark.json holds no runs "
                 f"for it (has: {sorted(labels)})")
 
+    def test_shipped_devices_carry_a_marker(self):
+        """A device nobody marked is invisible to the registry that claims to list them all.
+
+        `docs/poka-yoke/registry.md` opens with "every mistake-proofing device in this
+        repository". It lists what someone remembered to annotate. The generator already
+        over-counted once by reading its own docstring examples; this is the same fault in
+        the other direction, and it is the one that matters, because a missing row looks
+        exactly like a device that does not exist.
+
+        The shipped guard hooks are the case worth pinning: they are the plugin's own
+        Control-rung examples, and a reader who greps the registry for them should find them.
+        """
+        marked = {p for p in (REPO / "plugins/poka-yoke/assets/devices").rglob("*")
+                  if p.is_file() and p.suffix in {".py", ".yaml", ".yml"}
+                  and "poka-yoke:" in p.read_text(errors="ignore")}
+        shipped = {p for p in (REPO / "plugins/poka-yoke/assets/devices").rglob("*")
+                   if p.is_file() and p.suffix in {".py", ".yaml", ".yml"}}
+        self.assertTrue(shipped, "no shipped device files found - is this probe reading the right tree?")
+        unmarked = sorted(str(p.relative_to(REPO)) for p in shipped - marked)
+        self.assertEqual(
+            unmarked, [],
+            "these ship as devices but carry no `poka-yoke:` marker, so the registry that "
+            "claims to list every device does not list them:\n  " + "\n  ".join(unmarked))
+
     def test_zero_dependency_badge_is_true(self):
         """The claim people act on before installing. It has to survive someone adding a
         dependency manifest without thinking about the badge."""
