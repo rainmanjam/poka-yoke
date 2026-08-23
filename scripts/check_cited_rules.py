@@ -60,6 +60,11 @@ STOPWORDS = {
     "can", "does", "has", "have", "run", "runs", "enable", "enables", "disable", "config",
     "configs", "rules", "rule", "plugin", "plugins", "which", "that", "this", "already",
     "actually", "here", "instead", "rather", "does-not-exist",
+    # golangci-lint's own subcommands. `golangci-lint migrate` is how v2 rewrites a v1
+    # config; the extractor read it as a linter named "migrate" and failed CI for a rule
+    # that was never claimed to exist. A checker that reports a correct sentence as an error
+    # is worse than no checker, because the next real finding gets waved through with it.
+    "migrate", "linters", "cache", "completion", "custom", "fmt", "help", "version",
 }
 
 
