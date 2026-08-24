@@ -257,6 +257,77 @@ class TestBadgesMatchTheSupportTiers(unittest.TestCase):
                 f"badge says {product} is benchmarked, but benchmark.json holds no runs "
                 f"for it (has: {sorted(labels)})")
 
+    def test_detector_counts_match_the_code_and_the_catalog(self):
+        """Every number in the README's detector table, derived from its own source.
+
+        Three different counts were in play before this existed: "42 pattern rules across 20
+        hazard shapes" in the README, 28 headings in the catalog, and a rule list whose
+        distinct ids came to 18. All were plausibly true of *something*, none was reconciled,
+        and the README's 20 was simply wrong.
+
+        A count-equals-count test is not enough on its own, which is the point a reviewer
+        raised and it was right: it would happily enshrine a misleading definition. So this
+        checks the RELATIONSHIPS the table asserts, not just the digits. Shapes-with-rules
+        must be a subset of the catalog, on-by-default plus linter-covered must exhaust the
+        rules, and guidance-only must be the remainder. If any of those stops holding, the
+        table is describing a taxonomy that no longer exists.
+        """
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            "detect_hazards", PLUGIN / "scripts" / "detect_hazards.py")
+        dh = importlib.util.module_from_spec(spec)
+        # Register before executing. A frozen dataclass resolves its own __module__ through
+        # sys.modules while the class body runs, so exec_module() on an unregistered module
+        # raises AttributeError from inside dataclasses rather than anywhere near here.
+        sys.modules["detect_hazards"] = dh
+        try:
+            spec.loader.exec_module(dh)
+        finally:
+            sys.modules.pop("detect_hazards", None)
+
+        catalog = (PLUGIN / "references" / "hazard-catalog.md").read_text()
+        catalogued = len(re.findall(r"^### ", catalog, re.M))
+        shapes = {r.id for r in dh.RULES}
+        covered = [r for r in dh.RULES if (r.id, r.name) in dh.COVERED_BY]
+        on_by_default = [r for r in dh.RULES if (r.id, r.name) not in dh.COVERED_BY]
+
+        # NOTE: how many hazard SHAPES the detector reports is owned by
+        # tests/test_detector.py::test_readme_rule_and_shape_counts_are_right, which counts
+        # ids in RULES *plus* ids reported by the AST checks outside the pattern table (C1
+        # and F3). Recomputing it here produced 18 against that test's 20 and broke it: two
+        # tests disagreeing about what a "shape" is would have meant the README could satisfy
+        # one while contradicting the other. This checks only what that test does not.
+        readme = (REPO / "README.md").read_text()
+        m = re.search(r"\*\*The three numbers, and what each counts\.\*\*(.*?)\n\n\*\*Scope",
+                      readme, re.S)
+        self.assertTrue(m, "detector counts table not found; if it moved, this checks nothing")
+        table = m.group(1)
+
+        # The shape count is READ from the table rather than recomputed. Recomputing it here
+        # gave 18 against test_detector.py's 20, because that test also counts the ids
+        # reported by AST checks outside the pattern table (C1, F3), and it is the owner of
+        # that definition. A hardcoded "+2" here would go quietly wrong the day a third AST
+        # check is added: right-looking arithmetic over a stale constant.
+        shape_row = re.search(r"\| Shapes the detector reports \| \*\*(\d+)\*\* \|", table)
+        self.assertTrue(shape_row, "no shape-count row in the detector table")
+        shapes_reported = int(shape_row.group(1))
+        guidance_only = catalogued - shapes_reported
+
+        # Relationships, which is what this test owns. Counts belong to test_detector.py.
+        self.assertEqual(len(covered) + len(on_by_default), len(dh.RULES),
+                         "every rule must be either linter-covered or on by default")
+        self.assertLessEqual(shapes_reported, catalogued,
+                             f"the table claims {shapes_reported} detected shapes against "
+                             f"{catalogued} catalogued; the catalog is meant to be the "
+                             f"superset the skills reason about")
+        cat_row = re.search(r"\| Catalogued hazard shapes \| \*\*(\d+)\*\* \|", table)
+        self.assertTrue(cat_row, "no catalogued-shapes row in the detector table")
+        self.assertEqual(int(cat_row.group(1)), catalogued,
+                         f"table says {cat_row.group(1)} catalogued shapes, the catalog has "
+                         f"{catalogued}")
+        self.assertIn(f"other {guidance_only} need judgement", readme,
+                      f"README should say {guidance_only} shapes are guidance only")
+
     def test_trade_table_figures_come_from_the_gradings(self):
         """Every percentage in the README's "What it trades" table must be recomputable.
 

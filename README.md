@@ -174,7 +174,19 @@ structurally in CI rather than behaviourally on the runtime.
 ## The hazard detector
 
 The plugin ships a dependency-free scanner for textually-detectable hazards across
-TypeScript, Python, Go, Rust, and SQL:
+TypeScript, Python, Go, Rust, and SQL.
+
+**Try it on your own code without installing anything.** No plugin, no marketplace, no agent:
+
+```bash
+git clone --depth 1 https://github.com/rainmanjam/poka-yoke.git /tmp/poka-yoke
+python3 /tmp/poka-yoke/plugins/poka-yoke/scripts/cli.py detect --paths /absolute/path/to/your/repo
+```
+
+The second path must be absolute, or it resolves against the clone rather than your project.
+Standard library only, so there is nothing to install and nothing to uninstall.
+
+Once the plugin is installed, the same scanner is available in-repo:
 
 ```bash
 python3 plugins/poka-yoke/scripts/cli.py detect --diff              # changed lines only
@@ -187,14 +199,24 @@ runtime where the plugin directory was copied as a unit: no plugin-root variable
 package registry.
 
 It finds adjacent same-type parameters (via real AST parsing for Python), swallowed errors,
-unbounded deletes, durations with no unit, money as a float, unvalidated parses, retryable
-effects with no idempotency key, and more, **42 pattern rules across 20 hazard shapes**, each tagged with its
-catalog ID, its lens, and the device that closes it. Twenty-three of those rules are off by default
-because a real linter does them better; the detector names the linter instead, and `--all`
-runs them anyway.
+unbounded deletes, durations with no unit, money as a float, unvalidated parses, and retryable
+effects with no idempotency key, each tagged with its catalog ID, its lens, and the device that
+closes it.
 
-It's a fast first pass with real false positives, not an oracle. The interface-level questions
-are still where the value is.
+**The three numbers, and what each counts.** They measure different things and are easy to
+conflate:
+
+| | Count | What it is |
+|---|---:|---|
+| Catalogued hazard shapes | **28** | The taxonomy in [`references/hazard-catalog.md`](plugins/poka-yoke/references/hazard-catalog.md). The skills reason about all of them. |
+| Shapes the detector reports | **20** | The subset that is textually detectable. The other 8 need judgement and are guidance only. Two of the twenty (`C1`, `F3`) come from AST checks rather than the pattern table, which is why counting `RULES` alone gives 18. |
+| Pattern rules | **42** | Several patterns can implement one shape, across five languages. |
+| Rules on by default | **19** | Twenty-three of the rules are covered better by a real linter, so the detector names the linter instead. `--all` runs them anyway. |
+
+**Scope.** It detects hazards that are visible in the text and surfaces the review question
+behind each one. Semantic and interface-design judgements are not textual and stay with a
+human, or with the skills. Expect real false positives on the pattern rules; that is the price
+of a first pass that needs no configuration and no install.
 
 ## What's inside
 

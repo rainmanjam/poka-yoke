@@ -216,14 +216,20 @@ class TestDocumentedCountsMatchTheRules(unittest.TestCase):
         m = self._detector()
         suppressed = sum(1 for r in m.RULES if (r.id, r.name) in m.COVERED_BY)
         readme = (REPO / "README.md").read_text()
+        # The claim moved from a prose sentence into the detector counts table when the
+        # scanner was promoted to lead the README. This test failed loudly at that point
+        # rather than silently passing, which is the behaviour intended: it asserts the claim
+        # is present before checking it. The word form is still accepted because the table
+        # spells the number out in its explanatory cell.
         words = {"Twenty": 20, "Twenty-one": 21, "Twenty-two": 22, "Twenty-three": 23,
                  "Twenty-four": 24, "Nineteen": 19}
-        hit = re.search(r"(\w+(?:-\w+)?) of those rules are off by default", readme)
+        hit = re.search(r"(\w+(?:-\w+)?) of the rules are covered better by a real linter",
+                        readme)
         self.assertIsNotNone(hit, "README no longer states the default-off count")
         self.assertIn(hit.group(1), words, f"unrecognised number word {hit.group(1)!r}")
         self.assertEqual(suppressed, words[hit.group(1)],
-                         f"README says {hit.group(1)} ({words[hit.group(1)]}) rules are off "
-                         f"by default; {suppressed} actually are")
+                         f"README says {hit.group(1)} ({words[hit.group(1)]}) rules are "
+                         f"linter-covered; {suppressed} actually are")
 
     def test_readme_rule_and_shape_counts_are_right(self):
         import re
@@ -236,12 +242,19 @@ class TestDocumentedCountsMatchTheRules(unittest.TestCase):
         ids = {i for i in ids if re.fullmatch(r"[CFMX]\d+", i)}
 
         readme = (REPO / "README.md").read_text()
-        claim = re.search(r"\*\*(\d+) pattern rules across (\d+) hazard shapes\*\*", readme)
-        self.assertIsNotNone(claim, "README no longer states the rule/shape counts")
-        self.assertEqual(rules, int(claim.group(1)),
-                         f"README says {claim.group(1)} rules, the detector has {rules}")
-        self.assertEqual(len(ids), int(claim.group(2)),
-                         f"README says {claim.group(2)} shapes, the detector reports "
+        # Both counts now live in the detector counts table rather than in one sentence.
+        # This test remains the OWNER of what a "hazard shape" means: ids in RULES plus the
+        # ids reported by the AST checks outside the pattern table (C1, F3). A second test
+        # briefly recomputed that and got 18 against this test's 20, which would have let the
+        # README satisfy one check while contradicting the other. One claim, one owner.
+        shape_row = re.search(r"\| Shapes the detector reports \| \*\*(\d+)\*\* \|", readme)
+        rule_row = re.search(r"\| Pattern rules \| \*\*(\d+)\*\* \|", readme)
+        self.assertIsNotNone(shape_row, "README no longer states the hazard-shape count")
+        self.assertIsNotNone(rule_row, "README no longer states the pattern-rule count")
+        self.assertEqual(rules, int(rule_row.group(1)),
+                         f"README says {rule_row.group(1)} rules, the detector has {rules}")
+        self.assertEqual(len(ids), int(shape_row.group(1)),
+                         f"README says {shape_row.group(1)} shapes, the detector reports "
                          f"{len(ids)}: {sorted(ids)}")
 
 
