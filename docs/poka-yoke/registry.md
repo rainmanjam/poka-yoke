@@ -24,15 +24,15 @@ device that has never fired because it is doing its job.
 | `.github/workflows/validate.yml:34` | blocks any of the 21 derived files drifting from plugin.json | Control |
 | `.github/workflows/validate.yml:64` | blocks a device registry that has drifted from the code | Control |
 | `.github/workflows/validate.yml:78` | blocks a skill with no name/description or over the size budget | Control |
-| `benchmarks/run.py:155` | recovers the answer from the conversation directory, so work delivered as an unlinked artifact cannot be graded as silence | Detection |
-| `benchmarks/run.py:227` | reads the blocked-tool error from the JSON envelope as well as stderr, so a refused tool cannot be recorded as an empty answer | Detection |
-| `benchmarks/run.py:267` | refuses to exceed the call ceiling, so a sweep cannot exhaust a session limit | Control |
-| `benchmarks/run.py:467` | refuses to store a rate-limit message as if it were a response | Control |
-| `benchmarks/run.py:494` | regrades when the checklist changed, so a score cannot be reported against a superseded answer key | Control |
-| `benchmarks/run.py:632` | aggregates every run on disk, so a summary cannot be built from a subset of what was measured | Control |
-| `benchmarks/run.py:664` | averages both configurations over the same scenarios, so a delta cannot subtract two different suites | Control |
-| `benchmarks/run.py:724` | names any column short of the full suite, so a smaller scenario set cannot pass as a comparable one | Warning |
-| `benchmarks/run.py:906` | warns when an aggregate drops models or scenarios, so a partial result cannot quietly replace a full one | Warning |
+| `benchmarks/run.py:174` | recovers the answer from the conversation directory, so work delivered as an unlinked artifact cannot be graded as silence | Detection |
+| `benchmarks/run.py:246` | reads the blocked-tool error from the JSON envelope as well as stderr, so a refused tool cannot be recorded as an empty answer | Detection |
+| `benchmarks/run.py:286` | refuses to exceed the call ceiling, so a sweep cannot exhaust a session limit | Control |
+| `benchmarks/run.py:494` | refuses to store a rate-limit message as if it were a response | Control |
+| `benchmarks/run.py:521` | regrades when the checklist changed, so a score cannot be reported against a superseded answer key | Control |
+| `benchmarks/run.py:659` | aggregates every run on disk, so a summary cannot be built from a subset of what was measured | Control |
+| `benchmarks/run.py:691` | averages both configurations over the same scenarios, so a delta cannot subtract two different suites | Control |
+| `benchmarks/run.py:751` | names any column short of the full suite, so a smaller scenario set cannot pass as a comparable one | Warning |
+| `benchmarks/run.py:933` | warns when an aggregate drops models or scenarios, so a partial result cannot quietly replace a full one | Warning |
 | `plugins/poka-yoke/assets/devices/claude-hooks/guard_dangerous_commands.py:88` | blocks irreversible agent actions before they execute | Control |
 | `plugins/poka-yoke/assets/devices/github-actions/poka-yoke-gates.yml:3` | refuses to merge a change that fails a gate, once the jobs are marked required | Control |
 | `plugins/poka-yoke/assets/devices/pre-commit/.pre-commit-config.yaml:3` | stops a mistake reaching a commit, at the cost of being bypassable | Warning |
