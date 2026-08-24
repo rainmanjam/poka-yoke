@@ -39,6 +39,16 @@ import sys
 # C5 from the bundled detector: a bare 300 does not say seconds.
 SECOND_GRADER_TIMEOUT_S = 300
 
+# SonarCloud flags every `random` call here as S2245, "make sure this pseudorandom number
+# generator is safe". It is safe, and more than that, a cryptographic generator would be the
+# wrong choice: every draw in this file must be REPRODUCIBLE from the seed recorded alongside
+# the sample, so that anyone can regenerate the exact worksheet a published figure came from.
+# `secrets` and `os.urandom` cannot be seeded, which would make the sampling unauditable in
+# exchange for unpredictability nobody needs: nothing here is a token, a key, or a nonce, and
+# an adversary who predicts which assertions get hand-checked gains nothing.
+#
+# Suppressed per-line rather than project-wide, so a future `random` call in a context that
+# IS security-sensitive still gets flagged.
 LIMIT = [0]          # set from --limit; a list so the command fn can read it
 REPO = pathlib.Path(__file__).resolve().parent.parent
 RUNS = REPO / "benchmarks" / "results" / "runs"
@@ -151,12 +161,12 @@ def cmd_sample(*, n: int, seed: int) -> int:
         return 2
     draw = []
     for k in sorted(strata):
-        draw += rng.sample(strata[k], per)
+        draw += rng.sample(strata[k], per)                 # NOSONAR S2245 reproducible by design
     # any remainder from integer division goes to the largest strata, deterministically
     if len(draw) < n:
         rest = [v for v in items if v not in draw]
-        draw += rng.sample(rest, n - len(draw))
-    rng.shuffle(draw)                      # so the worksheet order leaks nothing
+        draw += rng.sample(rest, n - len(draw))            # NOSONAR S2245 reproducible by design
+    rng.shuffle(draw)   # NOSONAR S2245   so the worksheet order leaks nothing
 
     # Coverage, asserted rather than assumed. The stratification check above only proves
     # enough items EXIST in each verdict stratum; it cannot notice that an entire arm is
@@ -289,9 +299,9 @@ def cmd_focus(*, controls: int, seed: int) -> int:
 
     others = [i for i in items if i not in contested_ids]
     rng = random.Random(seed)
-    picked = rng.sample(others, min(controls, len(others)))
+    picked = rng.sample(others, min(controls, len(others)))  # NOSONAR S2245 reproducible
     focus = [items[i] for i in sorted(contested_ids)] + [items[i] for i in picked]
-    rng.shuffle(focus)
+    rng.shuffle(focus)  # NOSONAR S2245   the labeller must not be able to tell which is which
 
     (OUT / "focus.jsonl").write_text("".join(json.dumps(v) + "\n" for v in focus))
     lines = [
