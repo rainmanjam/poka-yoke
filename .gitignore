@@ -32,3 +32,17 @@ private/*
 # the crop its platform applies, which is worth checking and not worth committing. Regenerate
 # with `node scripts/make_banners.js`.
 docs/assets/banner/_proof-*.png
+
+# Grader-validation working material. focus.md embeds every sampled response in full, so it
+# is large, it is regenerable from sample.jsonl, and a half-labelled copy in git history is
+# worse than no copy: someone would eventually read stale verdicts as the finished review.
+# The verdicts that matter end up in a written-up result, not in the worksheet.
+# Regenerate with: python3 benchmarks/validate_grader.py --sample N && --focus N
+benchmarks/results/validation/*.md
+benchmarks/results/validation/*.jsonl
+benchmarks/results/validation/second-grader-*.json
+benchmarks/results/validation/contested.json
+# ...but keep archived results. baseline-only-2026-08-24/ records a sample that was drawn
+# through a broken filter, with a README separating what survives from what does not. That is
+# a finding, not scratch, and deleting it would leave the correction with nothing to point at.
+!benchmarks/results/validation/*/

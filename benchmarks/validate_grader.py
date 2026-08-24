@@ -32,6 +32,7 @@ import collections
 import json
 import pathlib
 import random
+import re
 import subprocess
 import sys
 
@@ -341,6 +342,18 @@ def cmd_second_grader(model: str) -> int:
     for k, v in enumerate(items, 1):
         response = (REPO / v["response_path"]).read_text(errors="ignore")
         prompt = SECOND_GRADER_PROMPT.format(assertion=v["assertion"], response=response)
+        # Never send a shortened response to a grader. An ad-hoc adjudication run cut
+        # responses at 4000 characters to keep the prompt small, and an adjudicator then
+        # failed an item because the code was "cut off mid-comment": it was reading the cut,
+        # not the response. The verdict looked considered and cited specific evidence, which
+        # is what made it convincing and wrong. This tool does not truncate today; the guard
+        # is here so that adding a limit later has to be a deliberate act rather than a quiet
+        # one, because the resulting error is invisible in the output.
+        if response not in prompt:
+            print(f"\n✗ item {v['id']}: the response did not survive into the prompt intact.\n"
+                  f"  A grader judging a shortened response produces a verdict about the "
+                  f"shortening.\n  Refusing to grade it.", file=sys.stderr)
+            return 2
         cmd = GRADERS[vendor](prompt, model_id)
         try:
             r = subprocess.run(cmd, cwd=REPO, capture_output=True, text=True,
@@ -388,15 +401,29 @@ def cmd_report() -> int:
             if line.startswith("## ") and "`" in line:
                 cur = line.split("`")[1]
             elif line.startswith("**Verdict:**") and cur:
-                v = line.split("**Verdict:**", 1)[1].strip().upper()
+                # strip a trailing HTML comment so a SUGGESTED marker does not make the
+                # verdict unreadable. The marker gates the accuracy report separately; it
+                # should not also make the line look blank, which sent the reader to the
+                # wrong message entirely.
+                v = re.sub(r"<!--.*?-->", "", line.split("**Verdict:**", 1)[1]).strip().upper()
                 if v in ("PASS", "FAIL"):
                     labels[cur] = (v == "PASS")
                 elif v == "UNCLEAR":
                     unclear.append(cur)
                 cur = None
 
+    # A suggested verdict is not a label. Writing machine verdicts into the worksheet makes it
+    # a useful starting point and a dangerous one: scored as-is they would produce an
+    # "accuracy" figure that is really a fourth model agreeing with three others. The marker
+    # is what separates the two, and it has to be removed deliberately, per line, including
+    # from lines the reviewer agrees with. Agreeing is a review; leaving it untouched is not.
+    suggested = sum(1 for line in ws.read_text().splitlines()
+                    if line.startswith("**Verdict:**") and "SUGGESTED" in line) if ws.exists() else 0
+
     print(f"sample            : {len(items)} verdicts")
     print(f"human-labelled    : {len(labels)}   unclear: {len(unclear)}")
+    if suggested:
+        print(f"still SUGGESTED   : {suggested}   <- machine verdicts, not reviewed")
 
     missing = len(items) - len(labels) - len(unclear)
     if missing:
@@ -406,6 +433,14 @@ def cmd_report() -> int:
         print(f"\n✗ {missing} items unlabelled. Refusing to report agreement on a partial "
               f"worksheet:\n  the labelled subset is not a random subset, it is the subset "
               f"someone found easy.", file=sys.stderr)
+        return 1
+
+    if suggested:
+        print(f"\n✗ {suggested} of {len(items)} verdicts still carry the SUGGESTED marker.\n"
+              f"  Refusing to report accuracy: those lines are a fourth model's opinion, and\n"
+              f"  scoring them as ground truth would measure consistency while calling it\n"
+              f"  correctness. Review each line and delete its marker, including the ones you\n"
+              f"  agree with.", file=sys.stderr)
         return 1
 
     if labels:
