@@ -1,0 +1,112 @@
+[
+ {
+  "id": "build-form|codex-gpt-5.6-terra_baseline|run-2|0",
+  "scenario": "build-form",
+  "model": "codex-gpt-5.6-terra",
+  "config": "baseline",
+  "assertion": "Produces complete, self-contained working code for the described task",
+  "primary": true,
+  "codex": false,
+  "agy": true,
+  "response_path": "benchmarks/results/runs/build-form/codex-gpt-5.6-terra_baseline/run-2/response.md"
+ },
+ {
+  "id": "retro|codex-gpt-5.6-terra_baseline|run-1|4",
+  "scenario": "retro",
+  "model": "codex-gpt-5.6-terra",
+  "config": "baseline",
+  "assertion": "Separates the defect from the mistake from the underlying system hazard",
+  "primary": true,
+  "codex": false,
+  "agy": true,
+  "response_path": "benchmarks/results/runs/retro/codex-gpt-5.6-terra_baseline/run-1/response.md"
+ },
+ {
+  "id": "audit|claude-sonnet-5_with_skill|run-5|3",
+  "scenario": "audit",
+  "model": "claude-sonnet-5",
+  "config": "with_skill",
+  "assertion": "Flags money being held as a JS number (float) rather than integer minor units",
+  "primary": false,
+  "codex": false,
+  "agy": true,
+  "response_path": "benchmarks/results/runs/audit/claude-sonnet-5_with_skill/run-5/response.md"
+ },
+ {
+  "id": "retro|opus_with_skill|run-2|6",
+  "scenario": "retro",
+  "model": "opus",
+  "config": "with_skill",
+  "assertion": "Sweeps for other non-idempotent side effects reachable from a retry",
+  "primary": false,
+  "codex": false,
+  "agy": true,
+  "response_path": "benchmarks/results/runs/retro/opus_with_skill/run-2/response.md"
+ },
+ {
+  "id": "data|opus_baseline|run-1|6",
+  "scenario": "data",
+  "model": "opus",
+  "config": "baseline",
+  "assertion": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+  "primary": false,
+  "codex": true,
+  "agy": true,
+  "response_path": "benchmarks/results/runs/data/opus_baseline/run-1/response.md"
+ },
+ {
+  "id": "data|claude-sonnet-5_with_skill|run-1|7",
+  "scenario": "data",
+  "model": "claude-sonnet-5",
+  "config": "with_skill",
+  "assertion": "Explains why a silently wrong number is more dangerous than a failed pipeline",
+  "primary": false,
+  "codex": true,
+  "agy": true,
+  "response_path": "benchmarks/results/runs/data/claude-sonnet-5_with_skill/run-1/response.md"
+ },
+ {
+  "id": "retro|agy-gemini-3.1-pro_baseline|run-1|8",
+  "scenario": "retro",
+  "model": "agy-gemini-3.1-pro",
+  "config": "baseline",
+  "assertion": "Attributes cause to the system, not to any person",
+  "primary": true,
+  "codex": false,
+  "agy": false,
+  "response_path": "benchmarks/results/runs/retro/agy-gemini-3.1-pro_baseline/run-1/response.md"
+ },
+ {
+  "id": "build-endpoint|agy-gemini-3.1-pro_with_skill|run-1|6",
+  "scenario": "build-endpoint",
+  "model": "agy-gemini-3.1-pro",
+  "config": "with_skill",
+  "assertion": "Scopes the write so one tenant or user cannot refund another's order",
+  "primary": true,
+  "codex": false,
+  "agy": true,
+  "response_path": "benchmarks/results/runs/build-endpoint/agy-gemini-3.1-pro_with_skill/run-1/response.md"
+ },
+ {
+  "id": "data|claude-haiku-4-5-20251001_with_skill|run-3|6",
+  "scenario": "data",
+  "model": "claude-haiku-4-5-20251001",
+  "config": "with_skill",
+  "assertion": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+  "primary": false,
+  "codex": true,
+  "agy": true,
+  "response_path": "benchmarks/results/runs/data/claude-haiku-4-5-20251001_with_skill/run-3/response.md"
+ },
+ {
+  "id": "data|agy-gemini-3.1-pro_with_skill|run-3|6",
+  "scenario": "data",
+  "model": "agy-gemini-3.1-pro",
+  "config": "with_skill",
+  "assertion": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+  "primary": false,
+  "codex": true,
+  "agy": true,
+  "response_path": "benchmarks/results/runs/data/agy-gemini-3.1-pro_with_skill/run-3/response.md"
+ }
+]

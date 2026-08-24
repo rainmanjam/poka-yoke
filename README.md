@@ -37,8 +37,10 @@
 > **591 blind-graded runs across six runtimes**, scored against pre-written assertions by a
 > grader that never sees which configuration produced a response. Every model improves by
 > more than noise: Fable 5 **+8.3 pp**, Opus 5 **+3.6 pp**, Sonnet 5 **+8.6 pp**,
-> Haiku 4.5 **+12.9 pp**: all four 95% intervals exclude zero. Nine of 52 cells regressed and
-> they are named below. [See the numbers](#benchmarks).
+> Haiku 4.5 **+12.9 pp**: all four 95% intervals exclude zero. Nine of the 52 cells came out
+> negative, where chance alone would produce about 18: individual cells hold 1 to 7 runs and are
+> too small to read on their own, so the scarcity of regressions is the signal rather than their
+> existence. [See the numbers](#benchmarks).
 >
 > All 591 runs are verified against the scenario prompts as they stand in this commit.
 
@@ -320,20 +322,28 @@ building devices rather than finding hazards.
 4.0** and Sonnet 5's from **12.7 to 6.1**, while Haiku 4.5's *rises* from **16.7 to 24.1**.
 The skill makes Haiku better on average and less predictable, which is a real cost.
 
-### Where it makes things worse
+### Where it looks worse, and what that is worth
 
-Nine of 52 cells regressed. Four by more than 5 points:
+Nine of 52 cells came out negative. Under the null of no effect at all, roughly **18** would:
+simulating from the real per-cell run counts and the median of 8 assertions per run puts the
+95% range at 12 to 25. Nine is below that range, so the count of regressions is evidence the
+effect is consistently positive, not evidence of hidden harm.
 
-| Cell | Baseline → skill |
-|---|---|
-| `build-agent-feature` on Haiku 4.5 | **62% → 31%** |
-| `build-endpoint` on Haiku 4.5 | **44% → 33%** |
-| `audit` on Fable 5 | 100% → 94% |
-| `authz` on Sonnet 5 | 94% → 89% |
+These four fell by more than 5 points. They are listed because they are where to look, not
+because any one of them is callable on its own:
 
-The two Haiku `build-*` results are the honest counterweight to its headline gain: given a
-feature to build, the smallest model spends its output on the method and delivers less of the
-thing. Do not install this expecting a uniform lift on a small model.
+| Cell | Baseline → skill | runs |
+|---|---|---|
+| `build-agent-feature` on Haiku 4.5 | **62% → 31%** | n=2 |
+| `build-endpoint` on Haiku 4.5 | **44% → 33%** | n=2 |
+| `audit` on Fable 5 | 100% → 94% | n=3 |
+| `authz` on Sonnet 5 | 94% → 89% | n=7 |
+
+**No individual cell here supports a claim.** At these sizes, calling a 30-point effect real
+needs about 32 runs and a 10-point effect about 199. The two Haiku `build-*` results are worth
+watching because they point the same way as a mechanism that would make sense, a small model
+spending its output on the method rather than the thing, but two runs cannot establish it. That
+is a hypothesis for the next sweep, not a finding.
 
 ### Two instruments that were wrong before the results were
 

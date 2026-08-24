@@ -257,6 +257,86 @@ class TestBadgesMatchTheSupportTiers(unittest.TestCase):
                 f"badge says {product} is benchmarked, but benchmark.json holds no runs "
                 f"for it (has: {sorted(labels)})")
 
+    def test_regression_count_is_stated_against_its_null(self):
+        """A count of negative cells means nothing without the count chance alone produces.
+
+        The README said "Nine of 52 cells regressed" for weeks, and it read as an honest
+        caveat. It was the opposite. Simulating the null of no effect from the real per-cell
+        run counts puts the expected number of negative cells at about 18, so nine is *below*
+        what noise gives: the scarcity of regressions was evidence the effect is consistent,
+        and it was being published as though it were evidence of harm.
+
+        The failure mode is specific and will recur: a modest-sounding number is never
+        challenged, because nobody audits a claim that undersells. So the rule is mechanical.
+        Wherever the README states how many cells regressed, the null has to be on the page
+        with it.
+        """
+        # Normalise before matching. The claim in the NOTE box wraps as "cells came out"
+        # then "> negative", so a regex over raw text matched only the claim that happened to
+        # sit on one line, and the most visible statement in the README was invisible to the
+        # check guarding it. Collapse blockquote markers and newlines first.
+        readme = re.sub(r"\s*\n>?\s*", " ", (REPO / "README.md").read_text())
+        # finditer, not findall + index. The first version looked up each claim's position
+        # with readme.index(), which returns the FIRST occurrence, so every claim was checked
+        # against the same window: stripping the null from the NOTE box left the test green
+        # because the section further down still had one. A checker that cannot fail for the
+        # second instance of the thing it checks is the bug it exists to prevent.
+        claims = list(re.finditer(
+            r"(\w+|\d+) of (?:the )?(\d+) cells (?:came out negative|regressed)", readme))
+        self.assertTrue(claims,
+                        "found no regression-count claim in the README; if the wording moved, "
+                        "this probe is checking nothing and needs updating with it")
+        for m in claims:
+            count, total = m.group(1), m.group(2)
+            window = readme[m.start():m.start() + 600]
+            self.assertRegex(
+                window, r"chance alone|null|noise alone",
+                f"the README says {count} of {total} cells came out negative without naming "
+                f"what chance alone would produce. A regression count published on its own "
+                f"reads as evidence of harm when it is usually evidence of noise.")
+
+    def test_grader_validator_sees_every_arm(self):
+        """The validation sampler must reach every arm on disk, not just the ones its cell
+        parser happens to split correctly.
+
+        It shipped splitting `results/runs/<scenario>/<model>_<config>/` with
+        `cell.rpartition("_")`, which cuts at the LAST underscore. `..._baseline` parsed;
+        `..._with_skill` became model `<model>_with` and config `skill`, failed the
+        known-models test, and was dropped. 97 treatment cells vanished, the sampler drew 60
+        baseline items, printed a success line, and the conclusion drawn from that sample was
+        an artifact of the bug. Half the population was missing and nothing went red.
+
+        Parsing is asserted directly rather than through a drawn sample, so this fails on the
+        bug itself instead of on a statistical shadow of it.
+        """
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            "validate_grader", REPO / "benchmarks" / "validate_grader.py")
+        vg = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(vg)
+
+        for model in ("claude-sonnet-5", "fable", "agy-gemini-3.1-pro", "codex-gpt-5.6-terra"):
+            for cfg in vg.CONFIG_SUFFIXES:
+                got = vg._split_cell(f"{model}_{cfg}")
+                self.assertEqual(got, (model, cfg),
+                                 f"{model}_{cfg} parsed as {got}; a config containing an "
+                                 f"underscore must not be split at the wrong boundary")
+        self.assertIsNone(vg._split_cell("claude-sonnet-5_nonsense"),
+                          "an unknown suffix must be rejected, not guessed at")
+
+        # And the arms the harness can produce must all be parseable, so adding a config to
+        # run.py without teaching the validator about it fails here rather than silently
+        # shrinking the population it samples from.
+        run_src = (REPO / "benchmarks" / "run.py").read_text()
+        m = re.search(r"^CONFIGS = \[(.*?)\]", run_src, re.M | re.S)
+        self.assertTrue(m, "could not find CONFIGS in run.py, is this probe broken?")
+        configs = re.findall(r'"([a-z_]+)"', m.group(1))
+        self.assertTrue(configs, "parsed no configs out of run.py, is this probe broken?")
+        missing = [c for c in configs if c not in vg.CONFIG_SUFFIXES]
+        self.assertEqual(missing, [],
+                         f"run.py produces {missing} but the validation sampler cannot parse "
+                         f"those cells, so it would silently exclude them")
+
     def test_shipped_devices_carry_a_marker(self):
         """A device nobody marked is invisible to the registry that claims to list them all.
 

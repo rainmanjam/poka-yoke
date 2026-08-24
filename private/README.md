@@ -27,8 +27,9 @@ person puts their working files in `docs/` again.
 Anything a reader needs in order to use or trust the project. If a document explains how the
 thing works, why a decision was made, or what was measured, it belongs in `docs/` and in the
 open — including the unflattering parts. `benchmarks/results/benchmark.md` reports exactly how many
-stored runs are tied to the current prompts, and the README publishes the nine cells where the
-skills made output worse; those stay public precisely because they are inconvenient.
+stored runs are tied to the current prompts, and the README publishes the nine cells that came
+out negative alongside the ~18 that chance alone would produce; those stay public precisely
+because they are inconvenient.
 
 ## Regenerating
 
