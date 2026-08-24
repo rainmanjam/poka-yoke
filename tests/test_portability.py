@@ -257,6 +257,73 @@ class TestBadgesMatchTheSupportTiers(unittest.TestCase):
                 f"badge says {product} is benchmarked, but benchmark.json holds no runs "
                 f"for it (has: {sorted(labels)})")
 
+    def test_trade_table_figures_come_from_the_gradings(self):
+        """Every percentage in the README's "What it trades" table must be recomputable.
+
+        That table is the positioning: it claims the skills make responses more constructive
+        and worse at spotting the defect in front of them. Both halves are load-bearing, and
+        the unflattering half is what makes the flattering half credible, so a drifted figure
+        there costs more than a drifted figure in the summary table.
+
+        Rounding is specified here rather than left to the writer. A first attempt at checking
+        these by hand used floor division and reported four of five as wrong by one point,
+        which nearly produced a commit "correcting" four accurate numbers.
+        """
+        readme = (REPO / "README.md").read_text()
+        m = re.search(r"## What it trades\n(.*?)\n---", readme, re.S)
+        self.assertTrue(m, "no 'What it trades' section; if it moved, this probe checks nothing")
+        rows = re.findall(r"^\| ([^|]+?) \| (\d+)% \| \*\*(\d+)%\*\* \|$", m.group(1), re.M)
+        self.assertGreaterEqual(len(rows), 4,
+                                f"parsed {len(rows)} rows from the trade table, expected the "
+                                f"full set; the probe is matching the wrong shape")
+
+        runs = REPO / "benchmarks" / "results" / "runs"
+        if not runs.exists():
+            self.skipTest("no stored runs")
+        CURRENT = {"fable", "opus", "claude-sonnet-5", "claude-haiku-4-5-20251001",
+                   "codex-gpt-5.6-terra", "agy-gemini-3.1-pro"}
+
+        def arm(cell):
+            for suffix in ("baseline", "with_skill"):
+                if cell.endswith("_" + suffix):
+                    return cell[: -(len(suffix) + 1)], suffix
+            return None, None
+
+        tally = {}
+        for g in runs.glob("*/*/*/grading.json"):
+            model, config = arm(g.parts[-3])
+            if model not in CURRENT or config is None:
+                continue
+            for e in json.loads(g.read_text()).get("expectations", []):
+                tally.setdefault(e.get("text", ""), {"baseline": [], "with_skill": []})
+                tally[e["text"]][config].append(bool(e.get("passed")))
+
+        # The table paraphrases each assertion, so match on a distinctive fragment rather
+        # than on equality: the wording in the README is for a reader, not for this test.
+        FRAGMENTS = {
+            "concrete device": "Proposes a concrete device per finding",
+            "bypassable": "Notes that pre-commit is bypassable",
+            "injection vector": "Identifies the raw interpolation",
+            "silently wrong number": "Explains why a silently wrong number",
+        }
+        checked = 0
+        for label, claimed_b, claimed_w in rows:
+            key = next((v for frag, v in FRAGMENTS.items() if frag in label), None)
+            if key is None:
+                continue                      # "Names what the design makes impossible" is a
+                                              # family, covered by its own aggregate elsewhere
+            match = [k for k in tally if k.startswith(key)]
+            self.assertTrue(match, f"README row {label!r} names no assertion in the gradings")
+            d = tally[match[0]]
+            got_b = round(sum(d["baseline"]) * 100 / len(d["baseline"]))
+            got_w = round(sum(d["with_skill"]) * 100 / len(d["with_skill"]))
+            self.assertEqual((int(claimed_b), int(claimed_w)), (got_b, got_w),
+                             f"README trade table says {claimed_b}% -> {claimed_w}% for "
+                             f"{label!r}; the gradings say {got_b}% -> {got_w}%")
+            checked += 1
+        self.assertGreaterEqual(checked, 4,
+                                f"only verified {checked} trade-table rows against the data")
+
     def test_regression_count_is_stated_against_its_null(self):
         """A count of negative cells means nothing without the count chance alone produces.
 
