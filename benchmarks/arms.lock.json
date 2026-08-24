@@ -33,11 +33,15 @@
    "total_words": 3239
   },
   "with_placebo": {
-   "file_count": 3,
+   "file_count": 6,
    "files": {
     "benchmarks/controls/clean-code/skills/audit/SKILL.md": {
      "sha256": "5f81edfea59d50f3bc387f41a49ec91215af3a91b082e0e8e44b9b40fcff0bdb",
      "words": 902
+    },
+    "benchmarks/controls/clean-code/skills/authz/SKILL.md": {
+     "sha256": "2f72ceee32d04d05d6843afbbd46ea5aad838e461cd284f12620fa998deb3cbe",
+     "words": 633
     },
     "benchmarks/controls/clean-code/skills/clean-code/SKILL.md": {
      "sha256": "b76477aed7643c1bbe69db567003a9c3212c18d117896cb4bcfd9b006128db9d",
@@ -46,30 +50,38 @@
     "benchmarks/controls/clean-code/skills/design/SKILL.md": {
      "sha256": "1e16fbd624da096a9c88d48ada902a41a86dd48206afce959e69e3ed8a42b7f2",
      "words": 1043
+    },
+    "benchmarks/controls/clean-code/skills/retro/SKILL.md": {
+     "sha256": "59cb0547c8698a8534ddf710ecd1e3f771b8bbeab6c6f3cc23a431040e32210b",
+     "words": 752
+    },
+    "benchmarks/controls/clean-code/skills/ux/SKILL.md": {
+     "sha256": "ec49226228dd0356c4164df2f1196854dc47add3e358f0d5375b82de7c1373e6",
+     "words": 686
     }
    },
-   "per_route_vs_treatment_pct": -24.5,
+   "per_route_vs_treatment_pct": -30.7,
    "per_route_words": {
     "agent-guardrails": null,
     "audit": 2482,
-    "authz": null,
+    "authz": 2213,
     "data": null,
     "design": 2623,
     "guardrails": null,
     "llm": null,
     "ops": null,
-    "retro": null,
-    "ux": null
+    "retro": 2332,
+    "ux": 2266
    },
-   "routes_authored": 2,
-   "total_words": 3525
+   "routes_authored": 5,
+   "total_words": 5596
   },
   "with_skill": {
    "file_count": 19,
    "files": {
     "plugins/poka-yoke/README.md": {
-     "sha256": "78148cc3f8ae6670db547c0131e8f89c789807abee44fc105530cdbbbf13ccb9",
-     "words": 448
+     "sha256": "d251fb447c373ad3d54d5ec5a922c0f69ff8af01d174e2c86de6a0ade5676eb0",
+     "words": 517
     },
     "plugins/poka-yoke/assets/devices/claude-hooks/README.md": {
      "sha256": "d393fa60f01102c5389d0ccb7291fe75fcfa3808cb2621f7dabbd8da8d825791",
@@ -158,7 +170,7 @@
     "ux": 3720
    },
    "routes_authored": 10,
-   "total_words": 24871
+   "total_words": 24940
   }
  },
  "note": "Frozen before the sweep. Any change here invalidates comparisons made against the runs it produced."
