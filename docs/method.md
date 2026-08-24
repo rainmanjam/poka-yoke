@@ -2,6 +2,14 @@
 
 A short guide for humans. The plugin's skills teach this to a model; this page is for you.
 
+**Where the plugin's own two halves sit on the ladder below.** The hazard detector is a
+device: it runs in pre-commit and CI, is never in a model's context, and behaves the same on
+hour six of a session as on minute one. The skills are instructions. They are better
+instructions than a line in a rules file, because they carry reasoning rather than a
+prohibition, but they are still competing for attention with everything else in the window and
+should be expected to fade as it fills. That is this method applied to itself, and it is why
+the honest advice is to invoke a mode early and fresh, and to install the device.
+
 ## Where it comes from
 
 Shigeo Shingo (1909–1990) was a Japanese industrial engineer who taught at Toyota as an

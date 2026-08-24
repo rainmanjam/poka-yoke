@@ -44,6 +44,18 @@ If you do add one: register it nowhere (skills are discovered automatically), bu
 row to the router's dispatch table in `plugins/poka-yoke/skills/poka-yoke/SKILL.md` and to
 the README, or nobody will find it.
 
+**What the benchmark can and cannot tell you about your skill.** It measures the first turn of
+a fresh session against a no-skill baseline. So it will show whether your skill changes the
+response, and it will not show whether the change survives an afternoon of accumulated context,
+nor whether any structured methodology of similar length would have done the same. Control arms
+for the second question exist under `benchmarks/controls/` and have not been run. Quote the
+lift your skill produces; do not quote it as evidence the method is what produced it.
+
+**And check what it costs.** Loading a method moves attention rather than adding it: the
+measured effect of the existing skills is markedly more constructive output and slightly worse
+noticing of the specific defect already on the page. If your skill lifts three assertions and
+drops two, that is a normal result and the two belong in your pull request.
+
 ## Writing style
 
 The skills explain *why* rather than commanding. This is deliberate. A model that understands
