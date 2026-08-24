@@ -1,0 +1,177 @@
+{
+ "arms": {
+  "with_defensive": {
+   "file_count": 3,
+   "files": {
+    "benchmarks/controls/defensive/skills/audit/SKILL.md": {
+     "sha256": "fac761ec59c97bdd8b1a60dbaa89fb2481f7caf868c10c0ddd2cc3e207dacd62",
+     "words": 806
+    },
+    "benchmarks/controls/defensive/skills/defensive/SKILL.md": {
+     "sha256": "4b3773d5593880e4d9df08ea8757f7add72447997bae89633abcc2a821e4740e",
+     "words": 1486
+    },
+    "benchmarks/controls/defensive/skills/design/SKILL.md": {
+     "sha256": "86f3953b7cab769cf53566c6cc42227af098b12b2150466b47582531199f603c",
+     "words": 947
+    }
+   },
+   "per_route_vs_treatment_pct": -30.2,
+   "per_route_words": {
+    "agent-guardrails": null,
+    "audit": 2292,
+    "authz": null,
+    "data": null,
+    "design": 2433,
+    "guardrails": null,
+    "llm": null,
+    "ops": null,
+    "retro": null,
+    "ux": null
+   },
+   "routes_authored": 2,
+   "total_words": 3239
+  },
+  "with_placebo": {
+   "file_count": 6,
+   "files": {
+    "benchmarks/controls/clean-code/skills/audit/SKILL.md": {
+     "sha256": "5f81edfea59d50f3bc387f41a49ec91215af3a91b082e0e8e44b9b40fcff0bdb",
+     "words": 902
+    },
+    "benchmarks/controls/clean-code/skills/authz/SKILL.md": {
+     "sha256": "2f72ceee32d04d05d6843afbbd46ea5aad838e461cd284f12620fa998deb3cbe",
+     "words": 633
+    },
+    "benchmarks/controls/clean-code/skills/clean-code/SKILL.md": {
+     "sha256": "b76477aed7643c1bbe69db567003a9c3212c18d117896cb4bcfd9b006128db9d",
+     "words": 1580
+    },
+    "benchmarks/controls/clean-code/skills/design/SKILL.md": {
+     "sha256": "1e16fbd624da096a9c88d48ada902a41a86dd48206afce959e69e3ed8a42b7f2",
+     "words": 1043
+    },
+    "benchmarks/controls/clean-code/skills/retro/SKILL.md": {
+     "sha256": "59cb0547c8698a8534ddf710ecd1e3f771b8bbeab6c6f3cc23a431040e32210b",
+     "words": 752
+    },
+    "benchmarks/controls/clean-code/skills/ux/SKILL.md": {
+     "sha256": "ec49226228dd0356c4164df2f1196854dc47add3e358f0d5375b82de7c1373e6",
+     "words": 686
+    }
+   },
+   "per_route_vs_treatment_pct": -30.7,
+   "per_route_words": {
+    "agent-guardrails": null,
+    "audit": 2482,
+    "authz": 2213,
+    "data": null,
+    "design": 2623,
+    "guardrails": null,
+    "llm": null,
+    "ops": null,
+    "retro": 2332,
+    "ux": 2266
+   },
+   "routes_authored": 5,
+   "total_words": 5596
+  },
+  "with_skill": {
+   "file_count": 19,
+   "files": {
+    "plugins/poka-yoke/README.md": {
+     "sha256": "d251fb447c373ad3d54d5ec5a922c0f69ff8af01d174e2c86de6a0ade5676eb0",
+     "words": 517
+    },
+    "plugins/poka-yoke/assets/devices/claude-hooks/README.md": {
+     "sha256": "d393fa60f01102c5389d0ccb7291fe75fcfa3808cb2621f7dabbd8da8d825791",
+     "words": 728
+    },
+    "plugins/poka-yoke/assets/devices/lint/README.md": {
+     "sha256": "fd5edfd062a1d0ab8be7f74c74dfb4c50ef9feb171442c88bfac054fc720c5ab",
+     "words": 563
+    },
+    "plugins/poka-yoke/references/hazard-catalog.md": {
+     "sha256": "e9c2f68a92646a9fdf1b2e8a557809d09b940d4c84c30b82dc1ed602099716d5",
+     "words": 2951
+    },
+    "plugins/poka-yoke/references/lang-python.md": {
+     "sha256": "329378e1263373ec2fc329f89c73714f31a8719758835f77429995f6858c9e98",
+     "words": 933
+    },
+    "plugins/poka-yoke/references/lang-rust-go.md": {
+     "sha256": "86eacc8ca0c56cc2630e20b0cf832f0a741719b918d4e9830ffe372f4b5cda9b",
+     "words": 1166
+    },
+    "plugins/poka-yoke/references/lang-typescript.md": {
+     "sha256": "913ecffd2a923d364ff9642910c062f59e7118e4154beb6e633321f534b9f703",
+     "words": 878
+    },
+    "plugins/poka-yoke/references/ux-patterns.md": {
+     "sha256": "403b006e38004d91811912b3eb5e51b9d452c3bc5591700476b83b76e3ddb684",
+     "words": 939
+    },
+    "plugins/poka-yoke/skills/agent-guardrails/SKILL.md": {
+     "sha256": "51f9646a0e09c1520eddfc4e0117ee5128958bd0cbce9f66a08f9455010b0207",
+     "words": 1524
+    },
+    "plugins/poka-yoke/skills/audit/SKILL.md": {
+     "sha256": "3346cef87914c0a71f45f7e9aa8008559ad975377b93f946b55b2b97917eafeb",
+     "words": 1418
+    },
+    "plugins/poka-yoke/skills/authz/SKILL.md": {
+     "sha256": "d4b2b99fd8f2ab933f558e67cc7e7646bd693c444848faf677b1bb5a1435187c",
+     "words": 1455
+    },
+    "plugins/poka-yoke/skills/data/SKILL.md": {
+     "sha256": "d35e45f708f38b4821129597a3032b33568297ebc82de91c2b4e61d44d7abbc2",
+     "words": 1165
+    },
+    "plugins/poka-yoke/skills/design/SKILL.md": {
+     "sha256": "67c38753c1b71ef86ae8d37bfe53c05d983b6ecde9cd88eeddaa2511e5107048",
+     "words": 1273
+    },
+    "plugins/poka-yoke/skills/guardrails/SKILL.md": {
+     "sha256": "8106ac1ca77791d49621994c22653955e9af9819a88927155e05707240f92542",
+     "words": 1260
+    },
+    "plugins/poka-yoke/skills/llm/SKILL.md": {
+     "sha256": "79b9d78be4e852a0a5efaac0a5920d63de2e31789ec6cfc0991920b04637791d",
+     "words": 1561
+    },
+    "plugins/poka-yoke/skills/ops/SKILL.md": {
+     "sha256": "b32760dd2354700a5a7adbf7c012c49764f8ce08792c32cbbeeb92a9d5ab1c6b",
+     "words": 1657
+    },
+    "plugins/poka-yoke/skills/poka-yoke/SKILL.md": {
+     "sha256": "c378d683890c1bdb44ee47a686264bc764224751bbfd6887655db4631faac512",
+     "words": 2041
+    },
+    "plugins/poka-yoke/skills/retro/SKILL.md": {
+     "sha256": "b283285422faff19d2e167502b93d85c103745294ee4a9ddc054aacd245a18d1",
+     "words": 1232
+    },
+    "plugins/poka-yoke/skills/ux/SKILL.md": {
+     "sha256": "3acb7bb0ce9a49a402d7d7a2f87904c2e157e3c414910455e208f878539173f3",
+     "words": 1679
+    }
+   },
+   "per_route_vs_treatment_pct": null,
+   "per_route_words": {
+    "agent-guardrails": 3565,
+    "audit": 3459,
+    "authz": 3496,
+    "data": 3206,
+    "design": 3314,
+    "guardrails": 3301,
+    "llm": 3602,
+    "ops": 3698,
+    "retro": 3273,
+    "ux": 3720
+   },
+   "routes_authored": 10,
+   "total_words": 24940
+  }
+ },
+ "note": "Frozen before the sweep. Any change here invalidates comparisons made against the runs it produced."
+}

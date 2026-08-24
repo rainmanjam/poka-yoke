@@ -1,0 +1,242 @@
+{
+ "audit|agy-gemini-3.1-pro_baseline|run-3|8": {
+  "passed": true,
+  "evidence": "Several issues could lead to direct financial loss (e.g., negative amount transfers, unverified webhooks, double-spending)."
+ },
+ "design|codex-gpt-5.6-terra_baseline|run-3|2": {
+  "passed": false,
+  "evidence": "The response contains a switch statement but lacks a default case, assertNever call, or assignment to never."
+ },
+ "authz|claude-haiku-4-5-20251001_baseline|run-1|3": {
+  "passed": false,
+  "evidence": "The response flags searchDocuments as a high-risk path for an audit but does not state that it returns rows across all tenants."
+ },
+ "data|opus_baseline|run-1|0": {
+  "passed": true,
+  "evidence": "No \u2014 and the specific way it's not enough is worth naming: **your table was never empty.**"
+ },
+ "guardrails|claude-sonnet-5_baseline|run-2|3": {
+  "passed": true,
+  "evidence": "Make format-check and type-check required status checks so the PR literally cannot merge until they pass."
+ },
+ "audit|claude-haiku-4-5-20251001_baseline|run-1|9": {
+  "passed": false,
+  "evidence": "The response lists vulnerabilities and their impacts but proposes no solutions or concrete devices for them, instead asking 'Want me to check which ones your detector currently flags?'"
+ },
+ "design|claude-haiku-4-5-20251001_baseline|run-1|4": {
+  "passed": false,
+  "evidence": "The response defines type shapes and schemas for states but contains no functions or logic to constrain how state changes between them."
+ },
+ "agent-guardrails|agy-gemini-3.1-pro_baseline|run-1|2": {
+  "passed": false,
+  "evidence": "The response never mentions settings.json or permission deny rules for it; it recommends GitHub branch protection rules, pre-commit hooks, and GitHub Actions."
+ },
+ "agent-guardrails|codex-gpt-5.6-terra_baseline|run-1|1": {
+  "passed": true,
+  "evidence": "The instruction itself should be short and operational, but treat it as context, not a guardrail"
+ },
+ "agent-guardrails|claude-sonnet-5_baseline|run-4|2": {
+  "passed": false,
+  "evidence": "The response describes the rules in prose (e.g., \"A `PreToolUse` hook that denies `Edit`/`Write`...\") and offers to wire them into `.claude/settings.json`, but does not provide the concrete configuration syntax itself."
+ },
+ "authz|agy-gemini-3.1-pro_baseline|run-2|3": {
+  "passed": true,
+  "evidence": "Currently searches all documents globally."
+ },
+ "data|claude-sonnet-5_baseline|run-7|4": {
+  "passed": false,
+  "evidence": "A row-count check, a null check, a schema check \u2014 all of those can pass on a perfectly well-formed, wrong number."
+ },
+ "build-endpoint|agy-gemini-3.1-pro_baseline|run-3|3": {
+  "passed": false,
+  "evidence": "I assumed IDs are Strings (UUIDs or Stripe IDs)"
+ },
+ "data|fable_baseline|run-3|3": {
+  "passed": true,
+  "evidence": "If these run after publication and email someone, bad numbers still reach finance. Build to staging \u2192 run checks \u2192 promote only on pass."
+ },
+ "agent-guardrails|opus_baseline|run-5|4": {
+  "passed": true,
+  "evidence": "Each message above names **what** was blocked, **why** it's irreversible, and **what to do instead**."
+ },
+ "build-form|agy-gemini-3.1-pro_baseline|run-2|2": {
+  "passed": false,
+  "evidence": "if (window.confirm(`Are you sure you want to delete ${selectionCount} documents?`)) {"
+ },
+ "build-endpoint|agy-gemini-3.1-pro_baseline|run-3|2": {
+  "passed": false,
+  "evidence": "The Refund model in the Prisma schema and the corresponding SQL CREATE TABLE statement lack any unique constraints (e.g., on orderId or a dedicated idempotencyKey) to enforce idempotency."
+ },
+ "data|codex-gpt-5.6-terra_baseline|run-2|3": {
+  "passed": false,
+  "evidence": "The response recommends controls that 'fail closed before COALESCE masks the problem' and says 'don't rely on someone noticing a chart', but it does not explicitly recommend running assertions before publication rather than after to prevent bad data from reaching the dashboard."
+ },
+ "retro|claude-sonnet-5_baseline|run-1|8": {
+  "passed": true,
+  "evidence": "**Why it was possible, run to a constraint, not a person:**"
+ },
+ "audit|claude-sonnet-5_baseline|run-4|3": {
+  "passed": true,
+  "evidence": "`applyDiscount` does float arithmetic on money"
+ },
+ "authz|opus_baseline|run-2|6": {
+  "passed": true,
+  "evidence": "Adding `where` clauses fixes six sites and leaves the seventh available to the next person. Two structural moves: - **Postgres RLS**... - **A scoped repository**"
+ },
+ "agent-guardrails|fable_baseline|run-1|2": {
+  "passed": true,
+  "evidence": "{\n  \"permissions\": {\n    \"deny\": [\n      // poka-yoke: force-push rewrites shared history; irreversible\n      \"Bash(git push --force:*)\","
+ },
+ "llm|claude-haiku-4-5-20251001_baseline|run-1|5": {
+  "passed": false,
+  "evidence": "The response recommends automated safety measures like schema extraction, validation, and idempotency, but does not mention human confirmation or an approval gate."
+ },
+ "build-agent-feature|codex-gpt-5.6-terra_baseline|run-2|1": {
+  "passed": true,
+  "evidence": "tools=[ROUTE_TOOL], tool_choice={\"type\": \"tool\", \"name\": \"submit_email_route\"}"
+ },
+ "build-form|claude-haiku-4-5-20251001_baseline|run-2|8": {
+  "passed": false,
+  "evidence": "The response closes with 'Replace the fetch URLs and mutation functions with your actual API/tRPC/GraphQL layer.' instead of naming misuses the design makes impossible."
+ },
+ "data|claude-sonnet-5_baseline|run-3|6": {
+  "passed": true,
+  "evidence": "The table stayed full the entire three weeks [...] What turned a loud failure (nulls propagating, join breaking visibly) into a silent one (plausible-looking low numbers). That line is the actual hazard [...] What closes this class of failure"
+ },
+ "data|codex-gpt-5.6-terra_baseline|run-3|2": {
+  "passed": true,
+  "evidence": "- **Reconcile totals:** compare dashboard revenue to the source-of-record / finance ledger, with a defined tolerance."
+ },
+ "guardrails|claude-sonnet-5_baseline|run-7|6": {
+  "passed": false,
+  "evidence": "The response recommends failing CI and adding pre-commit hooks, but never mentions configuring the failure message to tell the developer how to fix the issue."
+ },
+ "retro|agy-gemini-3.1-pro_baseline|run-3|4": {
+  "passed": true,
+  "evidence": "The response clearly distinguishes the defect (\"double-charging customers\"), the mistake (\"The current mitigation (checking for a recent charge of the same amount)\"), and the underlying system hazard (\"when the payment worker experiences timeouts or retries\" / \"Race Conditions (Time-of-check to time-of-use)\")."
+ },
+ "audit|claude-sonnet-5_baseline|run-2|9": {
+  "passed": true,
+  "evidence": "Every finding includes a 'Device \u2192 Control' (or Warning) section with concrete code snippets, such as 'verify stripe-signature against the webhook secret' and 'pass a stable idempotency key'."
+ },
+ "data|claude-haiku-4-5-20251001_baseline|run-3|2": {
+  "passed": true,
+  "evidence": "(or check the sum matches a known range)"
+ },
+ "authz|codex-gpt-5.6-terra_baseline|run-3|1": {
+  "passed": true,
+  "evidence": "`updateDocument` updates by `id` alone, ignoring its `session`."
+ },
+ "llm|fable_baseline|run-1|8": {
+  "passed": true,
+  "evidence": "The fix has to live **outside the model**, in code that can't be persuaded."
+ },
+ "data|codex-gpt-5.6-terra_baseline|run-3|5": {
+  "passed": true,
+  "evidence": "**Join-quality assertion:** require a high match rate; alert/fail if unmatched rows or null joined revenue exceed a tiny, explicit threshold."
+ },
+ "guardrails|claude-sonnet-5_baseline|run-4|4": {
+  "passed": false,
+  "evidence": "The tradeoff is upfront setup cost and some initial friction as people's existing branches get flagged"
+ },
+ "guardrails|fable_baseline|run-2|6": {
+  "passed": false,
+  "evidence": "The response recommends automating the fix via pre-commit hooks and editor configs, but never mentions what the CI failure message should say."
+ },
+ "design|opus_baseline|run-6|4": {
+  "passed": false,
+  "evidence": "Fill those in and I'll build `transition()` around it so an illegal move is rejected before the write"
+ },
+ "retro|claude-haiku-4-5-20251001_baseline|run-1|4": {
+  "passed": true,
+  "evidence": "Your duplicate-charge check is vulnerable to a TOCTOU race [...] The queue-wide problem is that any consumer that can timeout and be redelivered (emails, webhooks, ledger entries, Stripe handler) needs idempotency."
+ },
+ "ux|claude-sonnet-5_baseline|run-5|4": {
+  "passed": false,
+  "evidence": "The response argues against confirmation modals ('a confirm modal was the wrong device here') and recommends soft deletion instead, never mentioning a type-the-workspace-name confirmation."
+ },
+ "ops|claude-haiku-4-5-20251001_baseline|run-1|2": {
+  "passed": false,
+  "evidence": "The response asks 'can you restore the column quickly, or restore from backup?' as a question about rollback plans, but does not state that the operation is irreversible without a backup or restore."
+ },
+ "llm|claude-sonnet-5_baseline|run-5|7": {
+  "passed": true,
+  "evidence": "cap the refund at what's actually refundable (order total minus prior refunds)"
+ },
+ "retro|agy-gemini-3.1-pro_baseline|run-1|4": {
+  "passed": false,
+  "evidence": "The response does not explicitly mention or separate the defect, mistake, or system hazard; it only lists reasons why the heuristic check is unsafe."
+ },
+ "data|claude-sonnet-5_baseline|run-1|7": {
+  "passed": true,
+  "evidence": "it took a loud failure (null propagating, dashboard breaking visibly) and converted it into a quiet, plausible-looking wrong number."
+ },
+ "data|claude-sonnet-5_baseline|run-1|5": {
+  "passed": true,
+  "evidence": "Replace it with an assertion on null rate for the join key before the coalesce (e.g., `null_rate(revenue) < 1%`, alert/fail above that)"
+ },
+ "audit|agy-gemini-3.1-pro_baseline|run-3|10": {
+  "passed": false,
+  "evidence": "#### [MODIFY] benchmarks/fixtures/payments.ts"
+ },
+ "ux|claude-haiku-4-5-20251001_baseline|run-3|6": {
+  "passed": false,
+  "evidence": "The response discusses UI and workflow approaches like soft-delete and undo toasts, but does not mention the server enforcing deletion rules."
+ },
+ "data|opus_baseline|run-6|0": {
+  "passed": true,
+  "evidence": "Non-empty is a check that cannot fail in the failure mode you actually had. That's the most expensive kind of test: it turns green and buys false confidence."
+ },
+ "guardrails|opus_baseline|run-1|6": {
+  "passed": false,
+  "evidence": "The response discusses CI gates, failing builds, and auto-fixing, but contains no mention of what the failure message itself should say."
+ },
+ "llm|fable_baseline|run-2|7": {
+  "passed": true,
+  "evidence": "amount <= order.refundable_balance"
+ },
+ "design|claude-sonnet-5_baseline|run-4|2": {
+  "passed": true,
+  "evidence": "function assertNever(x: never): never"
+ },
+ "audit|opus_baseline|run-6|2": {
+  "passed": true,
+  "evidence": "a charge that returns `null` into a discarded variable is revenue that never existed."
+ },
+ "build-agent-feature|codex-gpt-5.6-terra_baseline|run-1|3": {
+  "passed": true,
+  "evidence": "except (TypeError, ValueError) as exc:\n            raise RoutingError(f\"Invalid routing team returned: {team_value!r}\") from exc"
+ },
+ "retro|claude-sonnet-5_baseline|run-1|5": {
+  "passed": true,
+  "evidence": "the charge path has no built-in guarantee that \"one order \u2192 one charge\""
+ },
+ "ops|claude-sonnet-5_baseline|run-3|5": {
+  "passed": true,
+  "evidence": "If you want, I can help write that verification grep/query and a CI guard that blocks `DROP`/destructive `ALTER` from landing in the same PR as app code, so this split becomes automatic going forward."
+ },
+ "guardrails|claude-sonnet-5_baseline|run-7|3": {
+  "passed": true,
+  "evidence": "Make it mechanical: `mypy --strict` (Python) or `noImplicitAny` + a `no-explicit-any`-style ESLint rule (TS) scoped to changed files, failing CI."
+ },
+ "build-endpoint|fable_baseline|run-1|3": {
+  "passed": false,
+  "evidence": "id: string; orderId: string"
+ },
+ "build-form|fable_baseline|run-1|0": {
+  "passed": true,
+  "evidence": "Here's the complete implementation."
+ },
+ "authz|claude-sonnet-5_baseline|run-2|0": {
+  "passed": true,
+  "evidence": "these fetch by parent.id/parent.authorId with no tenant check of their own."
+ },
+ "audit|claude-haiku-4-5-20251001_baseline|run-1|6": {
+  "passed": false,
+  "evidence": "The response lists 11 vulnerabilities but does not mention JSON.parse or parsing the webhook body"
+ },
+ "guardrails|fable_baseline|run-1|6": {
+  "passed": true,
+  "evidence": "the other half get a red X and a one-line fix command"
+ }
+}

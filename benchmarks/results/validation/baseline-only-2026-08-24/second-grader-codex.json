@@ -1,0 +1,242 @@
+{
+ "audit|agy-gemini-3.1-pro_baseline|run-3|8": {
+  "passed": true,
+  "evidence": "\"Critical Vulnerabilities Found\" is explicitly tied to \"direct financial loss\" and \"double-spending,\" while the response contains no cosmetic findings."
+ },
+ "design|codex-gpt-5.6-terra_baseline|run-3|2": {
+  "passed": false,
+  "evidence": "The switch handles each current status but has no assertNever, never-typed default arm, or other compiler-enforced exhaustiveness check."
+ },
+ "authz|claude-haiku-4-5-20251001_baseline|run-1|3": {
+  "passed": false,
+  "evidence": "It names \"searchDocuments\" as a highest-risk path but does not state it returns rows across all tenants."
+ },
+ "data|opus_baseline|run-1|0": {
+  "passed": true,
+  "evidence": "\"your table was never empty. It was full of zeros. That test would have stayed green\" plainly says the not-empty check is insufficient."
+ },
+ "guardrails|claude-sonnet-5_baseline|run-2|3": {
+  "passed": true,
+  "evidence": "\"Make format-check and type-check required status checks so the PR literally cannot merge until they pass.\""
+ },
+ "audit|claude-haiku-4-5-20251001_baseline|run-1|9": {
+  "passed": false,
+  "evidence": "The response lists vulnerabilities but proposes no concrete device for any finding; it only says, \"All 11 should trigger.\""
+ },
+ "design|claude-haiku-4-5-20251001_baseline|run-1|4": {
+  "passed": false,
+  "evidence": "It defines state variants but provides no transition function or constraints on permitted state changes."
+ },
+ "agent-guardrails|agy-gemini-3.1-pro_baseline|run-1|2": {
+  "passed": false,
+  "evidence": "The response recommends GitHub branch protection and pre-commit/CI rules, but provides no permission deny rules in settings.json or concrete settings.json syntax."
+ },
+ "agent-guardrails|codex-gpt-5.6-terra_baseline|run-1|1": {
+  "passed": true,
+  "evidence": "\u201cThe instruction itself should be short and operational, but treat it as context, not a guardrail\u201d redirects the primary fix to enforceable checks and branch protection."
+ },
+ "agent-guardrails|claude-sonnet-5_baseline|run-4|2": {
+  "passed": false,
+  "evidence": "It recommends PreToolUse hooks, not permission deny rules, and gives no concrete settings.json syntax."
+ },
+ "authz|agy-gemini-3.1-pro_baseline|run-2|3": {
+  "passed": true,
+  "evidence": "\u201cCurrently searches all documents globally.\u201d"
+ },
+ "data|claude-sonnet-5_baseline|run-7|4": {
+  "passed": false,
+  "evidence": "It explicitly says \u201ca schema check \u2014 all of those can pass,\u201d and recommends null-rate and reconciliation checks instead; it does not recommend a data contract or schema check for upstream renames."
+ },
+ "build-endpoint|agy-gemini-3.1-pro_baseline|run-3|3": {
+  "passed": false,
+  "evidence": "\"I assumed IDs are Strings\" and both `Order.id`/`Refund.orderId` are declared as `String`/`TEXT`."
+ },
+ "data|fable_baseline|run-3|3": {
+  "passed": true,
+  "evidence": "\"Build to staging \u2192 run checks \u2192 promote only on pass.\" and \"If these run after publication... bad numbers still reach finance.\""
+ },
+ "agent-guardrails|opus_baseline|run-5|4": {
+  "passed": true,
+  "evidence": "\u201cEach message above names what was blocked, why it's irreversible, and what to do instead.\u201d"
+ },
+ "build-form|agy-gemini-3.1-pro_baseline|run-2|2": {
+  "passed": false,
+  "evidence": "Deletion relies only on `window.confirm(...)` before `deleteDocs(...)`; no undo, trash, restore, or reversible deletion is provided."
+ },
+ "build-endpoint|agy-gemini-3.1-pro_baseline|run-3|2": {
+  "passed": false,
+  "evidence": "The Refund schema and migration define only a primary key on id; no unique constraint or idempotency key exists, while the handler simply calls stripe.refunds.create then prisma.refund.create."
+ },
+ "data|codex-gpt-5.6-terra_baseline|run-2|3": {
+  "passed": true,
+  "evidence": "\u201cAdd controls that fail closed before `COALESCE` masks the problem\u201d and \u201cdon\u2019t rely on someone noticing a chart.\u201d"
+ },
+ "retro|claude-sonnet-5_baseline|run-1|8": {
+  "passed": true,
+  "evidence": "\u201cWhy it was possible, run to a constraint, not a person\u201d and the causal chain attributes the failure to missing idempotency and database constraints, not to an individual."
+ },
+ "audit|claude-sonnet-5_baseline|run-4|3": {
+  "passed": true,
+  "evidence": "\u201capplyDiscount does float arithmetic on money\u201d"
+ },
+ "authz|opus_baseline|run-2|6": {
+  "passed": true,
+  "evidence": "\u201cPostgres RLS\u201d and \u201cA scoped repository taking TenantId as a required constructor arg\u201d recommend structural controls rather than site-by-site where clauses."
+ },
+ "agent-guardrails|fable_baseline|run-1|2": {
+  "passed": true,
+  "evidence": "`.claude/settings.json` shows concrete `\"permissions\": { \"deny\": [...] }` syntax with deny rules such as `\"Bash(git push --force:*)\"` and `\"Edit(./src/generated/**)\"`."
+ },
+ "llm|claude-haiku-4-5-20251001_baseline|run-1|5": {
+  "passed": false,
+  "evidence": "It recommends validation and idempotency but never recommends human confirmation or an approval gate for an irreversible refund."
+ },
+ "build-agent-feature|codex-gpt-5.6-terra_baseline|run-2|1": {
+  "passed": true,
+  "evidence": "\"tools=[ROUTE_TOOL], tool_choice={\\\"type\\\": \\\"tool\\\", \\\"name\\\": \\\"submit_email_route\\\"}\" together with ROUTE_TOOL's \"input_schema\" constrains output to a schema and reads block.input rather than parsing prose."
+ },
+ "build-form|claude-haiku-4-5-20251001_baseline|run-2|8": {
+  "passed": false,
+  "evidence": "It closes with \"Replace the fetch URLs and mutation functions...\" rather than naming misuses the design makes impossible."
+ },
+ "data|claude-sonnet-5_baseline|run-3|6": {
+  "passed": true,
+  "evidence": "\u201cAssert join-key match rate \u2026 checked in the pipeline before publish\u201d and \u201cwould have gone red on day one\u201d directly propose fixing the silent three-week detection gap."
+ },
+ "data|codex-gpt-5.6-terra_baseline|run-3|2": {
+  "passed": true,
+  "evidence": "\u201cReconcile totals: compare dashboard revenue to the source-of-record / finance ledger, with a defined tolerance.\u201d"
+ },
+ "guardrails|claude-sonnet-5_baseline|run-7|6": {
+  "passed": false,
+  "evidence": "No recommendation addresses what the CI or hook failure message should tell the developer to do to fix the violation."
+ },
+ "retro|agy-gemini-3.1-pro_baseline|run-3|4": {
+  "passed": true,
+  "evidence": "It distinguishes the flawed mitigation (\u201cchecking for a recent charge of the same amount\u201d), the per-attempt mistake (\u201cInstead of generating a new transaction ID per attempt\u201d), and the systemic retry/concurrency hazard (\u201cqueue redelivers the message and two workers process the same event concurrently\u201d)."
+ },
+ "audit|claude-sonnet-5_baseline|run-2|9": {
+  "passed": true,
+  "evidence": "Each finding includes a specific \"Device \u2192 Control\" or \"Device \u2192 Warning\" with implementable code, e.g. \"verify `stripe-signature` against the webhook secret\" and \"single atomic conditional update (or a DB transaction with row locking).\""
+ },
+ "data|claude-haiku-4-5-20251001_baseline|run-3|2": {
+  "passed": false,
+  "evidence": "It suggests non-null/non-zero checks and a sum matching a \"known range,\" but does not recommend reconciling results against a source of truth."
+ },
+ "authz|codex-gpt-5.6-terra_baseline|run-3|1": {
+  "passed": true,
+  "evidence": "`updateDocument` updates by `id` alone, ignoring its `session`."
+ },
+ "llm|fable_baseline|run-1|8": {
+  "passed": true,
+  "evidence": "\"The fix has to live outside the model, in code\" and the four primary recommendations are server-side validation, idempotency, approval gates, and authorization; prompt lines are explicitly \"rung zero.\""
+ },
+ "data|codex-gpt-5.6-terra_baseline|run-3|5": {
+  "passed": true,
+  "evidence": "\u201crequire a high match rate; alert/fail if unmatched rows or null joined revenue exceed a tiny, explicit threshold.\u201d"
+ },
+ "guardrails|claude-sonnet-5_baseline|run-4|4": {
+  "passed": false,
+  "evidence": "It recommends immediately failing CI on missing type annotations; it does not propose a baseline or ratchet."
+ },
+ "guardrails|fable_baseline|run-2|6": {
+  "passed": false,
+  "evidence": "The response recommends CI gates and auto-fixing, but never recommends that the failure message tell the developer how to fix the failure."
+ },
+ "design|opus_baseline|run-6|4": {
+  "passed": false,
+  "evidence": "`LEGAL_TRANSITIONS` contains only placeholders, and it says \"I'll build `transition()`\" later; no transition function or enforced state-change constraint is provided."
+ },
+ "retro|claude-haiku-4-5-20251001_baseline|run-1|4": {
+  "passed": false,
+  "evidence": "It identifies the TOCTOU defect and the broader redelivery/idempotency hazard, but does not explicitly distinguish a separate mistake from either."
+ },
+ "ux|claude-sonnet-5_baseline|run-5|4": {
+  "passed": false,
+  "evidence": "The response rejects a confirm modal and recommends soft-delete, a 30-day grace period, and an Undo toast; it never recommends typing the workspace name to confirm."
+ },
+ "ops|claude-haiku-4-5-20251001_baseline|run-1|2": {
+  "passed": true,
+  "evidence": "\"if production fails, can you restore the column quickly, or restore from backup?\" implies dropping it requires restoration/backup to recover."
+ },
+ "llm|claude-sonnet-5_baseline|run-5|7": {
+  "passed": true,
+  "evidence": "\"put a ceiling on what the bot can do autonomously \u2014 e.g. auto-execute under some dollar threshold, require human confirmation above it.\""
+ },
+ "retro|agy-gemini-3.1-pro_baseline|run-1|4": {
+  "passed": true,
+  "evidence": "It distinguishes the defect (\"double-charge\"), the mistaken heuristic (\"looking for a recent charge of the same amount\"), and underlying hazards (\"Race Conditions,\" \"False Positives,\" and \"Eventual Consistency\")."
+ },
+ "data|claude-sonnet-5_baseline|run-1|7": {
+  "passed": true,
+  "evidence": "\"it took a loud failure ... and converted it into a quiet, plausible-looking wrong number\""
+ },
+ "data|claude-sonnet-5_baseline|run-1|5": {
+  "passed": true,
+  "evidence": "\"Replace it with an assertion on null rate... (e.g., `null_rate(revenue) < 1%`)\""
+ },
+ "audit|agy-gemini-3.1-pro_baseline|run-3|10": {
+  "passed": false,
+  "evidence": "The response marks repeated changes as \"[MODIFY] benchmarks/fixtures/payments.ts\", which is outside an outputs directory."
+ },
+ "ux|claude-haiku-4-5-20251001_baseline|run-3|6": {
+  "passed": false,
+  "evidence": "The response discusses UI behavior and recommends \u201csoft-delete + 30-day trash + undo toast,\u201d but never states that the server must enforce deletion rules."
+ },
+ "data|opus_baseline|run-6|0": {
+  "passed": true,
+  "evidence": "\u201cNon-empty is a check that cannot fail in the failure mode you actually had.\u201d"
+ },
+ "guardrails|opus_baseline|run-1|6": {
+  "passed": false,
+  "evidence": "It recommends CI gates and auto-fixing, but never says the failure message should tell the developer how to fix the failure."
+ },
+ "llm|fable_baseline|run-2|7": {
+  "passed": true,
+  "evidence": "\u201crefund(amount) re-checks `amount <= order.refundable_balance` and rejects otherwise.\u201d"
+ },
+ "design|claude-sonnet-5_baseline|run-4|2": {
+  "passed": true,
+  "evidence": "`default: return assertNever(sub);` with `function assertNever(x: never): never` provides a compiler-enforced exhaustiveness check."
+ },
+ "audit|opus_baseline|run-6|2": {
+  "passed": true,
+  "evidence": "`chargeCustomer` (line 55) \u2014 `catch { return null }`"
+ },
+ "build-agent-feature|codex-gpt-5.6-terra_baseline|run-1|3": {
+  "passed": true,
+  "evidence": "`team = RoutingTeam(team_value)` catches `TypeError, ValueError` and raises `RoutingError(\"Invalid routing team returned: ...\")` for values outside the allowed enum."
+ },
+ "retro|claude-sonnet-5_baseline|run-1|5": {
+  "passed": true,
+  "evidence": "\"Hazard: the charge path has no built-in guarantee that 'one order \u2192 one charge'\" identifies the system constraint failure rather than blaming the worker or a person."
+ },
+ "ops|claude-sonnet-5_baseline|run-3|5": {
+  "passed": true,
+  "evidence": "\u201ca CI guard that blocks `DROP`/destructive `ALTER` from landing in the same PR as app code\u201d"
+ },
+ "guardrails|claude-sonnet-5_baseline|run-7|3": {
+  "passed": true,
+  "evidence": "\u201cMake it mechanical: `mypy --strict` ... failing CI.\u201d"
+ },
+ "build-endpoint|fable_baseline|run-1|3": {
+  "passed": false,
+  "evidence": "Identifiers are bare strings throughout: `orderId: z.string().min(1)`, `refundId: string`, and `orderId: string` in `toDto`."
+ },
+ "build-form|fable_baseline|run-1|0": {
+  "passed": false,
+  "evidence": "The response explicitly leaves the required backend unimplemented: \"Server contract this relies on (POST /api/documents/bulk)\". Without those endpoints, count protection, idempotency, and undo implementation, it is not self-contained working code."
+ },
+ "authz|claude-sonnet-5_baseline|run-2|0": {
+  "passed": true,
+  "evidence": "\"Document.comments / Document.attachments ... resolvers \u2014 nested resolvers trust the parent\" and \"fetch by parent.id ... with no tenant check of their own.\""
+ },
+ "audit|claude-haiku-4-5-20251001_baseline|run-1|6": {
+  "passed": false,
+  "evidence": "The response never mentions `JSON.parse` or treating the webhook body as unvalidated external input."
+ },
+ "guardrails|fable_baseline|run-1|6": {
+  "passed": true,
+  "evidence": "\u201cthe other half get a red X and a one-line fix command\u201d explicitly recommends a failure message that tells the developer how to fix it."
+ }
+}

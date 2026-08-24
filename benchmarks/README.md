@@ -1,7 +1,15 @@
 # Benchmark
 
-Does this plugin actually change what a model produces? This measures it, publishes the raw
-runs, and ships the harness so you can check the numbers yourself.
+Does this plugin actually change what a model produces? This measures it **at the first turn of
+a fresh session**, publishes the raw runs, and ships the harness so you can check the numbers
+yourself.
+
+Two limits worth knowing before reading any figure below. The baseline arm is *no skill*, not
+*a different methodology*, so nothing here separates "this method works" from "any structured
+method in context works"; control arms are designed and unrun. And blind grading controls
+**bias**, not **accuracy**: two independent cross-vendor graders agree with the primary grader
+86% and 88% of the time (Cohen's kappa 0.73 and 0.77), which establishes consistency, not
+correctness.
 
 ```bash
 python3 benchmarks/run.py --max-calls 450              # full sweep

@@ -32,6 +32,12 @@ raise.** A failed run leaves an empty directory, a missing grading just shrinks 
 narrowed aggregate simply reports fewer columns. Each looks like the shape of the matrix rather
 than like an error, so make missing input fail loudly instead of averaging what remains.
 
+The baseline arm is *no skill*, which is not the comparison a reader faces: theirs is against
+the rules file they already wrote. `with_placebo` (a matched but unrelated methodology) and
+`with_defensive` (the method this project argues against) exist to close that gap. Until they
+have run, no result here distinguishes "this method works" from "any methodology in context
+works", and a write-up that implies otherwise is overclaiming.
+
 When you touch the benchmark: aggregate over the **full** matrix before quoting anything.
 Narrowing `--models` or `--scenarios` rewrites the summary as though the omitted cells never
 existed. The harness prints `::warning:: this aggregate is NARROWER than the one it replaces`
@@ -93,6 +99,6 @@ plugins/poka-yoke/
   references/               loaded on demand, not into every session
   scripts/                  the executable devices
   assets/devices/           templates you choose to apply; read before installing
-benchmarks/                 A/B measurement against a no-skill baseline
+benchmarks/                 four arms: baseline, with_skill, with_placebo, with_defensive
 tests/                      the devices that guard the devices
 ```

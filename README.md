@@ -5,12 +5,17 @@
 
 # Poka-Yoke
 
-> **Every feature you ship adds new ways to get it wrong. Poka-Yoke removes them as you build.**
+> **An agent will tell you what to fix. It will rarely tell you what its fix makes impossible.**
 >
-> The mistake-proofing pass between your plan and your pull request, 11 skills, ~30 catalogued
-> hazards, a dependency-free scanner for TypeScript, Python, Go, Rust and SQL, and installable
-> pre-commit / CI / lint / hook devices. [Shigeo Shingo](https://en.wikipedia.org/wiki/Shigeo_Shingo)'s
-> method, applied to code, process, interfaces, infrastructure, and AI.
+> Unprompted, models close a design by naming what it forecloses **42%** of the time. With
+> these skills, **81%**, measured across 80 graded verdicts and six model families. That one
+> habit is most of what this does, and it is the difference between advice you agree with and
+> a constraint you can rely on.
+>
+> A dependency-free **hazard scanner** for TypeScript, Python, Go, Rust and SQL; installable
+> **pre-commit / CI / lint / hook devices**; and **11 skills** that apply the same method while
+> you design. [Shigeo Shingo](https://en.wikipedia.org/wiki/Shigeo_Shingo)'s method, applied to
+> code, process, interfaces, infrastructure, and AI.
 >
 > Runs on **19 agent runtimes** from one set of skills, 10 with a native manifest.
 > Benchmarked on Claude Code;
@@ -34,22 +39,53 @@
 </p>
 
 > [!NOTE]
-> **591 blind-graded runs across six runtimes**, scored against pre-written assertions by a
-> grader that never sees which configuration produced a response. Every model improves by
-> more than noise: Fable 5 **+8.3 pp**, Opus 5 **+3.6 pp**, Sonnet 5 **+8.6 pp**,
-> Haiku 4.5 **+12.9 pp**: all four 95% intervals exclude zero. Nine of 52 cells regressed and
-> they are named below. [See the numbers](#benchmarks).
+> **591 blind-graded runs across six runtimes**, at the first turn of a fresh session, scored
+> against pre-written assertions by a grader that never sees which configuration produced a
+> response. Every model improves on a no-skill baseline by more than noise: Fable 5
+> **+8.3 pp**, Opus 5 **+3.6 pp**, Sonnet 5 **+8.6 pp**, Haiku 4.5 **+12.9 pp**: all four 95%
+> intervals exclude zero. Nine of the 52 cells came out negative, where chance alone would
+> produce about 18: individual cells hold 1 to 7 runs and are too small to read on their own,
+> so the scarcity of regressions is the signal rather than their existence.
+> [See the numbers](#benchmarks).
 >
 > All 591 runs are verified against the scenario prompts as they stand in this commit.
+>
+> **What this does not yet establish.** Blind grading controls bias, not accuracy. The baseline
+> is *no skill*, not *a different methodology*, so whether any structured method in context
+> would do the same is untested; a control arm is designed and unrun. And every run is a first
+> turn, which measures the ceiling rather than what survives an afternoon of accumulated
+> context. [The full list of what the numbers cannot tell you](#caveats).
 
 ## Contents
 
+- [What it trades](#what-it-trades), read this before installing
 - [Install](#install) · [Requirements](#requirements) · [Other runtimes](docs/install.md) · [Updating and uninstalling](#updating-and-uninstalling)
+- [The hazard detector](#the-hazard-detector), the part that does not decay
 - [What's inside](#whats-inside), 11 skills, starting with `design`
 - [The method](#the-method): the two axes that do the work
-- [What it looks like](#what-it-looks-like) · [The hazard detector](#the-hazard-detector)
-- [Invocation](#invocation) · [Benchmarks](#benchmarks) · [Repo layout](#repo-layout) · [Prior art](#prior-art)
+- [What it looks like](#what-it-looks-like) · [Invocation](#invocation)
+- [Benchmarks](#benchmarks) · [Caveats](#caveats) · [Repo layout](#repo-layout) · [Prior art](#prior-art)
 - [Contributing](CONTRIBUTING.md) · [Releasing](RELEASING.md) · [Changelog](CHANGELOG.md) · [Code of conduct](CODE_OF_CONDUCT.md) · [License](#license)
+
+---
+
+## What it trades
+
+Loading a method changes what a model attends to, and attention is finite. Measured across the
+same 591 runs, the skills make responses markedly more constructive and slightly worse at
+noticing the specific defect already in front of them:
+
+| Behaviour | Baseline | With skill |
+|---|---:|---:|
+| Proposes a concrete device per finding, not "add validation" | 62% | **100%** |
+| Names what the design makes impossible | 42% | **81%** |
+| Notes `pre-commit` is bypassable and must be backed by CI | 35% | **92%** |
+| Identifies a raw SQL interpolation as an injection vector | 92% | **69%** |
+| Explains why a silently wrong number beats a failed pipeline | 54% | **31%** |
+
+**So: if you want the bug in front of you found, use a reviewer. If you want the shape changed
+so that class of bug stops being expressible, use this.** Loading it for the first job makes
+the model measurably worse at it. That trade is the product, not a caveat about it.
 
 ---
 
@@ -71,6 +107,16 @@ working tool. Every finding is classified by **what happens when the mistake occ
 > A comment, a docstring, a wiki page, a review checklist, or a line in CLAUDE.md saying
 > "don't do X" is **not** a poka-yoke. It is training, and training degrades. A device does
 > not. If your fix relies on someone remembering something, keep going.
+
+**You have already tried writing the rule down.** Every repository that needs this has a
+`CLAUDE.md`, an `AGENTS.md` or a `CONTRIBUTING.md` with a list of things everyone is supposed to
+remember, and the list is longer than it was a year ago because the reminders did not hold. That
+list is the real alternative to this plugin, not an unassisted model, and the argument here is
+about why it decays and what to put in its place.
+
+That is also the honest limit of the current evidence: the benchmark compares *skill* against
+*no skill*, which is not the comparison you face. The comparison you face is against the rules
+file you already wrote, and it has not been run yet.
 
 ## Install
 
@@ -124,6 +170,53 @@ structurally in CI rather than behaviourally on the runtime.
 /plugin marketplace update poka-yoke
 /plugin uninstall poka-yoke@poka-yoke
 ```
+
+## The hazard detector
+
+The plugin ships a dependency-free scanner for textually-detectable hazards across
+TypeScript, Python, Go, Rust, and SQL.
+
+**Try it on your own code without installing anything.** No plugin, no marketplace, no agent:
+
+```bash
+git clone --depth 1 https://github.com/rainmanjam/poka-yoke.git /tmp/poka-yoke
+python3 /tmp/poka-yoke/plugins/poka-yoke/scripts/cli.py detect --paths /absolute/path/to/your/repo
+```
+
+The second path must be absolute, or it resolves against the clone rather than your project.
+Standard library only, so there is nothing to install and nothing to uninstall.
+
+Once the plugin is installed, the same scanner is available in-repo:
+
+```bash
+python3 plugins/poka-yoke/scripts/cli.py detect --diff              # changed lines only
+python3 plugins/poka-yoke/scripts/cli.py detect --paths src/ --json
+python3 plugins/poka-yoke/scripts/cli.py detect --severity high
+```
+
+Skills reference it by a path relative to the SKILL.md that names it, so it resolves on any
+runtime where the plugin directory was copied as a unit: no plugin-root variable, and no
+package registry.
+
+It finds adjacent same-type parameters (via real AST parsing for Python), swallowed errors,
+unbounded deletes, durations with no unit, money as a float, unvalidated parses, and retryable
+effects with no idempotency key, each tagged with its catalog ID, its lens, and the device that
+closes it.
+
+**The three numbers, and what each counts.** They measure different things and are easy to
+conflate:
+
+| | Count | What it is |
+|---|---:|---|
+| Catalogued hazard shapes | **28** | The taxonomy in [`references/hazard-catalog.md`](plugins/poka-yoke/references/hazard-catalog.md). The skills reason about all of them. |
+| Shapes the detector reports | **20** | The subset that is textually detectable. The other 8 need judgement and are guidance only. Two of the twenty (`C1`, `F3`) come from AST checks rather than the pattern table, which is why counting `RULES` alone gives 18. |
+| Pattern rules | **42** | Several patterns can implement one shape, across five languages. |
+| Rules on by default | **19** | Twenty-three of the rules are covered better by a real linter, so the detector names the linter instead. `--all` runs them anyway. |
+
+**Scope.** It detects hazards that are visible in the text and surfaces the review question
+behind each one. Semantic and interface-design judgements are not textual and stay with a
+human, or with the skills. Expect real false positives on the pattern rules; that is the price
+of a first pass that needs no configuration and no install.
 
 ## What's inside
 
@@ -204,31 +297,6 @@ Device: Brand AccountId as SourceAccount / DestinationAccount → Control
 
 Every finding names the **mistake**, never the mistaken. Not politeness, accuracy. "The
 developer should have been more careful" has no implementation.
-
-## The hazard detector
-
-The plugin ships a dependency-free scanner for textually-detectable hazards across
-TypeScript, Python, Go, Rust, and SQL:
-
-```bash
-python3 plugins/poka-yoke/scripts/cli.py detect --diff              # changed lines only
-python3 plugins/poka-yoke/scripts/cli.py detect --paths src/ --json
-python3 plugins/poka-yoke/scripts/cli.py detect --severity high
-```
-
-Skills reference it by a path relative to the SKILL.md that names it, so it resolves on any
-runtime where the plugin directory was copied as a unit: no plugin-root variable, and no
-package registry.
-
-It finds adjacent same-type parameters (via real AST parsing for Python), swallowed errors,
-unbounded deletes, durations with no unit, money as a float, unvalidated parses, retryable
-effects with no idempotency key, and more, **42 pattern rules across 20 hazard shapes**, each tagged with its
-catalog ID, its lens, and the device that closes it. Twenty-three of those rules are off by default
-because a real linter does them better; the detector names the linter instead, and `--all`
-runs them anyway.
-
-It's a fast first pass with real false positives, not an oracle. The interface-level questions
-are still where the value is.
 
 ## Invocation
 
@@ -320,20 +388,28 @@ building devices rather than finding hazards.
 4.0** and Sonnet 5's from **12.7 to 6.1**, while Haiku 4.5's *rises* from **16.7 to 24.1**.
 The skill makes Haiku better on average and less predictable, which is a real cost.
 
-### Where it makes things worse
+### Where it looks worse, and what that is worth
 
-Nine of 52 cells regressed. Four by more than 5 points:
+Nine of 52 cells came out negative. Under the null of no effect at all, roughly **18** would:
+simulating from the real per-cell run counts and the median of 8 assertions per run puts the
+95% range at 12 to 25. Nine is below that range, so the count of regressions is evidence the
+effect is consistently positive, not evidence of hidden harm.
 
-| Cell | Baseline → skill |
-|---|---|
-| `build-agent-feature` on Haiku 4.5 | **62% → 31%** |
-| `build-endpoint` on Haiku 4.5 | **44% → 33%** |
-| `audit` on Fable 5 | 100% → 94% |
-| `authz` on Sonnet 5 | 94% → 89% |
+These four fell by more than 5 points. They are listed because they are where to look, not
+because any one of them is callable on its own:
 
-The two Haiku `build-*` results are the honest counterweight to its headline gain: given a
-feature to build, the smallest model spends its output on the method and delivers less of the
-thing. Do not install this expecting a uniform lift on a small model.
+| Cell | Baseline → skill | runs |
+|---|---|---|
+| `build-agent-feature` on Haiku 4.5 | **62% → 31%** | n=2 |
+| `build-endpoint` on Haiku 4.5 | **44% → 33%** | n=2 |
+| `audit` on Fable 5 | 100% → 94% | n=3 |
+| `authz` on Sonnet 5 | 94% → 89% | n=7 |
+
+**No individual cell here supports a claim.** At these sizes, calling a 30-point effect real
+needs about 32 runs and a 10-point effect about 199. The two Haiku `build-*` results are worth
+watching because they point the same way as a mechanism that would make sense, a small model
+spending its output on the method rather than the thing, but two runs cannot establish it. That
+is a hypothesis for the next sweep, not a finding.
 
 ### Two instruments that were wrong before the results were
 

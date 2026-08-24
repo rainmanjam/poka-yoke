@@ -1,0 +1,134 @@
+[
+ {
+  "id": "audit|agy-gemini-3.1-pro_baseline|run-3|8",
+  "scenario": "audit",
+  "model": "agy-gemini-3.1-pro",
+  "config": "baseline",
+  "assertion": "Ranks money-movement or irreversible findings above cosmetic ones",
+  "primary": false,
+  "codex": true,
+  "agy": true,
+  "response_path": "benchmarks/results/runs/audit/agy-gemini-3.1-pro_baseline/run-3/response.md"
+ },
+ {
+  "id": "data|codex-gpt-5.6-terra_baseline|run-2|3",
+  "scenario": "data",
+  "model": "codex-gpt-5.6-terra",
+  "config": "baseline",
+  "assertion": "Recommends that assertions run before publication rather than after, so bad data cannot reach the dashboard",
+  "primary": true,
+  "codex": true,
+  "agy": false,
+  "response_path": "benchmarks/results/runs/data/codex-gpt-5.6-terra_baseline/run-2/response.md"
+ },
+ {
+  "id": "audit|claude-sonnet-5_baseline|run-4|3",
+  "scenario": "audit",
+  "model": "claude-sonnet-5",
+  "config": "baseline",
+  "assertion": "Flags money being held as a JS number (float) rather than integer minor units",
+  "primary": false,
+  "codex": true,
+  "agy": true,
+  "response_path": "benchmarks/results/runs/audit/claude-sonnet-5_baseline/run-4/response.md"
+ },
+ {
+  "id": "data|claude-sonnet-5_baseline|run-3|6",
+  "scenario": "data",
+  "model": "claude-sonnet-5",
+  "config": "baseline",
+  "assertion": "Treats three weeks of nobody noticing as a detection gap worth its own fix",
+  "primary": false,
+  "codex": true,
+  "agy": true,
+  "response_path": "benchmarks/results/runs/data/claude-sonnet-5_baseline/run-3/response.md"
+ },
+ {
+  "id": "retro|agy-gemini-3.1-pro_baseline|run-3|4",
+  "scenario": "retro",
+  "model": "agy-gemini-3.1-pro",
+  "config": "baseline",
+  "assertion": "Separates the defect from the mistake from the underlying system hazard",
+  "primary": false,
+  "codex": true,
+  "agy": true,
+  "response_path": "benchmarks/results/runs/retro/agy-gemini-3.1-pro_baseline/run-3/response.md"
+ },
+ {
+  "id": "data|claude-haiku-4-5-20251001_baseline|run-3|2",
+  "scenario": "data",
+  "model": "claude-haiku-4-5-20251001",
+  "config": "baseline",
+  "assertion": "Recommends reconciliation against a source of truth, not only shape checks",
+  "primary": false,
+  "codex": false,
+  "agy": true,
+  "response_path": "benchmarks/results/runs/data/claude-haiku-4-5-20251001_baseline/run-3/response.md"
+ },
+ {
+  "id": "design|opus_baseline|run-6|4",
+  "scenario": "design",
+  "model": "opus",
+  "config": "baseline",
+  "assertion": "Provides a single transition function or otherwise constrains how state changes",
+  "primary": true,
+  "codex": false,
+  "agy": false,
+  "response_path": "benchmarks/results/runs/design/opus_baseline/run-6/response.md"
+ },
+ {
+  "id": "retro|claude-haiku-4-5-20251001_baseline|run-1|4",
+  "scenario": "retro",
+  "model": "claude-haiku-4-5-20251001",
+  "config": "baseline",
+  "assertion": "Separates the defect from the mistake from the underlying system hazard",
+  "primary": false,
+  "codex": false,
+  "agy": true,
+  "response_path": "benchmarks/results/runs/retro/claude-haiku-4-5-20251001_baseline/run-1/response.md"
+ },
+ {
+  "id": "ops|claude-haiku-4-5-20251001_baseline|run-1|2",
+  "scenario": "ops",
+  "model": "claude-haiku-4-5-20251001",
+  "config": "baseline",
+  "assertion": "States that dropping the column is irreversible without a backup or restore",
+  "primary": false,
+  "codex": true,
+  "agy": false,
+  "response_path": "benchmarks/results/runs/ops/claude-haiku-4-5-20251001_baseline/run-1/response.md"
+ },
+ {
+  "id": "retro|agy-gemini-3.1-pro_baseline|run-1|4",
+  "scenario": "retro",
+  "model": "agy-gemini-3.1-pro",
+  "config": "baseline",
+  "assertion": "Separates the defect from the mistake from the underlying system hazard",
+  "primary": false,
+  "codex": true,
+  "agy": false,
+  "response_path": "benchmarks/results/runs/retro/agy-gemini-3.1-pro_baseline/run-1/response.md"
+ },
+ {
+  "id": "build-form|fable_baseline|run-1|0",
+  "scenario": "build-form",
+  "model": "fable",
+  "config": "baseline",
+  "assertion": "Produces complete, self-contained working code for the described task",
+  "primary": true,
+  "codex": false,
+  "agy": true,
+  "response_path": "benchmarks/results/runs/build-form/fable_baseline/run-1/response.md"
+ },
+ {
+  "id": "guardrails|fable_baseline|run-1|6",
+  "scenario": "guardrails",
+  "model": "fable",
+  "config": "baseline",
+  "assertion": "Recommends the failure message tell the developer how to fix it",
+  "primary": false,
+  "codex": true,
+  "agy": true,
+  "response_path": "benchmarks/results/runs/guardrails/fable_baseline/run-1/response.md"
+ }
+]

@@ -257,6 +257,224 @@ class TestBadgesMatchTheSupportTiers(unittest.TestCase):
                 f"badge says {product} is benchmarked, but benchmark.json holds no runs "
                 f"for it (has: {sorted(labels)})")
 
+    def test_detector_counts_match_the_code_and_the_catalog(self):
+        """Every number in the README's detector table, derived from its own source.
+
+        Three different counts were in play before this existed: "42 pattern rules across 20
+        hazard shapes" in the README, 28 headings in the catalog, and a rule list whose
+        distinct ids came to 18. All were plausibly true of *something*, none was reconciled,
+        and the README's 20 was simply wrong.
+
+        A count-equals-count test is not enough on its own, which is the point a reviewer
+        raised and it was right: it would happily enshrine a misleading definition. So this
+        checks the RELATIONSHIPS the table asserts, not just the digits. Shapes-with-rules
+        must be a subset of the catalog, on-by-default plus linter-covered must exhaust the
+        rules, and guidance-only must be the remainder. If any of those stops holding, the
+        table is describing a taxonomy that no longer exists.
+        """
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            "detect_hazards", PLUGIN / "scripts" / "detect_hazards.py")
+        dh = importlib.util.module_from_spec(spec)
+        # Register before executing. A frozen dataclass resolves its own __module__ through
+        # sys.modules while the class body runs, so exec_module() on an unregistered module
+        # raises AttributeError from inside dataclasses rather than anywhere near here.
+        sys.modules["detect_hazards"] = dh
+        try:
+            spec.loader.exec_module(dh)
+        finally:
+            sys.modules.pop("detect_hazards", None)
+
+        catalog = (PLUGIN / "references" / "hazard-catalog.md").read_text()
+        catalogued = len(re.findall(r"^### ", catalog, re.M))
+        shapes = {r.id for r in dh.RULES}
+        covered = [r for r in dh.RULES if (r.id, r.name) in dh.COVERED_BY]
+        on_by_default = [r for r in dh.RULES if (r.id, r.name) not in dh.COVERED_BY]
+
+        # NOTE: how many hazard SHAPES the detector reports is owned by
+        # tests/test_detector.py::test_readme_rule_and_shape_counts_are_right, which counts
+        # ids in RULES *plus* ids reported by the AST checks outside the pattern table (C1
+        # and F3). Recomputing it here produced 18 against that test's 20 and broke it: two
+        # tests disagreeing about what a "shape" is would have meant the README could satisfy
+        # one while contradicting the other. This checks only what that test does not.
+        readme = (REPO / "README.md").read_text()
+        m = re.search(r"\*\*The three numbers, and what each counts\.\*\*(.*?)\n\n\*\*Scope",
+                      readme, re.S)
+        self.assertTrue(m, "detector counts table not found; if it moved, this checks nothing")
+        table = m.group(1)
+
+        # The shape count is READ from the table rather than recomputed. Recomputing it here
+        # gave 18 against test_detector.py's 20, because that test also counts the ids
+        # reported by AST checks outside the pattern table (C1, F3), and it is the owner of
+        # that definition. A hardcoded "+2" here would go quietly wrong the day a third AST
+        # check is added: right-looking arithmetic over a stale constant.
+        shape_row = re.search(r"\| Shapes the detector reports \| \*\*(\d+)\*\* \|", table)
+        self.assertTrue(shape_row, "no shape-count row in the detector table")
+        shapes_reported = int(shape_row.group(1))
+        guidance_only = catalogued - shapes_reported
+
+        # Relationships, which is what this test owns. Counts belong to test_detector.py.
+        self.assertEqual(len(covered) + len(on_by_default), len(dh.RULES),
+                         "every rule must be either linter-covered or on by default")
+        self.assertLessEqual(shapes_reported, catalogued,
+                             f"the table claims {shapes_reported} detected shapes against "
+                             f"{catalogued} catalogued; the catalog is meant to be the "
+                             f"superset the skills reason about")
+        cat_row = re.search(r"\| Catalogued hazard shapes \| \*\*(\d+)\*\* \|", table)
+        self.assertTrue(cat_row, "no catalogued-shapes row in the detector table")
+        self.assertEqual(int(cat_row.group(1)), catalogued,
+                         f"table says {cat_row.group(1)} catalogued shapes, the catalog has "
+                         f"{catalogued}")
+        self.assertIn(f"other {guidance_only} need judgement", readme,
+                      f"README should say {guidance_only} shapes are guidance only")
+
+    def test_trade_table_figures_come_from_the_gradings(self):
+        """Every percentage in the README's "What it trades" table must be recomputable.
+
+        That table is the positioning: it claims the skills make responses more constructive
+        and worse at spotting the defect in front of them. Both halves are load-bearing, and
+        the unflattering half is what makes the flattering half credible, so a drifted figure
+        there costs more than a drifted figure in the summary table.
+
+        Rounding is specified here rather than left to the writer. A first attempt at checking
+        these by hand used floor division and reported four of five as wrong by one point,
+        which nearly produced a commit "correcting" four accurate numbers.
+        """
+        readme = (REPO / "README.md").read_text()
+        m = re.search(r"## What it trades\n(.*?)\n---", readme, re.S)
+        self.assertTrue(m, "no 'What it trades' section; if it moved, this probe checks nothing")
+        rows = re.findall(r"^\| ([^|]+?) \| (\d+)% \| \*\*(\d+)%\*\* \|$", m.group(1), re.M)
+        self.assertGreaterEqual(len(rows), 4,
+                                f"parsed {len(rows)} rows from the trade table, expected the "
+                                f"full set; the probe is matching the wrong shape")
+
+        runs = REPO / "benchmarks" / "results" / "runs"
+        if not runs.exists():
+            self.skipTest("no stored runs")
+        CURRENT = {"fable", "opus", "claude-sonnet-5", "claude-haiku-4-5-20251001",
+                   "codex-gpt-5.6-terra", "agy-gemini-3.1-pro"}
+
+        def arm(cell):
+            for suffix in ("baseline", "with_skill"):
+                if cell.endswith("_" + suffix):
+                    return cell[: -(len(suffix) + 1)], suffix
+            return None, None
+
+        tally = {}
+        for g in runs.glob("*/*/*/grading.json"):
+            model, config = arm(g.parts[-3])
+            if model not in CURRENT or config is None:
+                continue
+            for e in json.loads(g.read_text()).get("expectations", []):
+                tally.setdefault(e.get("text", ""), {"baseline": [], "with_skill": []})
+                tally[e["text"]][config].append(bool(e.get("passed")))
+
+        # The table paraphrases each assertion, so match on a distinctive fragment rather
+        # than on equality: the wording in the README is for a reader, not for this test.
+        FRAGMENTS = {
+            "concrete device": "Proposes a concrete device per finding",
+            "bypassable": "Notes that pre-commit is bypassable",
+            "injection vector": "Identifies the raw interpolation",
+            "silently wrong number": "Explains why a silently wrong number",
+        }
+        checked = 0
+        for label, claimed_b, claimed_w in rows:
+            key = next((v for frag, v in FRAGMENTS.items() if frag in label), None)
+            if key is None:
+                continue                      # "Names what the design makes impossible" is a
+                                              # family, covered by its own aggregate elsewhere
+            match = [k for k in tally if k.startswith(key)]
+            self.assertTrue(match, f"README row {label!r} names no assertion in the gradings")
+            d = tally[match[0]]
+            got_b = round(sum(d["baseline"]) * 100 / len(d["baseline"]))
+            got_w = round(sum(d["with_skill"]) * 100 / len(d["with_skill"]))
+            self.assertEqual((int(claimed_b), int(claimed_w)), (got_b, got_w),
+                             f"README trade table says {claimed_b}% -> {claimed_w}% for "
+                             f"{label!r}; the gradings say {got_b}% -> {got_w}%")
+            checked += 1
+        self.assertGreaterEqual(checked, 4,
+                                f"only verified {checked} trade-table rows against the data")
+
+    def test_regression_count_is_stated_against_its_null(self):
+        """A count of negative cells means nothing without the count chance alone produces.
+
+        The README said "Nine of 52 cells regressed" for weeks, and it read as an honest
+        caveat. It was the opposite. Simulating the null of no effect from the real per-cell
+        run counts puts the expected number of negative cells at about 18, so nine is *below*
+        what noise gives: the scarcity of regressions was evidence the effect is consistent,
+        and it was being published as though it were evidence of harm.
+
+        The failure mode is specific and will recur: a modest-sounding number is never
+        challenged, because nobody audits a claim that undersells. So the rule is mechanical.
+        Wherever the README states how many cells regressed, the null has to be on the page
+        with it.
+        """
+        # Normalise before matching. The claim in the NOTE box wraps as "cells came out"
+        # then "> negative", so a regex over raw text matched only the claim that happened to
+        # sit on one line, and the most visible statement in the README was invisible to the
+        # check guarding it. Collapse blockquote markers and newlines first.
+        readme = re.sub(r"\s*\n>?\s*", " ", (REPO / "README.md").read_text())
+        # finditer, not findall + index. The first version looked up each claim's position
+        # with readme.index(), which returns the FIRST occurrence, so every claim was checked
+        # against the same window: stripping the null from the NOTE box left the test green
+        # because the section further down still had one. A checker that cannot fail for the
+        # second instance of the thing it checks is the bug it exists to prevent.
+        claims = list(re.finditer(
+            r"(\w+|\d+) of (?:the )?(\d+) cells (?:came out negative|regressed)", readme))
+        self.assertTrue(claims,
+                        "found no regression-count claim in the README; if the wording moved, "
+                        "this probe is checking nothing and needs updating with it")
+        for m in claims:
+            count, total = m.group(1), m.group(2)
+            window = readme[m.start():m.start() + 600]
+            self.assertRegex(
+                window, r"chance alone|null|noise alone",
+                f"the README says {count} of {total} cells came out negative without naming "
+                f"what chance alone would produce. A regression count published on its own "
+                f"reads as evidence of harm when it is usually evidence of noise.")
+
+    def test_grader_validator_sees_every_arm(self):
+        """The validation sampler must reach every arm on disk, not just the ones its cell
+        parser happens to split correctly.
+
+        It shipped splitting `results/runs/<scenario>/<model>_<config>/` with
+        `cell.rpartition("_")`, which cuts at the LAST underscore. `..._baseline` parsed;
+        `..._with_skill` became model `<model>_with` and config `skill`, failed the
+        known-models test, and was dropped. 97 treatment cells vanished, the sampler drew 60
+        baseline items, printed a success line, and the conclusion drawn from that sample was
+        an artifact of the bug. Half the population was missing and nothing went red.
+
+        Parsing is asserted directly rather than through a drawn sample, so this fails on the
+        bug itself instead of on a statistical shadow of it.
+        """
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            "validate_grader", REPO / "benchmarks" / "validate_grader.py")
+        vg = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(vg)
+
+        for model in ("claude-sonnet-5", "fable", "agy-gemini-3.1-pro", "codex-gpt-5.6-terra"):
+            for cfg in vg.CONFIG_SUFFIXES:
+                got = vg._split_cell(f"{model}_{cfg}")
+                self.assertEqual(got, (model, cfg),
+                                 f"{model}_{cfg} parsed as {got}; a config containing an "
+                                 f"underscore must not be split at the wrong boundary")
+        self.assertIsNone(vg._split_cell("claude-sonnet-5_nonsense"),
+                          "an unknown suffix must be rejected, not guessed at")
+
+        # And the arms the harness can produce must all be parseable, so adding a config to
+        # run.py without teaching the validator about it fails here rather than silently
+        # shrinking the population it samples from.
+        run_src = (REPO / "benchmarks" / "run.py").read_text()
+        m = re.search(r"^CONFIGS = \[(.*?)\]", run_src, re.M | re.S)
+        self.assertTrue(m, "could not find CONFIGS in run.py, is this probe broken?")
+        configs = re.findall(r'"([a-z_]+)"', m.group(1))
+        self.assertTrue(configs, "parsed no configs out of run.py, is this probe broken?")
+        missing = [c for c in configs if c not in vg.CONFIG_SUFFIXES]
+        self.assertEqual(missing, [],
+                         f"run.py produces {missing} but the validation sampler cannot parse "
+                         f"those cells, so it would silently exclude them")
+
     def test_shipped_devices_carry_a_marker(self):
         """A device nobody marked is invisible to the registry that claims to list them all.
 

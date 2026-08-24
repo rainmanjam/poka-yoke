@@ -60,7 +60,26 @@ RESULTS = HERE / "results"
 SKILL_ROUTER = REPO / "plugins/poka-yoke/skills/poka-yoke/SKILL.md"
 PLUGIN_ROOT = REPO / "plugins/poka-yoke"
 
-CONFIGS = ["baseline", "with_skill"]
+# Control arms. `baseline` vs `with_skill` alone cannot separate "this method works" from
+# "any structured methodology in context works", so every published delta was equally
+# consistent with both readings. Each ARM below is a router the model is told to read and
+# follow, exactly as with_skill is, so the mechanism is matched and only the content differs.
+#
+#   with_placebo    real but unrelated quality guidance (naming, cohesion, coupling).
+#                   Isolates the method from the mere presence of a methodology document.
+#   with_defensive  the methodology this project argues against. Turns the central
+#                   rhetorical claim of the video and the README into a measured one.
+#
+# These are NOT shipped with the plugin; they exist only to be beaten, or not.
+ARMS = {
+    "with_skill":     (SKILL_ROUTER, PLUGIN_ROOT),
+    "with_placebo":   (REPO / "benchmarks/controls/clean-code/skills/clean-code/SKILL.md",
+                       REPO / "benchmarks/controls/clean-code"),
+    "with_defensive": (REPO / "benchmarks/controls/defensive/skills/defensive/SKILL.md",
+                       REPO / "benchmarks/controls/defensive"),
+}
+
+CONFIGS = ["baseline", "with_skill", "with_placebo", "with_defensive"]
 
 # The standing matrix. Opus 4.5 and Sonnet 4.5 runs also exist under results/ from an
 # earlier sweep; they are kept as data but are not part of the reported benchmark.
@@ -282,15 +301,23 @@ class Budget:
 BUDGET: Budget | None = None
 PACE = 0.0
 
-SKILL_PREAMBLE = f"""\
-Before answering, read {SKILL_ROUTER}. It is a router skill. Follow its routing to the
-matching sub-skill under {PLUGIN_ROOT}/skills/, read that sub-skill in full, and read any
-reference files it points to. Paths written as ${{CLAUDE_PLUGIN_ROOT}}/ resolve to
-{PLUGIN_ROOT}/. Follow the skill's instructions faithfully, then answer the user.
+def preamble_for(config: str) -> str:
+    """The same instruction for every arm, with only the paths swapped.
 
-The user's message:
+    Wording is shared deliberately. If the treatment preamble said "follow this rigorously"
+    and a control said "consider this", the comparison would measure the preamble rather than
+    the methodology, and nothing downstream would reveal it.
+    """
+    router, root = ARMS[config]
+    return (
+        f"Before answering, read {router}. It is a router skill. Follow its routing to the\n"
+        f"matching sub-skill under {root}/skills/, read that sub-skill in full, and read any\n"
+        f"reference files it points to. Paths written as ${{CLAUDE_PLUGIN_ROOT}}/ resolve to\n"
+        f"{root}/. Follow the skill's instructions faithfully, then answer the user.\n"
+        "\nThe user's message:\n\n"
+    )
 
-"""
+
 
 GRADER_PROMPT = """\
 You are grading {n} independent responses to the same user message against one checklist.
@@ -454,7 +481,7 @@ def do_run(sc: dict, model: str, config: str, n: int) -> str:
               flush=True)
     d.mkdir(parents=True, exist_ok=True)
 
-    prompt = SKILL_PREAMBLE + sc["prompt"] if config == "with_skill" else sc["prompt"]
+    prompt = (preamble_for(config) + sc["prompt"]) if config in ARMS else sc["prompt"]
     out, secs, err = run_cli(prompt, model, "Read,Grep,Glob")
     if err or not out:
         return f"FAIL run   {sc['id']:18} {label(model):10} {config:11} run-{n} ({err or 'empty'})"

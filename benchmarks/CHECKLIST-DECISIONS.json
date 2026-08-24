@@ -1,0 +1,340 @@
+{
+ "note": "Pending checklist changes for the NEXT sweep. NOT applied to scenarios.json: doing so invalidates the 591 stored gradings, which were honestly produced under the current checklist. Apply at the start of the redesigned run, not before.",
+ "measured_effect_of_the_7_drops": {
+  "warning": "removing assertions that pass 100% in BOTH arms strips a constant from both numerators and shrinks the denominator, so every delta grows. Arithmetic, not improvement. Disclose alongside any restated figure.",
+  "delta_change_pp": {
+   "codex": "+18.1 -> +19.0",
+   "haiku": "+14.7 -> +15.6",
+   "fable": "+8.1 -> +8.4",
+   "sonnet": "+8.5 -> +8.7",
+   "agy": "+15.2 -> +15.3",
+   "opus": "+3.3 -> +3.3"
+  }
+ },
+ "decisions": [
+  {
+   "n": 1,
+   "scenario": "authz",
+   "assertion": "Does not conclude the main query paths being scoped means the service is safe",
+   "verdicts": {
+    "me": "REWRITE",
+    "codex": "DROP",
+    "agy": "DROP"
+   },
+   "unanimous": false,
+   "action": "DROP",
+   "rationale": "conceded to both models",
+   "codex_why": "This generic caution against overclaiming is now a baseline competence rather than evidence of skill use.",
+   "agy_why": "Models naturally hedge and rarely conclude a system is completely safe without caveats.",
+   "codex_replacement": "",
+   "agy_replacement": "",
+   "my_replacement": "Names at least one specific path that is still unscoped after the fix"
+  },
+  {
+   "n": 2,
+   "scenario": "build-agent-feature",
+   "assertion": "Bounds cost or retries in code rather than requesting it in the prompt",
+   "verdicts": {
+    "me": "REWRITE",
+    "codex": "REWRITE",
+    "agy": "DROP"
+   },
+   "unanimous": false,
+   "action": "UNDECIDED",
+   "rationale": "three-way split, needs a human call",
+   "codex_why": "Enforceable cost and retry limits are worth measuring, but merely mentioning code-level bounds is too easy.",
+   "agy_why": "Coding models natively provide code implementations for logic like retry bounds rather than just asking for them.",
+   "codex_replacement": "Implements a concrete retry and spend control with a maximum attempt count, bounded backoff, and a hard per-task or per-user cost ceiling that stops execution.",
+   "agy_replacement": "",
+   "my_replacement": "The produced code contains a concrete numeric retry or cost ceiling, not prose about bounding it"
+  },
+  {
+   "n": 3,
+   "scenario": "build-form",
+   "assertion": "Produces actual working component code rather than only a list of recommendations",
+   "verdicts": {
+    "me": "DROP",
+    "codex": "DROP",
+    "agy": "DROP"
+   },
+   "unanimous": true,
+   "action": "DROP",
+   "rationale": "all three agreed",
+   "codex_why": "Producing code when asked to build a form is a basic task-completion expectation, not a skill-specific signal.",
+   "agy_why": "Models instructed to build forms natively output code rather than just high-level advice.",
+   "codex_replacement": "",
+   "agy_replacement": "",
+   "my_replacement": ""
+  },
+  {
+   "n": 4,
+   "scenario": "build-form",
+   "assertion": "Shows the count of affected items before the action is taken",
+   "verdicts": {
+    "me": "REWRITE",
+    "codex": "DROP",
+    "agy": "REWRITE"
+   },
+   "unanimous": false,
+   "action": "UNDECIDED",
+   "rationale": "three-way split, needs a human call",
+   "codex_why": "Showing an affected-item count before bulk action is a common UI convention and adds no observed discrimination.",
+   "agy_why": "The current phrasing is too loose and easily satisfied by generic UI mockups.",
+   "codex_replacement": "",
+   "agy_replacement": "Requires explicit user confirmation of the exact integer count of items being modified before committing the transaction.",
+   "my_replacement": "The confirmation UI renders the affected-item count from state rather than a hardcoded or templated placeholder"
+  },
+  {
+   "n": 5,
+   "scenario": "build-form",
+   "assertion": "Separates the destructive action from the benign one visually or spatially",
+   "verdicts": {
+    "me": "REWRITE",
+    "codex": "DROP",
+    "agy": "REWRITE"
+   },
+   "unanimous": false,
+   "action": "UNDECIDED",
+   "rationale": "three-way split, needs a human call",
+   "codex_why": "Spatially separating destructive controls is standard interface hygiene that competent models already supply unprompted.",
+   "agy_why": "Rendering two standard buttons side-by-side satisfies this; it needs to demand actual friction.",
+   "codex_replacement": "",
+   "agy_replacement": "Implements explicit visual friction for the destructive action, such as a distinct warning color or secondary confirmation step.",
+   "my_replacement": "The destructive control is not the default focus target and is not adjacent to the primary action"
+  },
+  {
+   "n": 6,
+   "scenario": "data",
+   "assertion": "States plainly that the not-empty check is insufficient",
+   "verdicts": {
+    "me": "DROP",
+    "codex": "DROP",
+    "agy": "DROP"
+   },
+   "unanimous": true,
+   "action": "DROP",
+   "rationale": "all three agreed",
+   "codex_why": "Restating that a not-empty check is insufficient is a shallow diagnostic paraphrase and is superseded by the causal assertion in item 7.",
+   "agy_why": "Models will natively critique almost any single validation check as being insufficient.",
+   "codex_replacement": "",
+   "agy_replacement": "",
+   "my_replacement": ""
+  },
+  {
+   "n": 7,
+   "scenario": "data",
+   "assertion": "Identifies the COALESCE to zero as the mechanism that made the failure silent",
+   "verdicts": {
+    "me": "REWRITE",
+    "codex": "KEEP",
+    "agy": "KEEP"
+   },
+   "unanimous": false,
+   "action": "KEEP",
+   "rationale": "both said KEEP and their reason is stronger than mine",
+   "codex_why": "It guards against diagnosing the symptom while missing the specific null-to-zero coercion that makes absent data look valid.",
+   "agy_why": "Guards against a severe regression where models lose the ability to spot specific SQL masking errors.",
+   "codex_replacement": "",
+   "agy_replacement": "",
+   "my_replacement": "Traces the silent-zero to COALESCE without being told which expression is responsible"
+  },
+  {
+   "n": 8,
+   "scenario": "design",
+   "assertion": "Avoids a bag-of-optional-fields interface as the primary recommendation",
+   "verdicts": {
+    "me": "DROP",
+    "codex": "DROP",
+    "agy": "DROP"
+   },
+   "unanimous": true,
+   "action": "DROP",
+   "rationale": "all three agreed",
+   "codex_why": "Avoiding optional-field bags is a design preference whose broad wording does not measure a relevant safety outcome.",
+   "agy_why": "Models natively recommend structured or required fields over loose optional bags.",
+   "codex_replacement": "",
+   "agy_replacement": "",
+   "my_replacement": ""
+  },
+  {
+   "n": 9,
+   "scenario": "guardrails",
+   "assertion": "Does not primarily recommend rewriting CONTRIBUTING.md, more reminders, or more discipline",
+   "verdicts": {
+    "me": "DROP",
+    "codex": "REWRITE",
+    "agy": "DROP"
+   },
+   "unanimous": false,
+   "action": "UNDECIDED",
+   "rationale": "three-way split, needs a human call",
+   "codex_why": "Rejecting reminders is worthwhile, but a negative recommendation test does not establish that the response supplied a device.",
+   "agy_why": "Models naturally prefer automated technical guardrails over relying on human discipline or documentation.",
+   "codex_replacement": "Proposes a concrete automated control that prevents or rejects the failure without relying on contributor memory, and identifies where it runs.",
+   "agy_replacement": "",
+   "my_replacement": ""
+  },
+  {
+   "n": 10,
+   "scenario": "llm",
+   "assertion": "States that system prompt instructions are not a reliable control on model behaviour",
+   "verdicts": {
+    "me": "DROP",
+    "codex": "DROP",
+    "agy": "DROP"
+   },
+   "unanimous": true,
+   "action": "DROP",
+   "rationale": "all three agreed",
+   "codex_why": "The limitation of system-prompt control is widely understood baseline knowledge and the assertion only asks for its recital.",
+   "agy_why": "Models are heavily fine-tuned to state that prompt instructions are bypassable and unreliable.",
+   "codex_replacement": "",
+   "agy_replacement": "",
+   "my_replacement": ""
+  },
+  {
+   "n": 11,
+   "scenario": "llm",
+   "assertion": "Recommends validating the refund amount server-side against the actual order",
+   "verdicts": {
+    "me": "REWRITE",
+    "codex": "KEEP",
+    "agy": "DROP"
+   },
+   "unanimous": false,
+   "action": "UNDECIDED",
+   "rationale": "three-way split, needs a human call",
+   "codex_why": "It is a direct guard against an authorization flaw that could permit arbitrary refund amounts and cause financial loss.",
+   "agy_why": "Server-side validation is a standard security baseline that all competent models recommend unprompted.",
+   "codex_replacement": "",
+   "agy_replacement": "",
+   "my_replacement": "Specifies which field is authoritative and where the comparison happens, not merely that it should be server-side"
+  },
+  {
+   "n": 12,
+   "scenario": "llm",
+   "assertion": "Does not primarily recommend changes to the prompt wording",
+   "verdicts": {
+    "me": "DROP",
+    "codex": "DROP",
+    "agy": "REWRITE"
+   },
+   "unanimous": false,
+   "action": "UNDECIDED",
+   "rationale": "three-way split, needs a human call",
+   "codex_why": "This is redundant with item 9 and only checks that the response avoids an obviously weak primary remedy.",
+   "agy_why": "It is too easy to satisfy by merely mentioning other things alongside prompt wording.",
+   "codex_replacement": "",
+   "agy_replacement": "Explicitly rejects prompt engineering as a security boundary and proposes a concrete architectural mitigation.",
+   "my_replacement": ""
+  },
+  {
+   "n": 13,
+   "scenario": "retro",
+   "assertion": "States plainly that the recent-charge lookup is not sufficient",
+   "verdicts": {
+    "me": "DROP",
+    "codex": "REWRITE",
+    "agy": "DROP"
+   },
+   "unanimous": false,
+   "action": "UNDECIDED",
+   "rationale": "three-way split, needs a human call",
+   "codex_why": "The lookup race is important, but simply declaring it insufficient does not demonstrate a concurrency-safe remedy.",
+   "agy_why": "Models natively expand on why a single check is insufficient in retrospective contexts.",
+   "codex_replacement": "Explains the race between lookup and charge, then requires an idempotency key or transactional uniqueness constraint that makes duplicate charging impossible.",
+   "agy_replacement": "",
+   "my_replacement": ""
+  },
+  {
+   "n": 14,
+   "scenario": "retro",
+   "assertion": "Locates the hazard as a system property rather than as a worker bug or human error",
+   "verdicts": {
+    "me": "DROP",
+    "codex": "REWRITE",
+    "agy": "DROP"
+   },
+   "unanimous": false,
+   "action": "UNDECIDED",
+   "rationale": "three-way split, needs a human call",
+   "codex_why": "A systems framing is useful, but this phrasing is satisfied by generic blame-free language without identifying a control failure.",
+   "agy_why": "Blameless post-mortem language blaming systems over people is heavily baked into model alignment.",
+   "codex_replacement": "Identifies the failed system control or incentive that allowed the incident and proposes a mechanism that prevents recurrence without relying on worker judgment.",
+   "agy_replacement": "",
+   "my_replacement": ""
+  },
+  {
+   "n": 15,
+   "scenario": "retro",
+   "assertion": "Attributes cause to the system, not to any person",
+   "verdicts": {
+    "me": "DROP",
+    "codex": "DROP",
+    "agy": "DROP"
+   },
+   "unanimous": true,
+   "action": "DROP",
+   "rationale": "all three agreed",
+   "codex_why": "This is a redundant, weaker restatement of item 14 that measures tone rather than diagnosis or prevention.",
+   "agy_why": "Redundant with assertion 14 as models naturally adopt blameless language.",
+   "codex_replacement": "",
+   "agy_replacement": "",
+   "my_replacement": ""
+  },
+  {
+   "n": 16,
+   "scenario": "ux",
+   "assertion": "Pushes back on the 'are you sure?' modal as the primary fix",
+   "verdicts": {
+    "me": "DROP",
+    "codex": "DROP",
+    "agy": "REWRITE"
+   },
+   "unanimous": false,
+   "action": "UNDECIDED",
+   "rationale": "three-way split, needs a human call",
+   "codex_why": "Rejecting a confirmation modal is a familiar UX trope and does not by itself demonstrate a safer interaction design.",
+   "agy_why": "Pushing back is too vague a threshold; the model should be required to provide a concrete alternative.",
+   "codex_replacement": "",
+   "agy_replacement": "Proposes a specific, frictionless alternative to a confirmation modal, such as undo functionality.",
+   "my_replacement": ""
+  },
+  {
+   "n": 17,
+   "scenario": "ux",
+   "assertion": "Recommends reversibility (soft delete with a retention window) as the strongest option",
+   "verdicts": {
+    "me": "REWRITE",
+    "codex": "REWRITE",
+    "agy": "DROP"
+   },
+   "unanimous": false,
+   "action": "DROP",
+   "rationale": "conceded to both models",
+   "codex_why": "Reversibility is worth measuring, but naming soft delete is an easily echoed prescription rather than proof of a usable recovery design.",
+   "agy_why": "Soft delete is the ubiquitous textbook answer for data deletion UX that models default to.",
+   "codex_replacement": "Designs a reversible deletion flow with an undo or restore path, retention period, access rules, and a final-deletion boundary.",
+   "agy_replacement": "",
+   "my_replacement": "Specifies the retention window and what happens to referencing rows during it"
+  }
+ ],
+ "duplicates_found": [
+  {
+   "pair": [
+    14,
+    15
+   ],
+   "scenario": "retro",
+   "note": "both test blameless attribution; I flagged this, 15 is a unanimous DROP which resolves it"
+  },
+  {
+   "pair": [
+    9,
+    12
+   ],
+   "scenario": "guardrails/llm",
+   "note": "codex independently flagged 12 as redundant with 9"
+  }
+ ]
+}

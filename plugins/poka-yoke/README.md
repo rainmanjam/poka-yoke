@@ -1,7 +1,12 @@
 # poka-yoke
 
-Mistake-proofing for software. Shigeo Shingo's method applied to code, process, interfaces,
-infrastructure, and AI.
+Mistake-proofing for software: a dependency-free hazard scanner, installable pre-commit and CI
+devices, and 11 skills that apply the same method while you design. Shigeo Shingo's method
+applied to code, process, interfaces, infrastructure, and AI.
+
+The scanner is the part that does not decay, because it is not in the model's context at all.
+The skills are instructions, and instructions degrade as a session fills; invoke a mode early
+and fresh for a design decision rather than assuming it still shapes behaviour hours in.
 
 See the [repository README](../../README.md) for the method, installation, and rationale, and
 [docs/install.md](../../docs/install.md) for the 19 supported runtimes and their tiers.
