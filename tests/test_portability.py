@@ -417,16 +417,25 @@ class TestBenchmarkClaimsMatchTheData(unittest.TestCase):
         # a probe keyed to the old phrasing found nothing to check. It failed loudly only
         # because of the assertTrue below; without that it would have passed while verifying
         # zero claims, which is the exact shape of a check that cannot fail.
+        # The name list used to be hardcoded to the four Claude models, with an
+        # assertEqual(len, 4) pinning it there. Codex and agy were then added to the
+        # aggregate and quoted in their own table, and the probe went on checking four rows
+        # and passing, so the two largest gains in the suite (+16.8 and +13.5 pp) were
+        # unverified prose. Match any bolded row and take the expected set from the data, so
+        # a seventh runtime cannot be quoted without being checked.
         claimed = {m[0]: (float(m[1]), float(m[2])) for m in re.findall(
-            r"\|\s*\*\*(Fable 5|Opus 5|Sonnet 5|Haiku 4\.5)\*\*\s*\|\s*([\d.]+)%[^|]*\|"
+            r"\|\s*\*\*([A-Za-z][A-Za-z0-9 .\-]*)\*\*\s*\|\s*([\d.]+)%[^|]*\|"
             r"\s*([\d.]+)%[^|]*\|", readme)}
         self.assertTrue(claimed, "no benchmark figures found in README, is the probe broken?")
-        self.assertEqual(len(claimed), 4,
-                         f"README should quote all four models; found {sorted(claimed)}")
 
         actual = {v["label"]: (round(v["baseline"]["pass_rate"] * 100, 1),
                                round(v["with_skill"]["pass_rate"] * 100, 1))
                   for v in data["by_model"].values()}
+        unquoted = sorted(set(actual) - set(claimed))
+        self.assertEqual(
+            unquoted, [],
+            f"benchmark.json holds runs for {unquoted} but the README quotes no figures for "
+            f"them, so those numbers are unguarded; found rows for {sorted(claimed)}")
         for label, (b, s) in claimed.items():
             self.assertIn(label, actual, f"README quotes {label}, absent from benchmark.json")
             self.assertAlmostEqual(b, actual[label][0], delta=0.1,
