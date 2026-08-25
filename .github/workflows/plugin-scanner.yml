@@ -1,0 +1,49 @@
+# poka-yoke: blocks a listing claim we no longer meet [control]
+#
+# awesome-codex-plugins requires that submitted plugins score at least 80 on the HOL
+# Plugin Scanner, carry no critical or high findings, AND that the scanner runs in the
+# submitting repository's own Actions. The third condition is the interesting one: it
+# refuses to accept a number you generated once on your laptop, because that number ages
+# the moment you push. Being listed there is a standing claim, so this is the device that
+# keeps the claim true rather than a screenshot of it having once been true.
+#
+# Separate from validate.yml on purpose. This installs a third-party package from PyPI, so
+# it can fail for reasons that have nothing to do with our code. Keeping it out of the
+# required set means a PyPI outage does not block a merge, and it is still loud when the
+# score genuinely drops.
+name: plugin scanner
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    # Weekly, because the score can fall without anybody touching this repository: the
+    # scanner's own rules change. A gate that only runs on our commits cannot see that.
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    name: plugin scanner score
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.12"
+
+      - name: Install the scanner
+        run: pip install --quiet plugin-scanner
+
+      - name: Report the score
+        run: plugin-scanner scan . --format text
+
+      # The thresholds are theirs, not ours, and they are enforced by the scanner's own
+      # flags rather than by parsing its output. Grepping a human-readable report for a
+      # number is how a gate quietly stops matching the rule it claims to enforce.
+      - name: Meet the awesome-codex-plugins listing bar
+        run: plugin-scanner scan . --min-score 80 --fail-on-severity high --format text

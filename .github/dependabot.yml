@@ -1,0 +1,14 @@
+# The detector is standard-library-only on purpose, so this repository has no runtime
+# dependencies to update. What it does have is GitHub Actions, which are pinned to commit
+# SHAs (scripts/check_action_pins.py enforces that). A pinned SHA is a device: it cannot
+# silently become a different action. But it also cannot silently become a *patched* one,
+# so something has to tell us when an upgrade exists. That is this file.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: chore

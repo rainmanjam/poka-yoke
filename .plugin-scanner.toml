@@ -1,0 +1,34 @@
+# Scope the scan to what actually ships as the plugin.
+#
+# This is path scoping, not rule suppression. Every rule stays enabled everywhere the
+# plugin lives, which is the part that matters: a real secret committed under
+# plugins/poka-yoke/ still fails the scan. The alternative the scanner offers is a
+# baseline file, which disables a rule ID globally — that would have switched off
+# HARDCODED_SECRET for the whole repository to silence one line of recorded model output,
+# and a rule that cannot fire is not a rule.
+#
+# Why each path is here:
+#
+#   benchmarks/results/  Stored model outputs, kept as evidence. One graded response assigns
+#                        a placeholder credential to a client constructor inside a code
+#                        sample the model wrote. It is evidence, not a credential. Editing
+#                        recorded benchmark output so a scanner is happy would corrupt the
+#                        record the benchmark exists to provide. (Spelling the literal out
+#                        here is what tripped the scanner on this very file, twice.)
+#   video/               Playwright tooling for the demo. `page.$eval(...)` matches a naive
+#                        /eval\(/ pattern. It is a selector call, not dynamic execution.
+#   private/             Drafts and notes. Gitignored, so absent from a fresh clone anyway.
+#
+# None of these are installed by anyone. Keep this list short, keep it to directories that
+# genuinely do not ship, and remember: if a real secret ever lands in one of them, this
+# file is what hid it.
+[scanner]
+# fnmatch patterns, not directory prefixes. `*` crosses separators here, so
+# "benchmarks/results/*" covers the whole subtree. A bare "benchmarks/results/" matches
+# nothing at all and looks exactly like a working exclusion, which is how this config
+# spent its first version silently doing nothing.
+ignore_paths = [
+  "benchmarks/results/*",
+  "video/*",
+  "private/*",
+]

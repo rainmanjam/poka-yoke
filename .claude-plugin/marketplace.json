@@ -51,5 +51,6 @@
         "zero defects"
       ]
     }
-  ]
+  ],
+  "strict": true
 }
