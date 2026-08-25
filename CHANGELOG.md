@@ -6,6 +6,63 @@ versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.1.1], 2026-08-25
+
+### Changed
+
+- **The regression count is now published against the null it should always have carried.**
+  The README, the video script and every draft post described "nine of 52 cells regressed" as
+  a caveat. Simulating the null of no effect from the real per-cell run counts puts the
+  expected number of negative cells at about 18, with a 95% range of 12 to 25, so nine is
+  *below* what noise alone produces. The count was evidence the effect is consistent and it
+  was being published as though it were evidence of harm. A modest-sounding number is never
+  challenged, which is how it survived a documentation review that corrected 101 other claims.
+- **No per-cell figure is presented as callable any more.** Calling a 30-point effect real
+  needs about 32 runs per cell and a 10-point effect about 199; the matrix holds 1 to 7. The
+  four named cells keep their place as where to look, with their run counts beside them.
+- **Repositioned around the measured mechanism.** The README leads with what the skills
+  actually change (models name what a design forecloses 42% of the time unprompted, 81% with
+  the skills) rather than with a category claim, and the hazard detector now precedes the
+  skills, because the project's own argument is that instructions degrade and devices do not.
+- **The cost is published beside the benefit.** A new section reports the two behaviours that
+  got *worse*: spotting a raw SQL interpolation fell from 92% to 69%, and explaining why a
+  silently wrong number beats a failed pipeline fell from 54% to 31%.
+- **Scope is stated wherever a figure appears**: every run is the first turn of a fresh
+  session, the baseline is *no skill* rather than a different methodology, and blind grading
+  controls bias rather than accuracy.
+
+### Fixed
+
+- **A claim contradicted by this repository's own data has been retired.** The script framed
+  agents as reaching for documentation and discipline; the `guardrails` assertion "does not
+  primarily recommend rewriting CONTRIBUTING.md, more reminders, or more discipline" passes
+  **26 of 26 at baseline**, across six model families with no skill loaded.
+- **A stale figure that would have been spoken on camera.** The Sonnet 5 baseline was
+  written as 80.3% (+8.1 pp) where the committed aggregate holds 79.8% → 88.5% (+8.6 pp).
+  Written in arrow form here, the retired number would trip the very device that caught it,
+  which is the correct behaviour: a probe cannot tell a cited mistake from a live claim.
+- **The headroom correlation now states its scope.** It is r = −0.52 across the 52 Claude
+  cells and r = −0.59 across all 77; two documents quoted different figures without saying
+  which set each described.
+- **`HasTable` renamed to `HasFrom`** in the TypeScript typestate example. The flag tracks
+  whether `.from()` has been called, not whether a table exists.
+
+### Added
+
+- **Grader validation tooling** (`benchmarks/validate_grader.py`). Two independent
+  cross-vendor graders agree with the primary grader 86% and 88% of the time (Cohen's kappa
+  0.73 and 0.77) across 60 stratified verdicts covering both arms and all six runtimes. That
+  establishes consistency; accuracy remains unmeasured, and `benchmarks/GRADER-VALIDATION.md`
+  records a case where all four graders read the same response and all four were wrong.
+- **Control arms for the benchmark** (`benchmarks/controls/`), so a future sweep can
+  distinguish "this method works" from "any structured methodology in context works". Five of
+  ten placebo routes are authored; nothing has been run yet, and `benchmarks/arms.lock.json`
+  records the size asymmetry rather than describing it.
+- **Four new devices in CI**: the regression count must be published with its null, the
+  README's trade-table figures must be recomputable from the stored gradings, the detector's
+  three different counts must reconcile against the code and the catalog, and the validation
+  sampler must reach every arm on disk.
+
 ### Changed
 
 - **Benchmark re-measured across six runtimes: 591 blind-graded runs, thirteen scenarios,
