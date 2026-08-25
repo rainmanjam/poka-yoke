@@ -381,8 +381,26 @@ class TestBadgesMatchTheSupportTiers(unittest.TestCase):
         for label, claimed_b, claimed_w in rows:
             key = next((v for frag, v in FRAGMENTS.items() if frag in label), None)
             if key is None:
-                continue                      # "Names what the design makes impossible" is a
-                                              # family, covered by its own aggregate elsewhere
+                # This used to `continue`, with a comment saying the family row was "covered
+                # by its own aggregate elsewhere". There was no elsewhere. The single
+                # most-quoted figure in the project — the README headline, and the same
+                # sentence in the OpenAI bundle, the awesome-copilot submission, Reddit and
+                # Show HN — was the one row this test declined to check, and it did not
+                # reconcile with the gradings under any population: an exhaustive search over
+                # subsets of scenarios found nothing yielding the published 42% -> 81%.
+                fam = [k for k in tally if "impossible" in k.lower()]
+                self.assertTrue(fam, "no assertion in the gradings mentions what a design "
+                                     "makes impossible; the family probe is broken")
+                fb = [v for k in fam for v in tally[k]["baseline"]]
+                fw = [v for k in fam for v in tally[k]["with_skill"]]
+                got_b = round(sum(fb) * 100 / len(fb))
+                got_w = round(sum(fw) * 100 / len(fw))
+                self.assertEqual((int(claimed_b), int(claimed_w)), (got_b, got_w),
+                                 f"README says {claimed_b}% -> {claimed_w}% for {label!r}; "
+                                 f"the {len(fam)} assertions in that family across "
+                                 f"{len(fb) + len(fw)} verdicts say {got_b}% -> {got_w}%")
+                checked += 1
+                continue
             match = [k for k in tally if k.startswith(key)]
             self.assertTrue(match, f"README row {label!r} names no assertion in the gradings")
             d = tally[match[0]]

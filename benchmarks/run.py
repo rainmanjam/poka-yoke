@@ -689,23 +689,45 @@ def aggregate(scenarios: list[dict], models: list[str], runs: int) -> dict:
         # column 13, and the delta subtracted two different suites. The published row did
         # not even add up (88.5 - 78.7 = 9.8, printed as +8.8) and nothing objected.
         # poka-yoke: averages both configurations over the same scenarios, so a delta cannot subtract two different suites [control]
+        # Pair over the arms that actually produced runs, not over every arm the harness
+        # knows about. CONFIGS grew from two to four when the control arms were written, and
+        # since neither control has ever been run, `all(... for c in CONFIGS)` made `paired`
+        # empty for every model. Nothing noticed, because nobody re-aggregated between the
+        # expansion and this review — the committed artifact was built when CONFIGS was two.
+        # The first re-aggregation silently emptied every model row.
+        # poka-yoke: pairs on the arms that have runs, so adding an unrun arm cannot empty every row [control]
+        present = [c for c in CONFIGS
+                   if any(f"{model}_{c}" in cells for cells in res["scenarios"].values())]
+        if not present:
+            continue
         paired = sorted(s for s, cells in res["scenarios"].items()
-                        if all(f"{model}_{c}" in cells for c in CONFIGS))
+                        if all(f"{model}_{c}" in cells for c in present))
+        res["by_model"][model]["arms_present"] = present
         blocked = sorted(s for (s, m) in NOT_RUNNABLE if m == model)
         if blocked:
             res["by_model"][model]["not_runnable"] = blocked
         res["by_model"][model]["paired_scenarios"] = len(paired)
-        for config in CONFIGS:
+        for config in present:
             key = f"{model}_{config}"
             vals = [res["scenarios"][s][key] for s in paired]
             if vals:
                 pr = [v["pass_rate"] for v in vals]
+                # `scenarios` counts cells; `runs` counts the runs behind them. Without the
+                # second number a row built from thirteen single-run cells is indistinguishable
+                # from one built from thirteen seven-run cells, and this is the table people
+                # actually read. Carrying the resolution beside the number is cheaper than
+                # expecting a reader to go and find it.
+                # poka-yoke: publishes how many runs a model row rests on, so a thin cell cannot read like a thick one [detection]
+                cell_ns = [v["n"] for v in vals]
                 res["by_model"][model][config] = {
                     "pass_rate": round(st.mean(pr), 4),
                     "stdev": round(st.stdev(pr), 4) if len(pr) > 1 else 0.0,
                     "seconds": round(st.mean([v["seconds"] for v in vals if v["seconds"]]), 1),
                     "words": round(st.mean([v["words"] for v in vals if v["words"]])),
                     "scenarios": len(vals),
+                    "runs": sum(cell_ns),
+                    "min_cell_n": min(cell_ns),
+                    "median_cell_n": round(st.median(cell_ns), 1),
                 }
         b, w = res["by_model"][model].get("baseline"), res["by_model"][model].get("with_skill")
         if b and w:
@@ -821,6 +843,9 @@ def main() -> int:
     ap.add_argument("--workers", type=int, default=4)
     ap.add_argument("--pace", type=float, default=1.0, help="seconds between calls")
     ap.add_argument("--max-calls", type=int, default=400, help="HARD ceiling; harness stops")
+    ap.add_argument("--allow-narrower", action="store_true",
+                    help="permit overwriting the published aggregate with one covering fewer "
+                         "models or scenarios (refused by default)")
     ap.add_argument("--grade-only", action="store_true")
     ap.add_argument("--aggregate-only", action="store_true")
     ap.add_argument("--dry-run", action="store_true", help="report the call budget, do nothing")
@@ -930,12 +955,29 @@ def main() -> int:
             was = json.loads(prior.read_text())
             lost_m = set(was.get("by_model", {})) - set(res.get("by_model", {}))
             lost_s = set(was.get("scenarios", {})) - set(res.get("scenarios", {}))
-            # poka-yoke: warns when an aggregate drops models or scenarios, so a partial result cannot quietly replace a full one [warning]
+            # poka-yoke: refuses to overwrite a wider aggregate with a narrower one, so a partial result cannot replace a full one [control]
+            #
+            # This was a ::warning:: printed to stdout, and CLAUDE.md says in as many words
+            # that it "went unread three times in one session" because the output was piped
+            # through tail. It then happened a fourth time, during the review that produced
+            # this change: a bare `--aggregate-only` zeroed every published pass rate and the
+            # warning scrolled past above the tail window. A notice you can pipe away is not
+            # a device. Refusing the write is.
             if lost_m or lost_s:
-                print(f"\n::warning:: this aggregate is NARROWER than the one it replaces.")
-                if lost_m: print(f"   models dropped:    {', '.join(sorted(lost_m))}")
-                if lost_s: print(f"   scenarios dropped: {', '.join(sorted(lost_s))}")
-                print("   Re-run with --aggregate-only over the full matrix before committing.")
+                if not a.allow_narrower:
+                    print("\n✗ REFUSING TO WRITE: this aggregate is NARROWER than the one it "
+                          "replaces.", file=sys.stderr)
+                    if lost_m:
+                        print(f"   models dropped:    {', '.join(sorted(lost_m))}", file=sys.stderr)
+                    if lost_s:
+                        print(f"   scenarios dropped: {', '.join(sorted(lost_s))}", file=sys.stderr)
+                    print("\n   benchmark.json and benchmark.md were NOT modified.\n"
+                          "   Re-run --aggregate-only over the full matrix, or pass\n"
+                          "   --allow-narrower if you genuinely mean to publish a subset.",
+                          file=sys.stderr)
+                    return 2
+                print("\n::warning:: writing a NARROWER aggregate because --allow-narrower "
+                      "was passed.", file=sys.stderr)
         except (json.JSONDecodeError, OSError):
             pass
     RESULTS.mkdir(parents=True, exist_ok=True)

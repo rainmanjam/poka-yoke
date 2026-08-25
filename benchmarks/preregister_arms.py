@@ -42,16 +42,34 @@ def _fingerprint(root: pathlib.Path) -> dict:
     reference file is as much a part of the treatment as the router is. Hashing only the
     entry point would let the actual content change while the lock stayed green.
     """
-    files = sorted(p for p in root.rglob("*.md") if p.is_file())
+    # What a run can actually reach, not just markdown. The treatment arm bundles Python
+    # scripts a skill can invoke; hashing only *.md meant those could change under a green
+    # --check, and only the treatment arm has them, so the blind spot ran one way — in favour
+    # of the arm this benchmark exists to test.
+    #
+    # Packaging is excluded on purpose. Platform manifests carry the version and change on
+    # every release, so including them would make the lock fail on each bump for a reason
+    # that has nothing to do with the treatment. A check that goes red for irrelevant reasons
+    # is one people learn to re-register past without reading.
+    REACHABLE = {".md", ".py", ".sh"}
+    files = sorted(f for f in root.rglob("*")
+                   if f.is_file()
+                   and f.suffix in REACHABLE
+                   and "__pycache__" not in f.parts
+                   and not any(part.endswith("-plugin") or part == ".claude-plugin"
+                               for part in f.parts))
     if not files:
-        raise SystemExit(f"✗ no markdown under {root}. An arm with no content is not an arm.")
+        raise SystemExit(f"✗ no files under {root}. An arm with no content is not an arm.")
     entries, total_words = {}, 0
     for f in files:
-        text = f.read_text(encoding="utf-8")
-        words = len(text.split())
+        raw = f.read_bytes()
+        try:
+            words = len(raw.decode("utf-8").split())
+        except UnicodeDecodeError:
+            words = 0                      # a binary asset still gets hashed, just not counted
         total_words += words
         entries[str(f.relative_to(REPO))] = {
-            "sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(),
+            "sha256": hashlib.sha256(raw).hexdigest(),
             "words": words,
         }
     return {"files": entries, "file_count": len(files), "total_words": total_words}
@@ -146,8 +164,31 @@ def cmd_check() -> int:
               "  re-register and discard those runs. Keeping both is how a tuned control gets\n"
               "  published as a pre-registered one.", file=sys.stderr)
         return 1
+    # Content being unchanged is not the same as the arm being runnable, and the lock looked
+    # green while `with_defensive` had 2 of 10 routes and `with_placebo` 5. A sweep would have
+    # routed half its scenarios to a missing sub-skill and measured the absence of
+    # instructions rather than the presence of a different methodology — then reported it as
+    # a control result.
+    treat = new["with_skill"]["per_route_words"]
+    unready = []
+    for name, a in sorted(new.items()):
+        missing = [m for m in MODES if not a["per_route_words"].get(m)]
+        if missing:
+            unready.append(f"{name}: {len(missing)} of {len(MODES)} routes have no SKILL.md "
+                           f"({', '.join(missing)})")
+    if unready:
+        print("✗ arms are registered but not runnable:", file=sys.stderr)
+        for u in unready:
+            print(f"    {u}", file=sys.stderr)
+        print("\n  Every route the treatment answers must be answerable by each control, or the\n"
+              "  comparison measures missing instructions rather than a different methodology.\n"
+              "  Author the missing routes, or remove the arm rather than leaving it half-built.",
+              file=sys.stderr)
+        return 1
+
     n_files = sum(a["file_count"] for a in new.values())
-    print(f"✓ all {len(new)} arms unchanged ({n_files} files)")
+    print(f"✓ all {len(new)} arms unchanged and runnable "
+          f"({n_files} files, {len(MODES)} routes each)")
     return 0
 
 

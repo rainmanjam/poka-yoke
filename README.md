@@ -7,10 +7,14 @@
 
 > **An agent will tell you what to fix. It will rarely tell you what its fix makes impossible.**
 >
-> Unprompted, models close a design by naming what it forecloses **42%** of the time. With
-> these skills, **81%**, measured across 80 graded verdicts and six model families. That one
+> Unprompted, models close a design by naming what it forecloses **45%** of the time. With
+> these skills, **80%**, measured across 132 graded verdicts and six model families. That one
 > habit is most of what this does, and it is the difference between advice you agree with and
 > a constraint you can rely on.
+>
+> The average conceals where the effect lives. Asked squarely to design an interface, models
+> already do this 77% of the time unprompted and the skills add eleven points. The large gains
+> are in the scenarios where nobody asked for a design review — see the table below.
 >
 > A dependency-free **hazard scanner** for TypeScript, Python, Go, Rust and SQL; installable
 > **pre-commit / CI / lint / hook devices**; and **11 skills** that apply the same method while
@@ -31,7 +35,7 @@
 
 [![skills](https://img.shields.io/badge/skills-11-8250df)](#whats-inside)
 [![dependencies](https://img.shields.io/badge/dependencies-zero-2ea043)](#requirements)
-[![devices](https://img.shields.io/badge/devices%20in%20CI-30-0969da)](docs/poka-yoke/registry.md)
+[![devices](https://img.shields.io/badge/devices%20in%20CI-32-0969da)](docs/poka-yoke/registry.md)
 [![license](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 <p align="center">
@@ -78,7 +82,20 @@ noticing the specific defect already in front of them:
 | Behaviour | Baseline | With skill |
 |---|---:|---:|
 | Proposes a concrete device per finding, not "add validation" | 62% | **100%** |
-| Names what the design makes impossible | 42% | **81%** |
+| Names what the design makes impossible | 45% | **80%** |
+
+Where that one behaviour is measured, broken out. The family mean above averages a
+task where models already do it with three where they largely do not, which flatters the
+easy case and buries the interesting one:
+
+| Scenario | What the model was asked for | Baseline | With skill | n per arm |
+|---|---|---:|---:|---:|
+| `build-endpoint` | Write an endpoint | 14% | **79%** | 14 |
+| `build-agent-feature` | Ship an agent feature | 33% | **83%** | 12 |
+| `build-form` | Build a form | 29% | **64%** | 14 |
+| `design` | Design an interface | 77% | **88%** | 26 |
+
+The skills matter most when nobody asked for a design review.
 | Notes `pre-commit` is bypassable and must be backed by CI | 35% | **92%** |
 | Identifies a raw SQL interpolation as an injection vector | 92% | **69%** |
 | Explains why a silently wrong number beats a failed pipeline | 54% | **31%** |

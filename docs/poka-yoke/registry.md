@@ -34,8 +34,10 @@ device that has never fired because it is doing its job.
 | `benchmarks/run.py:521` | regrades when the checklist changed, so a score cannot be reported against a superseded answer key | Control |
 | `benchmarks/run.py:659` | aggregates every run on disk, so a summary cannot be built from a subset of what was measured | Control |
 | `benchmarks/run.py:691` | averages both configurations over the same scenarios, so a delta cannot subtract two different suites | Control |
-| `benchmarks/run.py:751` | names any column short of the full suite, so a smaller scenario set cannot pass as a comparable one | Warning |
-| `benchmarks/run.py:933` | warns when an aggregate drops models or scenarios, so a partial result cannot quietly replace a full one | Warning |
+| `benchmarks/run.py:698` | pairs on the arms that have runs, so adding an unrun arm cannot empty every row | Control |
+| `benchmarks/run.py:720` | publishes how many runs a model row rests on, so a thin cell cannot read like a thick one | Detection |
+| `benchmarks/run.py:773` | names any column short of the full suite, so a smaller scenario set cannot pass as a comparable one | Warning |
+| `benchmarks/run.py:958` | refuses to overwrite a wider aggregate with a narrower one, so a partial result cannot replace a full one | Control |
 | `plugins/poka-yoke/assets/devices/claude-hooks/guard_dangerous_commands.py:88` | blocks irreversible agent actions before they execute | Control |
 | `plugins/poka-yoke/assets/devices/github-actions/poka-yoke-gates.yml:3` | refuses to merge a change that fails a gate, once the jobs are marked required | Control |
 | `plugins/poka-yoke/assets/devices/pre-commit/.pre-commit-config.yaml:3` | stops a mistake reaching a commit, at the cost of being bypassable | Warning |
