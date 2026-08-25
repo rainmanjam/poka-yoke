@@ -39,4 +39,5 @@ device that has never fired because it is doing its job.
 | `plugins/poka-yoke/assets/devices/claude-hooks/guard_dangerous_commands.py:88` | blocks irreversible agent actions before they execute | Control |
 | `plugins/poka-yoke/assets/devices/github-actions/poka-yoke-gates.yml:3` | refuses to merge a change that fails a gate, once the jobs are marked required | Control |
 | `plugins/poka-yoke/assets/devices/pre-commit/.pre-commit-config.yaml:3` | stops a mistake reaching a commit, at the cost of being bypassable | Warning |
-| `plugins/poka-yoke/scripts/detect_hazards.py:513` | an empty scan reports itself instead of looking like a clean bill of health | Control |
+| `plugins/poka-yoke/scripts/detect_hazards.py:243` | keyword-only, so the id and the name cannot be passed transposed | Control |
+| `plugins/poka-yoke/scripts/detect_hazards.py:536` | an empty scan reports itself instead of looking like a clean bill of health | Control |
