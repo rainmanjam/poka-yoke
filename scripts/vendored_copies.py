@@ -14,11 +14,17 @@ So record what was shipped, and let a check fail when the source moves away from
                                    # still matches. Catches edits made on their side.
     vendored_copies.py --update    # re-record after a refresh PR has been merged downstream
 
-Only the body is compared. The downstream copy carries its own frontmatter (their `category`,
-`risk`, `source_repo` fields), so comparing whole files would fail on the first line every
-time and the check would be discarded as noise within a week. A check that cries wolf gets
-switched off, and a check that is switched off is worse than none, because the absence is
-invisible.
+Only the body is compared, and the two sides are hashed separately.
+
+`source_sha256` is our body as it stood when the copy was shipped; `downstream_sha256` is
+their body as shipped. They are allowed to differ, because a directory may legitimately
+require a section ours does not carry, and the alternative is editing a benchmarked skill to
+suit a listing, which this project explicitly forbids without evidence. Two hashes keep both
+questions answerable: have *we* moved since shipping, and have *they* edited their copy.
+
+Frontmatter is excluded either way. Ours and theirs differ by design, so comparing whole
+files would go red on the first line every time, and a check that cries wolf gets switched
+off. A switched-off check is worse than none, because the absence is invisible.
 
 The lock file is input, so it is treated as input: every path is confined to this repository
 and every URL is confined to an allowlisted host before it is used. A device that fetches
@@ -159,11 +165,11 @@ def _check_source(copy: dict, out: Findings) -> str | None:
         return None
     out.checked += 1
     now = digest(src.read_text(encoding="utf-8"))
-    if now != copy["shipped_sha256"]:
+    if now != copy["source_sha256"]:
         out.problems.append(
             f"{copy['source_path']} has changed since it was vendored into "
             f"{copy['downstream_repo']}.\n"
-            f"      shipped {copy['shipped_sha256'][:12]}  now {now[:12]}\n"
+            f"      shipped {copy['source_sha256'][:12]}  now {now[:12]}\n"
             f"      Their copy is stale: {copy['downstream_url']}\n"
             f"      Open a refresh PR there, then run --update to re-record.")
     return now
@@ -186,7 +192,7 @@ def _check_downstream(copy: dict, out: Findings) -> None:
             f"{copy['raw_url']}\n"
             f"      Could not be fetched. Network, or they moved or deleted it. Either "
             f"way this copy is UNVERIFIED, not confirmed.")
-    elif digest(raw) != copy["shipped_sha256"]:
+    elif digest(raw) != copy["downstream_sha256"]:
         out.problems.append(
             f"{copy['downstream_repo']} has edited their copy of {copy['source_path']} "
             f"since it was shipped.\n"
@@ -255,9 +261,9 @@ def cmd_update() -> int:
         if not src.is_file():
             continue
         now = digest(src.read_text(encoding="utf-8"))
-        if now != copy["shipped_sha256"]:
-            changed.append((copy["source_path"], copy["shipped_sha256"], now))
-            copy["shipped_sha256"] = now
+        if now != copy["source_sha256"]:
+            changed.append((copy["source_path"], copy["source_sha256"], now))
+            copy["source_sha256"] = now
     LOCK.write_text(json.dumps(reg, indent=1, sort_keys=True) + "\n")
     if changed:
         print("re-recorded:")
