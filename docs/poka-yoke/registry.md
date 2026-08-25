@@ -18,9 +18,10 @@ device that has never fired because it is doing its job.
 | `.github/workflows/validate.yml:122` | blocks a description too long to survive listing truncation | Control |
 | `.github/workflows/validate.yml:123` | blocks a skill that no README row documents | Control |
 | `.github/workflows/validate.yml:127` | blocks a skill that only works on one runtime | Control |
-| `.github/workflows/validate.yml:138` | blocks shipping a device template that does not work | Control |
-| `.github/workflows/validate.yml:173` | blocks a skill recommending a linter rule that does not exist | Control |
-| `.github/workflows/validate.yml:221` | blocks a release whose documented install command does not work | Control |
+| `.github/workflows/validate.yml:137` | announces a vendored copy that our source has moved away from | Warning |
+| `.github/workflows/validate.yml:148` | blocks shipping a device template that does not work | Control |
+| `.github/workflows/validate.yml:183` | blocks a skill recommending a linter rule that does not exist | Control |
+| `.github/workflows/validate.yml:231` | blocks a release whose documented install command does not work | Control |
 | `.github/workflows/validate.yml:34` | blocks any of the 21 derived files drifting from plugin.json | Control |
 | `.github/workflows/validate.yml:64` | blocks a device registry that has drifted from the code | Control |
 | `.github/workflows/validate.yml:78` | blocks a skill with no name/description or over the size budget | Control |

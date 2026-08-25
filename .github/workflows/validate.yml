@@ -134,6 +134,16 @@ jobs:
       - name: Skills stay portable across every supported runtime
         run: python3 tests/test_portability.py
 
+      # poka-yoke: announces a vendored copy that our source has moved away from [warning]
+      #
+      # Some directories take a copy of a skill rather than linking to it. The copy is a
+      # fork the moment we edit ours, and nothing downstream says so. Offline on purpose:
+      # a check that needs a third party to be reachable fails for reasons that are not
+      # ours, gets marked flaky, and then gets ignored. Use --online deliberately to catch
+      # edits made on their side.
+      - name: Vendored copies have not silently forked
+        run: python3 scripts/vendored_copies.py --check
+
   templates:
     # poka-yoke: blocks shipping a device template that does not work [control]
     #

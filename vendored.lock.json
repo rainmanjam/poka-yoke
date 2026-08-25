@@ -1,0 +1,17 @@
+{
+ "copies": [
+  {
+   "downstream_path": "skills/poka-yoke/SKILL.md",
+   "downstream_repo": "sickn33/agentic-awesome-skills",
+   "downstream_state": "pending",
+   "downstream_url": "https://github.com/sickn33/agentic-awesome-skills/blob/main/skills/poka-yoke/SKILL.md",
+   "raw_url": "https://raw.githubusercontent.com/sickn33/agentic-awesome-skills/main/skills/poka-yoke/SKILL.md",
+   "shipped_from_tag": "v0.1.2",
+   "shipped_on": "2026-08-25",
+   "shipped_sha256": "45ceccdeaf48d46172b55cdb80154d69f9558af1c8d704360a1075c7b5b1fe4e",
+   "source_path": "plugins/poka-yoke/skills/poka-yoke/SKILL.md",
+   "why": "45k-star catalogue that vendors rather than links. Real reach, but the copy has no sync mechanism of its own, so this lock is the mechanism."
+  }
+ ],
+ "note": "Skills copied into third-party repositories, and the hash of the body that was shipped. A copy is a fork the moment we edit ours, and nothing downstream announces it. See scripts/vendored_copies.py."
+}
