@@ -36,8 +36,23 @@ jobs:
         with:
           python-version: "3.12"
 
+      # Pinned and wheel-only, deliberately. An unpinned `pip install` in CI runs whatever
+      # is on PyPI today, and without --only-binary a source distribution executes its
+      # setup script during install. That is arbitrary third-party code running in a job
+      # that has a checkout of this repository. Being the mistake-proofing project and
+      # taking that risk to check a score would be an odd trade.
+      #
+      # The version is bumped deliberately, so a scanner update cannot change our gate
+      # without a commit saying so. Dependabot does not watch pip here; the weekly cron is
+      # what surfaces a genuine score change.
+      #
+      # --only-binary is scoped to plugin-scanner rather than :all: because :all: cannot
+      # resolve: the pinned litellm==1.93.0 has no wheel on PyPI (the index goes 1.92.2 ->
+      # 1.93.2). Transitive source distributions therefore still run their setup scripts.
+      # That is a real residual risk, stated rather than hidden, and it is why this job is
+      # not in the required set.
       - name: Install the scanner
-        run: pip install --quiet plugin-scanner
+        run: pip install --quiet --only-binary plugin-scanner plugin-scanner==2.2.122
 
       - name: Report the score
         run: plugin-scanner scan . --format text
