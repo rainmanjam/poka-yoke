@@ -1,3 +1,19 @@
+# Two scanner findings are left open on purpose, both because satisfying them breaks the
+# thing the file is actually for:
+#
+#   marketplace.json valid / Marketplace sources are safe
+#     The scanner wants source.source="local" with source.path. Making that change and
+#     running the documented install gives: "This plugin uses a source type your Claude Code
+#     version does not support."
+#
+#   Claude marketplace must define boolean "strict"
+#     Adding it makes `claude plugin validate . --strict` fail with
+#     "Unknown field 'strict'. Claude Code ignores it at load time."
+#
+# Both were tried, both broke the primary runtime, both were reverted. Neither is a high
+# finding, and the score clears the listing bar without them. A listing is worth less than
+# an install that works.
+
 # Scope the scan to what actually ships as the plugin.
 #
 # This is path scoping, not rule suppression. Every rule stays enabled everywhere the
