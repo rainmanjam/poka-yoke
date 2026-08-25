@@ -183,8 +183,22 @@ def _check_downstream(copy: dict, out: Findings) -> None:
     match", having compared nothing, which is the failure this whole script is about.
     """
     if copy.get("downstream_state") == "pending":
-        out.pending.append(f"{copy['downstream_repo']} — not merged downstream yet, "
-                           f"nothing to compare")
+        # "Pending" is a claim about the world that stops being true without telling you.
+        # Leaving a human to flip it is the rung-zero move this whole script argues against,
+        # so try the fetch anyway: if it succeeds, the copy has landed and the lock is stale.
+        landed = fetch(copy["raw_url"])
+        if landed is None:
+            out.pending.append(f"{copy['downstream_repo']} — not merged downstream yet, "
+                               f"nothing to compare")
+        else:
+            matches = digest(landed) == copy["downstream_sha256"]
+            out.problems.append(
+                f"{copy['downstream_repo']} has MERGED the copy, but the lock still says "
+                f"pending.\n"
+                f"      The downstream body {'matches' if matches else 'DOES NOT match'} "
+                f"what was recorded.\n"
+                f"      Set downstream_state to \"live\" so --online starts verifying it"
+                + ("." if matches else ", after reviewing what they changed."))
         return
     raw = fetch(copy["raw_url"])
     if raw is None:
