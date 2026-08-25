@@ -30,7 +30,7 @@ python3 scripts/sync_platform_manifests.py
 git diff --stat
 ```
 
-You should see twelve files change: the one you edited and the eleven the script rewrote. If
+You should see thirteen files change: the one you edited and the twelve the script rewrote. If
 you see one, you edited the wrong file. The whole point is that no manifest is updated by
 hand.
 

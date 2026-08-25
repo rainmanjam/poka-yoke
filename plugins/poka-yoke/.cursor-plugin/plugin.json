@@ -2,7 +2,7 @@
   "name": "poka-yoke",
   "displayName": "Poka-Yoke",
   "description": "Mistake-proof your code, your pipeline, and your agents.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": {
     "name": "rainmanjam",
     "url": "https://github.com/rainmanjam"
