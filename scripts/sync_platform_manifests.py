@@ -29,6 +29,10 @@ ROOT = Path(__file__).resolve().parent.parent
 PLUGIN = ROOT / "plugins" / "poka-yoke"
 SOURCE = PLUGIN / ".claude-plugin" / "plugin.json"
 
+# Plugin-relative, because both marketplaces resolve these against the plugin root.
+LOGO_512 = "./assets/brand/logo-512.png"
+LOGO_256 = "./assets/brand/logo-256.png"
+
 # Where the skills live, relative to each manifest that names them.
 SKILLS_FROM_PLUGIN = "./skills/"
 
@@ -86,6 +90,15 @@ def build(src: dict) -> dict[Path, str]:
         ],
         "websiteURL": home,
     }
+    # Same for the Codex listing surface: interface.logo and interface.composerIcon were
+    # added by hand to a zip and would have been lost on the next build. brandColor is the
+    # andon amber darkened to clear OpenAI's 2:1 contrast floor against white (#E7C15F
+    # measures 1.72:1 and was rejected).
+    codex.setdefault("interface", {}).update({
+        "logo": LOGO_512,
+        "composerIcon": LOGO_256,
+        "brandColor": "#A67C00",
+    })
     out[PLUGIN / ".codex-plugin" / "plugin.json"] = j(codex)
 
     # --- Cursor --------------------------------------------------------------
@@ -101,6 +114,10 @@ def build(src: dict) -> dict[Path, str]:
         "keywords": kw,
         "skills": SKILLS_FROM_PLUGIN,
     }
+    # Cursor's submission checklist wants a logo committed to the repo and referenced by a
+    # relative path. The brand mark lived only in docs/ and in a zip built by hand, so every
+    # generated bundle silently lost it. Generated here instead, from files inside the plugin.
+    cursor["logo"] = LOGO_512
     out[PLUGIN / ".cursor-plugin" / "plugin.json"] = j(cursor)
 
     # --- Runtimes that read a plain plugin.json --------------------------------

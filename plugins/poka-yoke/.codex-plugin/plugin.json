@@ -52,6 +52,9 @@
       "Audit this module for mistakes that are possible.",
       "Design this API so the wrong call cannot be written."
     ],
-    "websiteURL": "https://github.com/rainmanjam/poka-yoke"
+    "websiteURL": "https://github.com/rainmanjam/poka-yoke",
+    "logo": "./assets/brand/logo-512.png",
+    "composerIcon": "./assets/brand/logo-256.png",
+    "brandColor": "#A67C00"
   }
 }

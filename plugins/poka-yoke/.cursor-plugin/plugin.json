@@ -36,5 +36,6 @@
     "type-safety",
     "zero defects"
   ],
-  "skills": "./skills/"
+  "skills": "./skills/",
+  "logo": "./assets/brand/logo-512.png"
 }
