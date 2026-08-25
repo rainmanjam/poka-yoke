@@ -32,7 +32,10 @@ def scan(filename: str, source: str, all_rules: bool = False) -> set[str]:
     with tempfile.TemporaryDirectory() as td:
         p = Path(td) / filename
         p.write_text(source)
-        cmd = [sys.executable, str(DETECTOR), "--paths", str(p), "--json"]
+        # --fail-on none: this helper inspects findings, it does not gate on them. Without
+        # it every rule test would raise CalledProcessError now that findings exit 1, which
+        # is the correct behaviour for a linter and the wrong behaviour for an inspector.
+        cmd = [sys.executable, str(DETECTOR), "--paths", str(p), "--json", "--fail-on", "none"]
         if all_rules:
             cmd.append("--all")
         r = subprocess.run(cmd, capture_output=True, text=True, check=True)
@@ -156,8 +159,11 @@ class TestEmptyScanIsNotAnAllClear(unittest.TestCase):
     four of them contained no source files at all. A tool that cannot tell you it did
     nothing is worse than no tool, because it manufactures confidence."""
 
-    def _run(self, *paths):
-        cmd = [sys.executable, str(DETECTOR), "--paths", *paths, "--json"]
+    def _run(self, *paths, extra=()):
+        # `extra` is separated from `paths` deliberately: folding flags into *paths sends
+        # them to --paths, where "--fail-on" becomes a filename and the test silently
+        # measures something else.
+        cmd = [sys.executable, str(DETECTOR), "--paths", *paths, "--json", *extra]
         r = subprocess.run(cmd, capture_output=True, text=True)
         return r.returncode, json.loads(r.stdout)
 
@@ -173,7 +179,14 @@ class TestEmptyScanIsNotAnAllClear(unittest.TestCase):
         self.assertEqual(0, out["files_scanned"])
 
     def test_real_scan_reports_how_many_files_it_read(self):
-        code, out = self._run(str(DETECTOR))
+        """files_scanned is what distinguishes a clean scan from an empty one.
+
+        This class is about that distinction, not about the gate, so it asks for no gating.
+        The detector does contain low and medium findings of its own; asserting exit 0 here
+        would quietly require the file to stay finding-free, which is a different test and
+        one this class does not mean to make.
+        """
+        code, out = self._run(str(DETECTOR), extra=("--fail-on", "none"))
         self.assertEqual(0, code)
         self.assertEqual(1, out["files_scanned"])
 
@@ -340,6 +353,87 @@ class TestGuardHook(unittest.TestCase):
         r = subprocess.run([sys.executable, str(GUARD)], input="not json",
                            capture_output=True, text=True)
         self.assertEqual(0, r.returncode)
+
+
+class TestTheGateCanActuallyFail(unittest.TestCase):
+    """The exit code is the whole product, and for a long time it was always 0.
+
+    `main()` ended in a bare `return 0`, so every gate built on this script was decorative:
+    the shipped pre-commit hook (whose own comment promises "new violations can't be added"),
+    the shipped GitHub Actions template, and this repository's own "Detector runs clean" step.
+    All three printed high-severity findings and went green.
+
+    These tests plant a hazard and require the exit code to change. A gate nobody has proven
+    can go red is a rumour, and this one was a rumour for its entire existence.
+    """
+
+    HAZARDS = (
+        "def transfer(src: str, dst: str, amount: float) -> None:\n"
+        "    try:\n"
+        "        do_it(src, dst, amount)\n"
+        "    except Exception:\n"
+        "        pass\n"
+        "\n"
+        "def wipe(db):\n"
+        "    db.delete_many()\n"
+    )
+
+    def _run(self, *args, cwd=None):
+        return subprocess.run([sys.executable, str(DETECTOR), *args],
+                              capture_output=True, text=True, cwd=cwd)
+
+    def test_findings_make_the_exit_code_non_zero(self):
+        with tempfile.TemporaryDirectory() as d:
+            (Path(d) / "bad.py").write_text(self.HAZARDS)
+            r = self._run("--paths", d)
+            self.assertIn("high", r.stdout)
+            self.assertEqual(1, r.returncode,
+                             "the detector printed findings and exited 0; every gate built "
+                             "on it is decorative")
+
+    def test_clean_code_still_exits_zero(self):
+        with tempfile.TemporaryDirectory() as d:
+            # Deliberately boring, and deliberately not two adjacent same-type parameters, which is
+            # a C1 hazard and made the first version of this test fail against itself.
+            (Path(d) / "fine.py").write_text("def double(value: int) -> int:\n    return value * 2\n")
+            r = self._run("--paths", d)
+            self.assertEqual(0, r.returncode, r.stdout + r.stderr)
+
+    def test_fail_on_none_reports_without_gating(self):
+        """The escape hatch has to work, or people will stop running it at all."""
+        with tempfile.TemporaryDirectory() as d:
+            (Path(d) / "bad.py").write_text(self.HAZARDS)
+            r = self._run("--paths", d, "--fail-on", "none")
+            self.assertIn("high", r.stdout)
+            self.assertEqual(0, r.returncode)
+
+    def test_fail_on_high_ignores_lower_severities(self):
+        """Otherwise --fail-on is just a rename of the exit code."""
+        with tempfile.TemporaryDirectory() as d:
+            (Path(d) / "bad.py").write_text(self.HAZARDS)
+            findings = json.loads(self._run("--paths", d, "--json", "--fail-on", "none").stdout)
+            sevs = {f["severity"] for f in findings["findings"]}
+            if sevs == {"high"}:
+                self.skipTest("fixture yields only high findings; nothing to discriminate")
+            r = self._run("--paths", d, "--fail-on", "high")
+            self.assertEqual(1 if "high" in sevs else 0, r.returncode)
+
+    def test_git_failure_is_not_reported_as_a_clean_tree(self):
+        """--diff outside a repository used to print a hint and exit 0.
+
+        Interactively the hint is enough. In a pre-commit hook or a CI step only the exit
+        code is read, so a misconfigured checkout passed for ever.
+        """
+        with tempfile.TemporaryDirectory() as d:
+            r = self._run("--diff", cwd=d)
+            self.assertEqual(2, r.returncode,
+                             "git could not answer and the detector reported success")
+            self.assertIn("NOT an all-clear", r.stderr)
+
+    def test_the_detector_is_clean_against_itself(self):
+        """The repo's own CI step. Now that it can fail, it has to actually pass."""
+        r = self._run("--paths", str(REPO / "plugins"), "--severity", "high")
+        self.assertEqual(0, r.returncode, r.stdout + r.stderr)
 
 
 if __name__ == "__main__":

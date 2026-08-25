@@ -240,7 +240,8 @@ COVERED_BY: dict[tuple[str, str], str] = {
 }
 
 
-def covered(rule_id: str, name: str) -> str:
+# poka-yoke: keyword-only, so the id and the name cannot be passed transposed [control]
+def covered(*, rule_id: str, name: str) -> str:
     return COVERED_BY.get((rule_id, name), "")
 
 
@@ -325,12 +326,25 @@ SKIP_DIRS = {
 }
 
 
+class GitUnavailable(RuntimeError):
+    """git could not answer the question asked of it.
+
+    Previously any git failure became an empty string, which the caller could not tell from
+    "the tree is clean". A detector that reports a clean bill of health because git is broken
+    is the exact failure this file's own rules exist to catch.
+    """
+
+
 def git(*args: str, cwd: Path) -> str:
     try:
         r = subprocess.run(["git", *args], cwd=cwd, capture_output=True, text=True, timeout=30)
-        return r.stdout if r.returncode == 0 else ""
-    except (subprocess.SubprocessError, FileNotFoundError):
-        return ""
+    except (subprocess.SubprocessError, FileNotFoundError) as exc:
+        raise GitUnavailable(f"could not run git {' '.join(args)}: {exc}") from exc
+    if r.returncode != 0:
+        detail = (r.stderr or r.stdout or "").strip().splitlines()
+        raise GitUnavailable(f"git {' '.join(args)} exited {r.returncode}"
+                             + (f": {detail[0]}" if detail else ""))
+    return r.stdout
 
 
 def changed_files_and_lines(cwd: Path, mode: str, since: str | None):
@@ -406,7 +420,7 @@ def scan_file(path: Path, only_lines: set[int] | None) -> list[dict]:
         for rule in RULES:
             if ext not in rule.exts:
                 continue
-            if not INCLUDE_COVERED and covered(rule.id, rule.name):
+            if not INCLUDE_COVERED and covered(rule_id=rule.id, name=rule.name):
                 continue
             if rule.negate and (rule.negate.search(line) or rule.negate.search(str(path))):
                 continue
@@ -422,7 +436,7 @@ def scan_file(path: Path, only_lines: set[int] | None) -> list[dict]:
 
     if ext in PY:
         for f in python_ast_findings(path, source):
-            if not INCLUDE_COVERED and covered(f["id"], f["name"]):
+            if not INCLUDE_COVERED and covered(rule_id=f["id"], name=f["name"]):
                 continue
             if not only_lines or f["line"] in only_lines:
                 findings.append(f)
@@ -497,6 +511,15 @@ def main() -> int:
     src.add_argument("--paths", nargs="+", metavar="PATH", help="scan these files or directories")
     ap.add_argument("--severity", choices=["high", "medium", "low"], default="low",
                     help="minimum severity to report (default: low)")
+    # Until this existed the script ended in a bare `return 0`, so every gate built on it was
+    # decorative: the shipped pre-commit hook, the shipped CI template and this repo's own
+    # "Detector runs clean" step all reported success while printing high-severity findings.
+    # A linter that cannot fail is a linter nobody has to satisfy.
+    ap.add_argument("--fail-on", choices=["high", "medium", "low", "none"], default="low",
+                    metavar="SEVERITY",
+                    help="exit non-zero when a finding of at least this severity is reported "
+                         "(default: low, i.e. any reported finding). Use 'none' to report "
+                         "without gating.")
     ap.add_argument("--id", nargs="+", metavar="ID",
                     help="only report these hazard IDs (e.g. --id C1 F2 M2)")
     ap.add_argument("--all", action="store_true", dest="include_covered",
@@ -534,7 +557,18 @@ def main() -> int:
         scope = {"staged": "staged changes",
                  "since": f"changes since {args.since}",
                  "diff": "uncommitted changes"}[mode]
-        changed = changed_files_and_lines(repo, mode, args.since)
+        try:
+            changed = changed_files_and_lines(repo, mode, args.since)
+        except GitUnavailable as exc:
+            # Exit 2, the same code --paths uses for "scanned nothing". Reporting a clean
+            # tree because git is broken is worse than reporting nothing at all: a
+            # pre-commit hook or CI gate reads only the exit code.
+            msg = (f"Could not determine what changed: {exc}\n"
+                   f"This is NOT an all-clear. Use --paths to scan explicitly.")
+            print(json.dumps({"scope": scope, "files_scanned": 0, "count": 0,
+                              "findings": [], "error": str(exc)}, indent=2)
+                  if args.json else msg, file=sys.stdout if args.json else sys.stderr)
+            return 2
         if not changed:
             msg = ("No changed files found. The tree may be clean and have no recent commits, "
                    "or this may not be a git repository.\nUse --paths to scan explicitly, "
@@ -567,6 +601,18 @@ def main() -> int:
             print(f"\nNot checked here, {n_suppressed} further hazard rules are covered "
                   f"better by {', '.join(tools)}.\nEnable those rather than relying on this: "
                   f"see assets/devices/lint/. Use --all to run them anyway.")
+
+    if args.fail_on != "none":
+        rank = {"high": 3, "medium": 2, "low": 1}
+        threshold = rank[args.fail_on]
+        gating = [f for f in findings if rank.get(f.get("severity", "low"), 1) >= threshold]
+        if gating:
+            worst = max(rank.get(f.get("severity", "low"), 1) for f in gating)
+            name = {3: "high", 2: "medium", 1: "low"}[worst]
+            if not args.json:
+                print(f"\n{len(gating)} finding(s) at or above --fail-on={args.fail_on} "
+                      f"(worst: {name}). Exiting 1.", file=sys.stderr)
+            return 1
 
     return 0
 
