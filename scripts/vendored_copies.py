@@ -47,6 +47,10 @@ REPO = pathlib.Path(__file__).resolve().parent.parent
 LOCK = REPO / "vendored.lock.json"
 TIMEOUT = 20
 
+# A SKILL.md is tens of kilobytes. Reading without a ceiling means whatever the server sends
+# is bought into memory, which this repository's own detector flags as F7 Unbounded read.
+MAX_FETCH_BYTES = 1 << 20  # 1 MiB
+
 # Downstream copies live on GitHub. Anything else in the lock is a mistake or an attack,
 # and either way this script should not be the thing that fetches it.
 ALLOWED_HOSTS = frozenset({"raw.githubusercontent.com"})
@@ -56,8 +60,14 @@ class LockError(Exception):
     """The lock file asked for something outside what this script is allowed to touch."""
 
 
-# One path segment: letters, digits, dot, dash, underscore. No separators, no "..".
-SEGMENT = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]*")
+# One path segment. A leading dot is allowed, because `.claude-plugin/plugin.json` and
+# `.github/workflows/x.yml` are ordinary paths in this repository and the first version
+# rejected them with "is not a plain name" — an error that is accurate about what it did and
+# misleading about why, which sends the reader looking for a bug in the lock file.
+#
+# The negative lookahead is what keeps the traversal guarantee: "." and ".." are refused
+# outright, so no combination of segments can climb out of the repository.
+SEGMENT = re.compile(r"(?!\.{1,2}$)\.?[A-Za-z0-9][A-Za-z0-9._-]*")
 
 
 def safe_source_path(rel: str) -> pathlib.Path:
@@ -135,7 +145,15 @@ def fetch(url: str) -> str | None:
     req = urllib.request.Request(checked, headers={"User-Agent": "poka-yoke-vendored-check"})
     try:
         with urllib.request.urlopen(req, timeout=TIMEOUT) as resp:  # noqa: S310 - scheme and host validated above
-            return resp.read().decode("utf-8")
+            # Read one byte past the ceiling so an oversized body is detectable rather than
+            # silently truncated into something that would hash differently and be reported
+            # as drift.
+            body = resp.read(MAX_FETCH_BYTES + 1)
+        if len(body) > MAX_FETCH_BYTES:
+            print(f"  ! {url} returned more than {MAX_FETCH_BYTES} bytes; refusing to read it",
+                  file=sys.stderr)
+            return None
+        return body.decode("utf-8")
     except OSError:
         return None
 
@@ -264,29 +282,72 @@ def cmd_check(online: bool) -> int:
 
 
 def cmd_update() -> int:
+    """Re-record a copy after a downstream refresh has actually merged.
+
+    The first version rewrote `source_sha256` and nothing else. `downstream_sha256` was read
+    in two places and written in none, so the first time anyone followed the instruction this
+    script prints — "open a refresh PR there, then run --update to re-record" — the downstream
+    hash stayed at its original value and `--online` reported "they have edited their copy"
+    for ever after. The docstring at the top of this file says a check that cries wolf gets
+    switched off; that is how it would have started.
+
+    So the two sides are re-recorded together, from the copy that is actually published. A
+    successful fetch is also proof the copy has landed, which is what flips `downstream_state`
+    off "pending" — the flip used to be a hand edit to JSON, which is rung zero sitting inside
+    a device built to argue against rung zero.
+    """
     reg = load()
-    changed = []
-    for copy in reg.get("copies", []):
+    copies = reg.get("copies", [])
+    if not copies:
+        print("no vendored copies recorded; nothing to update")
+        return 0
+
+    changed, failed = [], []
+    for copy in copies:
         try:
             src = safe_source_path(copy["source_path"])
         except LockError as exc:
             print(f"✗ {exc}", file=sys.stderr)
             return 2
         if not src.is_file():
+            failed.append(f"{copy['source_path']} is missing; refusing to re-record it")
             continue
-        now = digest(src.read_text(encoding="utf-8"))
-        if now != copy["source_sha256"]:
-            changed.append((copy["source_path"], copy["source_sha256"], now))
-            copy["source_sha256"] = now
+
+        raw = fetch(copy["raw_url"])
+        if raw is None:
+            # Recording our side alone would assert the two are in step when the downstream
+            # half was never read. A half-written lock is worse than an unwritten one,
+            # because the next --online believes it.
+            failed.append(f"{copy['downstream_repo']}: could not fetch {copy['raw_url']}. "
+                          f"Nothing re-recorded for this copy.")
+            continue
+
+        before = (copy.get("source_sha256"), copy.get("downstream_sha256"),
+                  copy.get("downstream_state"))
+        copy["source_sha256"] = digest(src.read_text(encoding="utf-8"))
+        copy["downstream_sha256"] = digest(raw)
+        copy["downstream_state"] = "live"
+        if (copy["source_sha256"], copy["downstream_sha256"], copy["downstream_state"]) != before:
+            changed.append(copy)
+
+    if failed:
+        print("✗ nothing was written:", file=sys.stderr)
+        for f in failed:
+            print(f"    {f}", file=sys.stderr)
+        return 2
+
     LOCK.write_text(json.dumps(reg, indent=1, sort_keys=True) + "\n")
     if changed:
         print("re-recorded:")
-        for path, old, new in changed:
-            print(f"    {path}  {old[:12]} -> {new[:12]}")
-        print("\nOnly run this AFTER the downstream refresh has actually merged. Running "
-              "it first is how the check gets quietly disarmed.")
+        for copy in changed:
+            print(f"    {copy['downstream_repo']}")
+            print(f"      source     {copy['source_sha256'][:12]}")
+            print(f"      downstream {copy['downstream_sha256'][:12]}")
+            print(f"      state      {copy['downstream_state']}")
+        print("\nOnly run this AFTER the downstream refresh has actually merged. Running it "
+              "first records their OLD body as current and disarms the comparison.")
     else:
-        print("nothing to update; every recorded hash already matches")
+        print("nothing to update; both hashes already match what is published")
     return 0
 
 
