@@ -4,7 +4,19 @@ Baseline vs with-skill, blind-graded against pre-written assertions.
 
 All 591 runs answered the scenario prompts currently in the repository.
 
-> **`audit` was not runnable on agy.** the audit skill runs the bundled detector, and agy in print mode refuses to execute a command in EVERY permission mode it offers. Tested: --mode plan and --mode accept-edits both fail with 'permission check failed', and --sandbox denies reads as well. Only --dangerously-skip-permissions executes, and it grants writes too, verified against a canary file, which it overwrote. There is no exec-without-write setting, so the read-only guarantee the other five columns carry cannot be kept while running this skill. That column therefore covers 12 scenarios, not 13; its baseline and with-skill means are still averaged over the same set as each other.
+> **`audit` was not runnable on agy.** the audit skill runs the bundled detector, and agy in print mode refuses to execute a command in EVERY permission mode it offers. Tested: --mode plan and --mode accept-edits both fail with 'permission check failed', and --sandbox denies reads as well. Only --dangerously-skip-permissions executes, and it grants writes too, verified against a canary file, which it overwrote. There is no exec-without-write setting, so the read-only guarantee the other five columns carry cannot be kept while running this skill. That column therefore covers 12 scenarios, not 14; its baseline and with-skill means are still averaged over the same set as each other.
+
+> **Fable 5 is missing `agent-guardrails`, `audit`, `authz`, `build-agent-feature`, `build-endpoint`, `build-form`, `data`, `design`, `guardrails`, `llm`, `ops`, `retro`, `router-nonsoftware`, `ux`.** Those cells were lost to repeated API rate limits and have not been re-collected. The column covers 13 of 14 scenarios; both of its arms are averaged over that same set, so its delta is like-for-like, but it is not directly comparable to a full column.
+
+> **Opus 5 is missing `agent-guardrails`, `audit`, `authz`, `build-agent-feature`, `build-endpoint`, `build-form`, `data`, `design`, `guardrails`, `llm`, `ops`, `retro`, `router-nonsoftware`, `ux`.** Those cells were lost to repeated API rate limits and have not been re-collected. The column covers 13 of 14 scenarios; both of its arms are averaged over that same set, so its delta is like-for-like, but it is not directly comparable to a full column.
+
+> **Sonnet 5 is missing `agent-guardrails`, `audit`, `authz`, `build-agent-feature`, `build-endpoint`, `build-form`, `data`, `design`, `guardrails`, `llm`, `ops`, `retro`, `router-nonsoftware`, `ux`.** Those cells were lost to repeated API rate limits and have not been re-collected. The column covers 13 of 14 scenarios; both of its arms are averaged over that same set, so its delta is like-for-like, but it is not directly comparable to a full column.
+
+> **Haiku 4.5 is missing `agent-guardrails`, `audit`, `authz`, `build-agent-feature`, `build-endpoint`, `build-form`, `data`, `design`, `guardrails`, `llm`, `ops`, `retro`, `router-nonsoftware`, `ux`.** Those cells were lost to repeated API rate limits and have not been re-collected. The column covers 13 of 14 scenarios; both of its arms are averaged over that same set, so its delta is like-for-like, but it is not directly comparable to a full column.
+
+> **Codex is missing `agent-guardrails`, `audit`, `authz`, `build-agent-feature`, `build-endpoint`, `build-form`, `data`, `design`, `guardrails`, `llm`, `ops`, `retro`, `router-nonsoftware`, `ux`.** Those cells were lost to repeated API rate limits and have not been re-collected. The column covers 13 of 14 scenarios; both of its arms are averaged over that same set, so its delta is like-for-like, but it is not directly comparable to a full column.
+
+> **agy is missing `agent-guardrails`, `authz`, `build-agent-feature`, `build-endpoint`, `build-form`, `data`, `design`, `guardrails`, `llm`, `ops`, `retro`, `router-nonsoftware`, `ux`.** Those cells were lost to repeated API rate limits and have not been re-collected. The column covers 12 of 14 scenarios; both of its arms are averaged over that same set, so its delta is like-for-like, but it is not directly comparable to a full column.
 
 ## Summary
 
@@ -37,3 +49,4 @@ Spread is `sd`: the standard deviation of pass rates **across scenarios**. It de
 | `build-endpoint` | 61% → 100% | 83% → 100% | 83% → 89% | 44% → 33% | 59% → 81% | 37% → 85% |
 | `build-form` | 94% → 100% | 100% → 100% | 67% → 83% | 61% → 78% | 74% → 81% | 63% → 74% |
 | `build-agent-feature` | 100% → 100% | 100% → 100% | 94% → 100% | 62% → 31% | 92% → 100% | 67% → 88% |
+| `router-nonsoftware` | ,  | ,  | ,  | ,  | ,  | ,  |

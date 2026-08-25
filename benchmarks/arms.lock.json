@@ -77,15 +77,27 @@
    "total_words": 5596
   },
   "with_skill": {
-   "file_count": 19,
+   "file_count": 25,
    "files": {
     "plugins/poka-yoke/README.md": {
      "sha256": "d251fb447c373ad3d54d5ec5a922c0f69ff8af01d174e2c86de6a0ade5676eb0",
      "words": 517
     },
+    "plugins/poka-yoke/SECURITY.md": {
+     "sha256": "3fee5d308e14a88a50e97abecbecc4883b3887a741cc161e38ce85d2f2d00dff",
+     "words": 110
+    },
     "plugins/poka-yoke/assets/devices/claude-hooks/README.md": {
      "sha256": "d393fa60f01102c5389d0ccb7291fe75fcfa3808cb2621f7dabbd8da8d825791",
      "words": 728
+    },
+    "plugins/poka-yoke/assets/devices/claude-hooks/guard_dangerous_commands.py": {
+     "sha256": "510cee5b06e72330001eb2089ccbcda19aefbba73d6328bf7db47b82ad34dc71",
+     "words": 691
+    },
+    "plugins/poka-yoke/assets/devices/claude-hooks/suggest_poka_yoke.py": {
+     "sha256": "ab036bd8e340a32ecba27476b01f976141e29f918191741505432b0c08a59a01",
+     "words": 643
     },
     "plugins/poka-yoke/assets/devices/lint/README.md": {
      "sha256": "fd5edfd062a1d0ab8be7f74c74dfb4c50ef9feb171442c88bfac054fc720c5ab",
@@ -104,12 +116,24 @@
      "words": 1166
     },
     "plugins/poka-yoke/references/lang-typescript.md": {
-     "sha256": "913ecffd2a923d364ff9642910c062f59e7118e4154beb6e633321f534b9f703",
+     "sha256": "eadede5e2cd56820a792be23c1e17efb804cd9e5014381e9654035fefb56ac15",
      "words": 878
     },
     "plugins/poka-yoke/references/ux-patterns.md": {
      "sha256": "403b006e38004d91811912b3eb5e51b9d452c3bc5591700476b83b76e3ddb684",
      "words": 939
+    },
+    "plugins/poka-yoke/scripts/cli.py": {
+     "sha256": "742027228efc1dcfdda11a4d03bec4fb51b43a3c49fc2875736e730be84a213b",
+     "words": 294
+    },
+    "plugins/poka-yoke/scripts/detect_hazards.py": {
+     "sha256": "a1c761e659175281f4ed9e427e6e117eb17bb5943544660d9ae6b1d46f5d6a0e",
+     "words": 3016
+    },
+    "plugins/poka-yoke/scripts/device_registry.py": {
+     "sha256": "073d620c2762034252ca09efffbf3118b57ac1bd1cca24ace4543be68596145f",
+     "words": 753
     },
     "plugins/poka-yoke/skills/agent-guardrails/SKILL.md": {
      "sha256": "51f9646a0e09c1520eddfc4e0117ee5128958bd0cbce9f66a08f9455010b0207",
@@ -170,7 +194,7 @@
     "ux": 3720
    },
    "routes_authored": 10,
-   "total_words": 24940
+   "total_words": 30447
   }
  },
  "note": "Frozen before the sweep. Any change here invalidates comparisons made against the runs it produced."

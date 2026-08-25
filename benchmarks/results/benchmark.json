@@ -1103,106 +1103,161 @@
         "seconds": 81.8,
         "words": 977
       }
-    }
+    },
+    "router-nonsoftware": {}
   },
   "by_model": {
     "fable": {
       "label": "Fable 5",
+      "arms_present": [
+        "baseline",
+        "with_skill"
+      ],
       "paired_scenarios": 13,
       "baseline": {
         "pass_rate": 0.8874,
         "stdev": 0.1183,
         "seconds": 64.1,
         "words": 692,
-        "scenarios": 13
+        "scenarios": 13,
+        "runs": 35,
+        "min_cell_n": 1,
+        "median_cell_n": 3
       },
       "with_skill": {
         "pass_rate": 0.9704,
         "stdev": 0.0401,
         "seconds": 91.6,
         "words": 863,
-        "scenarios": 13
+        "scenarios": 13,
+        "runs": 36,
+        "min_cell_n": 2,
+        "median_cell_n": 3
       },
       "delta_pp": 8.3
     },
     "opus": {
       "label": "Opus 5",
+      "arms_present": [
+        "baseline",
+        "with_skill"
+      ],
       "paired_scenarios": 13,
       "baseline": {
         "pass_rate": 0.9274,
         "stdev": 0.079,
         "seconds": 129.5,
         "words": 1212,
-        "scenarios": 13
+        "scenarios": 13,
+        "runs": 75,
+        "min_cell_n": 1,
+        "median_cell_n": 7
       },
       "with_skill": {
         "pass_rate": 0.9635,
         "stdev": 0.055,
         "seconds": 172.0,
         "words": 1426,
-        "scenarios": 13
+        "scenarios": 13,
+        "runs": 75,
+        "min_cell_n": 1,
+        "median_cell_n": 7
       },
       "delta_pp": 3.6
     },
     "claude-sonnet-5": {
       "label": "Sonnet 5",
+      "arms_present": [
+        "baseline",
+        "with_skill"
+      ],
       "paired_scenarios": 13,
       "baseline": {
         "pass_rate": 0.7984,
         "stdev": 0.127,
         "seconds": 87.8,
         "words": 672,
-        "scenarios": 13
+        "scenarios": 13,
+        "runs": 76,
+        "min_cell_n": 2,
+        "median_cell_n": 7
       },
       "with_skill": {
         "pass_rate": 0.8846,
         "stdev": 0.0608,
         "seconds": 129.2,
         "words": 820,
-        "scenarios": 13
+        "scenarios": 13,
+        "runs": 76,
+        "min_cell_n": 2,
+        "median_cell_n": 7
       },
       "delta_pp": 8.6
     },
     "claude-haiku-4-5-20251001": {
       "label": "Haiku 4.5",
+      "arms_present": [
+        "baseline",
+        "with_skill"
+      ],
       "paired_scenarios": 13,
       "baseline": {
         "pass_rate": 0.5825,
         "stdev": 0.1666,
         "seconds": 40.5,
         "words": 365,
-        "scenarios": 13
+        "scenarios": 13,
+        "runs": 36,
+        "min_cell_n": 2,
+        "median_cell_n": 3
       },
       "with_skill": {
         "pass_rate": 0.7112,
         "stdev": 0.2405,
         "seconds": 59.5,
         "words": 555,
-        "scenarios": 13
+        "scenarios": 13,
+        "runs": 36,
+        "min_cell_n": 2,
+        "median_cell_n": 3
       },
       "delta_pp": 12.9
     },
     "codex-gpt-5.6-terra": {
       "label": "Codex",
+      "arms_present": [
+        "baseline",
+        "with_skill"
+      ],
       "paired_scenarios": 13,
       "baseline": {
         "pass_rate": 0.7419,
         "stdev": 0.1772,
         "seconds": 70.7,
         "words": 409,
-        "scenarios": 13
+        "scenarios": 13,
+        "runs": 36,
+        "min_cell_n": 1,
+        "median_cell_n": 3
       },
       "with_skill": {
         "pass_rate": 0.9098,
         "stdev": 0.0979,
         "seconds": 96.6,
         "words": 508,
-        "scenarios": 13
+        "scenarios": 13,
+        "runs": 38,
+        "min_cell_n": 2,
+        "median_cell_n": 3
       },
       "delta_pp": 16.8
     },
     "agy-gemini-3.1-pro": {
       "label": "agy",
+      "arms_present": [
+        "baseline",
+        "with_skill"
+      ],
       "not_runnable": [
         "audit"
       ],
@@ -1212,14 +1267,20 @@
         "stdev": 0.1388,
         "seconds": 63.9,
         "words": 586,
-        "scenarios": 12
+        "scenarios": 12,
+        "runs": 36,
+        "min_cell_n": 3,
+        "median_cell_n": 3.0
       },
       "with_skill": {
         "pass_rate": 0.7812,
         "stdev": 0.1316,
         "seconds": 71.4,
         "words": 665,
-        "scenarios": 12
+        "scenarios": 12,
+        "runs": 36,
+        "min_cell_n": 3,
+        "median_cell_n": 3.0
       },
       "delta_pp": 13.5
     }
