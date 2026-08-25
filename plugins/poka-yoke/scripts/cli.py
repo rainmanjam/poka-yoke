@@ -21,7 +21,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-VERSION = "0.1.0"
+VERSION = "0.1.1"
 
 USAGE = """usage: cli.py <command> [options]
 
