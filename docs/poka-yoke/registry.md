@@ -11,6 +11,7 @@ device that has never fired because it is doing its job.
 
 | Device | Prevents | Rung |
 |---|---|---|
+| `.github/workflows/plugin-scanner.yml:1` | blocks a listing claim we no longer meet | Control |
 | `.github/workflows/release.yml:20` | blocks a tag that disagrees with the version it would publish | Control |
 | `.github/workflows/supply-chain.yml:1` | blocks a dependency drifting under us unnoticed | Detection |
 | `.github/workflows/validate.yml:101` | blocks an action pinned to a mutable label | Control |
