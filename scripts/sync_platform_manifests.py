@@ -111,6 +111,15 @@ def build(src: dict) -> dict[Path, str]:
     for d in (".devin-plugin", ".kimi-plugin", ".grok-plugin", ".qoder-plugin", ".kiro"):
         out[PLUGIN / d / "plugin.json"] = j(dict(common))
 
+    # --- Plugin root, which is what the Agent Plugins v1.0.0 spec expects -------
+    # GitHub's awesome-copilot intake looks for plugin.json at `.github/plugin/`,
+    # `.plugin/`, or the plugin root, in that order, and warns unless it is at the root.
+    # `.claude-plugin/plugin.json` is not among them, so their install smoke test found
+    # no manifest at all and both that gate and the version-match gate failed. Generated
+    # like every other platform manifest rather than hand-written, so the existing
+    # `--check` is what stops it drifting from the canonical source.
+    out[PLUGIN / "plugin.json"] = j(dict(common))
+
     # --- Hermes (YAML, hand-emitted so we stay dependency-free) --------------
     out[PLUGIN / ".hermes-plugin" / "plugin.yaml"] = (
         f"name: {name}\n"

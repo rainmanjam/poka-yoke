@@ -1,5 +1,5 @@
 name: poka-yoke
-version: 0.1.1
+version: 0.1.2
 description: Mistake-proof your code, your pipeline, and your agents.
 author: rainmanjam
 skills: ./skills/

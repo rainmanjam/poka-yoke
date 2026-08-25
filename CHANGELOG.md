@@ -6,6 +6,21 @@ versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.1.2], 2026-08-25
+
+### Fixed
+
+- **`plugin.json` is now generated at the plugin root as well**, which is where the Agent
+  Plugins v1.0.0 spec expects it. GitHub's awesome-copilot intake looks in `.github/plugin/`,
+  `.plugin/` and the plugin root, in that order; `.claude-plugin/plugin.json` is not among
+  them, so their install smoke test found no manifest at all and both it and the version-match
+  gate failed on a plugin that installs correctly everywhere else. Generated like the other
+  twenty-one platform manifests rather than hand-written, so `sync_platform_manifests.py
+  --check` is what stops it drifting from the canonical source.
+- **`RELEASING.md` said a version bump changes twelve files.** It changes thirteen now that a
+  twenty-second manifest is derived. The doc tells you to count the files as a check that you
+  edited the right one, so a stale count there quietly disables the check it exists to provide.
+
 ## [0.1.1], 2026-08-25
 
 ### Changed
