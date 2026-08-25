@@ -1,15 +1,17 @@
 {
  "copies": [
   {
+   "adaptation": "Their quality bar requires a '## When to Use This Skill' heading, which our skill does not carry. Adding one upstream would be editing a benchmarked skill with no evidence, which CONTRIBUTING forbids, so the section exists only in their copy and the two bodies are hashed separately.",
    "downstream_path": "skills/poka-yoke/SKILL.md",
    "downstream_repo": "sickn33/agentic-awesome-skills",
+   "downstream_sha256": "35d477d5c6c4256d87623e730942ec8fdfa749589cd1faf8a4de4edb8cc58455",
    "downstream_state": "pending",
    "downstream_url": "https://github.com/sickn33/agentic-awesome-skills/blob/main/skills/poka-yoke/SKILL.md",
    "raw_url": "https://raw.githubusercontent.com/sickn33/agentic-awesome-skills/main/skills/poka-yoke/SKILL.md",
    "shipped_from_tag": "v0.1.2",
    "shipped_on": "2026-08-25",
-   "shipped_sha256": "45ceccdeaf48d46172b55cdb80154d69f9558af1c8d704360a1075c7b5b1fe4e",
    "source_path": "plugins/poka-yoke/skills/poka-yoke/SKILL.md",
+   "source_sha256": "45ceccdeaf48d46172b55cdb80154d69f9558af1c8d704360a1075c7b5b1fe4e",
    "why": "45k-star catalogue that vendors rather than links. Real reach, but the copy has no sync mechanism of its own, so this lock is the mechanism."
   }
  ],
