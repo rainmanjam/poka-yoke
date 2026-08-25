@@ -33,6 +33,7 @@ import hashlib
 import json
 import pathlib
 import sys
+import re
 import urllib.parse
 import urllib.request
 
@@ -49,24 +50,43 @@ class LockError(Exception):
     """The lock file asked for something outside what this script is allowed to touch."""
 
 
+# One path segment: letters, digits, dot, dash, underscore. No separators, no "..".
+SEGMENT = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]*")
+
+
 def safe_source_path(rel: str) -> pathlib.Path:
-    """Resolve a lock-file path, refusing anything that escapes the repository."""
-    if pathlib.PurePosixPath(rel).is_absolute() or "\\" in rel:
-        raise LockError(f"source_path must be repo-relative and POSIX-style: {rel!r}")
-    resolved = (REPO / rel).resolve()
-    if resolved != REPO and REPO not in resolved.parents:
-        raise LockError(f"source_path escapes the repository: {rel!r}")
-    return resolved
+    """Rebuild a repo-relative path from validated segments.
+
+    The path is not merely checked and passed through, it is reconstructed from segments
+    that each had to match SEGMENT. Nothing from the lock file reaches the filesystem
+    except names that survived that, so ".." and absolute paths cannot be expressed rather
+    than being detected and rejected.
+    """
+    segments = pathlib.PurePosixPath(rel).parts
+    if not segments:
+        raise LockError("source_path is empty")
+    for segment in segments:
+        if not SEGMENT.fullmatch(segment):
+            raise LockError(f"source_path segment {segment!r} is not a plain name: {rel!r}")
+    return REPO.joinpath(*segments)
 
 
 def safe_url(raw: str) -> str:
-    """Return the URL only if it is https and on an allowlisted host."""
+    """Rebuild the URL from an allowlisted host and a validated path.
+
+    As with safe_source_path, the input is not passed through once approved. The scheme is
+    the literal "https", the host is the matching entry from ALLOWED_HOSTS rather than
+    whatever was parsed, and the path must be plain. Query and fragment are dropped.
+    """
     parts = urllib.parse.urlsplit(raw)
     if parts.scheme != "https":
         raise LockError(f"raw_url must be https: {raw!r}")
-    if parts.hostname not in ALLOWED_HOSTS:
+    host = next((h for h in sorted(ALLOWED_HOSTS) if h == parts.hostname), None)
+    if host is None:
         raise LockError(f"raw_url host {parts.hostname!r} is not allowlisted")
-    return raw
+    if not re.fullmatch(r"(?:/[A-Za-z0-9][A-Za-z0-9._-]*)+", parts.path):
+        raise LockError(f"raw_url path is not a plain file path: {parts.path!r}")
+    return urllib.parse.urlunsplit(("https", host, parts.path, "", ""))
 
 
 def body_of(text: str) -> str:
@@ -175,6 +195,22 @@ def _check_downstream(copy: dict, out: Findings) -> None:
         out.verified += 1
 
 
+def _summary(out: Findings, online: bool) -> str:
+    noun = "copy" if out.checked == 1 else "copies"
+    if not online:
+        return (f"✓ {out.checked} vendored {noun} in sync "
+                f"(offline: source unchanged since shipping)")
+    tail = f", {len(out.pending)} not yet merged" if out.pending else ""
+    return (f"✓ {out.checked} vendored {noun} unchanged locally; "
+            f"{out.verified} confirmed identical downstream{tail}")
+
+
+def _print_all(header: str, items: list[str]) -> None:
+    print(header, file=sys.stderr)
+    for item in items:
+        print(f"    {item}", file=sys.stderr)
+
+
 def _report(out: Findings, total: int, online: bool) -> int:
     # A check that verified nothing must not report success. Recording a copy and then
     # silently skipping it is precisely how this class of device stops working.
@@ -182,26 +218,16 @@ def _report(out: Findings, total: int, online: bool) -> int:
         print("✗ recorded vendored copies exist but none could be checked", file=sys.stderr)
         return 2
     if out.problems:
-        print("✗ vendored copies have drifted:", file=sys.stderr)
-        for problem in out.problems:
-            print(f"    {problem}", file=sys.stderr)
+        _print_all("✗ vendored copies have drifted:", out.problems)
         return 1
     for note in out.pending:
         print(f"  · {note}")
     if out.unverified:
-        print(f"⚠ {out.checked} cop{'y' if out.checked == 1 else 'ies'} match locally, but "
-              f"{len(out.unverified)} could not be verified downstream:", file=sys.stderr)
-        for item in out.unverified:
-            print(f"    {item}", file=sys.stderr)
+        _print_all(
+            f"⚠ {out.checked} cop{'y' if out.checked == 1 else 'ies'} match locally, but "
+            f"{len(out.unverified)} could not be verified downstream:", out.unverified)
         return 2
-    noun = "copy" if out.checked == 1 else "copies"
-    if online:
-        tail = f", {len(out.pending)} not yet merged" if out.pending else ""
-        print(f"✓ {out.checked} vendored {noun} unchanged locally; "
-              f"{out.verified} confirmed identical downstream{tail}")
-    else:
-        print(f"✓ {out.checked} vendored {noun} in sync "
-              f"(offline: source unchanged since shipping)")
+    print(_summary(out, online))
     return 0
 
 
