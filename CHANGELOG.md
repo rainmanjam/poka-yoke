@@ -6,6 +6,80 @@ versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.2.0], 2026-08-25
+
+Minor rather than patch because the detector gained a flag and changed a default, and two new
+devices ship with it. Read the first entry before upgrading: it changes an exit code that
+things may be built on.
+
+### Changed
+
+- **BREAKING: the detector now exits non-zero when it reports findings.** `main()` ended in a
+  bare `return 0`, so it printed high-severity hazards and exited 0 regardless. Every gate
+  built on it was decorative — the shipped pre-commit hook whose own comment promises "new
+  violations can't be added", the shipped GitHub Actions gate, and this repository's own
+  "Detector runs clean" step. None of them could go red. Anyone who installed a template has
+  been running a hook that never blocked a commit.
+
+  `--fail-on {high,medium,low,none}` controls it, defaulting to `low`: any reported finding
+  exits 1. `--fail-on none` restores reporting without gating, which is the right mode for
+  inspecting output rather than gating on it.
+
+  **If you pipe the detector into something that assumed exit 0, it will now fail.** That is
+  the intended behaviour and what every linter does, but it is a real break and it is why
+  this release is not a patch.
+
+- **A git failure is no longer reported as a clean tree.** `--diff`, `--staged` and `--since`
+  turned any git error into an empty changeset and exited 0, so running the detector outside
+  a repository, or against a bad revision, produced a clean bill of health. `git()` now
+  raises and those modes exit 2 — the code `--paths` already used for "scanned nothing".
+
+- **`covered()` takes keyword-only arguments**, closing the single high-severity finding the
+  detector reported against its own source. It would otherwise have turned the newly-armed CI
+  step red on its first run.
+
+### Added
+
+- **A drift device for vendored copies** (`scripts/vendored_copies.py`, `vendored.lock.json`).
+  Some directories copy a skill rather than linking to it, and the copy is a fork the moment
+  the source is edited. The lock records the sha256 of both bodies — ours and theirs, which
+  may legitimately differ — CI fails when our source moves away from what was shipped, and a
+  weekly job compares the published copy. A pending copy detects its own arrival rather than
+  waiting for someone to edit JSON.
+
+- **A plugin-scanner gate** (`.github/workflows/plugin-scanner.yml`), required by
+  awesome-codex-plugins for listing: score ≥80, no critical or high findings, and the scanner
+  running in this repository's own Actions. Currently 94/100 (A). Weekly, because the score
+  can fall when the scanner's rules change rather than when ours do.
+
+- **`LICENSE` and `SECURITY.md` inside the plugin**, and the brand mark at
+  `assets/brand/`, generated into the Cursor and Codex manifests rather than hand-added to a
+  zip. `brandColor` is `#A67C00`: the andon amber at 3.82:1 against white, where the original
+  `#E7C15F` measured 1.72:1 and was rejected by OpenAI's 2:1 floor.
+
+- **Dependabot for GitHub Actions.** The actions here are SHA-pinned, which is a device — but
+  a pin cannot tell you a patched version exists. It found three major bumps on its first run.
+
+### Fixed
+
+- **The vendored-copy check could be switched off by deleting its input.** Emptying `copies`
+  printed "nothing to check" and exited 0. The suite now requires the lock to record a copy
+  and each entry to be complete.
+
+- **`--update` re-recorded only our side**, leaving the downstream hash stale so `--online`
+  would have reported "they edited their copy" forever, the first time anyone followed the
+  instruction the script itself prints. It now records both from the published copy and
+  refuses to write anything when the fetch fails.
+
+- **A manifest could name a logo that was absent or the wrong shape.** Deleting the asset left
+  every check green while the manifests still claimed it — the same rejection OpenAI had
+  already issued once. PNG dimensions are now read from the IHDR header.
+
+- **`safe_source_path` rejected any dot-directory**, so a path like `.claude-plugin/plugin.json`
+  failed as "not a plain name". A leading dot is allowed; `.` and `..` are still refused.
+
+- **Remote reads are capped at 1 MiB**, found by this project's own detector as an unbounded read.
+
 ## [0.1.2], 2026-08-25
 
 ### Fixed

@@ -2,7 +2,7 @@
   "name": "poka-yoke",
   "displayName": "Poka-Yoke",
   "description": "Mistake-proof your code, your pipeline, and your agents. Audits code for mistakes that are possible, designs APIs where misuse cannot be expressed, installs guardrails, and turns incidents into devices that prevent recurrence.",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "author": {
     "name": "rainmanjam",
     "url": "https://github.com/rainmanjam"
