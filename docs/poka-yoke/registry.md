@@ -26,6 +26,7 @@ device that has never fired because it is doing its job.
 | `.github/workflows/validate.yml:34` | blocks any of the 21 derived files drifting from plugin.json | Control |
 | `.github/workflows/validate.yml:64` | blocks a device registry that has drifted from the code | Control |
 | `.github/workflows/validate.yml:78` | blocks a skill with no name/description or over the size budget | Control |
+| `.github/workflows/vendored-copies.yml:1` | notices a vendored copy changing on somebody else's schedule | Detection |
 | `benchmarks/run.py:174` | recovers the answer from the conversation directory, so work delivered as an unlinked artifact cannot be graded as silence | Detection |
 | `benchmarks/run.py:246` | reads the blocked-tool error from the JSON envelope as well as stderr, so a refused tool cannot be recorded as an empty answer | Detection |
 | `benchmarks/run.py:286` | refuses to exceed the call ceiling, so a sweep cannot exhaust a session limit | Control |

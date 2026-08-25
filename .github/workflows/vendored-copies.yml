@@ -1,0 +1,54 @@
+# poka-yoke: notices a vendored copy changing on somebody else's schedule [detection]
+#
+# validate.yml already runs `vendored_copies.py --check` on every push and pull request.
+# That is the offline half: it catches OUR source moving away from what was shipped. The
+# other half — THEIR copy being edited, or landing after a refresh PR merges — only ever ran
+# when a person typed `--online` by hand, which meant it did not really run at all.
+#
+# A vendored copy changes without any commit of ours. A gate that only fires on our commits
+# is structurally unable to see it, the same reason plugin-scanner.yml has a weekly cron.
+#
+# Detection, not Control, and deliberately so: this cannot stop anyone editing a copy in a
+# repository we do not own. It can only make sure we hear about it.
+name: vendored copies
+
+on:
+  schedule:
+    # Monday morning UTC. Frequent enough that a change is noticed within a week, rare
+    # enough that a flaky network does not train anyone to ignore the notification.
+    - cron: "0 7 * * 1"
+  workflow_dispatch:
+  push:
+    # Also whenever the lock or the checker itself changes, so a mistake in either is caught
+    # at the commit that made it rather than up to a week later.
+    paths:
+      - "vendored.lock.json"
+      - "scripts/vendored_copies.py"
+      - ".github/workflows/vendored-copies.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  online:
+    name: vendored copies match downstream
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+
+      # Standard library only, like the rest of this repository, so there is nothing to
+      # install and nothing from PyPI running in a job that holds a checkout.
+      #
+      # Exit codes this can produce:
+      #   0  our source is unchanged and every live copy matches
+      #   1  real drift — either we moved, or they edited their copy
+      #   2  a copy could not be verified (network, moved, deleted), or a pending copy has
+      #      landed and the lock still says pending
+      #
+      # 2 is reported rather than absorbed, because "I could not check" reported as success
+      # is the failure this whole script exists to prevent.
+      - name: Compare every vendored copy against what was shipped
+        run: python3 scripts/vendored_copies.py --online

@@ -931,5 +931,83 @@ class TestAgentContextFiles(unittest.TestCase):
                             f"{name} is long enough to have become a second source of truth")
 
 
+class TestVendoredCopiesStayGuarded(unittest.TestCase):
+    """The drift device is only a device while its input exists and its targets resolve.
+
+    Both checks below exist because the thing they guard passed every check while broken.
+    Emptying `copies` produced "nothing to check" and exit 0; deleting a brand asset left
+    every manifest pointing at a missing file with 85 tests green.
+    """
+
+    def test_vendored_lock_records_at_least_one_copy(self):
+        """An empty lock reads as 'nothing to do' rather than 'the record is gone'.
+
+        `vendored_copies.py --check` prints "no vendored copies recorded; nothing to check"
+        and exits 0 when `copies` is empty. That is the correct behaviour for a repository
+        that vendors nothing, and the wrong behaviour for this one, where a copy is published
+        in a 45k-star catalogue. Emptying the array is indistinguishable from tidying up, and
+        nothing downstream would say the drift check had stopped running.
+
+        If a copy is ever genuinely withdrawn, delete this test in the same commit. That is
+        the point: the removal has to appear in a diff.
+        """
+        lock = REPO / "vendored.lock.json"
+        self.assertTrue(lock.is_file(), "vendored.lock.json is missing entirely")
+        copies = json.loads(lock.read_text()).get("copies", [])
+        self.assertTrue(copies, "vendored.lock.json records no copies. If a vendored copy was "
+                                "withdrawn, remove this test in the same PR and say why.")
+        required = {"source_path", "downstream_repo", "downstream_url", "raw_url",
+                    "source_sha256", "downstream_sha256"}
+        for entry in copies:
+            missing = required - set(entry)
+            self.assertFalse(missing, f"{entry.get('downstream_repo', '?')} is missing "
+                                      f"{sorted(missing)}; a half-written entry makes the "
+                                      f"check raise rather than report")
+            src = REPO / entry["source_path"]
+            self.assertTrue(src.is_file(), f"{entry['source_path']} is vendored at "
+                                           f"{entry['downstream_repo']} but no longer exists here")
+
+    def test_manifest_images_resolve_and_are_square(self):
+        """A manifest may not name an image that is absent or the wrong shape.
+
+        This already went wrong once in public: OpenAI's uploader rejected the plugin with
+        "interface.logo is required and must reference a square image". Adding the file fixed
+        that submission and nothing stopped it recurring — deleting the asset today leaves
+        sync --check, the registry check and the whole suite green while every manifest still
+        claims the file.
+
+        The PNG header is read directly rather than through Pillow, so this stays inside the
+        standard library like everything else that runs in CI.
+        """
+        plugin = REPO / "plugins" / "poka-yoke"
+        refs = []
+        for manifest in sorted(plugin.glob(".*/plugin.json")) + sorted(plugin.glob("plugin.json")):
+            data = json.loads(manifest.read_text())
+            fields = list(data.items()) + list(data.get("interface", {}).items())
+            for key, value in fields:
+                if isinstance(value, str) and value.lower().endswith((".png", ".jpg", ".svg")):
+                    refs.append((manifest.name, key, value))
+
+        # A probe that finds nothing verifies nothing. The manifests are generated with logo
+        # fields, so zero references means the generator stopped emitting them.
+        self.assertTrue(refs, "no image references found in any plugin manifest; either the "
+                              "generator stopped emitting them or this probe is broken")
+
+        for manifest_name, key, rel in refs:
+            self.assertFalse(rel.startswith("/"), f"{manifest_name}:{key} is an absolute path")
+            self.assertNotIn("..", rel.split("/"), f"{manifest_name}:{key} escapes the plugin")
+            target = plugin / rel.lstrip("./")
+            self.assertTrue(target.is_file(),
+                            f"{manifest_name}:{key} names {rel}, which is not in the plugin")
+            if target.suffix.lower() == ".png":
+                header = target.read_bytes()[:24]
+                self.assertEqual(header[12:16], b"IHDR", f"{target.name} is not a valid PNG")
+                width = int.from_bytes(header[16:20], "big")
+                height = int.from_bytes(header[20:24], "big")
+                self.assertEqual(width, height,
+                                 f"{manifest_name}:{key} is {width}x{height}; both the Cursor "
+                                 f"and Codex listings require a square image")
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
