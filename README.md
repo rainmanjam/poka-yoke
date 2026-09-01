@@ -35,7 +35,7 @@
 
 [![skills](https://img.shields.io/badge/skills-11-8250df)](#whats-inside)
 [![dependencies](https://img.shields.io/badge/dependencies-zero-2ea043)](#requirements)
-[![devices](https://img.shields.io/badge/devices%20in%20CI-32-0969da)](docs/poka-yoke/registry.md)
+[![devices](https://img.shields.io/badge/devices%20in%20CI-33-0969da)](docs/poka-yoke/registry.md)
 [![license](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 <p align="center">

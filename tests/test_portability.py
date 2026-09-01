@@ -87,6 +87,87 @@ class TestNoRuntimeSpecificPaths(unittest.TestCase):
         self.assertGreater(checked, 0, "found no relative references, is the probe broken?")
 
 
+class TestNothingShippedNamesThisRepositorysLayout(unittest.TestCase):
+    """Rule 1, applied to what the bundle *emits*, not just to what SKILL.md links.
+
+    The existing probes read SKILL.md files. That is where the rule was written, so that is
+    where it was enforced -- and three violations sat outside it for months:
+
+      * `references/hazard-catalog.md` linked `../../../docs/method.md`, which resolves in
+        this checkout and nowhere else.
+      * `detect_hazards.py` printed "see assets/devices/lint/" on every scan, a directory a
+        standalone skill install does not have.
+      * `device_registry.py` stamped `plugins/poka-yoke/scripts/...` into every registry it
+        generated, telling readers to run a path that exists only here.
+
+    Each was found by an external reviewer, not by us. A probe aimed at one file type stops
+    probing the moment the same mistake is made in another, so this one reads every shipped
+    file: markdown, scripts, and the strings the scripts print.
+    """
+
+    PLUGIN = REPO / "plugins" / "poka-yoke"
+    # The repository's own layout. Anything shipped that names this is describing a machine
+    # the reader may not be on.
+    #
+    # Only *unrooted* occurrences. `/tmp/pk/plugins/poka-yoke/scripts` in the pre-commit
+    # template is correct: it follows a `git clone` into a directory the reader picked, so
+    # the layout is anchored to something they have. A bare `plugins/poka-yoke/...` assumes
+    # they are standing in this checkout.
+    LAYOUT = re.compile(r"(?<![\w/.-])plugins/poka-yoke/")
+    # A relative link that climbs past the plugin root has left the bundle behind.
+    ESCAPES = re.compile(r"\.\./\.\./\.\./[A-Za-z0-9_./-]+")
+
+    def _shipped(self):
+        for f in sorted(self.PLUGIN.rglob("*")):
+            if f.is_file() and "__pycache__" not in f.parts:
+                yield f
+
+    def test_no_shipped_file_names_this_repositorys_layout(self):
+        offenders = []
+        for f in self._shipped():
+            try:
+                body = f.read_text()
+            except UnicodeDecodeError:
+                continue
+            for i, line in enumerate(body.splitlines(), 1):
+                if self.LAYOUT.search(line):
+                    offenders.append(f"{f.relative_to(REPO)}:{i}: {line.strip()[:80]}")
+        self.assertEqual(
+            [], offenders,
+            "shipped files name this repository's directory layout. A reader who installed "
+            "the skill on its own does not have these paths:\n  " + "\n  ".join(offenders))
+
+    def test_no_relative_link_climbs_out_of_the_bundle(self):
+        offenders = []
+        for f in self._shipped():
+            if f.suffix != ".md":
+                continue
+            for rel in sorted(set(self.ESCAPES.findall(f.read_text()))):
+                offenders.append(f"{f.relative_to(REPO)} -> {rel}")
+        self.assertEqual(
+            [], offenders,
+            "relative links climb above the plugin root. They resolve in this checkout and "
+            "break once the skill ships alone:\n  " + "\n  ".join(offenders))
+
+    def test_the_detector_footer_names_no_path(self):
+        """The footer prints on every clean scan, so a dead pointer there is seen constantly.
+
+        Asserting the tools are named rather than asserting a path is absent: a probe for a
+        specific removed string stops probing the moment someone writes a different path.
+        """
+        import subprocess
+        r = subprocess.run(
+            [sys.executable, str(self.PLUGIN / "scripts" / "detect_hazards.py"),
+             "--paths", str(self.PLUGIN / "scripts"), "--fail-on", "none"],
+            capture_output=True, text=True)
+        footer = r.stdout
+        self.assertIn("further hazard rules are covered", footer,
+                      "the footer did not print; this probe checked nothing")
+        self.assertNotIn("assets/devices", footer,
+                         "the detector footer points at a bundled path that a standalone "
+                         "skill install does not have")
+
+
 class TestNoShellingOutByPath(unittest.TestCase):
     """Rule 2: a script path must be relative to the skill that names it, never absolute and
     never a runtime-specific variable."""

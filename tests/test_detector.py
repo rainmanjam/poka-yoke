@@ -430,6 +430,58 @@ class TestTheGateCanActuallyFail(unittest.TestCase):
                              "git could not answer and the detector reported success")
             self.assertIn("NOT an all-clear", r.stderr)
 
+    def _repo(self, d, *files):
+        """A git repo with `files` staged, so --staged and --diff have something to read."""
+        run = lambda *a: subprocess.run(["git", *a], cwd=d, capture_output=True, check=True)
+        run("init", "-q", ".")
+        run("config", "user.email", "t@example.com")
+        run("config", "user.name", "t")
+        (Path(d) / "seed.py").write_text("x = 1\n")
+        run("add", "-A"); run("-c", "commit.gpgsign=false", "commit", "-qm", "seed")
+        for name, body in files:
+            (Path(d) / name).write_text(body)
+        run("add", "-A")
+        return run
+
+    def test_staged_change_with_no_supported_files_is_not_an_all_clear(self):
+        """The gap that let --paths and --diff disagree about the same question.
+
+        --paths exits 2 when it scans nothing. --staged scanned nothing, printed "No
+        hazards detected", and exited 0 -- and --staged is the mode a pre-commit hook
+        runs. The marker comment above `scanned = 0` claimed [control]; it held on one
+        branch of three.
+        """
+        with tempfile.TemporaryDirectory() as d:
+            self._repo(d, ("notes.txt", "prose, not source\n"))
+            r = self._run("--staged", cwd=d)
+            self.assertEqual(2, r.returncode,
+                             "scanned 0 files and reported success: a false all-clear in "
+                             "exactly the mode a pre-commit hook uses")
+            self.assertIn("NOT an all-clear", r.stderr)
+
+    def test_deleted_source_file_alone_is_not_an_all_clear(self):
+        """A commit that only deletes files reaches the scan loop with entries that no
+        longer exist on disk, so `scanned` stays 0 by a different route."""
+        with tempfile.TemporaryDirectory() as d:
+            run = self._repo(d, ("gone.py", "y = 2\n"))
+            run("-c", "commit.gpgsign=false", "commit", "-qm", "add")
+            (Path(d) / "gone.py").unlink()
+            run("add", "-A")
+            r = self._run("--staged", cwd=d)
+            self.assertEqual(2, r.returncode,
+                             "a deletion-only change scanned nothing and exited 0")
+
+    def test_empty_diff_is_not_an_all_clear(self):
+        """A clean tree yields no changed files. Interactively the printed hint is fine;
+        a CI step reads only the exit code, and 0 there means "checked, nothing wrong"."""
+        with tempfile.TemporaryDirectory() as d:
+            self._repo(d)
+            subprocess.run(["git", "-c", "commit.gpgsign=false", "commit", "-qm", "x"],
+                           cwd=d, capture_output=True)
+            r = self._run("--diff", cwd=d)
+            self.assertEqual(2, r.returncode,
+                             "nothing to scan reported as a successful scan")
+
     def test_the_detector_is_clean_against_itself(self):
         """The repo's own CI step. Now that it can fail, it has to actually pass."""
         r = self._run("--paths", str(REPO / "plugins"), "--severity", "high")
